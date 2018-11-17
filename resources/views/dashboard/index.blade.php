@@ -1,24 +1,26 @@
-@extends('layouts.dashboard.main')
+@extends('layouts.main')
+
+@section('title', '儀表板')
 
 @section('content')
 
-@include('dashboard.partials.preloader')
+@include('layouts.partials.preloader')
 
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <div id="main-wrapper">
 
-    @include('dashboard.partials.header')
+    @include('layouts.partials.header')
 
-    @include('dashboard.partials.leftSidebar')
+    @include('layouts.partials.leftSidebar')
 
     <!-- ============================================================== -->
     <!-- Page wrapper  -->
     <!-- ============================================================== -->
     <div class="page-wrapper">
 
-        @include('dashboard.partials.pageBreadCrumb')
+        @include('layouts.partials.pageBreadCrumb', ['title' => '儀表板'])
 
 
         <!-- ============================================================== -->
@@ -442,4 +444,10 @@
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 
+@endsection
+
+@section('scripts')
+    <script src="{{ URL::to('libs/moment/min/moment.min.js') }}"></script>
+    <script src="{{ URL::to('libs/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+    <script src="{{ URL::to('js/pages/calendar/cal-init.js') }}"></script>
 @endsection

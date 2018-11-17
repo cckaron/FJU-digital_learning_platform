@@ -16,8 +16,8 @@ class AlterStudentTable extends Migration
 
         Schema::table('student', function (Blueprint $table) {
 
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('teacher_id')->references('user_id')->on('teacher')->onDelete('cascade');
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('teacher_id')->references('users_id')->on('teacher')->onDelete('cascade');
             $table->foreign('course_id')->references('id')->on('course')->onDelete('CASCADE');
         });
     }

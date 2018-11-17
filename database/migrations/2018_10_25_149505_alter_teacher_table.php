@@ -16,7 +16,7 @@ class AlterTeacherTable extends Migration
 
         Schema::table('teacher', function (Blueprint $table) {
 
-            $table->foreign('user_id')->references('id')->on('user')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('users_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('course_id')->references('id')->on('course')->onUpdate('CASCADE')->onDelete('CASCADE');
 
         });
@@ -30,7 +30,7 @@ class AlterTeacherTable extends Migration
     public function down()
     {
         Schema::table('teacher', function (Blueprint $table) {
-            $table->dropForeign('teacher_user_id_foreign');
+            $table->dropForeign('teacher_users_id_foreign');
         });
     }
 }

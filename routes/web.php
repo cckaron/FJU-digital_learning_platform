@@ -36,3 +36,16 @@ Route::group(['prefix' => 'user'], function(){
         ]);
     });
 });
+
+
+Route::group(['prefix' => 'course'], function(){
+   Route::get('/add', [
+       'uses' => 'CourseController@getAddCourse',
+       'as' => 'course.addCourse'
+   ]);
+});
+
+Route::get('user', [
+    'uses' => 'CourseController@getUsers',
+    'as' => 'get.courseUsers'
+]);

@@ -20,10 +20,10 @@ class AlterAssignmentTable extends Migration
                 ->references('id')->on('course')
                 ->onDelete('cascade');
             $table->foreign('author_id')
-                ->references('user_id')->on('student')
+                ->references('users_id')->on('student')
                 ->onDelete('cascade');
             $table->foreign('corrector_id')
-                ->references('user_id')->on('teacher')
+                ->references('users_id')->on('teacher')
                 ->onDelete('cascade');
         });
     }
