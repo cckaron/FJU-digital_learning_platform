@@ -13,9 +13,9 @@ class CreateAssignmentTable extends Migration
      */
     public function up()
     {
-        Schema::create('assignment', function (Blueprint $table) {
+        Schema::create('assignments', function (Blueprint $table) {
             $table->string('filename')->unique();
-            $table->unsignedInteger('course_id')->nullable();
+            $table->unsignedInteger('courses_id')->nullable();
             $table->unsignedInteger('author_id')->nullable();
             $table->unsignedInteger('corrector_id')->nullable();
             $table->timestamps();
@@ -29,6 +29,6 @@ class CreateAssignmentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assignment');
+        Schema::dropIfExists('assignments');
     }
 }

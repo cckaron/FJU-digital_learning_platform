@@ -13,14 +13,14 @@ class CreateCourseTable extends Migration
      */
     public function up()
     {
-        Schema::create('course', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->integer('id')->unsigned();
             $table->string('name');
             $table->integer('year');
             $table->integer('semester');
             $table->string('start_date');
             $table->string('end_date');
-            $table->integer('status');
+            $table->integer('status')->default(1);
             $table->timestamps();
 
             //need to add the 1 to many relationship for teacher_id
@@ -36,6 +36,9 @@ class CreateCourseTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::dropIfExists('courses');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
     }
 }

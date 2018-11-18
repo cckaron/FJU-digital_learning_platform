@@ -43,8 +43,26 @@ Route::group(['prefix' => 'course'], function(){
        'uses' => 'CourseController@getAddCourse',
        'as' => 'course.addCourse'
    ]);
+
+   Route::post('/add', [
+       'uses' => 'CourseController@postAddCourse',
+       'as' => 'course.addCourse'
+   ]);
 });
 
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
+    Route::get('/add', [
+        'uses' => 'UserController@getCreateUser',
+        'as' => 'user.createUser'
+    ]);
+
+    Route::post('/add', [
+        'uses' => 'UserController@postCreateUser',
+        'as' => 'user.createUser'
+    ]);
+});
+
+// for data tables
 Route::get('user', [
     'uses' => 'CourseController@getUsers',
     'as' => 'get.courseUsers'

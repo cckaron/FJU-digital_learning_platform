@@ -26,103 +26,73 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-            @include('layouts.partials.pageBreadCrumb', ['title' => '新增課程'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '新增帳號'])
 
-    <!-- ============================================================== -->
-        <!-- Container fluid  -->
         <!-- ============================================================== -->
-                <div class="container-fluid">
-                    <!-- ============================================================== -->
-                    <!-- Start Page Content -->
-                    <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
 
-                    <form action="{{ route('course.addCourse') }}" method="post">
+                <form action="{{ route('user.createUser') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
 
                         @if(session()->has('message'))
-                        <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">提示</h5>
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">提示</h5>
 
-                                <div class="alert alert-success" role="alert">
-                                    {{ session()->get('message') }}
+                                        <div class="alert alert-success" role="alert">
+                                            {{ session()->get('message') }}
+                                        </div>
+
+                                    </div>
                                 </div>
-
                             </div>
-                        </div>
-                        </div>
                         @endif
 
                         <div class="col-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="courseName">課程名稱</label>
+                                        <label class="col-md-3" for="userAccount">帳號</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="帳號" name="userAccount">
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">授課教師</label>
+                                        <label class="col-md-3" for="userName">姓名</label>
                                         <div class="col-md-9">
-                                            <select name="courseTeachers[]" class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;">
-                                                <optgroup label="專任教師">
-                                                    <option value="AK">Alaska</option>
+                                            <input type="text" id="userName" class="form-control" placeholder="姓名" name="userName">
+                                        </div>
+                                    </div>
 
-                                                </optgroup>
-                                                <optgroup label="兼任教師">
-                                                    <option value="CA">California</option>
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="userEmail">電子信箱</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userEmail" class="form-control" placeholder="電子信箱" name="userEmail">
+                                        </div>
+                                    </div>
 
-                                                </optgroup>
-                                                <optgroup label="業師">
-                                                    <option value="AZ">Arizona</option>
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="userPassword">密碼</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userPassword" class="form-control" placeholder="密碼" name="userPassword">
+                                        </div>
+                                    </div>
 
-                                                </optgroup>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-15">帳號類型</label>
+                                        <div class="col-md-9">
+                                            <select name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                                <option value=1 selected> 學生 </option>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學年</label>
-                                        <div class="col-md-9">
-                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option>106</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學期</label>
-                                        <div class="col-md-9">
-                                            <select name="semester" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option>1</option>
-                                                <option>2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開課時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="courseStart" placeholder="開課時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程結束時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="courseEnd" placeholder="課程結束時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 
@@ -135,57 +105,33 @@
                             </div>
                         </div>
 
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">勾選課程學生</h5>
-                                    <div class="table-responsive">
-                                        <table id="courseUsers" class="table table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th>勾選</th>
-                                                <th>id</th>
-                                                <th>name</th>
-                                                <th>type</th>
-                                                <th>created_at</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
                     </div>
-                        {{ csrf_field() }}
-                    </form>
+                    {{ csrf_field() }}
+                </form>
 
-                    <!-- ============================================================== -->
-                    <!-- End PAge Content -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Right sidebar -->
-                    <!-- ============================================================== -->
-                    <!-- .right-sidebar -->
-                    <!-- ============================================================== -->
-                    <!-- End Right sidebar -->
-                    <!-- ============================================================== -->
-                </div>
                 <!-- ============================================================== -->
-                <!-- End Container fluid  -->
+                <!-- End PAge Content -->
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
-                <!-- footer -->
+                <!-- Right sidebar -->
                 <!-- ============================================================== -->
-                <footer class="footer text-center">
-                    All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cg.workst@gmail.com
-                </footer>
+                <!-- .right-sidebar -->
                 <!-- ============================================================== -->
-                <!-- End footer -->
+                <!-- End Right sidebar -->
                 <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer text-center">
+                All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cg.workst@gmail.com
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->

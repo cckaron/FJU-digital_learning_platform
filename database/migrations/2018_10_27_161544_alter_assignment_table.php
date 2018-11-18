@@ -14,17 +14,20 @@ class AlterAssignmentTable extends Migration
     public function up()
     {
 
-        Schema::table('assignment', function (Blueprint $table) {
+        Schema::table('assignments', function (Blueprint $table) {
 
-            $table->foreign('course_id')
-                ->references('id')->on('course')
-                ->onDelete('cascade');
+            $table->foreign('courses_id')
+                ->references('id')->on('courses')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
             $table->foreign('author_id')
-                ->references('users_id')->on('student')
-                ->onDelete('cascade');
+                ->references('users_id')->on('students')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
             $table->foreign('corrector_id')
-                ->references('users_id')->on('teacher')
-                ->onDelete('cascade');
+                ->references('users_id')->on('teachers')
+                ->onUpdate('CASCADE')
+                ->onDelete('NO ACTION');
         });
     }
 
@@ -35,7 +38,7 @@ class AlterAssignmentTable extends Migration
      */
     public function down()
     {
-        Schema::table('assignment', function (Blueprint $table) {
+        Schema::table('assignments', function (Blueprint $table) {
             //
         });
     }

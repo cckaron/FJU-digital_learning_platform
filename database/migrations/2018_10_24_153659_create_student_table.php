@@ -14,18 +14,19 @@ class CreateStudentTable extends Migration
     public function up()
     {
 
-        Schema::create('student', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
 
             $table->integer('users_id',0,1)->nullable();
-            $table->integer('teacher_id',0,1)->nullable();
-            $table->integer('course_id',0,1)->nullable();
-            $table->string('name');
-            $table->string('department');
-            $table->string('grade');
-            $table->string('class');
-            $table->string('remark');
-            $table->string('status');
+            $table->integer('teachers_id',0,1)->nullable();
+            $table->integer('courses_id',0,1)->nullable();
+            $table->string('department')->nullable();
+            $table->string('grade')->nullable();
+            $table->string('class')->nullable();
+            $table->string('remark')->nullable();
+            $table->integer('status')->default(1);
             $table->timestamps();
+
+            $table->index('users_id');
         });
     }
 

@@ -14,11 +14,11 @@ class AlterStudentTable extends Migration
     public function up()
     {
 
-        Schema::table('student', function (Blueprint $table) {
+        Schema::table('students', function (Blueprint $table) {
 
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('teacher_id')->references('users_id')->on('teacher')->onDelete('cascade');
-            $table->foreign('course_id')->references('id')->on('course')->onDelete('CASCADE');
+            $table->foreign('users_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('teachers_id')->references('users_id')->on('teachers')->onUpdate('CASCADE')->onDelete('NO ACTION');
+            $table->foreign('courses_id')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('SET NULL');
         });
     }
 
@@ -29,7 +29,7 @@ class AlterStudentTable extends Migration
      */
     public function down()
     {
-        Schema::table('student', function (Blueprint $table) {
+        Schema::table('students', function (Blueprint $table) {
             //
         });
     }
