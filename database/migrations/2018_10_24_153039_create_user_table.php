@@ -17,7 +17,7 @@ class CreateUserTable extends Migration
 
             $table->string('account');
             $table->integer('id')->unsigned()->primary();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->integer('type');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -26,6 +26,7 @@ class CreateUserTable extends Migration
             $table->timestamps();
 
             $table->index('id');
+            $table->index('name');
 
         });
     }

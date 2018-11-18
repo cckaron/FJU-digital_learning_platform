@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-            @include('layouts.partials.pageBreadCrumb', ['title' => '新增課程'])
+            @include('layouts.partials.pageBreadCrumb', ['title' => '所有課程'])
 
     <!-- ============================================================== -->
         <!-- Container fluid  -->
@@ -56,94 +56,20 @@
                         </div>
                         @endif
 
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="courseName">課程名稱</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">授課教師</label>
-                                        <div class="col-md-9">
-                                            <select name="courseTeachers[]" class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;">
-                                                <optgroup label="現任教師">
-                                                    @foreach($teachers->chunk(1) as $teacherChunk)
-                                                        @foreach($teacherChunk as $teacher)
-                                                            <option> {{ $teacher->users_name }} </option>
-                                                        @endforeach
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學年</label>
-                                        <div class="col-md-9">
-                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option>106</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學期</label>
-                                        <div class="col-md-9">
-                                            <select name="semester" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option>1</option>
-                                                <option>2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開課時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="courseStart" placeholder="開課時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程結束時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="courseEnd" placeholder="課程結束時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="border-top">
-                                    <div class="card-body">
-                                        <input type="submit" class="btn btn-primary">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">勾選課程學生</h5>
                                     <div class="table-responsive">
-                                        <table id="courseUsers" class="table table-striped table-bordered">
+                                        <table id="courseAll" class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
-                                                <th>勾選</th>
-                                                <th>學號</th>
-                                                <th>姓名</th>
-                                                <th>在學狀態</th>
-                                                <th>帳號建立時間</th>
+                                                <th>課程名稱</th>
+                                                <th>課程狀態</th>
+                                                <th>學年</th>
+                                                <th>學期</th>
+                                                <th>開課日期</th>
+                                                <th>結束日期</th>
+                                                <th>上次修改時間</th>
                                             </tr>
                                             </thead>
                                         </table>
@@ -254,16 +180,18 @@
 
     <script>
 
-        $('#courseUsers').DataTable({
+        $('#courseAll').DataTable({
             processing:true,
             serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
+            ajax: '{!! route('get.allCourses') !!}',
             columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'users_id', name: 'users_id' },
-                { data: 'users_name', name: 'users_name'},
-                { data: 'status', name: 'status'},
-                { data: 'created_at', name: 'created_at'},
+                { data: 'name', name: 'name'},
+                { data: 'status', name: 'status' },
+                { data: 'year', name: 'year'},
+                { data: 'semester', name: 'semester'},
+                { data: 'start_date', name: 'start_date'},
+                { data: 'end_date', name: 'end_date'},
+                { data: 'updated_at', name: 'updated_at'},
             ]
         });
 

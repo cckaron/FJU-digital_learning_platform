@@ -67,6 +67,13 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-md-3" for="userID">學號</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="學號" name="userID">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-md-3" for="userName">姓名</label>
                                         <div class="col-md-9">
                                             <input type="text" id="userName" class="form-control" placeholder="姓名" name="userName">
@@ -91,7 +98,11 @@
                                         <label class="col-md-3 m-t-15">帳號類型</label>
                                         <div class="col-md-9">
                                             <select name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option value=1 selected> 學生 </option>
+                                                <option value=4 selected> 學生 </option>
+                                                <option value=3 > 教師 </option>
+                                                <option value=2 > 秘書 </option>
+                                                <option value=1 > 工讀生 </option>
+                                                <option value=0 > 系統管理員 </option>
                                             </select>
                                         </div>
                                     </div>

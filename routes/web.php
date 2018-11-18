@@ -50,7 +50,7 @@ Route::group(['prefix' => 'course'], function(){
    ]);
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
+Route::group(['prefix' => 'admin'], function(){
     Route::get('/add', [
         'uses' => 'UserController@getCreateUser',
         'as' => 'user.createUser'
@@ -60,10 +60,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
         'uses' => 'UserController@postCreateUser',
         'as' => 'user.createUser'
     ]);
+
+    Route::get('/courses', [
+       'uses' => 'CourseController@getAllCourses' ,
+        'as' => 'course.showAllCourses'
+    ]);
 });
 
 // for data tables
-Route::get('user', [
-    'uses' => 'CourseController@getUsers',
-    'as' => 'get.courseUsers'
-]);
+Route::group(['prefix' => 'datatables'], function(){
+    Route::get('user', [
+        'uses' => 'CourseController@getUsers_dt',
+        'as' => 'get.courseUsers'
+    ]);
+
+    Route::get('allCourses', [
+        'uses' => 'CourseController@getAllCourses_dt',
+        'as' => 'get.allCourses'
+    ]);
+});
+
+

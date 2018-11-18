@@ -15,7 +15,7 @@ class CreateAssignmentTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->string('filename')->unique();
-            $table->unsignedInteger('courses_id')->nullable();
+            $table->integer('courses_id')->unsigned()->nullable();
             $table->unsignedInteger('author_id')->nullable();
             $table->unsignedInteger('corrector_id')->nullable();
             $table->timestamps();
