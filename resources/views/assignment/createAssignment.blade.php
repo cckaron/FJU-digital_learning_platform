@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '新增帳號'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '新增作業'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -36,7 +36,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('user.createUser') }}" method="post" class="form-horizontal">
+                <form action="{{ route('user.createUser') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
@@ -60,9 +60,9 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="userAccount">帳號</label>
+                                        <label class="col-md-3" for="userAccount">作業名稱</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="帳號" name="userAccount">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="userAccount">
                                         </div>
                                     </div>
 

@@ -11,15 +11,26 @@
 |
 */
 
-Route::get('/', function () {
+Auth::routes();
+
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::get('/', [
+    'uses' => 'UserAuthController@signInPage',
+    'as' => 'auth.signIn',
+    ]);
+
+Route::post('/', [
+   'uses' => 'UserAuthController@postSignIn',
+   'as' => 'auth.signIn'
+]);
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'user'], function(){
+Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
     //User
     Route::get('/index', [
         'uses' => 'MainController@getIndex',
@@ -30,15 +41,19 @@ Route::group(['prefix' => 'user'], function(){
     // User Validation
     Route::group(['prefix' => 'auth'], function(){
         // User Login Page
-        Route::get('/sign-in', [
-            'uses' => 'UserAuthController@signInPage',
-            'as' => 'auth.signIn',
+//        Route::get('/sign-in', [
+//            'uses' => 'UserAuthController@signInPage',
+//            'as' => 'auth.signIn',
+//        ]);
+        Route::get('/sign-out', [
+            'uses' => 'UserAuthController@getSignOut',
+            'as' => 'auth.signOut',
         ]);
     });
 });
 
 
-Route::group(['prefix' => 'course'], function(){
+Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
    Route::get('/add', [
        'uses' => 'CourseController@getAddCourse',
        'as' => 'course.addCourse'
@@ -50,7 +65,7 @@ Route::group(['prefix' => 'course'], function(){
    ]);
 });
 
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::get('/add', [
         'uses' => 'UserController@getCreateUser',
         'as' => 'user.createUser'
@@ -68,7 +83,7 @@ Route::group(['prefix' => 'admin'], function(){
 });
 
 // for data tables
-Route::group(['prefix' => 'datatables'], function(){
+Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
     Route::get('user', [
         'uses' => 'CourseController@getUsers_dt',
         'as' => 'get.courseUsers'

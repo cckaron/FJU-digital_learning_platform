@@ -23,21 +23,39 @@
                     <div class="text-center p-t-20 p-b-20">
                         <span class="db"><img src="{{ URL::to('/images/logo.png') }}" alt="logo" /></span>
                     </div>
+
+                    @if ($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @endif
+
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <!-- Form -->
-                    <form class="form-horizontal m-t-20" id="loginform" action="index.html">
+                    <form class="form-horizontal m-t-20" id="loginform" action={{ route('auth.signIn') }} method="post">
                         <div class="row p-b-30">
                             <div class="col-12">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required="">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" name="id" required="">
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-warning text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required="">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" name="password" required="">
                                 </div>
                             </div>
                         </div>
@@ -51,6 +69,7 @@
                                 </div>
                             </div>
                         </div>
+                        {{ csrf_field() }}
                     </form>
                 </div>
                 <div id="recoverform">

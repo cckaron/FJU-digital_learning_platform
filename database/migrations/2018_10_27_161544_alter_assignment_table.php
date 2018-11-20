@@ -20,14 +20,6 @@ class AlterAssignmentTable extends Migration
                 ->references('id')->on('courses')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
-            $table->foreign('author_id')
-                ->references('users_id')->on('students')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
-            $table->foreign('corrector_id')
-                ->references('users_id')->on('teachers')
-                ->onUpdate('CASCADE')
-                ->onDelete('NO ACTION');
         });
     }
 

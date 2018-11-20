@@ -93,41 +93,41 @@
                                         <div class="d-flex no-block align-items-center p-10">
                                             <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
                                             <div class="m-l-10">
-                                                <h5 class="m-b-0">Event today</h5>
-                                                <span class="mail-desc">Just a reminder that event</span>
+                                                <h5 class="m-b-0">提醒事項</h5>
+                                                <span class="mail-desc">開發中</span>
                                             </div>
                                         </div>
                                     </a>
-                                    <!-- Message -->
-                                    <a href="javascript:void(0)" class="link border-top">
-                                        <div class="d-flex no-block align-items-center p-10">
-                                            <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
-                                            <div class="m-l-10">
-                                                <h5 class="m-b-0">Settings</h5>
-                                                <span class="mail-desc">You can customize this template</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <!-- Message -->
-                                    <a href="javascript:void(0)" class="link border-top">
-                                        <div class="d-flex no-block align-items-center p-10">
-                                            <span class="btn btn-primary btn-circle"><i class="ti-user"></i></span>
-                                            <div class="m-l-10">
-                                                <h5 class="m-b-0">Pavan kumar</h5>
-                                                <span class="mail-desc">Just see the my admin!</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <!-- Message -->
-                                    <a href="javascript:void(0)" class="link border-top">
-                                        <div class="d-flex no-block align-items-center p-10">
-                                            <span class="btn btn-danger btn-circle"><i class="fa fa-link"></i></span>
-                                            <div class="m-l-10">
-                                                <h5 class="m-b-0">Luanch Admin</h5>
-                                                <span class="mail-desc">Just see the my new admin!</span>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    {{--<!-- Message -->--}}
+                                    {{--<a href="javascript:void(0)" class="link border-top">--}}
+                                        {{--<div class="d-flex no-block align-items-center p-10">--}}
+                                            {{--<span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>--}}
+                                            {{--<div class="m-l-10">--}}
+                                                {{--<h5 class="m-b-0">Settings</h5>--}}
+                                                {{--<span class="mail-desc">You can customize this template</span>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</a>--}}
+                                    {{--<!-- Message -->--}}
+                                    {{--<a href="javascript:void(0)" class="link border-top">--}}
+                                        {{--<div class="d-flex no-block align-items-center p-10">--}}
+                                            {{--<span class="btn btn-primary btn-circle"><i class="ti-user"></i></span>--}}
+                                            {{--<div class="m-l-10">--}}
+                                                {{--<h5 class="m-b-0">Pavan kumar</h5>--}}
+                                                {{--<span class="mail-desc">Just see the my admin!</span>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</a>--}}
+                                    {{--<!-- Message -->--}}
+                                    {{--<a href="javascript:void(0)" class="link border-top">--}}
+                                        {{--<div class="d-flex no-block align-items-center p-10">--}}
+                                            {{--<span class="btn btn-danger btn-circle"><i class="fa fa-link"></i></span>--}}
+                                            {{--<div class="m-l-10">--}}
+                                                {{--<h5 class="m-b-0">Luanch Admin</h5>--}}
+                                                {{--<span class="mail-desc">Just see the my new admin!</span>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</a>--}}
                                 </div>
                             </li>
                         </ul>
@@ -141,17 +141,15 @@
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ URL::to('images/users/1.png') }}" alt="user" class="rounded-circle" width="31"></a>
+                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" class="rounded-circle" width="31"></a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> 我的個人資訊</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> 設定</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                        <a class="dropdown-item" href="{{ route('auth.signOut') }}"><i class="fa fa-power-off m-r-5 m-l-5"></i> 登出</a>
                         <div class="dropdown-divider"></div>
-                        <div class="p-l-30 p-10"><a href="javascript:void(0)" class="btn btn-sm btn-success btn-rounded">View Profile</a></div>
+                        <div class="p-l-30 p-10"><a href="" class="btn btn-sm btn-success btn-rounded">{{ Auth::user()->name }}</a></div>
                     </div>
                 </li>
                 <!-- ============================================================== -->
