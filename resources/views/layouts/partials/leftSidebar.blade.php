@@ -21,7 +21,7 @@
                             <li class="sidebar-item"><a href="{{ route('course.showAllCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有作業 </span></a></li>
                         @endif
                         <li class="sidebar-item"><a href="{{ route('course.showAllCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>
-                            <li class="sidebar-item"><a href="{{ route('course.addCourse') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('Assignment.createAssignment') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="tables.html" aria-expanded="false"><i class="mdi mdi-file-cloud"></i><span class="hide-menu">檔案庫 </span></a></li>

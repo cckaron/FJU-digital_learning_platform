@@ -17,6 +17,7 @@ class CreateStudentAssignmentTable extends Migration
             $table->increments('id');
             $table->string('fileURL')->nullable();
             $table->integer('students_id')->unsigned();
+            $table->integer('assignments_id')->unsigned();
             $table->double('score')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();

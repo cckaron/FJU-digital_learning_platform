@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Assignment extends Model
 {
+    protected $fillable = ['courses_id', 'name', 'start_date', 'end_date'];
+
     public function teacher(){
         return $this->belongsTo('App\Teacher', 'corrector_id');
     }

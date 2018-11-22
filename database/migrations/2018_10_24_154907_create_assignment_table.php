@@ -14,12 +14,15 @@ class CreateAssignmentTable extends Migration
     public function up()
     {
         Schema::create('assignments', function (Blueprint $table) {
-            $table->integer('id')->autoIncrement();
+            $table->integer('id')->autoIncrement()->unsigned();
             $table->integer('courses_id')->unsigned()->nullable();
+            $table->string('name');
             $table->string('start_date');
             $table->string('end_date');
             $table->integer('status')->default(1);
             $table->timestamps();
+
+            $table->index('id');
         });
     }
 

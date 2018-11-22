@@ -63,6 +63,21 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
        'uses' => 'CourseController@postAddCourse',
        'as' => 'course.addCourse'
    ]);
+
+   //assignment
+    Route::get('/assignment/new', [
+        'uses' => 'AssignmentController@getCreateAssignment',
+        'as' => 'Assignment.createAssignment'
+    ]);
+
+    Route::post('assignment/new', [
+        'uses' => 'AssignmentController@postCreateAssignment',
+        'as' => 'Assignment.createAssignment'
+    ]);
+
+//    Route::group(['prefix' => '{course_id}', 'middleware' => 'auth'], function(){
+//
+//    });
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){

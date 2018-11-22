@@ -20,6 +20,11 @@ class AlterStudentAssignmentTable extends Migration
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
+            $table->foreign('assignments_id')
+                ->references('id')->on('assignments')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
+
         });
     }
 

@@ -36,7 +36,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('user.createUser') }}" method="post">
+                <form action="{{ route('Assignment.createAssignment') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
@@ -60,50 +60,42 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
+                                        <label class="col-md-3 m-t-15">課程名稱</label>
+                                        <div class="col-md-9">
+                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                                <option>{{ $course_name }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-md-3" for="userAccount">作業名稱</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="userAccount">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="userID">學號</label>
+                                        <label class="col-md-3 m-t-15">開放繳交時間</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="學號" name="userID">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="userName">姓名</label>
+                                        <label class="col-md-3 m-t-15">截止時間</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userName" class="form-control" placeholder="姓名" name="userName">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userEmail">電子信箱</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userEmail" class="form-control" placeholder="電子信箱" name="userEmail">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userPassword">密碼</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userPassword" class="form-control" placeholder="密碼" name="userPassword">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">帳號類型</label>
-                                        <div class="col-md-9">
-                                            <select name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option value=4 selected> 學生 </option>
-                                                <option value=3 > 教師 </option>
-                                                <option value=2 > 秘書 </option>
-                                                <option value=1 > 工讀生 </option>
-                                                <option value=0 > 系統管理員 </option>
-                                            </select>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 

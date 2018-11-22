@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
             'id' => 100100,
             'name' => 'Teacher A',
             'email' => 'aaat@gmail.com',
-            'password' => bcrypt(str_random(10)), // secret
+            'password' => bcrypt('100100'), // secret
             'type' => 3,
             'remember_token' => str_random(10),
         ]);
