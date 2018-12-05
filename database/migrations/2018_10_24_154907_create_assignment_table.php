@@ -23,6 +23,7 @@ class CreateAssignmentTable extends Migration
             $table->timestamps();
 
             $table->index('id');
+            $table->index('name');
         });
     }
 

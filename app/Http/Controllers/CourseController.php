@@ -42,6 +42,15 @@ class CourseController extends Controller
             DB::table('teachers')
                 ->where('users_name', $teachers[$i])
                 ->update(['courses_id' => $course_id]);
+
+            //add to teacher_course
+            $teacher_id = DB::table('teachers')->where('users_name', '=', $teachers[$i])->value('users_id');
+
+
+            DB::table('teacher_course')
+                ->insert([
+                   ['teachers_id' => $teacher_id, 'courses_id' => $course_id]
+                ]);
         }
 
         //save courses_id to student table
@@ -54,15 +63,20 @@ class CourseController extends Controller
             //save teachers and students' relationship to table
             for ($j=0; $j<count($teachers); $j++){
 
-                //get teacher's name
-                $teacher = DB::table('teachers')->where('users_name', '=', $teachers[$j])->first();
-                $teacher_id = $teacher->users_id;
+                //get teacher's id
+                $teacher_id = DB::table('teachers')->where('users_name', '=', $teachers[$j])->value('users_id');
 
                 DB::table('student_teacher')
                     ->insert([
                         ['teachers_id' => $teacher_id, 'students_id' => (int)$students[$k]]
                     ]);
             }
+
+            //add to student_course
+            DB::table('student_course')
+                ->insert([
+                    ['students_id' => (int)$students[$k],'courses_id' => $course_id]
+                ]);
 
         }
 

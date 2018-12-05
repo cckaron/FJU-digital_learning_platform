@@ -16,6 +16,7 @@ class CreateStudentAssignmentTable extends Migration
         Schema::create('student_assignment', function (Blueprint $table) {
             $table->increments('id');
             $table->string('fileURL')->nullable();
+            $table->string('assignments_name')->nullable();
             $table->integer('students_id')->unsigned();
             $table->integer('assignments_id')->unsigned();
             $table->double('score')->nullable();

@@ -65,6 +65,11 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
    ]);
 
    //assignment
+    Route::get('/allAssignments', [
+        'uses' => 'AssignmentController@getAllAssignments' ,
+        'as' => 'assignment.showAllAssignments'
+    ]);
+
     Route::get('/assignment/new', [
         'uses' => 'AssignmentController@getCreateAssignment',
         'as' => 'Assignment.createAssignment'
@@ -74,6 +79,13 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
         'uses' => 'AssignmentController@postCreateAssignment',
         'as' => 'Assignment.createAssignment'
     ]);
+
+    Route::get('/assignments', [
+        'uses' => 'AssignmentController@getAssignments',
+        'as' => 'assignment.showAssignments'
+    ]);
+
+
 
 //    Route::group(['prefix' => '{course_id}', 'middleware' => 'auth'], function(){
 //
@@ -95,6 +107,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
        'uses' => 'CourseController@getAllCourses' ,
         'as' => 'course.showAllCourses'
     ]);
+
 });
 
 // for data tables
@@ -107,6 +120,11 @@ Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
     Route::get('allCourses', [
         'uses' => 'CourseController@getAllCourses_dt',
         'as' => 'get.allCourses'
+    ]);
+
+    Route::get('allAssignments', [
+       'uses' => 'AssignmentController@getAllAssignments_dt',
+       'as' => 'get.allAssignments'
     ]);
 });
 

@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '新增作業'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有課程'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -36,7 +36,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('course.addCourse') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
@@ -56,57 +56,26 @@
                             </div>
                         @endif
 
-                        <div class="col-md-6">
+                        <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程名稱</label>
-                                        <div class="col-md-9">
-                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option>{{ $course_name }}</option>
-                                            </select>
-                                        </div>
+                                    <div class="table-responsive">
+                                        <table id="courseAll" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>作業名稱</th>
+                                                <th>開放繳交日期</th>
+                                                <th>截止日期</th>
+                                                <th>上次修改時間</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userAccount">作業名稱</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開放繳交時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">截止時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="border-top">
-                                    <div class="card-body">
-                                        <input type="submit" class="btn btn-primary">
-                                    </div>
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
                     {{ csrf_field() }}
@@ -208,16 +177,15 @@
 
     <script>
 
-        $('#courseUsers').DataTable({
+        $('#courseAll').DataTable({
             processing:true,
             serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
+            ajax: '{!! route('get.allAssignments') !!}',
             columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'id', name: 'id' },
                 { data: 'name', name: 'name'},
-                { data: 'type', name: 'type'},
-                { data: 'created_at', name: 'created_at'},
+                { data: 'start_date', name: 'start_date'},
+                { data: 'end_date', name: 'end_date'},
+                { data: 'updated_at', name: 'updated_at'},
             ]
         });
 
