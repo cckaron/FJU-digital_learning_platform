@@ -80,9 +80,10 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
         'as' => 'Assignment.createAssignment'
     ]);
 
-    Route::get('/assignments', [
-        'uses' => 'AssignmentController@getAssignments',
-        'as' => 'assignment.showAssignments'
+
+    Route::get('{course_id}/assignments/{assignment_id}/handIn', [
+        'uses' => 'AssignmentController@getHandInAssignment',
+        'as' => 'assignment.handInAssignment'
     ]);
 
 
@@ -91,6 +92,11 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
 //
 //    });
 });
+
+Route::get('/assignments', [
+    'uses' => 'AssignmentController@getAssignments',
+    'as' => 'assignment.showAssignments'
+]);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::get('/add', [

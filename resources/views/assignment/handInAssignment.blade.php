@@ -26,6 +26,8 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
+        @include('layouts.partials.pageBreadCrumb', ['title' => '繳交作業'])
+
         <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
@@ -34,7 +36,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('user.createUser') }}" method="post" class="form-horizontal">
 
                     <!-- editor -->
                     <div class="row">
@@ -54,87 +56,64 @@
                             </div>
                         @endif
 
-                        <div class="col-md-6">
+                        <div class="col-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">進行中的作業 </h4>
-                                </div>
-                                <div class="comment-widgets scrollable">
-
-                                    <!-- Assignment Loop Start -->
-                                @for($i=0; $i<count($assignments_processing); $i++)
-
-                                    <!-- Comment Row -->
-                                        <div class="d-flex flex-row comment-row m-t-0">
-
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
-                                            <div class="comment-text w-100">
-
-                                                <h6 class="font-medium">{{ $courses_processing[$i][0]->year }} 年 第 {{ $courses_processing[$i][0]->semester }} 學期</h6>
-                                                <span class="badge badge-pill badge-info float-right">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($teachers_processing[$i]); $j++)
-                                                        {{ $teachers_processing[$i][$j] }}
-                                                        @if($j!=count($teachers_processing[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
-
-                                                </span>
-                                                <span class="m-b-15 d-block">{{ $assignments_processing_name[$i] }}</span>
-                                                <div class="comment-footer">
-                                                    <span class="text-muted float-right">April 14, 2016</span>
-                                                    <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_processing_course_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-sm" role="button" aria-pressed="true">繳交作業</a>
-                                                    <span class="badge badge-pill badge-danger">狀態：未繳交</span>
-                                                    <span class="badge badge-pill badge-primary">成績：無</span>
-                                                    {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
-                                                    {{--<button type="button" class="btn btn-danger btn-sm">Delete</button>--}}
-                                                </div>
-                                            </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="userAccount">帳號</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="帳號" name="userAccount">
                                         </div>
+                                    </div>
 
-                                    @endfor
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="userID">學號</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="學號" name="userID">
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="userName">姓名</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userName" class="form-control" placeholder="姓名" name="userName">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="userEmail">電子信箱</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userEmail" class="form-control" placeholder="電子信箱" name="userEmail">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="userPassword">密碼</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="userPassword" class="form-control" placeholder="密碼" name="userPassword">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-15">帳號類型</label>
+                                        <div class="col-md-9">
+                                            <select name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                                <option value=4 selected> 學生 </option>
+                                                <option value=3 > 教師 </option>
+                                                <option value=2 > 秘書 </option>
+                                                <option value=1 > 工讀生 </option>
+                                                <option value=0 > 系統管理員 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="border-top">
+                                    <div class="card-body">
+                                        <input type="submit" class="btn btn-primary">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">已完成的作業 </h4>
-                                </div>
-                                <div class="comment-widgets scrollable">
-
-                                    <!-- Assignment Loop Start -->
-                                @for($i=0; $i<count($assignments_processing); $i++)
-
-                                    <!-- Comment Row -->
-                                        <div class="d-flex flex-row comment-row m-t-0">
-
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
-                                            <div class="comment-text w-100">
-
-                                                <h6 class="font-medium">{{ $courses_finished[$i][0]->year }} 年 第 {{ $courses_finished[$i][0]->semester }} 學期</h6>
-                                                <span class="badge badge-pill badge-info float-right">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($teachers_finished[$i]); $j++)
-                                                        {{ $teachers_finished[$i][$j] }}
-                                                        @if($j!=count($teachers_finished[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
-                                                </span>
-                                                <span class="m-b-15 d-block">{{ $assignments_finished_name[$i] }}</span>
-                                                <div class="comment-footer">
-                                                    <span class="text-muted float-right">April 14, 2016</span>
-                                                    <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_finished_course_id[$i] ,'assignment_id' => $assignments_finished_id[$i]]) }}" class="btn btn-cyan btn-sm" role="button" aria-pressed="true">繳交作業</a>
-                                                    {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
-                                                    {{--<button type="button" class="btn btn-danger btn-sm">Delete</button>--}}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    @endfor
-
-                                </div>
-                            </div>
-
                         </div>
 
                     </div>
@@ -235,5 +214,20 @@
 
     </script>
 
+    <script>
 
+        $('#courseUsers').DataTable({
+            processing:true,
+            serverSide:true,
+            ajax: '{!! route('get.courseUsers') !!}',
+            columns: [
+                { data: 'checkbox', name: 'checkbox'},
+                { data: 'id', name: 'id' },
+                { data: 'name', name: 'name'},
+                { data: 'type', name: 'type'},
+                { data: 'created_at', name: 'created_at'},
+            ]
+        });
+
+    </script>
 @endsection
