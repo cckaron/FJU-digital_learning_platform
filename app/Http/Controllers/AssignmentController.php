@@ -266,8 +266,7 @@ class AssignmentController extends Controller
 
     public function deleteAssignment(Request $request){
         $student_id = Auth::user()->id;
-        $student_assignment_id = $request->input('student_assignment_id');
-
+        $student_assignment_id = $request->get('student_assignment_id');
         $filename = $request->get('filename');
 
         $filepath = $student_id.'/'.$student_assignment_id.'/'.$filename;
@@ -276,6 +275,7 @@ class AssignmentController extends Controller
 
         $output = array(
             'filepath' => $filepath,
+            'student_assignment_id' => $student_assignment_id,
         );
 
         echo json_encode($output);
