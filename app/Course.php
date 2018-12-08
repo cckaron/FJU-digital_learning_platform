@@ -9,7 +9,7 @@ class Course extends Model
     protected  $fillable = ['id', 'name', 'year','semester','start_date', 'end_date'];
 
     public function teacher(){
-        return $this->hasMany('App\Course');
+        return $this->hasMany('App\Teacher');
     }
 
     public function student(){

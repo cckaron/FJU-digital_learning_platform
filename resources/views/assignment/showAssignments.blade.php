@@ -103,7 +103,7 @@
                                 <div class="comment-widgets scrollable">
 
                                     <!-- Assignment Loop Start -->
-                                @for($i=0; $i<count($assignments_processing); $i++)
+                                @for($i=0; $i<count($assignments_finished); $i++)
 
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">

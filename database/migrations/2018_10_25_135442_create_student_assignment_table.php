@@ -14,14 +14,15 @@ class CreateStudentAssignmentTable extends Migration
     public function up()
     {
         Schema::create('student_assignment', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('fileURL')->nullable();
+            $table->increments('id')->unsigned();
             $table->string('assignments_name')->nullable();
             $table->integer('students_id')->unsigned();
             $table->integer('assignments_id')->unsigned();
             $table->double('score')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
+
+            $table->index('id');
         });
     }
 

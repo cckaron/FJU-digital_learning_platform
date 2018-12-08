@@ -6,6 +6,9 @@
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+
+    <!-- DropZone JS-->
+    <link href="{{ URL::to('css/dropzone.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -36,6 +39,25 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <h6>上傳文件</h6>
+                                </div>
+
+                                <div class="form-group">
+                                    <form action="{{ route('dropZone.uploadAssignment') }}" class="dropzone" method="post" enctype="multipart/form-data" id="myDropzone">
+                                        <input type="text" name="student_assignment_id" value={{ $student_assignment_id }} hidden/>
+                                        {{ csrf_field() }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <form action="{{ route('user.createUser') }}" method="post" class="form-horizontal">
 
                     <!-- editor -->
@@ -55,16 +77,9 @@
                                 </div>
                             </div>
                         @endif
-
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userAccount">帳號</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="帳號" name="userAccount">
-                                        </div>
-                                    </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3" for="userID">學號</label>
@@ -166,6 +181,9 @@
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
 
+    <!-- DropZone JS-->
+    <script src="{{ URL::to('js/dropzone.js') }}"></script>
+
     <script>
         //***********************************//
         // For select 2
@@ -215,19 +233,34 @@
     </script>
 
     <script>
+        Dropzone.options.myDropzone = {
+            addRemoveLinks: true,
+            init: function() {
 
-        $('#courseUsers').DataTable({
-            processing:true,
-            serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
-            columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name'},
-                { data: 'type', name: 'type'},
-                { data: 'created_at', name: 'created_at'},
-            ]
+            },
+            removedfile: function(file){
+                var filename = file.name;
+                $.ajax({
+                    url:'{{ route('dropZone.deleteAssignment') }}',
+                    method:'POST',
+                    data:{'filename': filename},
+                    dataType:'json',
+                    success:function(data)
+                    {
+                        alert(data.filepath);
+                    }
+                });
+                var _ref;
+                return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+            }
+        };
+    </script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
-
     </script>
 @endsection

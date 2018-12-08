@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class student_assignment extends Model
 {
-    protected $fillable = ['fileURL', 'students_id', 'score', 'status'];
+    protected $fillable = ['students_id', 'score', 'status'];
 
+    public function file(){
+        return $this->hasMany('App\File');
+    }
 }

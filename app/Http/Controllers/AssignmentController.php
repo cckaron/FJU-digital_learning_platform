@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Hashids\Hashids;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
@@ -232,13 +233,51 @@ class AssignmentController extends Controller
     }
 
     public function getHandInAssignment($course_id, $assignment_id){
+        $student_id = Auth::user()->id;
+
         $encode_course_id = new Hashids('course_id', 6);
         $encode_assignment_id = new Hashids('assignment_id', 10);
         $course_id = $encode_course_id->decode($course_id);
         $assignment_id = $encode_assignment_id->decode($assignment_id);
+
+        $student_assignment_id = DB::table('student_assignment')
+            ->where('students_id', $student_id)
+            ->where('assignments_id', $assignment_id)
+            ->value('id');
+
+
         return view('assignment.handInAssignment', [
             'course_id' => $course_id,
             'assignment_id' => $assignment_id,
+            'student_assignment_id' => $student_assignment_id
             ]);
+    }
+
+    public function uploadAssignment(Request $request){
+        $student_id = Auth::user()->id;
+        $student_assignment_id = $request->input('student_assignment_id');
+
+        $file = $request->file('file'); //default file name from request is "file"
+        $filename = $file->getClientOriginalName();
+        $filepath = $student_id.'/'.$student_assignment_id;
+
+        $file->storeAs($filepath, $filename);
+    }
+
+    public function deleteAssignment(Request $request){
+        $student_id = Auth::user()->id;
+        $student_assignment_id = $request->input('student_assignment_id');
+
+        $filename = $request->get('filename');
+
+        $filepath = $student_id.'/'.$student_assignment_id.'/'.$filename;
+
+        Storage::delete($filepath);
+
+        $output = array(
+            'filepath' => $filepath,
+        );
+
+        echo json_encode($output);
     }
 }

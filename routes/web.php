@@ -118,20 +118,32 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
 
 // for data tables
 Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
-    Route::get('user', [
+    Route::get('/user', [
         'uses' => 'CourseController@getUsers_dt',
         'as' => 'get.courseUsers'
     ]);
 
-    Route::get('allCourses', [
+    Route::get('/allCourses', [
         'uses' => 'CourseController@getAllCourses_dt',
         'as' => 'get.allCourses'
     ]);
 
-    Route::get('allAssignments', [
+    Route::get('/allAssignments', [
        'uses' => 'AssignmentController@getAllAssignments_dt',
        'as' => 'get.allAssignments'
     ]);
 });
 
+//for dropZone
+Route::group(['prefix' => 'dropZone', 'middleware' => 'auth'], function() {
+    Route::post('/upload', [
+        'uses' => 'AssignmentController@uploadAssignment',
+        'as' => 'dropZone.uploadAssignment',
+    ]);
+
+    Route::post('/delete', [
+        'uses' => 'AssignmentController@deleteAssignment',
+        'as' => 'dropZone.deleteAssignment',
+    ]);
+});
 
