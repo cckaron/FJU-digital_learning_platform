@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Hashids\Hashids;
 use Illuminate\Support\Facades\Storage;
+use function PHPSTORM_META\type;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
@@ -245,11 +246,10 @@ class AssignmentController extends Controller
             ->where('assignments_id', $assignment_id)
             ->value('id');
 
-
         return view('assignment.handInAssignment', [
             'course_id' => $course_id,
             'assignment_id' => $assignment_id,
-            'student_assignment_id' => $student_assignment_id
+            'student_assignment_id' => $student_assignment_id,
             ]);
     }
 
@@ -279,5 +279,37 @@ class AssignmentController extends Controller
         );
 
         echo json_encode($output);
+    }
+
+    public function getAssignmentFileDetail(Request $request){
+        $student_id = Auth::user()->id;
+        $student_assignment_id = $request->get('student_assignment_id');
+
+        $path = $student_id.'/'.$student_assignment_id;
+
+        $filepaths = Storage::disk('local')->allFiles($path);
+
+        $filenames = array();
+
+        $filesizes = array();
+
+        for($i=0; $i<count($filepaths); $i++){
+            $filenames[$i] = basename($filepaths[$i]);
+            $filesizes[$i] = Storage::size($filepaths[$i]);
+        }
+
+        $output = array(
+            'filepaths' => $filepaths,
+            'filenames' => $filenames,
+            'filesizes' => $filesizes,
+        );
+
+        echo json_encode($output);
+
+
+    }
+
+    public function downloadAssignment($path){
+        return Storage::download($path);
     }
 }

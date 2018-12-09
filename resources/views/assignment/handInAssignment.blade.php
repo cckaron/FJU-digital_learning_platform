@@ -235,21 +235,54 @@
     <script>
         Dropzone.options.myDropzone = {
             addRemoveLinks: true,
-
+            maxFilesize: 20,
             init: function() {
-                this.on("complete", function(file){
+                var filepaths = [];
+                var filenames = [];
+                var filesizes = [];
+
+                //get the assignment's files detail
+                var student_assignment_id = $('input[name=student_assignment_id]').val();
+                $.ajax({
+                    url:'{{ route('dropZone.getAssignmentFileDetail') }}',
+                    method:'POST',
+                    data:{
+                        'student_assignment_id': student_assignment_id,
+                    },
+                    dataType:'json',
+                    async: false,
+                    success:function(data)
+                    {
+                        filepaths = data.filepaths;
+                        filenames = data.filenames;
+                        filesizes = data.filesizes;
+                    }
+                });
+
+                for(var i=0; i<filepaths.length; i++){
+
+                    //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
                     var a = document.createElement('a');
-                    a.setAttribute('href',"/uploads/");
+                    a.setAttribute('href', filepaths[i]);
                     a.setAttribute('class',"dz-remove");
+                    // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
                     a.innerHTML = "下載";
-                    file.previewTemplate.appendChild(a);
-                })
-                var mockFile = { name: "midterm.py", size: 12345 };
-                this.files.push(mockFile);
-                this.emit('addedfile', mockFile);
-                this.createThumbnailFromUrl(mockFile, mockFile.url);
-                this.emit('complete', mockFile);
-                this._updateMaxFilesReachedClass();
+
+                    this.on("complete", function(file){
+
+                        file.previewTemplate.appendChild(a);
+
+                        // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                    });
+
+                    var mockFile = { name: filenames[i], size: filesizes[i] };
+                    this.files.push(mockFile);
+                    this.emit('addedfile', mockFile);
+                    this.createThumbnailFromUrl(mockFile, mockFile.url);
+                    this.emit('complete', mockFile);
+                    this._updateMaxFilesReachedClass();
+                }
+
             },
             removedfile: function(file){
                 var filename = file.name;
@@ -269,6 +302,9 @@
                 });
                 var _ref;
                 return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+            },
+            success: function(file){
+
             }
         };
     </script>

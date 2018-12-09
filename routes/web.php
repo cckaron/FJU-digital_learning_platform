@@ -145,5 +145,10 @@ Route::group(['prefix' => 'dropZone', 'middleware' => 'auth'], function() {
         'uses' => 'AssignmentController@deleteAssignment',
         'as' => 'dropZone.deleteAssignment',
     ]);
+
+    Route::post('/fileDetails', [
+        'uses' => 'AssignmentController@getAssignmentFileDetail',
+        'as' => 'dropZone.getAssignmentFileDetail'
+    ]);
 });
 
