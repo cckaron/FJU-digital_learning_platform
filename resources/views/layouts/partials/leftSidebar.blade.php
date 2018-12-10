@@ -12,7 +12,13 @@
                         @if(Auth::user()->type == 0)
                         <li class="sidebar-item"><a href="{{ route('course.showAllCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有課程 </span></a></li>
                         @endif
+                            @if(Auth::user()->type == 3)
+                                <li class="sidebar-item"><a href="{{ route('courses.showCourses_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的課程 </span></a></li>
+                            @endif
+
+                        @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                         <li class="sidebar-item"><a href="{{ route('course.addCourse') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增課程 </span></a></li>
+                            @endif
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-pencil"></i><span class="hide-menu">我的作業 </span></a>
@@ -20,7 +26,12 @@
                         @if(Auth::user()->type == 3 or Auth::user()->type == 0)
                             <li class="sidebar-item"><a href="{{ route('assignment.showAllAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有作業 </span></a></li>
                         @endif
-                        <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>
+                            @if(Auth::user()->type == 3)
+                            <li class="sidebar-item"><a href="{{ route('assignment.showAssignments_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>
+                            @endif
+                            @if(Auth::user()->type == 4)
+                                <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>
+                            @endif
                             <li class="sidebar-item"><a href="{{ route('Assignment.createAssignment') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
                     </ul>
                 </li>

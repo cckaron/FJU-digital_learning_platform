@@ -64,6 +64,11 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
        'as' => 'course.addCourse'
    ]);
 
+   Route::get('/all', [
+       'uses' => 'CourseController@getShowCourses_Teacher',
+       'as' => 'courses.showCourses_Teacher'
+   ]);
+
    //assignment
     Route::get('/allAssignments', [
         'uses' => 'AssignmentController@getAllAssignments' ,
@@ -98,10 +103,22 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
 //    });
 });
 
-Route::get('/assignments', [
-    'uses' => 'AssignmentController@getAssignments',
-    'as' => 'assignment.showAssignments'
-]);
+Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
+    Route::get('/assignments', [
+        'uses' => 'AssignmentController@getAssignments',
+        'as' => 'assignment.showAssignments'
+    ]);
+});
+
+
+Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
+    Route::get('/assignments', [
+        'uses' => 'AssignmentController@getAssignments_Teacher',
+        'as' => 'assignment.showAssignments_Teacher'
+    ]);
+});
+
+
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::get('/add', [

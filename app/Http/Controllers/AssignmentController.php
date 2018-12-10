@@ -74,6 +74,7 @@ class AssignmentController extends Controller
         return redirect()->back()->with('message', '新增作業成功！');
     }
 
+
     public function getAllAssignments(){
         return view('assignment.showAllAssignments');
     }
@@ -205,7 +206,7 @@ class AssignmentController extends Controller
         $courses_finished_end_date = $assignments_finished->pluck('end_date');
 
 
-        //已結束的作業
+        //進行中的作業
         for ($i=0; $i<count($assignments_processing); $i++){
 
             // 取得進行中作業的指導老師，並且加入 $teachers_processing 集合中
@@ -287,6 +288,158 @@ class AssignmentController extends Controller
             'teachers_finished' => $teachers_finished,
 
          ]);
+    }
+
+    public function getAssignments_Teacher(){
+        $teacher_id = Auth::user()->id;
+
+        //找出這個老師的課程
+        $courses = DB::table('teacher_course')
+            ->where('teachers_id', $teacher_id)
+            ->get();
+
+        $courses_id = $courses->pluck('courses_id');
+
+        //找出這個老師的課程的作業
+        //進行中的作業
+        $assignments_processing = DB::table('assignments')
+            ->whereIn('courses_id', $courses_id)
+            ->where('status', 1)
+            ->get();
+
+        //該作業的課程ID
+        $courses_processing_id = $assignments_processing->pluck('courses_id');
+
+        //該作業的名稱
+        $assignments_processing_name = $assignments_processing->pluck('name');
+
+        //取得該作業的課程資訊
+        $courses_processing_year = array();
+        $courses_processing_semester = array();
+        $courses_processing_end_date = array();
+
+        //取得該作業的指導老師
+        $teachers_processing = array();
+
+        for ($i=0; $i<count($assignments_processing); $i++) {
+
+            //課程資訊
+            $course = DB::table('courses')
+                ->where('id', $courses_processing_id[$i])
+                ->first();
+
+            $year = $course->year;
+            $semester = $course->semester;
+            $end_date = $course->end_date;
+
+            array_push($courses_processing_year, $year);
+            array_push($courses_processing_semester, $semester);
+            array_push($courses_processing_end_date, $end_date);
+
+            //指導老師
+            $teachers = DB::table('teacher_course')
+                ->where('courses_id', $courses_processing_id[$i])
+                ->get();
+
+            //指導老師的人數
+            $teacher_count = DB::table('teacher_course')
+                ->where('courses_id', $courses_processing_id[$i])
+                ->count();
+
+            $teacher_array = array();
+            for ($j = 0; $j < $teacher_count; $j++) {
+                $teacher_name = DB::table('teachers')
+                    ->where('users_id', $teachers[$j]->teachers_id)
+                    ->value('users_name');
+
+                array_push($teacher_array, $teacher_name);
+            }
+
+            array_push($teachers_processing, $teacher_array);
+
+        }
+
+
+        //已結束的作業
+        $assignments_finished = DB::table('assignments')
+            ->whereIn('courses_id', $courses_id)
+            ->where('status', 0)
+            ->get();
+
+        //該作業的課程ID
+        $courses_finished_id = $assignments_finished->pluck('courses_id');
+
+        //該作業的名稱
+        $assignments_finished_name = $assignments_finished->pluck('name');
+
+
+        //取得該作業的課程資訊
+        $courses_finished_year = array();
+        $courses_finished_semester = array();
+        $courses_finished_end_date = array();
+
+
+        //取得該作業的指導老師
+        $teachers_finished = array();
+
+        for ($i=0; $i<count($assignments_finished); $i++) {
+
+            //課程資訊
+            $course = DB::table('courses')
+                ->where('id', $courses_finished_id[$i])
+                ->first();
+
+            $name = $course->name;
+            $year = $course->year;
+            $semester = $course->semester;
+            $end_date = $course->end_date;
+
+            array_push($courses_finished_year, $year);
+            array_push($courses_finished_semester, $semester);
+            array_push($courses_finished_end_date, $end_date);
+
+            //指導老師
+            $teachers = DB::table('teacher_course')
+                ->where('courses_id', $courses_finished_id[$i])
+                ->get();
+
+            //指導老師的人數
+            $teacher_count = DB::table('teacher_course')
+                ->where('courses_id', $courses_finished_id[$i])
+                ->count();
+
+            $teacher_array = array();
+            for ($j = 0; $j < $teacher_count; $j++) {
+                $teacher_name = DB::table('teachers')
+                    ->where('users_id', $teachers[$j]->teachers_id)
+                    ->value('users_name');
+
+                array_push($teacher_array, $teacher_name);
+            }
+
+            array_push($teachers_finished, $teacher_array);
+
+        }
+
+        return view('assignment.showAssignments_Teacher', [
+            'assignments_processing' => $assignments_processing,
+           'assignments_processing_name' => $assignments_processing_name,
+           'courses_processing_id' => $courses_processing_id,
+           'courses_processing_year' => $courses_processing_year,
+           'courses_processing_semester' => $courses_processing_semester,
+            'courses_processing_end_date' => $courses_processing_end_date,
+            'teachers_processing' => $teachers_processing,
+
+            'assignments_finished' => $assignments_finished,
+            'assignments_finished_name' => $assignments_finished_name,
+            'courses_finished_id' => $courses_finished_id,
+            'courses_finished_year' => $courses_finished_year,
+            'courses_finished_semester' => $courses_finished_semester,
+            'courses_finished_end_date' => $courses_finished_end_date,
+            'teachers_finished' => $teachers_finished,
+
+
+        ]);
     }
 
     public function getAllAssignments_dt(){

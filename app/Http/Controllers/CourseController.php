@@ -7,6 +7,7 @@ use App\Student;
 use App\Teacher;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -87,6 +88,62 @@ class CourseController extends Controller
 
     public function getAllCourses(){
         return view('course.showAllCourses');
+    }
+
+    public function getShowCourses_Teacher(){
+        $teacher_id = Auth::user()->id;
+
+        //找出這個老師的課程
+        $courses = DB::table('teacher_course')
+            ->where('teachers_id', $teacher_id)
+            ->get();
+
+        $courses_id = $courses->pluck('courses_id');
+
+        //進行中的課程
+        $courses_processing = DB::table('courses')
+            ->whereIn('id', $courses_id)
+            ->where('status', 1)
+            ->get();
+
+        //基本資料
+        $courses_processing_id = $courses_processing->pluck('id');
+        $courses_processing_year = $courses_processing->pluck('year');
+        $courses_processing_semester = $courses_processing->pluck('semester');
+        $courses_processing_name = $courses_processing->pluck('name');
+        $courses_processing_start_date = $courses_processing->pluck('start_date');
+        $courses_processing_end_date = $courses_processing->pluck('end_date');
+
+        //已結束的課程
+        $courses_finished = DB::table('courses')
+            ->whereIn('id', $courses_id)
+            ->where('status', 0)
+            ->get();
+
+        //基本資料
+        $courses_finished_id = $courses_finished->pluck('id');
+        $courses_finished_year = $courses_finished->pluck('year');
+        $courses_finished_semester = $courses_finished->pluck('semester');
+        $courses_finished_name = $courses_finished->pluck('name');
+        $courses_finished_start_date = $courses_finished->pluck('start_date');
+        $courses_finished_end_date = $courses_finished->pluck('end_date');
+
+
+        return view('course.showCourses_Teacher', [
+            'courses_processing_id' => $courses_processing_id,
+            'courses_processing_year' => $courses_processing_year,
+            'courses_processing_semester' => $courses_processing_semester,
+            'courses_processing_name' => $courses_processing_name,
+            'courses_processing_start_date' => $courses_processing_start_date,
+            'courses_processing_end_date' => $courses_processing_end_date,
+
+            'courses_finished_id' => $courses_finished_id,
+            'courses_finished_year' => $courses_finished_year,
+            'courses_finished_semester' => $courses_finished_semester,
+            'courses_finished_name' => $courses_finished_name,
+            'courses_finished_start_date' => $courses_finished_start_date,
+            'courses_finished_end_date' => $courses_finished_end_date,
+        ]);
     }
 
     public function getUsers_dt(){
