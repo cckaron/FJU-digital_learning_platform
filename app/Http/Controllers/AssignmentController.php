@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Hashids\Hashids;
 use Illuminate\Support\Facades\Storage;
-use function PHPSTORM_META\type;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
@@ -98,6 +98,8 @@ class AssignmentController extends Controller
         // 取得所有作業的 ID
         $assignments_id = $assignments->pluck('assignments_id');
 
+
+
         // 目的：取得該作業的課程名稱
         // 將作業分類成 1.進行中 2.已結束
 
@@ -106,6 +108,29 @@ class AssignmentController extends Controller
             ->whereIn('id', $assignments_id)
             ->where('status', 1)
             ->get();
+
+        //進行中的作業的狀態
+        $assignments_processing_status = array();
+
+        $assignments_processing_id = $assignments_processing->pluck('id');
+
+        for ($r=0; $r<count($assignments_processing_id); $r++){
+            $status = DB::table('student_assignment')
+                ->where('id', $assignments_processing_id[$r])
+                ->value('status');
+            array_push($assignments_processing_status, $status);
+        }
+
+        //進行中的作業的成績
+        $assignments_processing_score = array();
+
+        for ($r=0; $r<count($assignments_processing_id); $r++){
+            $score = DB::table('student_assignment')
+                ->where('id', $assignments_processing_id[$r])
+                ->value('score');
+            array_push($assignments_processing_score, $score);
+        }
+
 
         //取得assignment id 然後 hash
         $assignments_processing_id = $assignments_processing->pluck('id');
@@ -121,14 +146,38 @@ class AssignmentController extends Controller
             $assignments_processing_course_id[$k] = $hashids->encode($assignments_processing_course_id[$k]);
         }
 
+        // 基本資料
         $assignments_processing_name = $assignments_processing->pluck('name');
         $courses_processing_id = $assignments_processing->pluck('courses_id');
+
 
         //已結束的作業
         $assignments_finished = DB::table('assignments')
             ->whereIn('id', $assignments_id)
             ->where('status', 0)
             ->get();
+
+        //已結束的作業的狀態
+        $assignments_finished_status = array();
+
+        $assignments_finished_id = $assignments_finished->pluck('id');
+
+        for ($r=0; $r<count($assignments_finished_id); $r++){
+            $status = DB::table('student_assignment')
+                ->where('id', $assignments_finished_id[$r])
+                ->value('status');
+            array_push($assignments_finished_status, $status);
+        }
+
+        //已結束的作業的成績
+        $assignments_finished_score = array();
+
+        for ($r=0; $r<count($assignments_finished_id); $r++){
+            $score = DB::table('student_assignment')
+                ->where('id', $assignments_finished_id[$r])
+                ->value('score');
+            array_push($assignments_finished_score, $score);
+        }
 
         //取得 assignment id 然後 hash
         $assignments_finished_id = $assignments_finished->pluck('id');
@@ -144,6 +193,7 @@ class AssignmentController extends Controller
             $assignments_finished_course_id[$k] = $hashids->encode($assignments_finished_course_id[$k]);
         }
 
+        // 基本資料
         $assignments_finished_name = $assignments_finished->pluck('name');
         $courses_finished_id = $assignments_finished->pluck('courses_id');
 
@@ -213,6 +263,8 @@ class AssignmentController extends Controller
             'assignments_processing_id' => $assignments_processing_id,
             'assignments_processing_course_id' => $assignments_processing_course_id,
             'assignments_processing_name' => $assignments_processing_name,
+            'assignments_processing_status' => $assignments_processing_status,
+            'assignments_processing_score' => $assignments_processing_score,
             'courses_processing'=>$courses_processing,
             'teachers_processing' => $teachers_processing,
 
@@ -220,6 +272,8 @@ class AssignmentController extends Controller
             'assignments_finished_id' => $assignments_finished_id,
             'assignments_finished_course_id' => $assignments_finished_course_id,
             'assignments_finished_name' => $assignments_finished_name,
+            'assignments_finished_status' => $assignments_finished_status,
+            'assignments_finished_score' => $assignments_finished_score,
             'courses_finished' => $courses_finished,
             'teachers_finished' => $teachers_finished,
             ]);
@@ -241,16 +295,37 @@ class AssignmentController extends Controller
         $course_id = $encode_course_id->decode($course_id);
         $assignment_id = $encode_assignment_id->decode($assignment_id);
 
-        $student_assignment_id = DB::table('student_assignment')
+        $student_assignment = DB::table('student_assignment')
             ->where('students_id', $student_id)
             ->where('assignments_id', $assignment_id)
-            ->value('id');
+            ->first();
+
+        $student_assignment_id = $student_assignment->id;
+
+        $student_assignment_status = $student_assignment->status;
+
+        $remark = $student_assignment->remark;
+
+        $comment = $student_assignment->comment;
 
         return view('assignment.handInAssignment', [
             'course_id' => $course_id,
             'assignment_id' => $assignment_id,
             'student_assignment_id' => $student_assignment_id,
+            'remark' => $remark,
+            'comment' => $comment,
+            'student_assignment_status' => $student_assignment_status,
             ]);
+    }
+
+    public function postHandInAssignment(Request $request, $course_id, $assignment_id){
+        $remark = $request->input('remark');
+        $student_assignment_id = $request->input('student_assignment_id');
+        DB::table('student_assignment')
+            ->where('id', $student_assignment_id)
+            ->update(['remark' => $remark]);
+
+        return redirect()->back()->with('message', '繳交作業成功！');
     }
 
     public function uploadAssignment(Request $request){
@@ -262,6 +337,26 @@ class AssignmentController extends Controller
         $filepath = $student_id.'/'.$student_assignment_id;
 
         $file->storeAs($filepath, $filename);
+
+//        $file = new Filesystem();
+//        $directory = 'app/public/123';
+//        if ( $file->isDirectory(storage_path($directory)) )
+//        {
+//        }
+//        else
+//        {
+//            $file->makeDirectory(storage_path($directory), 777, true, true);
+//        }
+
+        Storage::disk('public')->putFileAs(
+            $filepath, $file, $filename
+        );
+
+        DB::table('student_assignment')
+            ->where('id', $student_assignment_id)
+            ->update(['status' => 2]);
+
+
     }
 
     public function deleteAssignment(Request $request){
@@ -269,9 +364,19 @@ class AssignmentController extends Controller
         $student_assignment_id = $request->get('student_assignment_id');
         $filename = $request->get('filename');
 
-        $filepath = $student_id.'/'.$student_assignment_id.'/'.$filename;
+        $filepath = 'public/'.$student_id.'/'.$student_assignment_id.'/'.$filename;
 
         Storage::delete($filepath);
+
+        $files = Storage::files('public/'.$student_id.'/'.$student_assignment_id);
+
+        //如果資料夾內沒有檔案，將作業狀態更改為 1 => 未繳交
+        if (empty($files)){
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['status' => 1]);
+        }
+
 
         $output = array(
             'filepath' => $filepath,
@@ -285,9 +390,9 @@ class AssignmentController extends Controller
         $student_id = Auth::user()->id;
         $student_assignment_id = $request->get('student_assignment_id');
 
-        $path = $student_id.'/'.$student_assignment_id;
+        $path = 'public/'.$student_id.'/'.$student_assignment_id;
 
-        $filepaths = Storage::disk('local')->allFiles($path);
+        $filepaths = Storage::allFiles($path);
 
         $filenames = array();
 
@@ -309,7 +414,14 @@ class AssignmentController extends Controller
 
     }
 
-    public function downloadAssignment($path){
-        return Storage::download($path);
+    public function downloadAssignment($first, $second, $third, $fourth){
+//        return Storage::download('public/505102236/1/midterm.py');
+
+        $filepath = $first.'/'.$second.'/'.$third.'/'.$fourth;
+//        return Storage::download($filepath);
+
+        return response()->download(storage_path().'/app/'.$filepath);
+
+
     }
 }

@@ -86,6 +86,11 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
         'as' => 'assignment.handInAssignment'
     ]);
 
+    Route::post('{course_id}/assignments/{assignment_id}/handIn', [
+        'uses' => 'AssignmentController@postHandInAssignment',
+        'as' => 'assignment.handInAssignment'
+    ]);
+
 
 
 //    Route::group(['prefix' => '{course_id}', 'middleware' => 'auth'], function(){
@@ -135,7 +140,7 @@ Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
 });
 
 //for dropZone
-Route::group(['prefix' => 'dropZone', 'middleware' => 'auth'], function() {
+Route::group(['prefix' => 'dropZone'], function() {
     Route::post('/upload', [
         'uses' => 'AssignmentController@uploadAssignment',
         'as' => 'dropZone.uploadAssignment',
@@ -149,6 +154,11 @@ Route::group(['prefix' => 'dropZone', 'middleware' => 'auth'], function() {
     Route::post('/fileDetails', [
         'uses' => 'AssignmentController@getAssignmentFileDetail',
         'as' => 'dropZone.getAssignmentFileDetail'
+    ]);
+
+    Route::get('/download/{first}/{second}/{third}/{fourth}', [
+        'uses' => 'AssignmentController@downloadAssignment',
+        'as' => 'dropZone.downloadAssignment'
     ]);
 });
 

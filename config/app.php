@@ -164,7 +164,6 @@ return [
 
         Yajra\DataTables\DataTablesServiceProvider::class,
 
-
     ],
 
     /*
@@ -214,6 +213,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class
+
     ],
 
 ];

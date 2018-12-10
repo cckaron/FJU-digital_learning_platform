@@ -14,6 +14,10 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::to('images/favicon.png') }}">
     <title>@yield('title')</title>
+
+    <!-- route() javascript -->
+    @routes
+
     <!-- Custom CSS -->
 
     <link href="{{ URL::to('libs/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet" />

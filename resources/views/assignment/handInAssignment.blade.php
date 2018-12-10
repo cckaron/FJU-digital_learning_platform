@@ -40,11 +40,25 @@
                 <!-- ============================================================== -->
 
                 <div class="row">
+                    @if(session()->has('message'))
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">提示</h5>
+
+                                    <div class="alert alert-success" role="alert">
+                                        {{ session()->get('message') }}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <h6>上傳文件</h6>
+                                    <h4>上傳文件</h4>
                                 </div>
 
                                 <div class="form-group">
@@ -58,69 +72,24 @@
                     </div>
                 </div>
 
-                <form action="{{ route('user.createUser') }}" method="post" class="form-horizontal">
+                <!--route的 get 和 post 的網址要一樣，所以post也需要 course_id 和 assignmen_id，但沒那麼重要所以就隨機生成 str_random()，不必特別取得正確的 id -->
+                <form action="{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}" id="editContent" method="post" class="form-horizontal">
 
                     <!-- editor -->
                     <div class="row">
 
-                        @if(session()->has('message'))
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">提示</h5>
-
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session()->get('message') }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userID">學號</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="學號" name="userID">
-                                        </div>
+                                    <h4 class="card-title">備註</h4>
+                                    <!-- Create the editor container -->
+                                    <div id="editor" style="height: 300px;">
+                                        {!! $remark !!}
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userName">姓名</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userName" class="form-control" placeholder="姓名" name="userName">
-                                        </div>
-                                    </div>
+                                    <textarea id="remark" name="remark" hidden> {{$remark}} </textarea>
 
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userEmail">電子信箱</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userEmail" class="form-control" placeholder="電子信箱" name="userEmail">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userPassword">密碼</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userPassword" class="form-control" placeholder="密碼" name="userPassword">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">帳號類型</label>
-                                        <div class="col-md-9">
-                                            <select name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option value=4 selected> 學生 </option>
-                                                <option value=3 > 教師 </option>
-                                                <option value=2 > 秘書 </option>
-                                                <option value=1 > 工讀生 </option>
-                                                <option value=0 > 系統管理員 </option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <input type="text" name="student_assignment_id" value={{ $student_assignment_id }} hidden/>
 
                                 </div>
                                 <div class="border-top">
@@ -227,87 +196,178 @@
             todayHighlight: true
         });
         var quill = new Quill('#editor', {
-            theme: 'snow'
+            theme: 'snow',
         });
+
+        $("#editContent").on("submit",function(){
+            var myEditor = document.querySelector('#editor');
+            var html = myEditor.children[0].innerHTML;
+
+            $("#remark").val(html);
+        })
 
     </script>
 
     <script>
-        Dropzone.options.myDropzone = {
-            addRemoveLinks: true,
-            maxFilesize: 20,
-            init: function() {
-                var filepaths = [];
-                var filenames = [];
-                var filesizes = [];
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳";
+        Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
+        Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+        Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";
+        Dropzone.prototype.defaultOptions.dictInvalidFileType = "上傳的文件格式不正確";
+        Dropzone.prototype.defaultOptions.dictCancelUpload = "取消上傳";
+        Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "確定取消上傳?";
+        Dropzone.prototype.defaultOptions.dictRemoveFile = "刪除檔案";
+        Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "已超出檔案數量限制";
 
-                //get the assignment's files detail
-                var student_assignment_id = $('input[name=student_assignment_id]').val();
-                $.ajax({
-                    url:'{{ route('dropZone.getAssignmentFileDetail') }}',
-                    method:'POST',
-                    data:{
-                        'student_assignment_id': student_assignment_id,
-                    },
-                    dataType:'json',
-                    async: false,
-                    success:function(data)
-                    {
-                        filepaths = data.filepaths;
-                        filenames = data.filenames;
-                        filesizes = data.filesizes;
-                    }
-                });
+        // 未繳交作業 or 已繳交作業 -> 提供上傳
+        if({{ $student_assignment_status }} === 1 || {{ $student_assignment_status }} === 2){
+            Dropzone.options.myDropzone = {
+                addRemoveLinks: true,
+                maxFilesize: 20,
+                maxFiles: 10,
+                init: function() {
+                    var filepaths = [];
+                    var filenames = [];
+                    var filesizes = [];
 
-                for(var i=0; i<filepaths.length; i++){
-
-                    //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
-                    var a = document.createElement('a');
-                    a.setAttribute('href', filepaths[i]);
-                    a.setAttribute('class',"dz-remove");
-                    // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
-                    a.innerHTML = "下載";
-
-                    this.on("complete", function(file){
-
-                        file.previewTemplate.appendChild(a);
-
-                        // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                    //get the assignment's files detail
+                    var student_assignment_id = $('input[name=student_assignment_id]').val();
+                    $.ajax({
+                        url:'{{ route('dropZone.getAssignmentFileDetail') }}',
+                        method:'POST',
+                        data:{
+                            'student_assignment_id': student_assignment_id,
+                        },
+                        dataType:'json',
+                        async: false,
+                        success:function(data)
+                        {
+                            filepaths = data.filepaths;
+                            filenames = data.filenames;
+                            filesizes = data.filesizes;
+                        }
                     });
 
-                    var mockFile = { name: filenames[i], size: filesizes[i] };
-                    this.files.push(mockFile);
-                    this.emit('addedfile', mockFile);
-                    this.createThumbnailFromUrl(mockFile, mockFile.url);
-                    this.emit('complete', mockFile);
-                    this._updateMaxFilesReachedClass();
-                }
+                    for(var i=0; i<filepaths.length; i++){
+                        var filepath = filepaths[i];
 
-            },
-            removedfile: function(file){
-                var filename = file.name;
-                var student_assignment_id = $('input[name=student_assignment_id]').val();
-                $.ajax({
-                    url:'{{ route('dropZone.deleteAssignment') }}',
-                    method:'POST',
-                    data:{
-                        'filename': filename,
-                        'student_assignment_id': student_assignment_id,
-                    },
-                    dataType:'json',
-                    success:function(data)
-                    {
-                        //
+                        var pathArray = filepath.split('/');
+
+
+                        //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
+                        var a = document.createElement('a');
+
+                        a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
+                        a.setAttribute('class',"dz-remove");
+                        // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
+                        a.innerHTML = "下載";
+
+                        this.on("complete", function(file){
+
+                            file.previewTemplate.appendChild(a);
+
+                            // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                        });
+
+                        var mockFile = { name: filenames[i], size: filesizes[i] };
+                        this.files.push(mockFile);
+                        this.emit('addedfile', mockFile);
+                        this.createThumbnailFromUrl(mockFile, mockFile.url);
+                        this.emit('complete', mockFile);
+                        this._updateMaxFilesReachedClass();
                     }
-                });
-                var _ref;
-                return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-            },
-            success: function(file){
 
-            }
-        };
+                },
+                removedfile: function(file){
+                    var filename = file.name;
+                    var student_assignment_id = $('input[name=student_assignment_id]').val();
+                    $.ajax({
+                        url:'{{ route('dropZone.deleteAssignment') }}',
+                        method:'POST',
+                        data:{
+                            'filename': filename,
+                            'student_assignment_id': student_assignment_id,
+                        },
+                        dataType:'json',
+                        success:function(data)
+                        {
+                            //
+                        }
+                    });
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                success: function(){
+                    location.reload();
+                }
+            };
+        }
+        else if ({{ $student_assignment_status }} === 3){
+            Dropzone.options.myDropzone = {
+
+                init: function() {
+                    var filepaths = [];
+                    var filenames = [];
+                    var filesizes = [];
+
+                    //get the assignment's files detail
+                    var student_assignment_id = $('input[name=student_assignment_id]').val();
+                    $.ajax({
+                        url:'{{ route('dropZone.getAssignmentFileDetail') }}',
+                        method:'POST',
+                        data:{
+                            'student_assignment_id': student_assignment_id,
+                        },
+                        dataType:'json',
+                        async: false,
+                        success:function(data)
+                        {
+                            filepaths = data.filepaths;
+                            filenames = data.filenames;
+                            filesizes = data.filesizes;
+                        }
+                    });
+
+                    for(var i=0; i<filepaths.length; i++){
+                        var filepath = filepaths[i];
+
+                        var pathArray = filepath.split('/');
+
+
+                        //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
+                        var a = document.createElement('a');
+
+                        a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
+                        a.setAttribute('class',"dz-remove");
+                        // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
+                        a.innerHTML = "下載";
+
+                        this.on("complete", function(file){
+
+                            file.previewTemplate.appendChild(a);
+
+                            // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                        });
+
+                        var mockFile = { name: filenames[i], size: filesizes[i] };
+                        this.files.push(mockFile);
+                        this.emit('addedfile', mockFile);
+                        this.createThumbnailFromUrl(mockFile, mockFile.url);
+                        this.emit('complete', mockFile);
+                        this._updateMaxFilesReachedClass();
+                    }
+
+                },
+                accept: function(){
+                    alert('不允許上傳：作業已截止');
+                    location.reload();
+                }
+            };
+        }
+
+
     </script>
+
 
     <script>
         $.ajaxSetup({
