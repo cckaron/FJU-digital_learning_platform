@@ -116,7 +116,8 @@ class AssignmentController extends Controller
 
         for ($r=0; $r<count($assignments_processing_id); $r++){
             $status = DB::table('student_assignment')
-                ->where('id', $assignments_processing_id[$r])
+                ->where('assignments_id', $assignments_processing_id[$r])
+                ->where('students_id', $student_id)
                 ->value('status');
             array_push($assignments_processing_status, $status);
         }
@@ -126,7 +127,8 @@ class AssignmentController extends Controller
 
         for ($r=0; $r<count($assignments_processing_id); $r++){
             $score = DB::table('student_assignment')
-                ->where('id', $assignments_processing_id[$r])
+                ->where('assignments_id', $assignments_processing_id[$r])
+                ->where('students_id', $student_id)
                 ->value('score');
             array_push($assignments_processing_score, $score);
         }
@@ -149,6 +151,7 @@ class AssignmentController extends Controller
         // 基本資料
         $assignments_processing_name = $assignments_processing->pluck('name');
         $courses_processing_id = $assignments_processing->pluck('courses_id');
+        $courses_processing_end_date = $assignments_processing->pluck('end_date');
 
 
         //已結束的作業
@@ -162,9 +165,11 @@ class AssignmentController extends Controller
 
         $assignments_finished_id = $assignments_finished->pluck('id');
 
+
         for ($r=0; $r<count($assignments_finished_id); $r++){
             $status = DB::table('student_assignment')
-                ->where('id', $assignments_finished_id[$r])
+                ->where('assignments_id', $assignments_finished_id[$r])
+                ->where('students_id', $student_id)
                 ->value('status');
             array_push($assignments_finished_status, $status);
         }
@@ -174,7 +179,8 @@ class AssignmentController extends Controller
 
         for ($r=0; $r<count($assignments_finished_id); $r++){
             $score = DB::table('student_assignment')
-                ->where('id', $assignments_finished_id[$r])
+                ->where('assignments_id', $assignments_finished_id[$r])
+                ->where('students_id', $student_id)
                 ->value('score');
             array_push($assignments_finished_score, $score);
         }
@@ -196,9 +202,10 @@ class AssignmentController extends Controller
         // 基本資料
         $assignments_finished_name = $assignments_finished->pluck('name');
         $courses_finished_id = $assignments_finished->pluck('courses_id');
+        $courses_finished_end_date = $assignments_finished->pluck('end_date');
 
 
-        //進行中的作業
+        //已結束的作業
         for ($i=0; $i<count($assignments_processing); $i++){
 
             // 取得進行中作業的指導老師，並且加入 $teachers_processing 集合中
@@ -266,6 +273,7 @@ class AssignmentController extends Controller
             'assignments_processing_status' => $assignments_processing_status,
             'assignments_processing_score' => $assignments_processing_score,
             'courses_processing'=>$courses_processing,
+            'courses_processing_end_date' => $courses_processing_end_date,
             'teachers_processing' => $teachers_processing,
 
             'assignments_finished' => $assignments_finished,
@@ -275,8 +283,10 @@ class AssignmentController extends Controller
             'assignments_finished_status' => $assignments_finished_status,
             'assignments_finished_score' => $assignments_finished_score,
             'courses_finished' => $courses_finished,
+            'courses_finished_end_date' => $courses_finished_end_date,
             'teachers_finished' => $teachers_finished,
-            ]);
+
+         ]);
     }
 
     public function getAllAssignments_dt(){
