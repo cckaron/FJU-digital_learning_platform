@@ -64,10 +64,6 @@ Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
        'as' => 'course.addCourse'
    ]);
 
-   Route::get('/all', [
-       'uses' => 'CourseController@getShowCourses_Teacher',
-       'as' => 'courses.showCourses_Teacher'
-   ]);
 
    //assignment
     Route::get('/allAssignments', [
@@ -115,6 +111,16 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
     Route::get('/assignments', [
         'uses' => 'AssignmentController@getAssignments_Teacher',
         'as' => 'assignment.showAssignments_Teacher'
+    ]);
+
+    Route::get('/courses', [
+        'uses' => 'CourseController@getShowCourses_Teacher',
+        'as' => 'courses.showCourses_Teacher'
+    ]);
+
+    Route::get('/courses/{course_id}/assignments/{assignment_id}/list', [
+        'uses' => 'AssignmentController@getStudentAssignmentsList',
+        'as' => 'courses.showStudentAssignmentsList'
     ]);
 });
 

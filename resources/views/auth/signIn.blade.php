@@ -21,7 +21,7 @@
             <div class="auth-box bg-dark border-top border-secondary">
                 <div id="loginform">
                     <div class="text-center p-t-20 p-b-20">
-                        <span class="db"><img src="{{ URL::to('/images/logo.png') }}" alt="logo" /></span>
+                        <span class="db"><img src="{{ URL::to('/images/logo.jpeg') }}" alt="logo" height="50px" width="200px"/></span>
                     </div>
 
                     @if ($message = Session::get('error'))
@@ -45,26 +45,26 @@
                     <form class="form-horizontal m-t-20" id="loginform" action={{ route('auth.signIn') }} method="post">
                         <div class="row p-b-30">
                             <div class="col-12">
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-3" style="margin-top: 10px">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" name="id" required="">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="帳號" aria-describedby="basic-addon1" name="id" required="">
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-warning text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" name="password" required="">
+                                    <input type="password" class="form-control form-control-lg" placeholder="Password" aria-label="密碼" aria-describedby="basic-addon1" name="password" required="">
                                 </div>
                             </div>
                         </div>
                         <div class="row border-top border-secondary">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <div class="p-t-20">
-                                        <button class="btn btn-info" id="to-recover" type="button"><i class="fa fa-lock m-r-5"></i> Lost password?</button>
-                                        <button class="btn btn-success float-right" type="submit">Login</button>
+                                    <div class="p-t-20" style="margin-top: 10px;">
+                                        <button class="btn btn-info" id="to-recover" type="button"><i class="fa fa-lock m-r-5"></i> 忘記密碼?</button>
+                                        <button class="btn btn-success float-right" type="submit">登入</button>
                                     </div>
                                 </div>
                             </div>

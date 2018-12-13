@@ -21,7 +21,6 @@ class CreateTeacherTable extends Migration
             $table->string('remark')->nullable();
             $table->integer('status')->default(1);
 
-            $table->integer('courses_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index('users_id');

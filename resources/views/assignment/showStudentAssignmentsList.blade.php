@@ -26,7 +26,9 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-            <!-- ============================================================== -->
+        @include('layouts.partials.pageBreadCrumb', ['title' => '作業詳情'])
+
+        <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid">
@@ -34,7 +36,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('course.addCourse') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
@@ -54,107 +56,56 @@
                             </div>
                         @endif
 
-                        <div class="col-md-6">
+                        <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">進行中的作業 </h4>
-                                </div>
-                                <div class="comment-widgets scrollable">
-
-                                    <!-- Assignment Loop Start -->
-                                @for($i=0; $i<count($assignments_processing); $i++)
-
-                                    <!-- Comment Row -->
-                                        <div class="d-flex flex-row comment-row m-t-0">
-
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
-                                            <div class="comment-text w-100">
-
-                                                <h4 class="font-medium">
-                                                    {{ $courses_processing_year[$i] }} 年 第 {{ $courses_processing_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $courses_processing_end_date[$i] }}</span>
-                                                </h4>
-                                                <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($teachers_processing[$i]); $j++)
-                                                        {{ $teachers_processing[$i][$j] }}
-                                                        @if($j!=count($teachers_processing[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
-
-                                                </span>
-                                                <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $assignments_processing_name[$i] }}</span></h4>
-                                                <div class="comment-footer">
-                                                    <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-                                                    <a href="{{ route('courses.showStudentAssignmentsList', ['course_id' => $courses_processing_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
-
-
-                                                <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-
-
-                                                <!-- 成績 -->
-
-                                                    {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
-                                                    {{--<button type="button" class="btn btn-danger btn-sm">Delete</button>--}}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    @endfor
+                                    <div class="table-responsive">
+                                        <table id="zero_config" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>批改狀態</th>
+                                                <th>姓名</th>
+                                                <th>學號</th>
+                                                <th>分數</th>
+                                                <th>附檔</th>
+                                                <th>上傳時間</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @for($i=0; $i< count($student_ids); $i++)
+                                            <tr>
+                                                <td></td>
+                                                <td>{{ $student_names[$i] }}</td>
+                                                <td>{{ $student_ids[$i] }}</td>
+                                                <td>
+                                                    @if($scores[$i] == null)
+                                                        尚未評分
+                                                    @endif
+                                                    {{ $scores[$i] }}
+                                                </td>
+                                                <td>
+                                                    @if(count($file_names[$i]) != 0)
+                                                        @for($k=0; $k< count($file_names[$i]); $k++)
+                                                            {{ $k+1 }}.
+                                                            <a href="{{ route('dropZone.downloadAssignment', ['first' => 'public', 'second'=> $student_ids[$i], 'third' => $assignment_id, 'fourth' => $file_names[$i][$k]]) }}">
+                                                                {{ $file_names[$i][$k] }}
+                                                            </a>
+                                                            <br>
+                                                        @endfor
+                                                    @else
+                                                        無
+                                                    @endif
+                                                </td>
+                                                <td>{{ $updated_at[$i] }}</td>
+                                            </tr>
+                                            @endfor
+                                        </table>
+                                    </div>
 
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">已結束的作業 </h4>
-                                </div>
-                                <div class="comment-widgets scrollable">
-
-                                    <!-- Assignment Loop Start -->
-                                @for($i=0; $i<count($assignments_finished); $i++)
-
-                                    <!-- Comment Row -->
-                                        <div class="d-flex flex-row comment-row m-t-0">
-
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
-                                            <div class="comment-text w-100">
-
-                                                <h4 class="font-medium">
-                                                    {{ $courses_finished_year[$i] }} 年 第 {{ $courses_finished_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $courses_finished_end_date[$i] }}</span>
-                                                </h4>
-                                                <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($teachers_finished[$i]); $j++)
-                                                        {{ $teachers_finished[$i][$j] }}
-                                                        @if($j!=count($teachers_finished[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
-
-                                                </span>
-                                                <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $assignments_finished_name[$i] }}</span></h4>
-                                                <div class="comment-footer">
-                                                    <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-                                                    <a href="{{ route('courses.showStudentAssignmentsList', ['course_id' => $courses_finished_id[$i] ,'assignment_id' => $assignments_finished_id[$i]]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
-
-
-                                                <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-
-
-                                                <!-- 成績 -->
-
-                                                    {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
-                                                    {{--<button type="button" class="btn btn-danger btn-sm">Delete</button>--}}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    @endfor
-
-                                </div>
-                            </div>
-
                         </div>
+
 
                     </div>
                     {{ csrf_field() }}
@@ -254,5 +205,12 @@
 
     </script>
 
+
+    <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
 
 @endsection

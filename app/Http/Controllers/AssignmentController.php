@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use App\student_assignment;
+use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Hashids\Hashids;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -69,6 +72,8 @@ class AssignmentController extends Controller
                 ->insert([
                     ['students_id' => $student_id, 'assignments_id' => $assignment_id, 'assignments_name' => $assignment_name]
                 ]);
+
+            Storage::makeDirectory('public/'.$student_id.'/'.$assignment_id);
         }
 
         return redirect()->back()->with('message', '新增作業成功！');
@@ -307,6 +312,8 @@ class AssignmentController extends Controller
             ->where('status', 1)
             ->get();
 
+        $assignments_processing_id = $assignments_processing->pluck('id');
+
         //該作業的課程ID
         $courses_processing_id = $assignments_processing->pluck('courses_id');
 
@@ -366,6 +373,8 @@ class AssignmentController extends Controller
             ->where('status', 0)
             ->get();
 
+        $assignments_finished_id = $assignments_finished->pluck('id');
+
         //該作業的課程ID
         $courses_finished_id = $assignments_finished->pluck('courses_id');
 
@@ -389,7 +398,6 @@ class AssignmentController extends Controller
                 ->where('id', $courses_finished_id[$i])
                 ->first();
 
-            $name = $course->name;
             $year = $course->year;
             $semester = $course->semester;
             $end_date = $course->end_date;
@@ -421,9 +429,31 @@ class AssignmentController extends Controller
 
         }
 
+        //hash
+        for ($k=0; $k<count($courses_processing_id); $k++){
+            $hashids = new Hashids('course_id', 6);
+            $courses_processing_id[$k] = $hashids->encode($courses_processing_id[$k]);
+        }
+
+        for ($k=0; $k<count($assignments_processing_id); $k++){
+            $hashids = new Hashids('assignment_id', 10);
+            $assignments_processing_id[$k] = $hashids->encode($assignments_processing_id[$k]);
+        }
+
+        for ($k=0; $k<count($courses_finished_id); $k++){
+            $hashids = new Hashids('course_id', 6);
+            $courses_finished_id[$k] = $hashids->encode($courses_finished_id[$k]);
+        }
+
+        for ($k=0; $k<count($assignments_finished_id); $k++){
+            $hashids = new Hashids('assignment_id', 10);
+            $assignments_finished_id[$k] = $hashids->encode($assignments_finished_id[$k]);
+        }
+
         return view('assignment.showAssignments_Teacher', [
             'assignments_processing' => $assignments_processing,
-           'assignments_processing_name' => $assignments_processing_name,
+            'assignments_processing_id' => $assignments_processing_id,
+            'assignments_processing_name' => $assignments_processing_name,
            'courses_processing_id' => $courses_processing_id,
            'courses_processing_year' => $courses_processing_year,
            'courses_processing_semester' => $courses_processing_semester,
@@ -431,6 +461,7 @@ class AssignmentController extends Controller
             'teachers_processing' => $teachers_processing,
 
             'assignments_finished' => $assignments_finished,
+            'assignments_finished_id' => $assignments_finished_id,
             'assignments_finished_name' => $assignments_finished_name,
             'courses_finished_id' => $courses_finished_id,
             'courses_finished_year' => $courses_finished_year,
@@ -442,6 +473,79 @@ class AssignmentController extends Controller
         ]);
     }
 
+    public function getStudentAssignmentsList($course_id, $assignment_id){
+        $encode_course_id = new Hashids('course_id', 6);
+        $encode_assignment_id = new Hashids('assignment_id', 10);
+        $course_id = $encode_course_id->decode($course_id);
+        $assignment_id = $encode_assignment_id->decode($assignment_id);
+
+        //get an array from hashid::decode(), so we need to turn it to string
+        $assignment_id = $assignment_id[0];
+
+        $student_assignments = DB::table('student_assignment')
+            ->where('assignments_id', $assignment_id)
+            ->get();
+
+        $student_ids = $student_assignments->pluck('students_id');
+        $scores = $student_assignments->pluck('score');
+        $remark = $student_assignments->pluck('remark');
+
+        $updated_at = $student_assignments->pluck('updated_at');
+
+        for ($i=0; $i< count($updated_at); $i++){
+            if ($updated_at[$i] != null){
+                $updated_at[$i] = Carbon::parse($updated_at[$i])->diffForHumans();
+            } else {
+                $updated_at[$i] = '尚未上傳';
+            }
+        }
+
+        $student_names = array();
+
+        for ($i=0; $i< count($student_ids); $i++){
+            $name = DB::table('students')
+                ->where('users_id', $student_ids[$i])
+                ->value('users_name');
+            array_push($student_names, $name);
+        }
+
+        $file_names = array();
+        $file_urls = array();
+
+        for ($i=0; $i< count($student_ids); $i++){
+
+            $names = array();
+            $urls = array();
+
+            $folder_path = storage_path().'/app/public/'.$student_ids[$i].'/'.$assignment_id;
+
+            $filesInFolder = File::files($folder_path);
+            foreach($filesInFolder as $path) {
+                $file = pathinfo($path);
+
+                array_push($names, $file['filename'].'.'.$file['extension']) ;
+                array_push($urls, ['public', $student_ids[$i], $assignment_id, $file['filename'].'.'.$file['extension']]);
+            }
+
+            array_push($file_names, $names);
+            array_push($file_urls, $urls);
+        }
+
+
+
+        return view('assignment.showStudentAssignmentsList', [
+            'students_assignments' => $student_assignments,
+            'student_ids' => $student_ids,
+            'scores' => $scores,
+            'remark' => $remark,
+            'updated_at' => $updated_at,
+            'student_names' => $student_names,
+            'file_names' => $file_names,
+            'file_urls' => $file_urls,
+            'assignment_id' => $assignment_id,
+        ]);
+    }
+
     public function getAllAssignments_dt(){
         return DataTables::of(Assignment::query())
             ->editColumn('updated_at', function(Assignment $assignment){
@@ -449,6 +553,7 @@ class AssignmentController extends Controller
             })
             ->make(true);
     }
+
 
     public function getHandInAssignment($course_id, $assignment_id){
         $student_id = Auth::user()->id;
@@ -495,21 +600,15 @@ class AssignmentController extends Controller
         $student_id = Auth::user()->id;
         $student_assignment_id = $request->input('student_assignment_id');
 
+        $assignment_id = DB::table('student_assignment')
+            ->where('id', $student_assignment_id)
+            ->value('assignments_id');
+
         $file = $request->file('file'); //default file name from request is "file"
         $filename = $file->getClientOriginalName();
-        $filepath = $student_id.'/'.$student_assignment_id;
+        $filepath = $student_id.'/'.$assignment_id;
 
         $file->storeAs($filepath, $filename);
-
-//        $file = new Filesystem();
-//        $directory = 'app/public/123';
-//        if ( $file->isDirectory(storage_path($directory)) )
-//        {
-//        }
-//        else
-//        {
-//            $file->makeDirectory(storage_path($directory), 777, true, true);
-//        }
 
         Storage::disk('public')->putFileAs(
             $filepath, $file, $filename
@@ -517,7 +616,8 @@ class AssignmentController extends Controller
 
         DB::table('student_assignment')
             ->where('id', $student_assignment_id)
-            ->update(['status' => 2]);
+            ->update(['status' => 2, 'updated_at' => Carbon::now()]);
+
 
 
     }
@@ -525,13 +625,18 @@ class AssignmentController extends Controller
     public function deleteAssignment(Request $request){
         $student_id = Auth::user()->id;
         $student_assignment_id = $request->get('student_assignment_id');
+
+        $assignment_id = DB::table('student_assignment')
+            ->where('id', $student_assignment_id)
+            ->value('assignments_id');
+
         $filename = $request->get('filename');
 
-        $filepath = 'public/'.$student_id.'/'.$student_assignment_id.'/'.$filename;
+        $filepath = 'public/'.$student_id.'/'.$assignment_id.'/'.$filename;
 
         Storage::delete($filepath);
 
-        $files = Storage::files('public/'.$student_id.'/'.$student_assignment_id);
+        $files = Storage::files('public/'.$student_id.'/'.$assignment_id);
 
         //如果資料夾內沒有檔案，將作業狀態更改為 1 => 未繳交
         if (empty($files)){
@@ -553,7 +658,11 @@ class AssignmentController extends Controller
         $student_id = Auth::user()->id;
         $student_assignment_id = $request->get('student_assignment_id');
 
-        $path = 'public/'.$student_id.'/'.$student_assignment_id;
+        $assignment_id = DB::table('student_assignment')
+            ->where('id', $student_assignment_id)
+            ->value('assignments_id');
+
+        $path = 'public/'.$student_id.'/'.$assignment_id;
 
         $filepaths = Storage::allFiles($path);
 

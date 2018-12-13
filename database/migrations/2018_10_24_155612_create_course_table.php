@@ -15,17 +15,11 @@ class CreateCourseTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->unsigned();
-            $table->string('name');
-            $table->integer('year');
-            $table->integer('semester');
-            $table->string('start_date');
-            $table->string('end_date');
-            $table->integer('status')->default(1);
+            $table->integer('common_course_id')->unsigned();
             $table->timestamps();
 
             //need to add the 1 to many relationship for teacher_id
 
-            $table->index('id');
         });
     }
 

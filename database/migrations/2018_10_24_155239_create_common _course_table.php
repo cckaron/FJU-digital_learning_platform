@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFileTable extends Migration
+class CreateCommonCourseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,19 @@ class CreateFileTable extends Migration
     public function up()
     {
 
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('common_course', function (Blueprint $table) {
 
-            $table->integer('id',1);
-            $table->integer('student_assignment_id')->unsigned();
+            $table->integer('id',1)->unsigned();
             $table->string('name');
+            $table->integer('year');
+            $table->integer('semester');
+            $table->string('start_date');
+            $table->string('end_date');
+            $table->integer('status')->default(1);
+
             $table->timestamps();
+
+            $table->index('id');
 
         });
     }

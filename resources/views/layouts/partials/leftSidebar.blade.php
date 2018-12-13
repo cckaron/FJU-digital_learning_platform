@@ -30,9 +30,12 @@
                             <li class="sidebar-item"><a href="{{ route('assignment.showAssignments_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>
                             @endif
                             @if(Auth::user()->type == 4)
-                                <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>
+                                <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 查看作業 </span></a></li>
                             @endif
+
+                            @if(Auth::user()->type == 3)
                             <li class="sidebar-item"><a href="{{ route('Assignment.createAssignment') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
+                            @endif
                     </ul>
                 </li>
                 {{--<li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="tables.html" aria-expanded="false"><i class="mdi mdi-file-cloud"></i><span class="hide-menu">檔案庫 </span></a></li>--}}
