@@ -17,63 +17,81 @@ use Yajra\DataTables\Facades\DataTables;
 class AssignmentController extends Controller
 {
     public function getCreateAssignment(){
-        $course_id = "";
-        $course_name = "";
+        $course_id = array();
+        $course_names = array();
 
         $teacher_id = Auth::user()->id;
 
 
-        if (DB::table('teachers')->where('users_id', $teacher_id)->exists()){
-            $teacher = DB::table('teachers')->where('users_id', $teacher_id)->first();
-            $course_id = $teacher->courses_id;
+        // 取得老師的所有課程
+        if (DB::table('teacher_course')->where('teachers_id', $teacher_id)->exists()){
+            $teacher = DB::table('teacher_course')->where('teachers_id', $teacher_id)->get();
+            $course_id = $teacher->pluck('courses_id');
         }
 
 
-        if (DB::table('courses')->where('id', $course_id)->exists()){
-            $course = DB::table('courses')->where('id', $course_id)->first();
-            $course_name = $course->name;
+        for ($i=0; $i<count($course_id); $i++){
+            if (DB::table('courses')->where('id', $course_id[$i])->exists()){
+                $course_name = DB::table('courses')->where('id', $course_id)->value('name');
+                array_push($course_names, $course_name);
+            }
         }
 
-        return view('Assignment.createAssignment', ['course_name' => $course_name]);
+
+        return view('Assignment.createAssignment', ['course_names' => $course_names]);
     }
 
     public function postCreateAssignment(Request $request){
 
         $teacher_id = Auth::user()->id;
-        $course = DB::table('teachers')->where('users_id', $teacher_id)->first();
-        $course_id = $course->courses_id;
 
+        $course_name = $request->input('courseName');
+
+        $course_id = DB::table('courses')
+            ->where('name', $course_name)
+            ->value('id');
+
+        //取得該課程所有授課教師
+        $teachers = DB::table('teacher_course')
+            ->where('courses_id', $course_id)
+            ->get();
+        $teachers_id = $teachers->pluck('teachers_id');
+
+        //新增作業
         $assignment = new Assignment([
-            'courses_id' => $course_id,
             'name' => $request->input('assignmentName'),
             'start_date' => $request->input('assignmentStart'),
             'end_date' => $request->input('assignmentEnd'),
+            'courses_id' => $course_id,
         ]);
 
         $assignment->save();
 
-        //get the assignment id which was just saved
+        //取得剛剛新增的作業id
         $assignment_id = $assignment->id;
-        $assignment_name = $assignment->name;
 
+        for($i=0; $i<count($teachers); $i++){
+            DB::table('teacher_assignment')
+                ->insert(
+                    ['teachers_id' => $teachers_id[$i], 'assignments_id' => $assignment_id]
+                );
+        }
 
         //create assignment for students
         //create student_course first
 
         //get the course's student count
-        $students = DB::table('students')->where('courses_id', $course_id)->get();
+        $students = DB::table('student_course')->where('courses_id', $course_id)->get();
+        $students_id = $students->pluck('students_id');
 
         for ($i=0; $i<count($students); $i++){
 
-            $student = $students[$i];
-            $student_id = $student->users_id;
-
             DB::table('student_assignment')
                 ->insert([
-                    ['students_id' => $student_id, 'assignments_id' => $assignment_id, 'assignments_name' => $assignment_name]
+                    ['students_id' => $students_id[$i], 'assignments_id' => $assignment_id]
                 ]);
 
-            Storage::makeDirectory('public/'.$student_id.'/'.$assignment_id);
+            Storage::makeDirectory('public/'.$students_id.'/'.$assignment_id);
         }
 
         return redirect()->back()->with('message', '新增作業成功！');
@@ -157,7 +175,20 @@ class AssignmentController extends Controller
         // 基本資料
         $assignments_processing_name = $assignments_processing->pluck('name');
         $courses_processing_id = $assignments_processing->pluck('courses_id');
-        $courses_processing_end_date = $assignments_processing->pluck('end_date');
+        $assignments_processing_end_date = $assignments_processing->pluck('end_date');
+        $common_courses_processing = array();
+
+        for ($i=0; $i<count($courses_processing_id); $i++){
+            $common_course_id = DB::table('courses')
+                ->where('id', $courses_processing_id[$i])
+                ->value('common_courses_id');
+            $common_course_detail = DB::table('common_courses')
+                ->where('id', $common_course_id)
+                ->get();
+
+            array_push($common_courses_processing, $common_course_detail);
+        }
+
 
 
         //已結束的作業
@@ -208,7 +239,20 @@ class AssignmentController extends Controller
         // 基本資料
         $assignments_finished_name = $assignments_finished->pluck('name');
         $courses_finished_id = $assignments_finished->pluck('courses_id');
-        $courses_finished_end_date = $assignments_finished->pluck('end_date');
+        $assignments_finished_end_date = $assignments_finished->pluck('end_date');
+        $common_courses_finished = array();
+
+        for ($i=0; $i<count($courses_finished_id); $i++){
+            $common_course_id = DB::table('courses')
+                ->where('id', $courses_finished_id[$i])
+                ->value('common_courses_id');
+            $common_course_detail = DB::table('common_courses')
+                ->where('id', $common_course_id)
+                ->get();
+
+            array_push($common_courses_finished, $common_course_detail);
+        }
+
 
 
         //進行中的作業
@@ -278,8 +322,9 @@ class AssignmentController extends Controller
             'assignments_processing_name' => $assignments_processing_name,
             'assignments_processing_status' => $assignments_processing_status,
             'assignments_processing_score' => $assignments_processing_score,
+            'common_course_processing' => $common_courses_processing,
             'courses_processing'=>$courses_processing,
-            'courses_processing_end_date' => $courses_processing_end_date,
+            'assignments_processing_end_date' => $assignments_processing_end_date,
             'teachers_processing' => $teachers_processing,
 
             'assignments_finished' => $assignments_finished,
@@ -288,8 +333,9 @@ class AssignmentController extends Controller
             'assignments_finished_name' => $assignments_finished_name,
             'assignments_finished_status' => $assignments_finished_status,
             'assignments_finished_score' => $assignments_finished_score,
+            'common_course_finished' => $common_courses_finished,
             'courses_finished' => $courses_finished,
-            'courses_finished_end_date' => $courses_finished_end_date,
+            'assignments_finished_end_date' => $assignments_finished_end_date,
             'teachers_finished' => $teachers_finished,
 
          ]);

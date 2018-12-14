@@ -18,6 +18,8 @@ class CreateTeacherCourseTable extends Migration
             $table->integer('courses_id')->unsigned();
 
             $table->primary(['teachers_id', 'courses_id']);
+
+            $table->timestamps();
         });
     }
 

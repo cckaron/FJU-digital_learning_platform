@@ -60,6 +60,16 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
+                                        <label class="col-md-3 m-t-15">隸屬共同課程</label>
+                                        <div class="col-md-9">
+                                            <select name="common_courses_name" class="select2 form-control m-t-15" style="height: 36px;width: 100%;">
+                                                @for($i=0; $i< count($common_courses_name); $i++)
+                                                    <option> {{ $common_courses_name[$i] }} </option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-md-3" for="courseName">課程名稱</label>
                                         <div class="col-md-9">
                                             <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName">
@@ -77,47 +87,6 @@
                                                     @endforeach
                                                 </optgroup>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學年</label>
-                                        <div class="col-md-9">
-                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option>106</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學期</label>
-                                        <div class="col-md-9">
-                                            <select name="semester" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                <option>1</option>
-                                                <option>2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開課時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="courseStart" placeholder="開課時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程結束時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="courseEnd" placeholder="課程結束時間">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 
@@ -236,18 +205,20 @@
             });
 
         });
-        /*datwpicker*/
-        jQuery('.mydatepicker').datepicker();
-        jQuery('#datepicker-start').datepicker({
+
+
+        /*datepicker*/
+
+        $('#datepicker-start').datepicker({
             autoclose: true,
-            todayHighlight: true
+            todayHighlight: true,
+            format: "yyyy/mm/dd",
+
         });
-        jQuery('#datepicker-end').datepicker({
+        $('#datepicker-end').datepicker({
             autoclose: true,
-            todayHighlight: true
-        });
-        var quill = new Quill('#editor', {
-            theme: 'snow'
+            todayHighlight: true,
+            format: "yyyy/mm/dd",
         });
 
     </script>

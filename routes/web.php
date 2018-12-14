@@ -53,16 +53,28 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
 });
 
 
-Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
+Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
    Route::get('/add', [
-       'uses' => 'CourseController@getAddCourse',
-       'as' => 'course.addCourse'
+       'uses' => 'CourseController@getAddCommonCourse',
+       'as' => 'course.addCommonCourse'
    ]);
 
    Route::post('/add', [
-       'uses' => 'CourseController@postAddCourse',
-       'as' => 'course.addCourse'
+       'uses' => 'CourseController@postAddCommonCourse',
+       'as' => 'course.addCommonCourse'
    ]);
+
+   Route::group(['prefix' => 'course', 'middleware' => 'auth'], function (){
+       Route::get('/add', [
+           'uses' => 'CourseController@getAddCourse',
+           'as' => 'course.addCourse'
+       ]);
+
+       Route::post('/add', [
+           'uses' => 'CourseController@postAddCourse',
+           'as' => 'course.addCourse'
+       ]);
+   });
 
 
    //assignment
@@ -118,6 +130,17 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
         'as' => 'courses.showCourses_Teacher'
     ]);
 
+    Route::get('/commonCourses', [
+        'uses' => 'CourseController@getShowCommonCourses_Teacher',
+        'as' => 'courses.showCommonCourses_Teacher'
+    ]);
+
+    Route::get('/commonCourses/{common_course_id}/courses', [
+        'uses' => 'CourseController@getShowSingleCourse_Teacher',
+        'as' => 'courses.showSingleCourse_Teacher'
+    ]);
+
+
     Route::get('/courses/{course_id}/assignments/{assignment_id}/list', [
         'uses' => 'AssignmentController@getStudentAssignmentsList',
         'as' => 'courses.showStudentAssignmentsList'
@@ -152,8 +175,8 @@ Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
     ]);
 
     Route::get('/allCourses', [
-        'uses' => 'CourseController@getAllCourses_dt',
-        'as' => 'get.allCourses'
+        'uses' => 'CourseController@getAllCommonCourses_dt',
+        'as' => 'get.allCommonCourses'
     ]);
 
     Route::get('/allAssignments', [

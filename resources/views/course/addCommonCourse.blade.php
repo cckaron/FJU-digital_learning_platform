@@ -26,62 +26,69 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '新增作業'])
+            @include('layouts.partials.pageBreadCrumb', ['title' => '新增共同課程'])
 
+    <!-- ============================================================== -->
+        <!-- Container fluid  -->
         <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
+                <div class="container-fluid">
+                    <!-- ============================================================== -->
+                    <!-- Start Page Content -->
+                    <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                    <form action="{{ route('course.addCommonCourse') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
 
                         @if(session()->has('message'))
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">提示</h5>
+                        <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">提示</h5>
 
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session()->get('message') }}
-                                        </div>
-
-                                    </div>
+                                <div class="alert alert-success" role="alert">
+                                    {{ session()->get('message') }}
                                 </div>
+
                             </div>
+                        </div>
+                        </div>
                         @endif
 
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程名稱</label>
+                                        <label class="col-md-3" for="courseName">課程名稱</label>
                                         <div class="col-md-9">
-                                            <select name="courseName" class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                                @for($i=0; $i<count($course_names); $i++)
-                                                <option>{{ $course_names[$i] }}</option>
-                                                @endfor
+                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-15">學年</label>
+                                        <div class="col-md-9">
+                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                                <option>106</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-15">學期</label>
+                                        <div class="col-md-9">
+                                            <select name="semester" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                                <option>1</option>
+                                                <option>2</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="userAccount">作業名稱</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開放繳交時間</label>
+                                        <label class="col-md-3 m-t-15">開課時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間">
+                                                <input type="text" class="form-control" id="datepicker-start" name="courseStart" placeholder="開課時間">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -90,10 +97,10 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">截止時間</label>
+                                        <label class="col-md-3 m-t-15">課程結束時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間">
+                                                <input type="text" class="form-control" id="datepicker-end" name="courseEnd" placeholder="課程結束時間">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -109,34 +116,33 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    {{ csrf_field() }}
-                </form>
+                        {{ csrf_field() }}
+                    </form>
 
+                    <!-- ============================================================== -->
+                    <!-- End PAge Content -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Right sidebar -->
+                    <!-- ============================================================== -->
+                    <!-- .right-sidebar -->
+                    <!-- ============================================================== -->
+                    <!-- End Right sidebar -->
+                    <!-- ============================================================== -->
+                </div>
                 <!-- ============================================================== -->
-                <!-- End PAge Content -->
+                <!-- End Container fluid  -->
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
-                <!-- Right sidebar -->
+                <!-- footer -->
                 <!-- ============================================================== -->
-                <!-- .right-sidebar -->
+                <footer class="footer text-center">
+                    All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cg.workst@gmail.com
+                </footer>
                 <!-- ============================================================== -->
-                <!-- End Right sidebar -->
+                <!-- End footer -->
                 <!-- ============================================================== -->
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center">
-                All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cg.workst@gmail.com
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->
@@ -192,39 +198,19 @@
             });
 
         });
-
-
-        /*datepicker*/
-        $('#datepicker-start').datepicker({
+        /*datwpicker*/
+        jQuery('.mydatepicker').datepicker();
+        jQuery('#datepicker-start').datepicker({
             autoclose: true,
             todayHighlight: true,
             format: "yyyy/mm/dd",
 
         });
-        $('#datepicker-end').datepicker({
+        jQuery('#datepicker-end').datepicker({
             autoclose: true,
             todayHighlight: true,
             format: "yyyy/mm/dd",
-        });
 
-
-
-
-    </script>
-
-    <script>
-
-        $('#courseUsers').DataTable({
-            processing:true,
-            serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
-            columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name'},
-                { data: 'type', name: 'type'},
-                { data: 'created_at', name: 'created_at'},
-            ]
         });
 
     </script>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterCourseTable extends Migration
+class AlterTeacherAssignmentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,20 @@ class AlterCourseTable extends Migration
      */
     public function up()
     {
+        Schema::table('teacher_assignment', function (Blueprint $table) {
 
-        Schema::table('courses', function (Blueprint $table) {
-
-            $table->foreign('common_courses_id')
-                ->references('id')->on('common_courses')
+            $table->foreign('teachers_id')
+                ->references('users_id')->on('teachers')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
+
+            $table->foreign('assignments_id')
+                ->references('id')->on('assignments')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
+
+
+
         });
     }
 
@@ -30,8 +37,6 @@ class AlterCourseTable extends Migration
      */
     public function down()
     {
-        Schema::table('assignments', function (Blueprint $table) {
-            //
-        });
+        //
     }
 }

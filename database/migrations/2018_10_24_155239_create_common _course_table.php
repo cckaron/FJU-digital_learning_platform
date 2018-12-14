@@ -14,7 +14,7 @@ class CreateCommonCourseTable extends Migration
     public function up()
     {
 
-        Schema::create('common_course', function (Blueprint $table) {
+        Schema::create('common_courses', function (Blueprint $table) {
 
             $table->integer('id',1)->unsigned();
             $table->string('name');

@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-            @include('layouts.partials.pageBreadCrumb', ['title' => '所有課程'])
+            @include('layouts.partials.pageBreadCrumb', ['title' => '所有共同課程'])
 
     <!-- ============================================================== -->
         <!-- Container fluid  -->
@@ -183,7 +183,7 @@
         $('#courseAll').DataTable({
             processing:true,
             serverSide:true,
-            ajax: '{!! route('get.allCourses') !!}',
+            ajax: '{!! route('get.allCommonCourses') !!}',
             columns: [
                 { data: 'name', name: 'name'},
                 { data: 'status', name: 'status' },
