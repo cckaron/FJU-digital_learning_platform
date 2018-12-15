@@ -87,15 +87,12 @@
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
                                                     <a href="{{ route('courses.showStudentAssignmentsList', ['course_id' => $courses_processing_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
-
-
-                                                <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-
-
-                                                <!-- 成績 -->
-
-                                                    {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
-                                                    {{--<button type="button" class="btn btn-danger btn-sm">Delete</button>--}}
+                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-top: 5px;">
+                                                        {{ $courses_processing_name[$i] }}
+                                                    </span>
+                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
+                                                        {{ $common_course_processing_name[$i] }}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

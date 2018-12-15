@@ -32,7 +32,7 @@ class AssignmentController extends Controller
 
         for ($i=0; $i<count($course_id); $i++){
             if (DB::table('courses')->where('id', $course_id[$i])->exists()){
-                $course_name = DB::table('courses')->where('id', $course_id)->value('name');
+                $course_name = DB::table('courses')->where('id', $course_id[$i])->value('name');
                 array_push($course_names, $course_name);
             }
         }
@@ -91,7 +91,7 @@ class AssignmentController extends Controller
                     ['students_id' => $students_id[$i], 'assignments_id' => $assignment_id]
                 ]);
 
-            Storage::makeDirectory('public/'.$students_id.'/'.$assignment_id);
+            Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);
         }
 
         return redirect()->back()->with('message', '新增作業成功！');
@@ -101,6 +101,8 @@ class AssignmentController extends Controller
     public function getAllAssignments(){
         return view('assignment.showAllAssignments');
     }
+
+
 
     public function getAssignments(){
         $student_id = Auth::user()->id;
@@ -341,6 +343,8 @@ class AssignmentController extends Controller
          ]);
     }
 
+
+
     public function getAssignments_Teacher(){
         $teacher_id = Auth::user()->id;
 
@@ -370,6 +374,8 @@ class AssignmentController extends Controller
         $courses_processing_year = array();
         $courses_processing_semester = array();
         $courses_processing_end_date = array();
+        $course_processing_name= array();
+        $common_course_processing_name = array();
 
         //取得該作業的指導老師
         $teachers_processing = array();
@@ -378,16 +384,28 @@ class AssignmentController extends Controller
 
             //課程資訊
             $course = DB::table('courses')
-                ->where('id', $courses_processing_id[$i])
-                ->first();
+                ->where('id', $courses_processing_id[$i]);
 
-            $year = $course->year;
-            $semester = $course->semester;
-            $end_date = $course->end_date;
+            $common_course_id = $course->value('common_courses_id');
+
+            $common_courses_detail = DB::table('common_courses')
+                ->where('id', $common_course_id);
+
+            $common_course_name = $common_courses_detail->value('name');
+            $course_name = $course->value('name');
+
+
+            $year = $common_courses_detail->value('year');
+            $semester = $common_courses_detail->value('semester');
+            $end_date = $common_courses_detail->value('end_date');
 
             array_push($courses_processing_year, $year);
             array_push($courses_processing_semester, $semester);
             array_push($courses_processing_end_date, $end_date);
+
+            array_push($common_course_processing_name, $common_course_name);
+            array_push($course_processing_name, $course_name);
+
 
             //指導老師
             $teachers = DB::table('teacher_course')
@@ -432,7 +450,8 @@ class AssignmentController extends Controller
         $courses_finished_year = array();
         $courses_finished_semester = array();
         $courses_finished_end_date = array();
-
+        $course_finished_name= array();
+        $common_course_finished_name = array();
 
         //取得該作業的指導老師
         $teachers_finished = array();
@@ -441,16 +460,27 @@ class AssignmentController extends Controller
 
             //課程資訊
             $course = DB::table('courses')
-                ->where('id', $courses_finished_id[$i])
-                ->first();
+                ->where('id', $courses_finished_id[$i]);
 
-            $year = $course->year;
-            $semester = $course->semester;
-            $end_date = $course->end_date;
+            $common_course_id = $course->value('common_courses_id');
+
+            $common_courses_detail = DB::table('common_courses')
+                ->where('id', $common_course_id);
+
+            $common_course_name = $common_courses_detail->value('name');
+            $course_name = $course->value('name');
+
+
+            $year = $common_courses_detail->value('year');
+            $semester = $common_courses_detail->value('semester');
+            $end_date = $common_courses_detail->value('end_date');
 
             array_push($courses_finished_year, $year);
             array_push($courses_finished_semester, $semester);
             array_push($courses_finished_end_date, $end_date);
+
+            array_push($common_course_finished_name, $common_course_name);
+            array_push($course_finished_name, $course_name);
 
             //指導老師
             $teachers = DB::table('teacher_course')
@@ -504,6 +534,8 @@ class AssignmentController extends Controller
            'courses_processing_year' => $courses_processing_year,
            'courses_processing_semester' => $courses_processing_semester,
             'courses_processing_end_date' => $courses_processing_end_date,
+            'courses_processing_name' => $course_processing_name,
+            'common_course_processing_name' => $common_course_processing_name,
             'teachers_processing' => $teachers_processing,
 
             'assignments_finished' => $assignments_finished,
@@ -513,6 +545,8 @@ class AssignmentController extends Controller
             'courses_finished_year' => $courses_finished_year,
             'courses_finished_semester' => $courses_finished_semester,
             'courses_finished_end_date' => $courses_finished_end_date,
+            'courses_finished_name' => $course_finished_name,
+            'common_course_finished_name' => $common_course_finished_name,
             'teachers_finished' => $teachers_finished,
 
 
