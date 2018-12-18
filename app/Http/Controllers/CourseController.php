@@ -139,7 +139,7 @@ class CourseController extends Controller
         $courses_processing_id = array();
         for($i=0; $i<count($common_courses_processing); $i++){
             $course_id = DB::table('courses')
-                ->where('id', $courses_id[$i])
+                ->whereIn('id', $courses_id)
                 ->where('common_courses_id', $common_courses_processing_id[$i])
                 ->value('id');
 
@@ -195,7 +195,7 @@ class CourseController extends Controller
         $courses_finished_id = array();
         for($i=0; $i<count($common_courses_finished); $i++){
             $course_id = DB::table('courses')
-                ->where('id', $courses_id[$i])
+                ->whereIn('id', $courses_id)
                 ->where('common_courses_id', $common_courses_finished_id[$i])
                 ->value('id');
 
@@ -233,7 +233,7 @@ class CourseController extends Controller
 
         //課程名稱
         $courses_finished_name = DB::table('courses')
-            ->whereIn('id', $courses_processing_id)
+            ->whereIn('id', $courses_finished_id)
             ->pluck('name');
 
         //hash common course id
@@ -338,7 +338,7 @@ class CourseController extends Controller
         $common_courses_finished_id = $common_courses_finished->pluck('id');
         for ($k=0; $k<count($common_courses_finished_id); $k++){
             $hashids = new Hashids('common_courses_id', 5);
-            $common_courses_finished[$k] = $hashids->encode($common_courses_finished[$k]);
+            $common_courses_finished_id[$k] = $hashids->encode($common_courses_finished_id[$k]);
         }
 
         $common_courses_finished_year = $common_courses_finished->pluck('year');

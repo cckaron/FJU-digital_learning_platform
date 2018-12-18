@@ -122,6 +122,11 @@
                                                 </h4>
                                                 <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
                                                 指導老師:
+                                                    <!-- teacher name -->
+                                                    @for($j=0; $j<count($courses_finished_teacher[$i]); $j++)
+                                                        {{ $courses_finished_teacher[$i][$j] }}
+                                                        @if($j!=count($courses_finished_teacher[$i])-1) , @endif <!-- 逗號 -->
+                                                    @endfor
                                                 </span>
                                                 <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $courses_finished_name[$i] }}</span></h4>
                                                 <div class="comment-footer">

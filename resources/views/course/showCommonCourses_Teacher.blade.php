@@ -106,7 +106,7 @@
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
-                                                    {{ $common_courses_processing_year[$i] }} 年 第 {{ $common_courses_finished_semester[$i] }} 學期
+                                                    {{ $common_courses_finished_year[$i] }} 年 第 {{ $common_courses_finished_semester[$i] }} 學期
                                                     <span class="text-muted float-right">截止日期：{{ $common_courses_finished_end_date[$i] }}</span>
                                                 </h4>
                                                 <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $common_courses_finished_name[$i] }}</span></h4>

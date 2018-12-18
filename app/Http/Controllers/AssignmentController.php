@@ -1040,8 +1040,8 @@ class AssignmentController extends Controller
             $student_assignment_id = $request->get('student_assignment_id');
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
-                ->update(['score' => $request->get('score'), 'comment' =>$request->get('comment')]);
-            $success_output = '<div class="alert alert-success"> 新增成功！ </div>';
+                ->update(['score' => $request->get('score'), 'comment' =>$request->get('comment'), 'status' => 3]);
+            $success_output = '<div class="alert alert-success"> 批改成功！ </div>';
         }
         $output = array(
             'error' => $error_array,

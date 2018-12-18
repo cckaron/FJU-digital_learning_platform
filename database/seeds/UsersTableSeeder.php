@@ -39,22 +39,6 @@ class UsersTableSeeder extends Seeder
             "updated_at" =>  \Carbon\Carbon::now(),
         ]);
 
-        DB::table('users')->insert([
-            'account' => 200200,
-            'id' => 200200,
-            'name' => 'Teacher B',
-            'email' => 'bbbt@gmail.com',
-            'password' => bcrypt(str_random(10)), // secret
-            'type' => 3,
-            'remember_token' => str_random(10),
-        ]);
-
-        DB::table('teachers')->insert([
-            'users_id' => 200200,
-            'users_name' => 'Teacher B',
-            "created_at" =>  \Carbon\Carbon::now(),
-            "updated_at" =>  \Carbon\Carbon::now(),
-        ]);
 
         DB::table('users')->insert([
             'account' => 505102236,
@@ -74,21 +58,5 @@ class UsersTableSeeder extends Seeder
 
         ]);
 
-        DB::table('users')->insert([
-            'account' => 505103399,
-            'id' => 505103399,
-            'name' => 'Student B',
-            'email' => 'bbb@gmail.com',
-            'password' => bcrypt(str_random(10)), // secret
-            'type' => 4,
-            'remember_token' => str_random(10),
-        ]);
-
-        DB::table('students')->insert([
-            'users_id' => 505103399,
-            'users_name' => 'Student B',
-            "created_at" =>  \Carbon\Carbon::now(),
-            "updated_at" =>  \Carbon\Carbon::now(),
-        ]);
     }
 }
