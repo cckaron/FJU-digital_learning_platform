@@ -115,6 +115,15 @@
                                                             成績：{{ $assignments_processing_score[$i] }}
                                                         @endif
                                                     </span>
+
+                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px;">
+                                                        {{ $courses_processing_name[$i] }}
+                                                    </span>
+
+                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
+                                                        {{ $common_course_processing_name[$i] }}
+                                                    </span>
+
                                                     {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
                                                     {{--<button type="button" class="btn btn-danger btn-sm">Delete</button>--}}
                                                 </div>
@@ -185,6 +194,15 @@
                                                             成績：{{ $assignments_finished_score[$i] }}
                                                         @endif
                                                     </span>
+
+                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px;">
+                                                        {{ $courses_finished_name[$i] }}
+                                                    </span>
+
+                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
+                                                        {{ $common_courses_finished_name[$i] }}
+                                                    </span>
+
                                                     {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
                                                     {{--<button type="button" class="btn btn-danger btn-sm">Delete</button>--}}
                                                 </div>

@@ -81,7 +81,7 @@
                                                 </h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
-                                                    <a href="" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $common_courses_id,'courses_id' => $courses_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
                                                 </div>
                                             </div>
                                         </div>

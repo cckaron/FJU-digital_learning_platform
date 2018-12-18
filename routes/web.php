@@ -135,16 +135,21 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
         'as' => 'courses.showCommonCourses_Teacher'
     ]);
 
-    Route::get('/commonCourses/{common_course_id}/courses', [
+    Route::get('/commonCourses/{common_courses_id}/courses', [
         'uses' => 'CourseController@getShowSingleCourse_Teacher',
         'as' => 'courses.showSingleCourse_Teacher'
     ]);
 
+    Route::get('/commonCourses/{common_courses_id}/courses/{courses_id}/assignments/', [
+        'uses' => 'AssignmentController@getSingleAssignments_Teacher',
+        'as' => 'courses.showSingleAssignments_Teacher'
+    ]);
 
     Route::get('/courses/{course_id}/assignments/{assignment_id}/list', [
         'uses' => 'AssignmentController@getStudentAssignmentsList',
         'as' => 'courses.showStudentAssignmentsList'
     ]);
+
 });
 
 
@@ -160,9 +165,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
         'as' => 'user.createUser'
     ]);
 
+    Route::get('/commonCourses', [
+       'uses' => 'CourseController@getAllCommonCourses' ,
+        'as' => 'course.showAllCommonCourses'
+    ]);
+
     Route::get('/courses', [
-       'uses' => 'CourseController@getAllCourses' ,
-        'as' => 'course.showAllCourses'
+        'uses' => 'CourseController@getAllCourses' ,
+        'as' => 'course.showCourses'
+    ]);
+
+    Route::get('/import', [
+        'uses' => 'UserController@importUsers',
+        'as' => 'user.importUsers'
     ]);
 
 });
@@ -174,9 +189,14 @@ Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
         'as' => 'get.courseUsers'
     ]);
 
-    Route::get('/allCourses', [
+    Route::get('/allCommonCourses', [
         'uses' => 'CourseController@getAllCommonCourses_dt',
         'as' => 'get.allCommonCourses'
+    ]);
+
+    Route::get('/allCourses', [
+        'uses' => 'CourseController@getAllCourses_dt',
+        'as' => 'get.allCourses'
     ]);
 
     Route::get('/allAssignments', [
@@ -187,10 +207,22 @@ Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
 
 //for dropZone
 Route::group(['prefix' => 'dropZone'], function() {
-    Route::post('/upload', [
-        'uses' => 'AssignmentController@uploadAssignment',
-        'as' => 'dropZone.uploadAssignment',
-    ]);
+    Route::group(['prefix' => 'upload'], function() {
+        Route::post('/assignments', [
+            'uses' => 'AssignmentController@uploadAssignment',
+            'as' => 'dropZone.uploadAssignment',
+        ]);
+
+        Route::post('/excels/student', [
+            'uses' => 'UserController@uploadStudents',
+            'as' => 'dropZone.uploadStudents',
+        ]);
+
+        Route::post('/excels/teacher', [
+            'uses' => 'UserController@uploadTeachers',
+            'as' => 'dropZone.uploadTeachers',
+        ]);
+    });
 
     Route::post('/delete', [
         'uses' => 'AssignmentController@deleteAssignment',
@@ -206,5 +238,12 @@ Route::group(['prefix' => 'dropZone'], function() {
         'uses' => 'AssignmentController@downloadAssignment',
         'as' => 'dropZone.downloadAssignment'
     ]);
+});
+
+Route::group(['prefix' => 'ajax'], function(){
+   Route::post('/ajax/correctAssignment', [
+       'uses' => 'AssignmentController@correctAssignment',
+       'as' => 'ajax.correctAssignment'
+   ]);
 });
 

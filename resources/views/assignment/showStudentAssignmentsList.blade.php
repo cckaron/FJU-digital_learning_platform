@@ -36,9 +36,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('course.addCourse') }}" method="post">
-
-                    <!-- editor -->
+                 <!-- editor -->
                     <div class="row">
 
                         @if(session()->has('message'))
@@ -67,21 +65,42 @@
                                                 <th>姓名</th>
                                                 <th>學號</th>
                                                 <th>分數</th>
+                                                <th>學生留言</th>
                                                 <th>附檔</th>
                                                 <th>上傳時間</th>
                                             </tr>
                                             </thead>
                                             <tbody>
+
                                             @for($i=0; $i< count($student_ids); $i++)
                                             <tr>
-                                                <td></td>
+                                                @if($scores[$i] == null)
+                                                    <td>
+                                                        <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
+                                                        <input hidden id="student_assignment_id_{{ $i }}" value="{{ $students_assignments_id[$i] }}"/>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <h6>已批改</h6>
+                                                        <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
+                                                        <input hidden id="student_assignment_id_{{ $i }}" value="{{ $students_assignments_id[$i] }}"/>
+                                                    </td>
+                                                @endif
                                                 <td>{{ $student_names[$i] }}</td>
                                                 <td>{{ $student_ids[$i] }}</td>
+
                                                 <td>
                                                     @if($scores[$i] == null)
                                                         尚未評分
+                                                    @elseif($scores[$i] < 60)
+                                                        <span style="color:red; font-size: 20px;">{{ $scores[$i] }}</span>
+                                                    @elseif($scores[$i] >= 60)
+                                                        <span style="color:blue; font-size: 20px;"> {{ $scores[$i] }}</span>
                                                     @endif
-                                                    {{ $scores[$i] }}
+                                                </td>
+
+                                                <td>
+                                                    {!! $remark[$i] !!}
                                                 </td>
                                                 <td>
                                                     @if(count($file_names[$i]) != 0)
@@ -102,14 +121,44 @@
                                         </table>
                                     </div>
 
+                                    <!-- for popup window-->
+                                    <div id="correctModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="post" id="correct_form">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">批改作業</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ csrf_field() }}
+                                                        <span id="form_output"></span>
+                                                        <div class="form-group">
+                                                            <label>分數</label>
+                                                            <input type="text" name="score" class="form-control"/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>教師評語</label>
+                                                            <input type="text" name="comment" class="form-control"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="student_assignment_id" id="student_assignment_id" value="" />
+                                                        <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end popup window -->
+
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-                    {{ csrf_field() }}
-                </form>
 
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -205,6 +254,57 @@
 
     </script>
 
+
+    <script>
+        for (var i =0; i< {{ count($students_assignments_id) }}; i++){
+            (function(){
+                var id = '#correct_data'+i;
+                var form = '#correct_form';
+                var name = '#student_assignment_id_'+i;
+                var student_assignment_id = $(name).val();
+
+
+                $(id).click(function(){
+                    var modal = '#correctModal';
+                    $(modal).modal('show');
+                    $('#student_assignment_id').val(student_assignment_id);
+                });
+
+
+                $(form).on('submit', function(event){
+                    event.preventDefault();
+                    var form_data = $(this).serialize();
+                    $.ajax({
+                        url:'{{ route('ajax.correctAssignment') }}',
+                        method:"POST",
+                        data:form_data,
+                        dataType:"json",
+                        success:function(data)
+                        {
+                            if (data.error.length > 0)
+                            {
+                                var error_html = '';
+                                for (var count = 0; count < data.error.length; count++)
+                                {
+                                    error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                                }
+                                $('#form_output').html(error_html);
+                            }
+                            else
+                            {
+                                $('#form_output').html(data.success);
+                            }
+                        }
+                    })
+                })
+            })();
+        }
+
+        $('#correctModal').on('hidden.bs.modal', function () {
+            location.reload();
+        })
+
+    </script>
 
     <script>
         /****************************************

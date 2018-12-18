@@ -64,6 +64,11 @@
                                             <thead>
                                             <tr>
                                                 <th>課程名稱</th>
+                                                <th>課程狀態</th>
+                                                <th>學年</th>
+                                                <th>學期</th>
+                                                <th>開課日期</th>
+                                                <th>結束日期</th>
                                                 <th>上次修改時間</th>
                                             </tr>
                                             </thead>
@@ -178,9 +183,14 @@
         $('#courseAll').DataTable({
             processing:true,
             serverSide:true,
-            ajax: '{!! route('get.allCourses') !!}',
+            ajax: '{!! route('get.allCommonCourses') !!}',
             columns: [
                 { data: 'name', name: 'name'},
+                { data: 'status', name: 'status' },
+                { data: 'year', name: 'year'},
+                { data: 'semester', name: 'semester'},
+                { data: 'start_date', name: 'start_date'},
+                { data: 'end_date', name: 'end_date'},
                 { data: 'updated_at', name: 'updated_at'},
             ]
         });

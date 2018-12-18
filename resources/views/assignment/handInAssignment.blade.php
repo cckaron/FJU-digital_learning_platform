@@ -29,7 +29,11 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '繳交作業'])
+        @if($student_assignment_status != 3 )
+            @include('layouts.partials.pageBreadCrumb', ['title' => '繳交作業'])
+        @else
+            @include('layouts.partials.pageBreadCrumb', ['title' => '作業詳情'])
+        @endif
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -58,7 +62,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <h4>上傳文件</h4>
+                                    <h4>
+                                        @if($student_assignment_status == 1 or $student_assignment_status == 2)
+                                            上傳文件
+                                        @elseif($student_assignment_status == 3)
+                                            查看文件
+                                        @endif
+                                    </h4>
                                 </div>
 
                                 <div class="form-group">
@@ -72,6 +82,8 @@
                     </div>
                 </div>
 
+
+                @if($student_assignment_status != 3)
                 <!--route的 get 和 post 的網址要一樣，所以post也需要 course_id 和 assignmen_id，但沒那麼重要所以就隨機生成 str_random()，不必特別取得正確的 id -->
                 <form action="{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}" id="editContent" method="post" class="form-horizontal">
 
@@ -103,6 +115,45 @@
                     </div>
                     {{ csrf_field() }}
                 </form>
+
+                @else
+                    <!-- score -->
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            作業得分：
+                                            @if ($score >= 60)
+                                            <span style="color:blue">
+                                                {{ $score }}
+                                            </span> 分
+                                            @elseif($score < 60)
+                                                <span style="color:red">
+                                                {{ $score }}
+                                            </span> 分
+                                            @endif
+                                        </h4>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    <!-- comment -->
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">教師評語：</h4>
+                                        <p>{!! $comment !!} </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        </div>
+                @endif
 
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -209,7 +260,11 @@
     </script>
 
     <script>
-        Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳";
+        if({{ $student_assignment_status }} === 3){
+            Dropzone.prototype.defaultOptions.dictDefaultMessage = "已超過繳交期限";
+        } else {
+            Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳";
+        }
         Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
         Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
         Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";

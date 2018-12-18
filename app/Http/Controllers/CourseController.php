@@ -98,6 +98,11 @@ class CourseController extends Controller
     }
 
     //所有共同課程列表 (get) with Datatables
+    public function getAllCommonCourses(){
+        return view('course.showAllCommonCourses');
+    }
+
+    //所有課程列表 (get) with Datatables
     public function getAllCourses(){
         return view('course.showAllCourses');
     }
@@ -126,6 +131,8 @@ class CourseController extends Controller
             ->where('status', 1)
             ->get();
 
+
+        //取得共同課程的id
         $common_courses_processing_id = $common_courses_processing->pluck('id');
 
         //取得進行中的課程id
@@ -135,6 +142,7 @@ class CourseController extends Controller
                 ->where('id', $courses_id[$i])
                 ->where('common_courses_id', $common_courses_processing_id[$i])
                 ->value('id');
+
             array_push($courses_processing_id, $course_id);
         }
 
@@ -169,12 +177,18 @@ class CourseController extends Controller
             array_push($courses_processing_teachers, $teachers_name);
         }
 
+        //課程名稱
+        $courses_processing_name = DB::table('courses')
+            ->whereIn('id', $courses_processing_id)
+            ->pluck('name');
+
         //已結束的課程
         $common_courses_finished = DB::table('common_courses')
             ->whereIn('id', $common_courses_id)
             ->where('status', 0)
             ->get();
 
+        //取得共同課程的id
         $common_courses_finished_id = $common_courses_finished->pluck('id');
 
         //取得已結束的課程id
@@ -184,6 +198,7 @@ class CourseController extends Controller
                 ->where('id', $courses_id[$i])
                 ->where('common_courses_id', $common_courses_finished_id[$i])
                 ->value('id');
+
             array_push($courses_finished_id, $course_id);
         }
         //基本資料
@@ -216,9 +231,42 @@ class CourseController extends Controller
             array_push($courses_finished_teachers, $teachers_name);
         }
 
+        //課程名稱
+        $courses_finished_name = DB::table('courses')
+            ->whereIn('id', $courses_processing_id)
+            ->pluck('name');
+
+        //hash common course id
+        for ($k=0; $k<count($common_courses_processing_id); $k++){
+            $hashids = new Hashids('common_courses_id', 5);
+            $common_courses_processing_id[$k] = $hashids->encode($common_courses_processing_id[$k]);
+        }
+
+        for ($k=0; $k<count($common_courses_finished_id); $k++){
+            $hashids = new Hashids('common_courses_id', 5);
+            $common_courses_finished_id[$k] = $hashids->encode($common_courses_finished_id[$k]);
+        }
+
+        //hash course id
+        for($i=0; $i<count($common_courses_processing); $i++){
+
+            $hashids = new Hashids('courses_id', 6);
+            $hashed_course_id = $hashids->encode($courses_processing_id[$i]);
+
+            $courses_processing_id[$i] = $hashed_course_id;
+        }
+
+        for($i=0; $i<count($common_courses_finished); $i++){
+
+            $hashids = new Hashids('courses_id', 6);
+            $hashed_course_id = $hashids->encode($courses_finished_id[$i]);
+
+            $courses_finished_id[$i] = $hashed_course_id;
+        }
+
 
         return view('course.showCourses_Teacher', [
-            'courses_processing_id' => $courses_processing_id[1],
+            'courses_processing_id' => $courses_processing_id,
             'common_courses_processing_id' => $common_courses_processing_id,
             'common_courses_processing_year' => $common_courses_processing_year,
             'common_courses_processing_semester' => $common_courses_processing_semester,
@@ -226,7 +274,9 @@ class CourseController extends Controller
             'common_courses_processing_start_date' => $common_courses_processing_start_date,
             'common_courses_processing_end_date' => $common_courses_processing_end_date,
             'courses_processing_teacher' => $courses_processing_teachers,
+            'courses_processing_name' => $courses_processing_name,
 
+            'courses_finished_id' => $courses_finished_id,
             'common_courses_finished_id' => $common_courses_finished_id,
             'common_courses_finished_year' => $common_courses_finished_year,
             'common_courses_finished_semester' => $common_courses_finished_semester,
@@ -234,6 +284,7 @@ class CourseController extends Controller
             'common_courses_finished_start_date' => $common_courses_finished_start_date,
             'common_courses_finished_end_date' => $common_courses_finished_end_date,
             'courses_finished_teacher' => $courses_finished_teachers,
+            'courses_finished_name' => $courses_finished_name,
         ]);
     }
 
@@ -251,7 +302,10 @@ class CourseController extends Controller
         $courses = DB::table('courses')
             ->whereIn('id', $courses_id)
             ->get();
+
         $common_courses_id = $courses->pluck('common_courses_id');
+
+
         $common_courses_processing = DB::table('common_courses')
             ->whereIn('id', $common_courses_id)
             ->where('status', 1)
@@ -260,7 +314,7 @@ class CourseController extends Controller
         //基本資料
         //共同課程的id 要先 hash，之後再 decode
         $common_courses_processing_id = $common_courses_processing->pluck('id');
-        for ($k=0; $k<count($common_courses_id); $k++){
+        for ($k=0; $k<count($common_courses_processing_id); $k++){
             $hashids = new Hashids('common_courses_id', 5);
             $common_courses_processing_id[$k] = $hashids->encode($common_courses_processing_id[$k]);
         }
@@ -311,17 +365,17 @@ class CourseController extends Controller
         ]);
     }
 
-    public function getShowSingleCourse_Teacher($common_course_id){
+    public function getShowSingleCourse_Teacher($common_courses_id){
         $teacher_id = Auth::user()->id;
 
         //把 $common_course_id 解碼
         $encode_common_course_id = new Hashids('common_courses_id', 5);
-        $common_course_id = $encode_common_course_id->decode($common_course_id);
-        $common_course_id = $common_course_id[0]; //because decode() return array
+        $common_courses_id = $encode_common_course_id->decode($common_courses_id);
+        $common_courses_id = $common_courses_id[0]; //because decode() return array
 
         //找出所有課程中，該課程的 共同課程id 等於 $common_course_id 的課程
         $courses = DB::table('courses')
-            ->where('common_courses_id', $common_course_id)
+            ->where('common_courses_id', $common_courses_id)
             ->get();
 
         $all_courses_id = $courses->pluck('id');
@@ -369,7 +423,7 @@ class CourseController extends Controller
         }
 
         $common_course = DB::table('common_courses')
-            ->where('id', $common_course_id);
+            ->where('id', $common_courses_id);
 
         $courses_year = $common_course->value('year');
         $courses_semester = $common_course->value('semester');
@@ -378,8 +432,23 @@ class CourseController extends Controller
 
         $common_course_name = $common_course->value('name');
 
+        //hash common course id
+        $hashids = new Hashids('common_courses_id', 5);
+        $common_courses_id = $hashids->encode($common_courses_id);
+
+
+        //hash course id
+        for($i=0; $i<count($common_course); $i++){
+
+            $hashids = new Hashids('courses_id', 6);
+            $hashed_course_id = $hashids->encode($courses_id[$i]);
+
+            $courses_id[$i] = $hashed_course_id;
+        }
+
+
         return view('course.showSingleCourse_Teacher', [
-            'common_course_id' => $common_course_id,
+            'common_courses_id' => $common_courses_id,
             'common_course_name' => $common_course_name,
             'courses_id' => $courses_id,
             'courses_teachers' => $courses_teachers,
@@ -410,6 +479,14 @@ class CourseController extends Controller
         return DataTables::of(common_course::query())
             ->editColumn('updated_at', function(common_course $common_course){
                 return $common_course->updated_at->diffForHumans();
+            })
+            ->make(true);
+    }
+
+    public function getAllCourses_dt(){
+        return DataTables::of(Course::query())
+            ->editColumn('updated_at', function(Course $course){
+                return $course->updated_at->diffForHumans();
             })
             ->make(true);
     }
