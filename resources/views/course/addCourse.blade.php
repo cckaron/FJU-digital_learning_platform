@@ -111,7 +111,8 @@
                                                 <th>勾選</th>
                                                 <th>學號</th>
                                                 <th>姓名</th>
-                                                <th>在學狀態</th>
+                                                <th>年級</th>
+                                                <th>班級</th>
                                                 <th>帳號建立時間</th>
                                             </tr>
                                             </thead>
@@ -233,7 +234,8 @@
                 { data: 'checkbox', name: 'checkbox'},
                 { data: 'users_id', name: 'users_id' },
                 { data: 'users_name', name: 'users_name'},
-                { data: 'status', name: 'status'},
+                { data: 'grade', name: 'grade'},
+                { data: 'class', name: 'class'},
                 { data: 'created_at', name: 'created_at'},
             ]
         });

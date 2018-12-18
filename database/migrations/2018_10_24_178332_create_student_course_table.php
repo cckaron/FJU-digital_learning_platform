@@ -14,7 +14,7 @@ class CreateStudentCourseTable extends Migration
     public function up()
     {
         Schema::create('student_course', function (Blueprint $table) {
-            $table->integer('students_id')->unsigned();
+            $table->string('students_id')->nullable();
             $table->integer('courses_id')->unsigned();
 
             $table->primary(['students_id', 'courses_id']);

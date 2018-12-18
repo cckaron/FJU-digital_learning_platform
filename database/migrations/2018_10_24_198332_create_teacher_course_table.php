@@ -14,7 +14,7 @@ class CreateTeacherCourseTable extends Migration
     public function up()
     {
         Schema::create('teacher_course', function (Blueprint $table) {
-            $table->integer('teachers_id')->unsigned();
+            $table->string('teachers_id')->nullable();
             $table->integer('courses_id')->unsigned();
 
             $table->primary(['teachers_id', 'courses_id']);

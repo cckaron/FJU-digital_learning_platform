@@ -15,7 +15,7 @@ class CreateTeacherAssignmentTable extends Migration
     {
         Schema::create('teacher_assignment', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->integer('teachers_id')->unsigned();
+            $table->string('teachers_id')->nullable();
             $table->integer('assignments_id')->unsigned();
             $table->timestamps();
 
