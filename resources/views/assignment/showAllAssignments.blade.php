@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('css')
-    <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet"/>
 @endsection
 
 @section('content')
@@ -59,16 +59,126 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <h4 style="margin-bottom: 20px"> 進行中的作業</h4>
                                     <div class="table-responsive">
-                                        <table id="courseAll" class="table table-striped table-bordered">
+                                        <table id="zero_config" class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
                                                 <th>作業名稱</th>
-                                                <th>開放繳交日期</th>
-                                                <th>截止日期</th>
+                                                <th>隸屬共同課程</th>
+                                                <th>課程</th>
+                                                <th>學年</th>
+                                                <th>學期</th>
+                                                <th>指導教師</th>
+                                                <th>開課日期</th>
+                                                <th>結課日期</th>
                                                 <th>上次修改時間</th>
                                             </tr>
                                             </thead>
+
+                                            <tbody>
+                                            @for($i=0; $i<count($assignments_processing_id); $i++)
+                                                <tr>
+                                                    <td>
+                                                        {{ $assignments_processing_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_course_processing_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_processing_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_processing_year[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_processing_semester[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        @for($j=0; $j<count($teachers_processing[$i]); $j++)
+                                                            {{ $teachers_processing[$i][$j] }}
+                                                            @if($j!=count($teachers_processing[$i])-1)
+                                                                , @endif <!-- 逗號 -->
+                                                        @endfor
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_processing_start_date[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_processing_start_date[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $assignments_processing_update_at[$i] }}
+                                                    </td>
+
+                                                </tr>
+                                            @endfor
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 style="margin-bottom: 20px"> 已結束的作業</h4>
+                                    <div class="table-responsive">
+                                        <table id="zero_config" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>作業名稱</th>
+                                                <th>隸屬共同課程</th>
+                                                <th>課程</th>
+                                                <th>學年</th>
+                                                <th>學期</th>
+                                                <th>指導教師</th>
+                                                <th>開課日期</th>
+                                                <th>結課日期</th>
+                                                <th>上次修改時間</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            @for($i=0; $i<count($assignments_finished_id); $i++)
+                                                <tr>
+                                                    <td>
+                                                        {{ $assignments_finished_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_course_finished_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_finished_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_finished_year[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_finished_semester[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        @for($j=0; $j<count($teachers_finished[$i]); $j++)
+                                                            {{ $teachers_finished[$i][$j] }}
+                                                            @if($j!=count($teachers_finished[$i])-1)
+                                                                , @endif <!-- 逗號 -->
+                                                        @endfor
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_finished_start_date[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses_finished_start_date[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $assignments_finished_update_at[$i] }}
+                                                    </td>
+
+                                                </tr>
+                                            @endfor
+                                            </tbody>
                                         </table>
                                     </div>
 
@@ -134,7 +244,7 @@
         $(".select2").select2();
 
         /*colorpicker*/
-        $('.demo').each(function() {
+        $('.demo').each(function () {
             //
             // Dear reader, it's actually very easy to initialize MiniColors. For example:
             //
@@ -148,7 +258,7 @@
                 control: $(this).attr('data-control') || 'hue',
                 position: $(this).attr('data-position') || 'bottom left',
 
-                change: function(value, opacity) {
+                change: function (value, opacity) {
                     if (!value) return;
                     if (opacity) value += ', ' + opacity;
                     if (typeof console === 'object') {
@@ -175,19 +285,27 @@
 
     </script>
 
+    {{--<script>--}}
+
+    {{--$('#courseAll').DataTable({--}}
+    {{--processing:true,--}}
+    {{--serverSide:true,--}}
+    {{--ajax: '{!! route('get.allAssignments') !!}',--}}
+    {{--columns: [--}}
+    {{--{ data: 'name', name: 'name'},--}}
+    {{--{ data: 'start_date', name: 'start_date'},--}}
+    {{--{ data: 'end_date', name: 'end_date'},--}}
+    {{--{ data: 'updated_at', name: 'updated_at'},--}}
+    {{--]--}}
+    {{--});--}}
+
+    {{--</script>--}}
+
     <script>
-
-        $('#courseAll').DataTable({
-            processing:true,
-            serverSide:true,
-            ajax: '{!! route('get.allAssignments') !!}',
-            columns: [
-                { data: 'name', name: 'name'},
-                { data: 'start_date', name: 'start_date'},
-                { data: 'end_date', name: 'end_date'},
-                { data: 'updated_at', name: 'updated_at'},
-            ]
-        });
-
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
     </script>
+
 @endsection

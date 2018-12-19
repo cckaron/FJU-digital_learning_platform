@@ -41,20 +41,7 @@
                     <!-- editor -->
                     <div class="row">
 
-                        @if(session()->has('message'))
-                        <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">提示</h5>
-
-                                <div class="alert alert-success" role="alert">
-                                    {{ session()->get('message') }}
-                                </div>
-
-                            </div>
-                        </div>
-                        </div>
-                        @endif
+                        @include('layouts.partials.returnMessage')
 
                         <div class="col-md-6">
                             <div class="card">
@@ -62,14 +49,14 @@
                                     <div class="form-group row">
                                         <label class="col-md-3" for="courseName">課程名稱</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName">
+                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">學年</label>
                                         <div class="col-md-9">
-                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                            <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
                                                 <option>106</option>
                                             </select>
                                         </div>
@@ -77,7 +64,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">學期</label>
                                         <div class="col-md-9">
-                                            <select name="semester" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                            <select name="semester" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
                                                 <option>1</option>
                                                 <option>2</option>
                                             </select>
@@ -88,7 +75,7 @@
                                         <label class="col-md-3 m-t-15">開課時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="courseStart" placeholder="開課時間">
+                                                <input type="text" class="form-control" id="datepicker-start" name="courseStart" placeholder="開課時間" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -100,7 +87,7 @@
                                         <label class="col-md-3 m-t-15">課程結束時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="courseEnd" placeholder="課程結束時間">
+                                                <input type="text" class="form-control" id="datepicker-end" name="courseEnd" placeholder="課程結束時間" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>

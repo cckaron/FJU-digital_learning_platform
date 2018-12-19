@@ -30,6 +30,14 @@ class AssignmentController extends Controller
             $course_id = $teacher->pluck('courses_id');
         }
 
+        //取得課程的 共同課程名稱
+        $common_courses_id = DB::table('courses')
+            ->whereIn('id', $course_id)
+            ->pluck('common_courses_id');
+
+        $common_courses_name = DB::table('common_courses')
+            ->whereIn('id', $common_courses_id)
+            ->pluck('name');
 
         for ($i=0; $i<count($course_id); $i++){
             if (DB::table('courses')->where('id', $course_id[$i])->exists()){
@@ -39,12 +47,19 @@ class AssignmentController extends Controller
         }
 
 
-        return view('Assignment.createAssignment', ['course_names' => $course_names]);
+        return view('Assignment.createAssignment', [
+            'course_names' => $course_names,
+            'common_courses_name' => $common_courses_name
+            ]);
     }
 
     public function postCreateAssignment(Request $request){
-
-        $teacher_id = Auth::user()->id;
+        $request->validate([
+            'assignmentName' => 'required',
+            'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
+            'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
+            'courseName' => 'required'
+        ]);
 
         $course_name = $request->input('courseName');
 
@@ -100,8 +115,212 @@ class AssignmentController extends Controller
 
 
     public function getAllAssignments(){
-        return view('assignment.showAllAssignments');
-    }
+
+        //找出這個老師的課程
+        $courses = DB::table('teacher_course')
+            ->get();
+
+        $courses_id = $courses->pluck('courses_id');
+
+        //找出這個老師的課程的作業
+        //進行中的作業
+        $assignments_processing = DB::table('assignments')
+            ->whereIn('courses_id', $courses_id)
+            ->where('status', 1)
+            ->get();
+
+        $assignments_processing_id = $assignments_processing->pluck('id');
+
+        //該作業的課程ID
+        $courses_processing_id = $assignments_processing->pluck('courses_id');
+
+        //該作業的名稱
+        $assignments_processing_name = $assignments_processing->pluck('name');
+
+        //該作業的更新時間
+        $assignments_processing_update_at = $assignments_processing->pluck('updated_at');
+
+        for($i=0; $i<count($assignments_processing_update_at); $i++){
+            $assignments_processing_update_at[$i] = Carbon::parse($assignments_processing_update_at[$i])->diffForHumans();
+        }
+
+        //取得該作業的課程資訊
+        $courses_processing_year = array();
+        $courses_processing_semester = array();
+        $courses_processing_start_date = array();
+        $courses_processing_end_date = array();
+        $course_processing_name= array();
+        $common_course_processing_name = array();
+
+        //取得該作業的指導老師
+        $teachers_processing = array();
+
+        for ($i=0; $i<count($assignments_processing); $i++) {
+
+            //課程資訊
+            $course = DB::table('courses')
+                ->where('id', $courses_processing_id[$i]);
+
+            $common_course_id = $course->value('common_courses_id');
+
+            $common_courses_detail = DB::table('common_courses')
+                ->where('id', $common_course_id);
+
+            $common_course_name = $common_courses_detail->value('name');
+            $course_name = $course->value('name');
+
+
+            $year = $common_courses_detail->value('year');
+            $semester = $common_courses_detail->value('semester');
+            $start_date = $common_courses_detail->value('start_date');
+            $end_date = $common_courses_detail->value('end_date');
+
+            array_push($courses_processing_year, $year);
+            array_push($courses_processing_semester, $semester);
+            array_push($courses_processing_start_date, $start_date);
+            array_push($courses_processing_end_date, $end_date);
+
+            array_push($common_course_processing_name, $common_course_name);
+            array_push($course_processing_name, $course_name);
+
+
+            //指導老師
+            $teachers = DB::table('teacher_course')
+                ->where('courses_id', $courses_processing_id[$i])
+                ->get();
+
+            //指導老師的人數
+            $teacher_count = DB::table('teacher_course')
+                ->where('courses_id', $courses_processing_id[$i])
+                ->count();
+
+            $teacher_array = array();
+            for ($j = 0; $j < $teacher_count; $j++) {
+                $teacher_name = DB::table('teachers')
+                    ->where('users_id', $teachers[$j]->teachers_id)
+                    ->value('users_name');
+
+                array_push($teacher_array, $teacher_name);
+            }
+
+            array_push($teachers_processing, $teacher_array);
+
+        }
+
+
+        //已結束的作業
+        $assignments_finished = DB::table('assignments')
+            ->whereIn('courses_id', $courses_id)
+            ->where('status', 0)
+            ->get();
+
+        $assignments_finished_id = $assignments_finished->pluck('id');
+
+        //該作業的課程ID
+        $courses_finished_id = $assignments_finished->pluck('courses_id');
+
+        //該作業的名稱
+        $assignments_finished_name = $assignments_finished->pluck('name');
+
+        //該作業的更新時間
+        $assignments_finished_update_at = $assignments_finished->pluck('updated_at');
+
+        for($i=0; $i<count($assignments_finished_update_at); $i++){
+            $assignments_finished_update_at[$i] = Carbon::parse($assignments_finished_update_at[$i])->diffForHumans();
+        }
+
+
+        //取得該作業的課程資訊
+        $courses_finished_year = array();
+        $courses_finished_semester = array();
+        $courses_finished_start_date = array();
+        $courses_finished_end_date = array();
+        $course_finished_name= array();
+        $common_course_finished_name = array();
+
+        //取得該作業的指導老師
+        $teachers_finished = array();
+
+        for ($i=0; $i<count($assignments_finished); $i++) {
+
+            //課程資訊
+            $course = DB::table('courses')
+                ->where('id', $courses_finished_id[$i]);
+
+            $common_course_id = $course->value('common_courses_id');
+
+            $common_courses_detail = DB::table('common_courses')
+                ->where('id', $common_course_id);
+
+            $common_course_name = $common_courses_detail->value('name');
+            $course_name = $course->value('name');
+
+
+            $year = $common_courses_detail->value('year');
+            $semester = $common_courses_detail->value('semester');
+            $start_date = $common_courses_detail->value('start_date');
+            $end_date = $common_courses_detail->value('end_date');
+
+            array_push($courses_finished_year, $year);
+            array_push($courses_finished_semester, $semester);
+            array_push($courses_finished_start_date, $start_date);
+            array_push($courses_finished_end_date, $end_date);
+
+            array_push($common_course_finished_name, $common_course_name);
+            array_push($course_finished_name, $course_name);
+
+            //指導老師
+            $teachers = DB::table('teacher_course')
+                ->where('courses_id', $courses_finished_id[$i])
+                ->get();
+
+            //指導老師的人數
+            $teacher_count = DB::table('teacher_course')
+                ->where('courses_id', $courses_finished_id[$i])
+                ->count();
+
+            $teacher_array = array();
+            for ($j = 0; $j < $teacher_count; $j++) {
+                $teacher_name = DB::table('teachers')
+                    ->where('users_id', $teachers[$j]->teachers_id)
+                    ->value('users_name');
+
+                array_push($teacher_array, $teacher_name);
+            }
+
+            array_push($teachers_finished, $teacher_array);
+
+        }
+
+        return view('assignment.showAllAssignments', [
+            'assignments_processing' => $assignments_processing,
+            'assignments_processing_id' => $assignments_processing_id,
+            'assignments_processing_name' => $assignments_processing_name,
+            'assignments_processing_update_at' => $assignments_processing_update_at,
+            'courses_processing_id' => $courses_processing_id,
+            'courses_processing_year' => $courses_processing_year,
+            'courses_processing_semester' => $courses_processing_semester,
+            'courses_processing_start_date' => $courses_processing_start_date,
+            'courses_processing_end_date' => $courses_processing_end_date,
+            'courses_processing_name' => $course_processing_name,
+            'common_course_processing_name' => $common_course_processing_name,
+            'teachers_processing' => $teachers_processing,
+
+            'assignments_finished' => $assignments_finished,
+            'assignments_finished_id' => $assignments_finished_id,
+            'assignments_finished_name' => $assignments_finished_name,
+            'assignments_finished_updated_at' => $assignments_finished_update_at,
+            'courses_finished_id' => $courses_finished_id,
+            'courses_finished_year' => $courses_finished_year,
+            'courses_finished_semester' => $courses_finished_semester,
+            'courses_finished_start_date' => $courses_finished_start_date,
+            'courses_finished_end_date' => $courses_finished_end_date,
+            'courses_finished_name' => $course_finished_name,
+            'common_course_finished_name' => $common_course_finished_name,
+            'teachers_finished' => $teachers_finished,
+
+
+        ]);    }
 
 
 
@@ -951,7 +1170,7 @@ class AssignmentController extends Controller
 
     }
 
-    public function deleteAssignment(Request $request){
+    public function deleteAssignmentFile(Request $request){
         $student_id = Auth::user()->id;
         $student_assignment_id = $request->get('student_assignment_id');
 

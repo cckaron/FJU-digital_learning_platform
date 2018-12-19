@@ -26,6 +26,13 @@ class CourseController extends Controller
 
     //新增共同課程 (post)
     public function postAddCommonCourse(Request $request){
+        $request->validate([
+            'courseName' => 'required',
+            'year' => 'required',
+            'semester' => 'required',
+            'courseStart' => 'required|date|date-format:Y/m/d|before:courseEnd',
+            'courseEnd' => 'required|date|date-format:Y/m/d|after:courseStart',
+        ]);
 
         $common_course = new common_course([
             'name' => $request->input('courseName'),
@@ -59,6 +66,13 @@ class CourseController extends Controller
 
     //新增課程 (post)
     public function postAddCourse(Request $request){
+        $request->validate([
+            'courseTeachers' => 'required',
+            'courseStudents' => 'required',
+            'common_course_name' => 'required',
+            'courseName' => 'required'
+        ]);
+
         $teachers = $request->input('courseTeachers');
         $students = $request->input('courseStudents');
 
@@ -102,9 +116,166 @@ class CourseController extends Controller
         return view('course.showAllCommonCourses');
     }
 
-    //所有課程列表 (get) with Datatables
+    //所有課程列表 (get) with Datatables -> 改掉了
     public function getAllCourses(){
-        return view('course.showAllCourses');
+        //找出這個老師的課程
+        $teacher_courses = DB::table('teacher_course')
+            ->get();
+
+        $teacher_courses_id = $teacher_courses->pluck('courses_id');
+
+        $courses = DB::table('courses')
+            ->whereIn('id', $teacher_courses_id)
+            ->get();
+
+        $courses_id = $courses->pluck('id');
+
+        $common_courses_id = $courses->pluck('common_courses_id');
+
+        //進行中的課程
+        $common_courses_processing = DB::table('common_courses')
+            ->whereIn('id', $common_courses_id)
+            ->where('status', 1)
+            ->get();
+
+
+        //取得共同課程的id
+        $common_courses_processing_id = $common_courses_processing->pluck('id');
+
+        //取得進行中的課程id
+        $courses_processing_id = array();
+        for($i=0; $i<count($common_courses_processing); $i++){
+            $course_id = DB::table('courses')
+                ->whereIn('id', $courses_id)
+                ->where('common_courses_id', $common_courses_processing_id[$i])
+                ->value('id');
+
+            array_push($courses_processing_id, $course_id);
+        }
+
+
+        //基本資料
+        $common_courses_processing_year = $common_courses_processing->pluck('year');
+        $common_courses_processing_semester = $common_courses_processing->pluck('semester');
+        $common_courses_processing_name = $common_courses_processing->pluck('name');
+        $common_courses_processing_start_date = $common_courses_processing->pluck('start_date');
+        $common_courses_processing_end_date = $common_courses_processing->pluck('end_date');
+        $common_courses_processing_updated_at = $common_courses_processing->pluck('updated_at');
+
+        for($i=0; $i<count($common_courses_processing_updated_at); $i++){
+            $common_courses_processing_updated_at[$i] = Carbon::parse($common_courses_processing_updated_at[$i])->diffForHumans();
+        }
+
+        //取得這個課程的指導老師
+        $courses_processing_teachers = array();
+
+        for($i=0; $i<count($courses_processing_id); $i++){
+            $teacher_course = DB::table('teacher_course')
+                ->where('courses_id', $courses_processing_id[$i])
+                ->get();
+
+            $teachers_id = $teacher_course->pluck('teachers_id');
+
+            $teachers_name = array();
+
+            for($k=0; $k<count($teachers_id); $k++){
+                $teacher_name = DB::table('users')
+                    ->where('id', $teachers_id[$k])
+                    ->value('name');
+
+                array_push($teachers_name, $teacher_name);
+            }
+
+            array_push($courses_processing_teachers, $teachers_name);
+        }
+
+        //課程名稱
+        $courses_processing_name = DB::table('courses')
+            ->whereIn('id', $courses_processing_id)
+            ->pluck('name');
+
+        //已結束的課程
+        $common_courses_finished = DB::table('common_courses')
+            ->whereIn('id', $common_courses_id)
+            ->where('status', 0)
+            ->get();
+
+        //取得共同課程的id
+        $common_courses_finished_id = $common_courses_finished->pluck('id');
+
+        //取得已結束的課程id
+        $courses_finished_id = array();
+        for($i=0; $i<count($common_courses_finished); $i++){
+            $course_id = DB::table('courses')
+                ->whereIn('id', $courses_id)
+                ->where('common_courses_id', $common_courses_finished_id[$i])
+                ->value('id');
+
+            array_push($courses_finished_id, $course_id);
+        }
+        //基本資料
+        $common_courses_finished_year = $common_courses_finished->pluck('year');
+        $common_courses_finished_semester = $common_courses_finished->pluck('semester');
+        $common_courses_finished_name = $common_courses_finished->pluck('name');
+        $common_courses_finished_start_date = $common_courses_finished->pluck('start_date');
+        $common_courses_finished_end_date = $common_courses_finished->pluck('end_date');
+        $common_courses_finished_updated_at = $common_courses_finished->pluck('updated_at');
+
+        for($i=0; $i<count($common_courses_finished_updated_at); $i++){
+            $common_courses_finished_updated_at[$i] = Carbon::parse($common_courses_finished_updated_at[$i])->diffForHumans();
+        }
+
+        //取得這個課程的指導老師
+        $courses_finished_teachers = array();
+
+        for($i=0; $i<count($courses_finished_id); $i++){
+            $teacher_course = DB::table('teacher_course')
+                ->where('courses_id', $courses_finished_id[$i])
+                ->get();
+
+            $teachers_id = $teacher_course->pluck('teachers_id');
+
+            $teachers_name = array();
+
+            for($k=0; $k<count($teachers_id); $k++){
+                $teacher_name = DB::table('users')
+                    ->where('id', $teachers_id[$k])
+                    ->value('name');
+
+                array_push($teachers_name, $teacher_name);
+            }
+
+            array_push($courses_finished_teachers, $teachers_name);
+        }
+
+        //課程名稱
+        $courses_finished_name = DB::table('courses')
+            ->whereIn('id', $courses_finished_id)
+            ->pluck('name');
+
+        return view('course.showAllCourses', [
+            'courses_processing_id' => $courses_processing_id,
+            'common_courses_processing_id' => $common_courses_processing_id,
+            'common_courses_processing_year' => $common_courses_processing_year,
+            'common_courses_processing_semester' => $common_courses_processing_semester,
+            'common_courses_processing_name' => $common_courses_processing_name,
+            'common_courses_processing_start_date' => $common_courses_processing_start_date,
+            'common_courses_processing_end_date' => $common_courses_processing_end_date,
+            'common_courses_processing_updated_at' => $common_courses_processing_updated_at,
+            'courses_processing_teacher' => $courses_processing_teachers,
+            'courses_processing_name' => $courses_processing_name,
+
+            'courses_finished_id' => $courses_finished_id,
+            'common_courses_finished_id' => $common_courses_finished_id,
+            'common_courses_finished_year' => $common_courses_finished_year,
+            'common_courses_finished_semester' => $common_courses_finished_semester,
+            'common_courses_finished_name' => $common_courses_finished_name,
+            'common_courses_finished_start_date' => $common_courses_finished_start_date,
+            'common_courses_finished_end_date' => $common_courses_finished_end_date,
+            'common_courses_finished_updated_at' => $common_courses_finished_updated_at,
+            'courses_finished_teacher' => $courses_finished_teachers,
+            'courses_finished_name' => $courses_finished_name,
+        ]);
     }
 
     public function getShowCourses_Teacher(){

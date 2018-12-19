@@ -41,39 +41,39 @@
                     <!-- editor -->
                     <div class="row">
 
-                        @if(session()->has('message'))
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">提示</h5>
-
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session()->get('message') }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
+                        @include('layouts.partials.returnMessage')
 
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
+
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">課程名稱</label>
-                                        <div class="col-md-9">
-                                            <select name="courseName" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                        <div class="col-md-3">
+                                            <select id="courseName" name="courseName" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
                                                 @for($i=0; $i<count($course_names); $i++)
-                                                <option>{{ $course_names[$i] }}</option>
+                                                    <option>{{ $course_names[$i] }}</option>
                                                 @endfor
                                             </select>
                                         </div>
+                                        <div class="col-md-6 m-t-10">
+                                            <h4>
+                                                隸屬共同課程：
+                                                <span style="color:blue" id="common_course_name">
+                                                    @if(count($common_courses_name) > 0)
+                                                        {{ $common_courses_name[0] }}
+                                                    @endif
+                                                </span>
+
+                                            </h4>
+                                        </div>
                                     </div>
+
 
                                     <div class="form-group row">
                                         <label class="col-md-3" for="userAccount">作業名稱</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName" required>
                                         </div>
                                     </div>
 
@@ -81,7 +81,7 @@
                                         <label class="col-md-3 m-t-15">開放繳交時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間">
+                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -93,7 +93,7 @@
                                         <label class="col-md-3 m-t-15">截止時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間">
+                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -227,5 +227,18 @@
             ]
         });
 
+    </script>
+
+    <script>
+
+        var courseName = $('#courseName');
+
+        var commonCourseName = {!! $common_courses_name !!};
+
+        courseName.change(function () {
+            var index = courseName[0].selectedIndex;
+            document.getElementById("common_course_name").innerHTML= commonCourseName[index];
+
+        })
     </script>
 @endsection

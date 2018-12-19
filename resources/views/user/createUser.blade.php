@@ -41,68 +41,81 @@
                     <!-- editor -->
                     <div class="row">
 
-                        @if(session()->has('message'))
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">提示</h5>
-
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session()->get('message') }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
+                        @include('layouts.partials.returnMessage')
 
                         <div class="col-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="userAccount">帳號</label>
+                                        <label class="col-md-3" for="account">帳號</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="帳號" name="userAccount">
+                                            <input type="text" id="account" class="form-control" placeholder="帳號" name="account" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="userID">學號</label>
+                                        <label class="col-md-3" for="id">學號</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="學號" name="userID">
+                                            <input type="text" id="id" class="form-control" placeholder="學號" name="id" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3" for="userName">姓名</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userName" class="form-control" placeholder="姓名" name="userName">
+                                            <input type="text" id="userName" class="form-control" placeholder="姓名" name="userName" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3" for="userEmail">電子信箱</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userEmail" class="form-control" placeholder="電子信箱" name="userEmail">
+                                            <input type="text" id="userEmail" class="form-control" placeholder="電子信箱" name="userEmail" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3" for="userPassword">密碼</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userPassword" class="form-control" placeholder="密碼" name="userPassword">
+                                            <input type="text" id="userPassword" class="form-control" placeholder="密碼" name="userPassword" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">帳號類型</label>
                                         <div class="col-md-9">
-                                            <select name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                            <select id="userType" name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
                                                 <option value=4 selected> 學生 </option>
                                                 <option value=3 > 教師 </option>
                                                 <option value=2 > 秘書 </option>
                                                 <option value=1 > 工讀生 </option>
                                                 <option value=0 > 系統管理員 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row student">
+                                        <label class="col-md-3" for="studentGrade">學生年級</label>
+                                        <div class="col-md-9">
+                                            <select id="studentGrade" name="studentGrade" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                                <option value="" selected> 請選擇年級 </option>
+                                                <option value='二' > 二 </option>
+                                                <option value='三' > 三 </option>
+                                                <option value='四' > 四 </option>
+                                                <option value='五' > 五 </option>
+                                                <option value='六' > 六 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row student">
+                                        <label class="col-md-3" for="studentClass">學生班級</label>
+                                        <div class="col-md-9">
+                                            <select id="studentClass" name="studentClass" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                                <option value="" selected> 請選擇班級 </option>
+                                                <option value='甲' > 甲 </option>
+                                                <option value='乙' > 乙 </option>
+
                                             </select>
                                         </div>
                                     </div>
@@ -216,18 +229,25 @@
 
     <script>
 
-        $('#courseUsers').DataTable({
-            processing:true,
-            serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
-            columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name'},
-                { data: 'type', name: 'type'},
-                { data: 'created_at', name: 'created_at'},
-            ]
-        });
+        var student = $('.student');
+        var studentGrade = $('#studentGrade');
+        var studentClass = $('#studentClass');
+
+        studentClass.attr('required',1);
+        studentGrade.attr('required',1);
+
+        $('#userType').change(function () {
+            var type = $(this).val();
+            if (type === '4'){
+                studentClass.attr('required',1);
+                studentGrade.attr('required',1);
+                student.show();
+            } else {
+                studentClass.removeAttr('required');
+                studentGrade.removeAttr('required');
+                student.hide();
+            }
+        })
 
     </script>
 @endsection

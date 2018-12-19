@@ -225,7 +225,7 @@ Route::group(['prefix' => 'dropZone'], function() {
     });
 
     Route::post('/delete', [
-        'uses' => 'AssignmentController@deleteAssignment',
+        'uses' => 'AssignmentController@deleteAssignmentFile',
         'as' => 'dropZone.deleteAssignment',
     ]);
 

@@ -41,20 +41,7 @@
                     <!-- editor -->
                     <div class="row">
 
-                        @if(session()->has('message'))
-                        <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">提示</h5>
-
-                                <div class="alert alert-success" role="alert">
-                                    {{ session()->get('message') }}
-                                </div>
-
-                            </div>
-                        </div>
-                        </div>
-                        @endif
+                        @include('layouts.partials.returnMessage')
 
                         <div class="col-md-6">
                             <div class="card">
@@ -62,7 +49,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">隸屬共同課程</label>
                                         <div class="col-md-9">
-                                            <select name="common_courses_name" class="select2 form-control m-t-15" style="height: 36px;width: 100%;">
+                                            <select name="common_courses_name" class="select2 form-control m-t-15" style="height: 36px;width: 100%;" required>
                                                 @for($i=0; $i< count($common_courses_name); $i++)
                                                     <option> {{ $common_courses_name[$i] }} </option>
                                                 @endfor
@@ -72,13 +59,13 @@
                                     <div class="form-group row">
                                         <label class="col-md-3" for="courseName">課程名稱</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName">
+                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName" required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">授課教師</label>
                                         <div class="col-md-9">
-                                            <select name="courseTeachers[]" class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;">
+                                            <select name="courseTeachers[]" class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;" required>
                                                 <optgroup label="現任教師">
                                                     @foreach($teachers->chunk(1) as $teacherChunk)
                                                         @foreach($teacherChunk as $teacher)

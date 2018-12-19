@@ -10,8 +10,10 @@ use App\Student;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+
 use Exception;
 
 class UserController extends Controller
@@ -21,10 +23,18 @@ class UserController extends Controller
     }
 
     public function postCreateUser(Request $request){
+        $request->validate([
+            'account' => 'required|unique:users',
+            'id' => 'required|string|unique:users',
+            'userName' => 'required|string',
+            'userEmail' => 'required|string',
+            'userPassword' => 'required|string',
+            'userType' => 'required',
+        ]);
 
         $user = new User([
-            'account' => $request->input('userAccount'),
-            'id' => $request->input('userID'),
+            'account' => $request->input('account'),
+            'id' => $request->input('id'),
             'name' => $request->input('userName'),
             'email' => $request->input('userEmail'),
             'password' => $request->input('userPassword'),
@@ -33,12 +43,21 @@ class UserController extends Controller
 
         $user->save();
 
-
-        $student = new Student([
-            'users_id' => $request->input('userID'),
-        ]);
-
-        $student->save();
+        if ($request->input('userType') == 3){
+            DB::table('teachers')
+                ->insert([
+                    'users_id' => $request->input('id'),
+                    'users_name' => $request->input('userName')
+                ]);
+        } else if ($request->input('userType') == 4) {
+            DB::table('students')
+                ->insert([
+                    'users_id' => $request->input('userID'),
+                    'users_name' => $request->input('userName'),
+                    'grade' => $request->input('studentGrade'),
+                    'class' => $request->input('studentClass'),]
+                );
+        }
 
 
         return redirect()->back()->with('message', '已成功新增帳號！');

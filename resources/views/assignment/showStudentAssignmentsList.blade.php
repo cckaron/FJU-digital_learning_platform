@@ -90,9 +90,7 @@
                                                 <td>{{ $student_ids[$i] }}</td>
 
                                                 <td>
-                                                    @if($scores[$i] == null)
-                                                        尚未評分
-                                                    @elseif($scores[$i] < 60)
+                                                    @if($scores[$i] < 60)
                                                         <span style="color:red; font-size: 20px;">{{ $scores[$i] }}</span>
                                                     @elseif($scores[$i] >= 60)
                                                         <span style="color:blue; font-size: 20px;"> {{ $scores[$i] }}</span>

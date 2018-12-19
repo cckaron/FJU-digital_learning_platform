@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-            @include('layouts.partials.pageBreadCrumb', ['title' => '所有共同課程'])
+            @include('layouts.partials.pageBreadCrumb', ['title' => '所有課程'])
 
     <!-- ============================================================== -->
         <!-- Container fluid  -->
@@ -59,20 +59,122 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <h4 style="margin-bottom: 20px"> 進行中的課程 </h4>
                                     <div class="table-responsive">
-                                        <table id="courseAll" class="table table-striped table-bordered">
+                                        <table id="zero_config" class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
                                                 <th>課程名稱</th>
+                                                <th>隸屬共同課程</th>
+                                                <th>學年</th>
+                                                <th>學期</th>
+                                                <th>指導教師</th>
+                                                <th>開課日期</th>
+                                                <th>結課日期</th>
                                                 <th>上次修改時間</th>
                                             </tr>
                                             </thead>
+
+                                            <tbody>
+                                            @for($i=0; $i<count($courses_processing_id); $i++)
+                                            <tr>
+                                                <td>
+                                                    {{ $courses_processing_name[$i] }}
+                                                </td>
+                                                <td>
+                                                    {{ $common_courses_processing_name[$i] }}
+                                                </td>
+                                                <td>
+                                                    {{ $common_courses_processing_year[$i] }}
+                                                </td>
+                                                <td>
+                                                    {{ $common_courses_processing_semester[$i] }}
+                                                </td>
+                                                <td>
+                                                    @for($j=0; $j<count($courses_processing_teacher[$i]); $j++)
+                                                        {{ $courses_processing_teacher[$i][$j] }}
+                                                        @if($j!=count($courses_processing_teacher[$i])-1) , @endif <!-- 逗號 -->
+                                                    @endfor
+                                                </td>
+                                                <td>
+                                                    {{ $common_courses_processing_start_date[$i] }}
+                                                </td>
+                                                <td>
+                                                    {{ $common_courses_processing_end_date[$i] }}
+                                                </td>
+                                                <td>
+                                                    {{ $common_courses_processing_updated_at[$i] }}
+                                                </td>
+
+                                            </tr>
+                                            @endfor
+                                            </tbody>
                                         </table>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
+
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 style="margin-bottom: 20px"> 已結束的課程 </h4>
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>課程名稱</th>
+                                                    <th>隸屬共同課程</th>
+                                                    <th>學年</th>
+                                                    <th>學期</th>
+                                                    <th>指導教師</th>
+                                                    <th>開課日期</th>
+                                                    <th>結課日期</th>
+                                                    <th>上次修改時間</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                @for($i=0; $i<count($courses_finished_id); $i++)
+                                                <tr>
+                                                    <td>
+                                                        {{ $courses_finished_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_courses_finished_name[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_courses_finished_year[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_courses_finished_semester[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        @for($j=0; $j<count($courses_finished_teacher[$i]); $j++)
+                                                            {{ $courses_finished_teacher[$i][$j] }}
+                                                            @if($j!=count($courses_finished_teacher[$i])-1) , @endif <!-- 逗號 -->
+                                                        @endfor
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_courses_finished_start_date[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_courses_finished_end_date[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_courses_finished_updated_at[$i] }}
+                                                    </td>
+
+                                                </tr>
+                                                @endfor
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
 
 
                     </div>
@@ -173,17 +275,25 @@
 
     </script>
 
+    {{--<script>--}}
+
+        {{--$('#courseAll').DataTable({--}}
+            {{--processing:true,--}}
+            {{--serverSide:true,--}}
+            {{--ajax: '{!! route('get.allCourses') !!}',--}}
+            {{--columns: [--}}
+                {{--{ data: 'name', name: 'name'},--}}
+                {{--{ data: 'updated_at', name: 'updated_at'},--}}
+            {{--]--}}
+        {{--});--}}
+
+    {{--</script>--}}
+
     <script>
-
-        $('#courseAll').DataTable({
-            processing:true,
-            serverSide:true,
-            ajax: '{!! route('get.allCourses') !!}',
-            columns: [
-                { data: 'name', name: 'name'},
-                { data: 'updated_at', name: 'updated_at'},
-            ]
-        });
-
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
     </script>
+
 @endsection
