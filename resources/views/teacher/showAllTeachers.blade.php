@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '新增作業'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有學生'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -36,79 +36,48 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('course.addCourse') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
 
-                        @include('layouts.partials.returnMessage')
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程名稱</label>
-                                        <div class="col-md-3">
-                                            <select id="courseName" name="courseName" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                                @for($i=0; $i<count($course_names); $i++)
-                                                    <option>{{ $course_names[$i] }}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 m-t-10">
-                                            <h4>
-                                                隸屬共同課程：
-                                                <span style="color:blue" id="common_course_name">
-                                                    @if(count($common_courses_name) > 0)
-                                                        {{ $common_courses_name[0] }}
-                                                    @endif
-                                                </span>
-
-                                            </h4>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3" for="userAccount">作業名稱</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開放繳交時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間" required>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">截止時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間" required>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="border-top">
+                        @if(session()->has('message'))
+                            <div class="col-12">
+                                <div class="card">
                                     <div class="card-body">
-                                        <input type="submit" class="btn btn-primary">
+                                        <h5 class="card-title">提示</h5>
+
+                                        <div class="alert alert-success" role="alert">
+                                            {{ session()->get('message') }}
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
+                        @endif
+
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="courseAll" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>姓名</th>
+                                                <th>ID</th>
+                                                <th>狀態</th>
+                                                <th>備註</th>
+                                                <th>上次修改時間</th>
+                                                <th>動作</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
+
 
                     </div>
                     {{ csrf_field() }}
@@ -192,60 +161,59 @@
             });
 
         });
-
-
-        /*datepicker*/
-        $('#datepicker-start').datepicker({
+        /*datwpicker*/
+        jQuery('.mydatepicker').datepicker();
+        jQuery('#datepicker-start').datepicker({
             autoclose: true,
-            todayHighlight: true,
-            format: "yyyy/mm/dd",
-
+            todayHighlight: true
         });
-        $('#datepicker-end').datepicker({
+        jQuery('#datepicker-end').datepicker({
             autoclose: true,
-            todayHighlight: true,
-            format: "yyyy/mm/dd",
+            todayHighlight: true
         });
-
-
-
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
 
     </script>
 
     <script>
 
-        $('#courseUsers').DataTable({
+        $('#courseAll').DataTable({
             processing:true,
             serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
+            language: {
+                "processing":   "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu":   "顯示 _MENU_ 項結果",
+                "zeroRecords":  "沒有符合的結果",
+                "info":         "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
+                "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+                "infoPostFix":  "",
+                "search":       "搜尋:",
+                "paginate": {
+                    "first":    "第一頁",
+                    "previous": "上一頁",
+                    "next":     "下一頁",
+                    "last":     "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            },
+            ajax: '{!! route('get.allTeachers') !!}',
             columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name'},
-                { data: 'type', name: 'type'},
-                { data: 'created_at', name: 'created_at'},
+                { data: 'users_name', name: 'users_name'},
+                { data: 'users_id', name: 'users_id' },
+                { data: 'status', name: 'status'},
+                { data: 'remark', name: 'remark'},
+                { data: 'updated_at', name: 'updated_at'},
+                { data: 'motion', name: 'motion'},
             ]
         });
 
     </script>
-
-    <script>
-
-        var courseName = $('#courseName');
-
-        var commonCourseName = {!! $common_courses_name !!};
-
-        courseName.change(function () {
-            var index = courseName[0].selectedIndex;
-            document.getElementById("common_course_name").innerHTML= commonCourseName[index];
-
-        })
-    </script>
-
-    <!-- close autocomplete of datetime picker -->
-    <script>
-        $('#datepicker-start').attr('autocomplete','off');
-        $('#datepicker-end').attr('autocomplete','off');
-    </script>
-
 @endsection
+

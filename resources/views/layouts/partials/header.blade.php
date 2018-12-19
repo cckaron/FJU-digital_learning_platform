@@ -21,7 +21,7 @@
                 <!-- Logo text -->
                 <span class="logo-text">
                              <!-- dark Logo text -->
-                             <img src="{{ URL::to('images/logo-text.png') }}" alt="homepage" class="light-logo" />
+                             <img src="{{ URL::to('images/logo-text.png') }}" alt="homepage" class="light-logo" width="152px" height="28px"/>
 
                         </span>
                 <!-- Logo icon -->

@@ -113,6 +113,17 @@ class AssignmentController extends Controller
         return redirect()->back()->with('message', '新增作業成功！');
     }
 
+    public function deleteAssignment($id){
+        $encode_assignment_id = new Hashids('assignment_id', 10);
+        $assignment_id = $encode_assignment_id->decode($id);
+
+        DB::table('assignments')
+            ->where('id', $assignment_id)
+            ->delete();
+
+        return redirect()->back()->with('message', '刪除作業成功！');
+    }
+
 
     public function getAllAssignments(){
 
@@ -1245,7 +1256,7 @@ class AssignmentController extends Controller
 
     public function correctAssignment(Request $request){
         $validation = Validator::make($request->all(), [
-            'score' => 'required',
+            'score' => 'Integer',
         ]);
 
         $error_array = array();

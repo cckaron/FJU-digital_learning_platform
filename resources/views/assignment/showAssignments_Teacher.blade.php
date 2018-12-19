@@ -87,6 +87,8 @@
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
                                                     <a href="{{ route('courses.showStudentAssignmentsList', ['course_id' => $courses_processing_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
+                                                    <a href="{{ route('assignments.deleteAssignment', ['id' => $assignments_processing_id[$i]]) }}"  name="add" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px; margin-left: 3px;" onclick="return confirm('該作業相關資料將會一併刪除，確定刪除?')">刪除作業</a>
+
                                                     <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-top: 5px;">
                                                         {{ $courses_processing_name[$i] }}
                                                     </span>
@@ -101,6 +103,9 @@
 
                                 </div>
                             </div>
+
+
+
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">已結束的作業 </h4>
@@ -134,8 +139,7 @@
                                                     <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
                                                     <a href="{{ route('courses.showStudentAssignmentsList', ['course_id' => $courses_finished_id[$i] ,'assignment_id' => $assignments_finished_id[$i]]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
 
-
-                                                <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
+                                                    <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
 
 
                                                 <!-- 成績 -->
@@ -250,6 +254,8 @@
         });
 
     </script>
+
+
 
 
 @endsection

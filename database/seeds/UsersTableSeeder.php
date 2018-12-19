@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             'account' => 100100,
             'id' => 100100,
-            'name' => 'Teacher A',
+            'name' => 'teacher A',
             'email' => 'aaat@gmail.com',
             'password' => bcrypt('100100'), // secret
             'type' => 3,
@@ -34,7 +34,7 @@ class UsersTableSeeder extends Seeder
 
         DB::table('teachers')->insert([
             'users_id' => 100100,
-            'users_name' => 'Teacher A',
+            'users_name' => 'teacher A',
             "created_at" =>  \Carbon\Carbon::now(),
             "updated_at" =>  \Carbon\Carbon::now(),
         ]);

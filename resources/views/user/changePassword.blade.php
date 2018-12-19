@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '新增作業'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '更改密碼'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -36,68 +36,29 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('user.changePassword') }}" method="post" class="form-horizontal">
 
                     <!-- editor -->
                     <div class="row">
 
                         @include('layouts.partials.returnMessage')
 
-                        <div class="col-md-6">
+                        <div class="col-6">
                             <div class="card">
                                 <div class="card-body">
 
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程名稱</label>
-                                        <div class="col-md-3">
-                                            <select id="courseName" name="courseName" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                                @for($i=0; $i<count($course_names); $i++)
-                                                    <option>{{ $course_names[$i] }}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 m-t-10">
-                                            <h4>
-                                                隸屬共同課程：
-                                                <span style="color:blue" id="common_course_name">
-                                                    @if(count($common_courses_name) > 0)
-                                                        {{ $common_courses_name[0] }}
-                                                    @endif
-                                                </span>
-
-                                            </h4>
-                                        </div>
-                                    </div>
-
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="userAccount">作業名稱</label>
+                                        <label class="col-md-3" for="newPassword">新密碼</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName" required>
+                                            <input type="password" id="newPassword" class="form-control" placeholder="新密碼" name="newPassword" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開放繳交時間</label>
+                                        <label class="col-md-3" for="confirmPassword">請再輸入一次新密碼</label>
                                         <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間" required>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">截止時間</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間" required>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
+                                            <input type="password" id="confirmPassword" class="form-control" placeholder="確認密碼" name="confirmPassword" required>
                                         </div>
                                     </div>
 
@@ -192,60 +153,43 @@
             });
 
         });
-
-
-        /*datepicker*/
-        $('#datepicker-start').datepicker({
+        /*datwpicker*/
+        jQuery('.mydatepicker').datepicker();
+        jQuery('#datepicker-start').datepicker({
             autoclose: true,
-            todayHighlight: true,
-            format: "yyyy/mm/dd",
-
+            todayHighlight: true
         });
-        $('#datepicker-end').datepicker({
+        jQuery('#datepicker-end').datepicker({
             autoclose: true,
-            todayHighlight: true,
-            format: "yyyy/mm/dd",
+            todayHighlight: true
         });
-
-
-
-
-    </script>
-
-    <script>
-
-        $('#courseUsers').DataTable({
-            processing:true,
-            serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
-            columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name'},
-                { data: 'type', name: 'type'},
-                { data: 'created_at', name: 'created_at'},
-            ]
+        var quill = new Quill('#editor', {
+            theme: 'snow'
         });
 
     </script>
 
     <script>
 
-        var courseName = $('#courseName');
+        var student = $('.student');
+        var studentGrade = $('#studentGrade');
+        var studentClass = $('#studentClass');
 
-        var commonCourseName = {!! $common_courses_name !!};
+        studentClass.attr('required',1);
+        studentGrade.attr('required',1);
 
-        courseName.change(function () {
-            var index = courseName[0].selectedIndex;
-            document.getElementById("common_course_name").innerHTML= commonCourseName[index];
-
+        $('#userType').change(function () {
+            var type = $(this).val();
+            if (type === '4'){
+                studentClass.attr('required',1);
+                studentGrade.attr('required',1);
+                student.show();
+            } else {
+                studentClass.removeAttr('required');
+                studentGrade.removeAttr('required');
+                student.hide();
+            }
         })
-    </script>
 
-    <!-- close autocomplete of datetime picker -->
-    <script>
-        $('#datepicker-start').attr('autocomplete','off');
-        $('#datepicker-end').attr('autocomplete','off');
     </script>
-
 @endsection

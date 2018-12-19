@@ -50,139 +50,240 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
             'as' => 'auth.signOut',
         ]);
     });
+
+    Route::get('/passwords', [
+        'uses' => 'UserController@getChangePassword',
+        'as' => 'user.changePassword',
+    ]);
+
+    Route::post('/passwords', [
+        'uses' => 'UserController@postChangePassword',
+        'as' => 'user.changePassword',
+    ]);
 });
 
-
-Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
-   Route::get('/add', [
-       'uses' => 'CourseController@getAddCommonCourse',
-       'as' => 'course.addCommonCourse'
-   ]);
-
-   Route::post('/add', [
-       'uses' => 'CourseController@postAddCommonCourse',
-       'as' => 'course.addCommonCourse'
-   ]);
-
-   Route::group(['prefix' => 'course', 'middleware' => 'auth'], function (){
-       Route::get('/add', [
-           'uses' => 'CourseController@getAddCourse',
-           'as' => 'course.addCourse'
-       ]);
-
-       Route::post('/add', [
-           'uses' => 'CourseController@postAddCourse',
-           'as' => 'course.addCourse'
-       ]);
-   });
-
-
-   //assignment
-    Route::get('/allAssignments', [
-        'uses' => 'AssignmentController@getAllAssignments' ,
-        'as' => 'assignment.showAllAssignments'
-    ]);
-
-    Route::get('/assignment/new', [
-        'uses' => 'AssignmentController@getCreateAssignment',
-        'as' => 'Assignment.createAssignment'
-    ]);
-
-    Route::post('assignment/new', [
-        'uses' => 'AssignmentController@postCreateAssignment',
-        'as' => 'Assignment.createAssignment'
-    ]);
-
-
-    Route::get('{course_id}/assignments/{assignment_id}/handIn', [
-        'uses' => 'AssignmentController@getHandInAssignment',
-        'as' => 'assignment.handInAssignment'
-    ]);
-
-    Route::post('{course_id}/assignments/{assignment_id}/handIn', [
-        'uses' => 'AssignmentController@postHandInAssignment',
-        'as' => 'assignment.handInAssignment'
-    ]);
-
-
-
-//    Route::group(['prefix' => '{course_id}', 'middleware' => 'auth'], function(){
-//
-//    });
-});
-
+// 學生 (type = 4)
 Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
-    Route::get('/assignments', [
-        'uses' => 'AssignmentController@getAssignments',
-        'as' => 'assignment.showAssignments'
-    ]);
+
+    //作業
+    Route::group(['prefix' => 'assignments', 'middleware' => 'auth'], function(){
+
+        //列出 (get)
+        Route::get('/', [
+            'uses' => 'AssignmentController@getAssignments',
+            'as' => 'assignment.showAssignments'
+        ]);
+    });
+
+    //交作業
+    Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
+
+        //繳交 (get)
+        Route::get('{course_id}/assignments/{assignment_id}/handIn', [
+            'uses' => 'AssignmentController@getHandInAssignment',
+            'as' => 'assignment.handInAssignment'
+        ]);
+
+        //繳交 (post)
+        Route::post('{course_id}/assignments/{assignment_id}/handIn', [
+            'uses' => 'AssignmentController@postHandInAssignment',
+            'as' => 'assignment.handInAssignment'
+        ]);
+    });
 });
 
 
+// 教師 (type = 3)
 Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
-    Route::get('/assignments', [
-        'uses' => 'AssignmentController@getAssignments_Teacher',
-        'as' => 'assignment.showAssignments_Teacher'
-    ]);
 
-    Route::get('/courses', [
-        'uses' => 'CourseController@getShowCourses_Teacher',
-        'as' => 'courses.showCourses_Teacher'
-    ]);
+    //共同課程
+    Route::group(['prefix' => 'commonCourses', 'middleware' => 'auth'], function(){
 
-    Route::get('/commonCourses', [
-        'uses' => 'CourseController@getShowCommonCourses_Teacher',
-        'as' => 'courses.showCommonCourses_Teacher'
-    ]);
+        //列出 (get)
+        Route::get('/', [
+            'uses' => 'CourseController@getShowCommonCourses_Teacher',
+            'as' => 'courses.showCommonCourses_Teacher'
+        ]);
 
-    Route::get('/commonCourses/{common_courses_id}/courses', [
-        'uses' => 'CourseController@getShowSingleCourse_Teacher',
-        'as' => 'courses.showSingleCourse_Teacher'
-    ]);
+        //列出 共同課程->課程 (get)
+        Route::get('/{common_courses_id}/courses', [
+            'uses' => 'CourseController@getShowSingleCourse_Teacher',
+            'as' => 'courses.showSingleCourse_Teacher'
+        ]);
 
-    Route::get('/commonCourses/{common_courses_id}/courses/{courses_id}/assignments/', [
-        'uses' => 'AssignmentController@getSingleAssignments_Teacher',
-        'as' => 'courses.showSingleAssignments_Teacher'
-    ]);
+        //列出 共同課程->課程->作業 (get)
+        Route::get('/{common_courses_id}/courses/{courses_id}/assignments/', [
+            'uses' => 'AssignmentController@getSingleAssignments_Teacher',
+            'as' => 'courses.showSingleAssignments_Teacher'
+        ]);
 
-    Route::get('/courses/{course_id}/assignments/{assignment_id}/list', [
-        'uses' => 'AssignmentController@getStudentAssignmentsList',
-        'as' => 'courses.showStudentAssignmentsList'
-    ]);
+        //列出 作業狀態列表 (get)
+        Route::get('/courses/{course_id}/assignments/{assignment_id}/list', [
+            'uses' => 'AssignmentController@getStudentAssignmentsList',
+            'as' => 'courses.showStudentAssignmentsList'
+        ]);
 
+        Route::get('assignments/delete/{id}', [
+            'uses' => 'AssignmentController@deleteAssignment',
+            'as' => 'assignments.deleteAssignment',
+        ]);
+    });
+
+    //課程
+    Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
+
+        //列出 (get)
+        Route::get('/', [
+            'uses' => 'CourseController@getShowCourses_Teacher',
+            'as' => 'courses.showCourses_Teacher'
+        ]);
+    });
+
+    //作業
+    Route::group(['prefix' => 'assignment', 'middleware' => 'auth'], function(){
+
+        //新增 (get)
+        Route::get('/assignment/new', [
+            'uses' => 'AssignmentController@getCreateAssignment',
+            'as' => 'Assignment.createAssignment'
+        ]);
+
+        //新增 (post)
+        Route::post('assignment/new', [
+            'uses' => 'AssignmentController@postCreateAssignment',
+            'as' => 'Assignment.createAssignment'
+        ]);
+
+        //列出 (get)
+        Route::get('/', [
+            'uses' => 'AssignmentController@getAssignments_Teacher',
+            'as' => 'assignment.showAssignments_Teacher'
+        ]);
+    });
 });
 
 
-
+//管理員 (type = 0)
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
-    Route::get('/add', [
-        'uses' => 'UserController@getCreateUser',
-        'as' => 'user.createUser'
-    ]);
 
-    Route::post('/add', [
-        'uses' => 'UserController@postCreateUser',
-        'as' => 'user.createUser'
-    ]);
+    //共同課程
+    Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
 
-    Route::get('/commonCourses', [
-       'uses' => 'CourseController@getAllCommonCourses' ,
-        'as' => 'course.showAllCommonCourses'
-    ]);
+        //新增 (get)
+        Route::get('/add', [
+            'uses' => 'CourseController@getAddCommonCourse',
+            'as' => 'course.addCommonCourse'
+        ]);
 
-    Route::get('/courses', [
-        'uses' => 'CourseController@getAllCourses' ,
-        'as' => 'course.showCourses'
-    ]);
+        //新增 (post)
+        Route::post('/add', [
+            'uses' => 'CourseController@postAddCommonCourse',
+            'as' => 'course.addCommonCourse'
+        ]);
 
-    Route::get('/import', [
-        'uses' => 'UserController@importUsers',
-        'as' => 'user.importUsers'
-    ]);
+        //刪除 (get)
+        Route::get('/delete/{id}', [
+            'uses' => 'CourseController@deleteCommonCourse',
+            'as' => 'commonCourse.delete'
+        ]);
+
+        //列出 (get)
+        Route::get('/allCommonCourses', [
+            'uses' => 'CourseController@getAllCommonCourses' ,
+            'as' => 'course.showAllCommonCourses'
+        ]);
+
+    });
+
+    //課程
+    Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
+
+        //新增 (get)
+        Route::get('/add', [
+            'uses' => 'CourseController@getAddCourse',
+            'as' => 'course.addCourse'
+        ]);
+
+        //新增 (post)
+        Route::post('/add', [
+            'uses' => 'CourseController@postAddCourse',
+            'as' => 'course.addCourse'
+        ]);
+
+        //刪除 (get)
+        Route::get('/delete/{id}', [
+            'uses' => 'CourseController@deleteCourse',
+            'as' => 'course.delete'
+        ]);
+
+        //列出 (get)
+        Route::get('/allCourses', [
+            'uses' => 'CourseController@getAllCourses' ,
+            'as' => 'course.showCourses'
+        ]);
+
+    });
+
+    //作業
+    Route::group(['prefix' => 'assignment', 'middleware' => 'auth'], function(){
+
+        //列出 (get)
+        Route::get('/allAssignments', [
+            'uses' => 'AssignmentController@getAllAssignments' ,
+            'as' => 'assignment.showAllAssignments'
+        ]);
+    });
+
+    //使用者
+    Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
+
+        //新增 (get)
+        Route::get('/add', [
+            'uses' => 'UserController@getCreateUser',
+            'as' => 'user.createUser'
+        ]);
+
+        //新增 (post)
+        Route::post('/add', [
+            'uses' => 'UserController@postCreateUser',
+            'as' => 'user.createUser'
+        ]);
+
+        //匯入 (get) -> 搭配 dropZone 上傳
+        Route::get('/import', [
+            'uses' => 'UserController@importUsers',
+            'as' => 'user.importUsers'
+        ]);
+
+        //列出學生 (get)
+        Route::get('students', [
+            'uses' => 'UserController@getAllStudents',
+            'as' => 'user.getAllStudents'
+        ]);
+
+        //列出老師 (get)
+        Route::get('teachers', [
+            'uses' => 'UserController@getAllTeachers',
+            'as' => 'user.getAllTeachers'
+        ]);
+
+        //刪除學生 (get)
+        Route::get('/student/delete/{id}', [
+            'uses' => 'UserController@deleteStudent',
+            'as' => 'user.deleteStudent'
+        ]);
+
+        Route::get('/teacher/delete/{id}', [
+            'uses' => 'UserController@deleteTeacher',
+            'as' => 'user.deleteTeacher'
+        ]);
+    });
+
+
 
 });
 
-// for data tables
+// data tables
 Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
     Route::get('/user', [
         'uses' => 'CourseController@getUsers_dt',
@@ -203,9 +304,19 @@ Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
        'uses' => 'AssignmentController@getAllAssignments_dt',
        'as' => 'get.allAssignments'
     ]);
+
+    Route::get('allStudents', [
+        'uses' => 'UserController@getAllStudents_dt',
+        'as' => 'get.allStudents'
+    ]);
+
+    Route::get('allTeachers', [
+        'uses' => 'UserController@getAllTeachers_dt',
+        'as' => 'get.allTeachers'
+    ]);
 });
 
-//for dropZone
+// dropZone
 Route::group(['prefix' => 'dropZone'], function() {
     Route::group(['prefix' => 'upload'], function() {
         Route::post('/assignments', [
@@ -240,6 +351,7 @@ Route::group(['prefix' => 'dropZone'], function() {
     ]);
 });
 
+//blade ajax
 Route::group(['prefix' => 'ajax'], function(){
    Route::post('/ajax/correctAssignment', [
        'uses' => 'AssignmentController@correctAssignment',

@@ -47,6 +47,14 @@ class CourseController extends Controller
         return redirect()->back()->with('message', '已成功新增共同課程！');
     }
 
+    public function deleteCommonCourse($id){
+        DB::table('common_courses')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()->back()->with('message', '已成功刪除共同課程');
+    }
+
     //新增課程 (get)
     public function getAddCourse(){
         $teachers = DB::table('teachers')->get();
@@ -69,7 +77,7 @@ class CourseController extends Controller
         $request->validate([
             'courseTeachers' => 'required',
             'courseStudents' => 'required',
-            'common_course_name' => 'required',
+            'common_courses_name' => 'required',
             'courseName' => 'required'
         ]);
 
@@ -108,7 +116,15 @@ class CourseController extends Controller
                     ['students_id' => (int)$students[$k],'courses_id' => $course_id]
                 ]);
         }
-        return redirect()->back()->with('message', '已成功新增課程！');
+        return redirect()->back()->with('message', '已成功新增課程');
+    }
+
+    public function deleteCourse($id){
+        DB::table('courses')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()->back()->with('message', '已成功刪除課程');
     }
 
     //所有共同課程列表 (get) with Datatables
@@ -651,6 +667,12 @@ class CourseController extends Controller
             ->editColumn('updated_at', function(common_course $common_course){
                 return $common_course->updated_at->diffForHumans();
             })
+            ->addColumn('motion', function (common_course $common_course) {
+                $route = route('commonCourse.delete', ['id' => $common_course->id]);
+                return '<a href="'.$route.'" class="btn btn-danger btn-sm" onclick="return confirm(\'該課程資料將會一併刪除，確定刪除?\')">
+                          刪除</a>';
+            })
+            ->rawColumns(['motion'])
             ->make(true);
     }
 

@@ -18,7 +18,7 @@ class UserAuthController extends Controller
         if (Auth::attempt($user_data)){
             return redirect()->route('dashboard.index');
         } else {
-            return back()->with('error', 'Wrong Login Details');
+            return back()->with('message', '帳號或密碼錯誤');
         }
     }
 

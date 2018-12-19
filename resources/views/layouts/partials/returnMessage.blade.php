@@ -19,9 +19,6 @@
             <div class="card-body">
                 <h5 class="card-title">錯誤訊息</h5>
 
-                <div class="alert alert-danger" role="alert">
-                    新增失敗！
-                </div>
                 @foreach($errors->all() as $error)
                     <div class="alert alert-danger" role="alert">
                         {{ $error }}

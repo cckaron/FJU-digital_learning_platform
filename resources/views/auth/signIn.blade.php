@@ -21,11 +21,11 @@
             <div class="auth-box bg-dark border-top border-secondary">
                 <div id="loginform">
                     <div class="text-center p-t-20 p-b-20">
-                        <span class="db"><img src="{{ URL::to('/images/logo.jpeg') }}" alt="logo" height="50px" width="200px"/></span>
+                        <span class="db"><img src="{{ URL::to('/images/logo-text.png') }}" alt="logo" width="304px" height="56px"/></span>
                     </div>
 
-                    @if ($message = Session::get('error'))
-                        <div class="alert alert-danger">
+                    @if ($message = Session::get('message'))
+                        <div class="alert alert-danger" style="margin-top: 10px;">
                             <button type="button" class="close" data-dismiss="alert">x</button>
                             <strong>{{ $message }}</strong>
                         </div>
@@ -63,7 +63,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="p-t-20" style="margin-top: 10px;">
-                                        <button class="btn btn-info" id="to-recover" type="button"><i class="fa fa-lock m-r-5"></i> 忘記密碼?</button>
+                                        {{--<button class="btn btn-info" id="to-recover" type="button"><i class="fa fa-lock m-r-5"></i> 忘記密碼?</button>--}}
                                         <button class="btn btn-success float-right" type="submit">登入</button>
                                     </div>
                                 </div>

@@ -201,4 +201,11 @@
         });
 
     </script>
+
+    <!-- close autocomplete of datetime picker -->
+    <script>
+        $('#datepicker-start').attr('autocomplete','off');
+        $('#datepicker-end').attr('autocomplete','off');
+    </script>
+
 @endsection

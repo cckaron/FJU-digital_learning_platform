@@ -72,6 +72,7 @@
                                                 <th>開課日期</th>
                                                 <th>結課日期</th>
                                                 <th>上次修改時間</th>
+                                                <th>動作</th>
                                             </tr>
                                             </thead>
 
@@ -105,6 +106,12 @@
                                                 <td>
                                                     {{ $common_courses_processing_updated_at[$i] }}
                                                 </td>
+                                                <td>
+                                                    {{--<button type="button" class="btn btn-cyan btn-sm">編輯</button>--}}
+                                                    <a href="{{ route('course.delete', ['id' => $courses_processing_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        刪除
+                                                    </a>
+                                                </td>
 
                                             </tr>
                                             @endfor
@@ -132,6 +139,7 @@
                                                     <th>開課日期</th>
                                                     <th>結課日期</th>
                                                     <th>上次修改時間</th>
+                                                    <th>動作</th>
                                                 </tr>
                                                 </thead>
 
@@ -164,6 +172,12 @@
                                                     </td>
                                                     <td>
                                                         {{ $common_courses_finished_updated_at[$i] }}
+                                                    </td>
+                                                    <td>
+                                                        {{--<button type="button" class="btn btn-cyan btn-sm">編輯</button>--}}
+                                                        <a href="{{ route('course.delete', ['id' => $courses_finished_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                            刪除
+                                                        </a>
                                                     </td>
 
                                                 </tr>
@@ -293,7 +307,29 @@
         /****************************************
          *       Basic Table                   *
          ****************************************/
-        $('#zero_config').DataTable();
+        $('#zero_config').DataTable({
+            language: {
+                "processing":   "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu":   "顯示 _MENU_ 項結果",
+                "zeroRecords":  "沒有符合的結果",
+                "info":         "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
+                "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+                "infoPostFix":  "",
+                "search":       "搜尋:",
+                "paginate": {
+                    "first":    "第一頁",
+                    "previous": "上一頁",
+                    "next":     "下一頁",
+                    "last":     "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            },
+        });
     </script>
 
 @endsection

@@ -7,14 +7,18 @@ use App\Imports\TeachersImport;
 use App\Imports\UsersStudentImport;
 use App\Imports\UsersTeacherImport;
 use App\Student;
+use App\Teacher;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Exception;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -63,6 +67,34 @@ class UserController extends Controller
         return redirect()->back()->with('message', '已成功新增帳號！');
     }
 
+    public function getChangePassword(){
+        $user_id = Auth::user()->id;
+        return view('user.changePassword', [
+            'user_id' => $user_id
+        ]);
+    }
+
+    public function postChangePassword(Request $request){
+        $user_id = Auth::user()->id;
+
+        $user = Auth::user();
+
+        $request->validate([
+            'newPassword' => ['required', 'min:8', function ($attribute, $value, $fail) use ($user) {
+                if (Hash::check($value, $user->password)) {
+                    return $fail('新密碼 不能和 舊密碼 相同');
+                }
+            }],
+            'confirmPassword' => 'required|min:8|same:newPassword'
+        ]);
+
+        DB::table('users')
+            ->where('id', $user_id)
+            ->update(['password' => bcrypt($request->input('newPassword'))]);
+
+        return redirect()->back()->with('message', '已成功更改密碼');
+    }
+
     public function importUsers(){
         return view('user.importUsers');
     }
@@ -100,6 +132,82 @@ class UserController extends Controller
 
         Excel::import(new UsersTeacherImport(), $FullFilePath);
         Excel::import(new TeachersImport(), $FullFilePath);
+    }
 
+    public function getAllStudents(){
+        return view('student.showAllStudent');
+    }
+
+    public function deleteStudent($id){
+
+        DB::table('users')
+            ->where('id', $id)
+            ->delete();
+
+        File::deleteDirectory(public_path($id));
+
+        return redirect()->back()->with('message', '刪除成功');
+
+    }
+
+    public function getAllTeachers(){
+        return view('teacher.showAllTeachers');
+    }
+
+    public function deleteTeacher($id){
+
+        DB::table('users')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()->back()->with('message', '刪除成功');
+
+
+    }
+
+    public function getAllStudents_dt(){
+        return DataTables::of(Student::query())
+            ->editColumn('updated_at', function(Student $student){
+                return $student->updated_at->diffForHumans();
+            })
+            ->editColumn('status', function(Student $student){
+                $status = $student->status;
+                if ($status == 1){
+                    return '在學';
+                } elseif ($status == 0) {
+                    return '休學';
+                }
+
+            })
+            ->addColumn('motion', function (Student $student) {
+                $route = route('user.deleteStudent', ['id' => $student->users_id]);
+                return '<a href="'.$route.'" class="btn btn-danger btn-sm" onclick="return confirm(\'該學生資料將會一併刪除，確定刪除?\')">
+                          刪除</a>';
+            })
+            ->rawColumns(['motion'])
+            ->make(true);
+    }
+
+    public function getAllTeachers_dt(){
+        return DataTables::of(Teacher::query())
+            ->editColumn('updated_at', function(Teacher $teacher){
+                return $teacher->updated_at->diffForHumans();
+            })
+            ->editColumn('status', function(Teacher $teacher){
+                $status = $teacher->status;
+                if ($status == 1){
+                    return '在職';
+                } elseif ($status == 0) {
+                    return '停職';
+                }
+
+            })
+            ->addColumn('motion', function (Teacher $teacher) {
+                $route = route('user.deleteTeacher', ['id' => $teacher->users_id]);
+                return '<a href="'.$route.'" class="btn btn-danger btn-sm" onclick="return confirm(\'該教師資料將會一併刪除，確定刪除?\')">
+                          刪除</a>';
+            })
+            ->rawColumns(['motion'])
+            ->make(true);
     }
 }
