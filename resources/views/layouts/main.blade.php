@@ -25,6 +25,12 @@
     <link href="{{ URL::to('extra-libs/multicheck/multicheck.css') }} " rel="stylesheet"/>
     <link href="{{ URL::to('libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet"/>
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+    <style type="text/css">
+        @font-face {
+            font-family: NotoSansTC-Regular;
+            src: url('{{ URL::to('fonts/NotoSansTC-Regular.tff') }}');
+        }
+    </style>
 
     @yield('css')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

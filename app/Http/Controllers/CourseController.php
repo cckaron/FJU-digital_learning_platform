@@ -625,7 +625,7 @@ class CourseController extends Controller
 
 
         //hash course id
-        for($i=0; $i<count($common_course); $i++){
+        for($i=0; $i<count($courses_id); $i++){
 
             $hashids = new Hashids('courses_id', 6);
             $hashed_course_id = $hashids->encode($courses_id[$i]);
