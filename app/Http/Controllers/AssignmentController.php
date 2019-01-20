@@ -58,6 +58,8 @@ class AssignmentController extends Controller
             'assignmentName' => 'required',
             'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
             'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
+            'assignmentStartTime' => 'required',
+            'assignmentEndTime' => 'required',
             'courseName' => 'required'
         ]);
 
@@ -73,11 +75,16 @@ class AssignmentController extends Controller
             ->get();
         $teachers_id = $teachers->pluck('teachers_id');
 
+        $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
+        $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
+
         //新增作業
         $assignment = new Assignment([
             'name' => $request->input('assignmentName'),
             'start_date' => $request->input('assignmentStart'),
+            'start_time' => $start_time,
             'end_date' => $request->input('assignmentEnd'),
+            'end_time' => $end_time,
             'courses_id' => $course_id,
         ]);
 

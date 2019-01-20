@@ -20,4 +20,8 @@ class Course extends Model
         return $this->hasMany('App\Assignment');
     }
 
+    public function common_course(){
+        return $this->belongsTo('App\common_course');
+    }
+
 }

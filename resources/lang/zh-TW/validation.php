@@ -134,11 +134,13 @@ return [
         //新增使用者 (createUser)
         'account' => [
             'required' => '帳號 不能留空',
-            'unique' => '帳號 不能重複'
+            'unique' => '帳號 不能重複',
+            'Integer' => '帳號 必須為數字型態',
         ],
         'id' => [
             'required' => 'ID 不能留空',
-            'unique' => 'ID 不能重複'
+            'unique' => 'ID 不能重複',
+            'Integer' => 'ID 必須為數字型態',
         ],
         'name' => [
             'required' => '姓名 不能留空'

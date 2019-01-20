@@ -215,7 +215,10 @@
 
         $('#courseUsers').DataTable({
             processing:true,
-            serverSide:true,
+            //如果要用serverside, 就必須把paging設為false,否則被勾選的checkbox會因為換頁而消失
+
+            //serverSide:true,
+            //paging: false,
             language: {
                 "processing":   "處理中...",
                 "loadingRecords": "載入中...",
@@ -235,7 +238,7 @@
                 "aria": {
                     "sortAscending":  ": 升冪排列",
                     "sortDescending": ": 降冪排列"
-                }
+                },
             },
             ajax: '{!! route('get.courseUsers') !!}',
             columns: [

@@ -6,6 +6,8 @@
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('css/jquery.timepicker.min.css') }}" rel="stylesheet" />
+
 @endsection
 
 @section('content')
@@ -79,21 +81,39 @@
 
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">開放繳交時間</label>
-                                        <div class="col-md-9">
+                                        <div class="col-md-3">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="開放繳交時間" required>
+                                                <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="日期" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="timepicker-start" name="assignmentStartTime" placeholder="時間" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-calendar-times"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+
 
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">截止時間</label>
-                                        <div class="col-md-9">
+                                        <div class="col-md-3">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="截止時間" required>
+                                                <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="日期" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="timepicker-end" name="assignmentEndTime" placeholder="時間" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -159,6 +179,7 @@
     <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
+    <script src="{{ URL::to('js/jquery.timepicker.min.js') }}"></script>
 
     <script>
         //***********************************//
@@ -207,8 +228,10 @@
             format: "yyyy/mm/dd",
         });
 
-
-
+        $('#timepicker-start').timepicker(
+            { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
+        $('#timepicker-end').timepicker(
+            { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
 
     </script>
 

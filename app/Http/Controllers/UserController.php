@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Exception;
@@ -27,21 +28,39 @@ class UserController extends Controller
     }
 
     public function postCreateUser(Request $request){
-        $request->validate([
-            'account' => 'required|unique:users',
-            'id' => 'required|string|unique:users',
-            'userName' => 'required|string',
-            'userEmail' => 'required|string',
-            'userPassword' => 'required|string',
-            'userType' => 'required',
-        ]);
+
+        // 帳號不可為非 ASCII (中文)
+        $validator = Validator::make($request->all(), [
+            'account' => [
+                'required',
+                'unique:users',
+                function($attribute, $value, $fail) {
+                    if (!mb_detect_encoding($value, 'ASCII', true)) {
+                        return $fail('帳號 不可含有非 英文/數字 的字元');
+                    }
+                },
+            ],
+            'id' => [
+                'required',
+                'unique:users',
+                function($attribute, $value, $fail) {
+                    if (!mb_detect_encoding($value, 'ASCII', true)) {
+                        return $fail('學號 不可含有非 英文/數字 的字元');
+                    }
+                },
+            ],
+            'userName' => ['required','string'],
+            'userEmail' => ['required', 'string'],
+            'userPassword' => ['required', 'string'],
+            'userType' => ['required'],
+        ])->validate();
 
         $user = new User([
             'account' => $request->input('account'),
             'id' => $request->input('id'),
             'name' => $request->input('userName'),
             'email' => $request->input('userEmail'),
-            'password' => $request->input('userPassword'),
+            'password' => bcrypt($request->input('userPassword')),
             'type' => $request->input('userType'),
         ]);
 

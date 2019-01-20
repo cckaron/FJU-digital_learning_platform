@@ -57,7 +57,17 @@
                                         <label class="col-md-3 m-t-15">學年</label>
                                         <div class="col-md-9">
                                             <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                                <option>106</option>
+                                                <option>{{ $year }}</option>
+                                                <optgroup label="過去">
+                                                    @for($i=1; $i<5; $i++)
+                                                        <option>{{ $year-$i }}</option>
+                                                    @endfor
+                                                </optgroup>
+                                                <optgroup label="未來">
+                                                    @for($i=1; $i<5; $i++)
+                                                        <option>{{ $year + $i }}</option>
+                                                    @endfor
+                                                </optgroup>
                                             </select>
                                         </div>
                                     </div>
@@ -193,6 +203,7 @@
             format: "yyyy/mm/dd",
 
         });
+
         jQuery('#datepicker-end').datepicker({
             autoclose: true,
             todayHighlight: true,

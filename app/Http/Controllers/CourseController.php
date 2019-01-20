@@ -21,7 +21,14 @@ class CourseController extends Controller
     public function getAddCommonCourse(){
         $teachers = DB::table('teachers')->get();
 
-        return view('course.addCommonCourse', ['teachers' => $teachers]);
+        $today = Carbon::now();
+        $year = $today->year;
+        $twYear = $year-1911;
+
+        return view('course.addCommonCourse', [
+            'teachers' => $teachers,
+            'year' => $twYear,
+        ]);
     }
 
     //新增共同課程 (post)
@@ -134,14 +141,8 @@ class CourseController extends Controller
 
     //所有課程列表 (get) with Datatables -> 改掉了
     public function getAllCourses(){
-        //找出這個老師的課程
-        $teacher_courses = DB::table('teacher_course')
-            ->get();
-
-        $teacher_courses_id = $teacher_courses->pluck('courses_id');
 
         $courses = DB::table('courses')
-            ->whereIn('id', $teacher_courses_id)
             ->get();
 
         $courses_id = $courses->pluck('id');
@@ -149,10 +150,16 @@ class CourseController extends Controller
         $common_courses_id = $courses->pluck('common_courses_id');
 
         //進行中的課程
-        $common_courses_processing = DB::table('common_courses')
-            ->whereIn('id', $common_courses_id)
-            ->where('status', 1)
-            ->get();
+        $common_courses_processing = collect();
+        for ($i=0; $i<count($common_courses_id); $i++){
+            $common_course = DB::table('common_courses')
+                ->where('id', $common_courses_id[$i])
+                ->where('status', 1)
+                ->get();
+
+            $common_courses_processing = $common_courses_processing->merge($common_course);
+        }
+
 
 
         //取得共同課程的id
@@ -162,7 +169,7 @@ class CourseController extends Controller
         $courses_processing_id = array();
         for($i=0; $i<count($common_courses_processing); $i++){
             $course_id = DB::table('courses')
-                ->whereIn('id', $courses_id)
+                ->where('id', $courses_id[$i])
                 ->where('common_courses_id', $common_courses_processing_id[$i])
                 ->value('id');
 
@@ -206,15 +213,28 @@ class CourseController extends Controller
         }
 
         //課程名稱
-        $courses_processing_name = DB::table('courses')
-            ->whereIn('id', $courses_processing_id)
-            ->pluck('name');
+        $courses_processing_name = array();
+
+        for($i=0; $i<count($courses_processing_id); $i++){
+            $course_name = DB::table('courses')
+                ->where('id', $courses_processing_id[$i])
+                ->value('name');
+
+            array_push($courses_processing_name, $course_name);
+        }
 
         //已結束的課程
-        $common_courses_finished = DB::table('common_courses')
-            ->whereIn('id', $common_courses_id)
-            ->where('status', 0)
-            ->get();
+        $common_courses_finished = collect();
+
+        for ($i=0; $i<count($common_courses_id);$i++){
+            $common_course = DB::table('common_courses')
+                ->where('id', $common_courses_id[$i])
+                ->where('status', 0)
+                ->get();
+
+            $common_courses_finished = $common_courses_finished->merge($common_course);
+
+        }
 
         //取得共同課程的id
         $common_courses_finished_id = $common_courses_finished->pluck('id');
@@ -223,7 +243,7 @@ class CourseController extends Controller
         $courses_finished_id = array();
         for($i=0; $i<count($common_courses_finished); $i++){
             $course_id = DB::table('courses')
-                ->whereIn('id', $courses_id)
+                ->where('id', $courses_id[$i])
                 ->where('common_courses_id', $common_courses_finished_id[$i])
                 ->value('id');
 
@@ -271,6 +291,7 @@ class CourseController extends Controller
 
         return view('course.showAllCourses', [
             'courses_processing_id' => $courses_processing_id,
+            'common_courses_processing' => $common_courses_processing,
             'common_courses_processing_id' => $common_courses_processing_id,
             'common_courses_processing_year' => $common_courses_processing_year,
             'common_courses_processing_semester' => $common_courses_processing_semester,
