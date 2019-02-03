@@ -130,24 +130,51 @@ class CourseController extends Controller
         return redirect()->back()->with('message', '已成功新增課程');
     }
 
-    public function showCourseStudents(Request $request){
-        $id = $request->input('course_id');
+    public function showCourseStudents($courses_id){
+        // 先 decode course_id，用於DB查詢
+        $encode_courses_id = new Hashids('courses_id', 7);
+        $courses_id = $encode_courses_id->decode($courses_id)[0]; //decode 之後會變成 array
+
         $student_ids = DB::table('student_course')
-            ->where('courses_id', $id)
+            ->where('courses_id', $courses_id)
             ->pluck('students_id');
 
         $students = DB::table('students')
             ->whereIn('users_id', $student_ids)
             ->get();
 
+        // encode 回來，這一頁還會用到 course_id
+        $courses_id = $encode_courses_id->encode($courses_id);
 
         return view('course.showCourseStudent', [
             'students' => $students,
+            'courses_id' => $courses_id,
             ]);
 
     }
 
-    public function deleteCourse($id){
+    public function dropCourse($course_id, $student_id){
+        // decode course_id，用於DB查詢
+        $encode_courses_id = new Hashids('courses_id', 7);
+        $course_id = $encode_courses_id->decode($course_id)[0]; //decode 之後會變成 array
+
+        $student_name = DB::table('students')
+            ->where('users_id', $student_id)
+            ->value('users_name');
+
+        DB::table('student_course')
+            ->where('students_id', $student_id)
+            ->where('courses_id', $course_id)
+            ->delete();
+
+        return redirect()->back()->with('message', $student_name.' 退選成功!');
+    }
+
+    public function deleteCourse($course_id){
+        // decode course_id，用於DB查詢
+        $encode_courses_id = new Hashids('courses_id', 7);
+        $course_id = $encode_courses_id->decode($course_id)[0]; //decode 之後會變成 array
+
         DB::table('courses')
             ->where('id', $id)
             ->delete();
@@ -180,6 +207,7 @@ class CourseController extends Controller
 
             $common_courses_processing = $common_courses_processing->merge($common_course);
         }
+
 
 
 
@@ -309,6 +337,16 @@ class CourseController extends Controller
         $courses_finished_name = DB::table('courses')
             ->whereIn('id', $courses_finished_id)
             ->pluck('name');
+
+        //hashid
+        $hashids = new Hashids('courses_id', 7);
+        for ($k=0; $k<count($courses_processing_id); $k++){
+            $courses_processing_id[$k] = $hashids->encode($courses_processing_id[$k]);
+        }
+        for ($k=0; $k<count($courses_finished_id); $k++){
+            $courses_finished_id[$k] = $hashids->encode($courses_finished_id[$k]);
+        }
+
 
         return view('course.showAllCourses', [
             'courses_processing_id' => $courses_processing_id,

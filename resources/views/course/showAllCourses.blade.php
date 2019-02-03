@@ -105,14 +105,12 @@
                                                     {{ $common_courses_processing_updated_at[$i] }}
                                                 </td>
                                                 <td>
-                                                    <form action="{{ route('course.showCourseStudents') }}" method="post">
-                                                        <input hidden name="course_id" value="{{ $courses_processing_id[$i] }}"/>
-                                                        <input type="submit" class="btn btn-primary btn-sm" value="查看詳情">
-                                                        {{ csrf_field() }}
-                                                        <a href="{{ route('course.delete', ['id' => $courses_processing_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
-                                                            刪除
-                                                        </a>
-                                                    </form>
+                                                    <a href="{{ route('course.showCourseStudents', ['courses_id' => $courses_processing_id[$i]]) }}" class="btn btn-primary btn-sm">
+                                                        查看詳情
+                                                    </a>
+                                                    <a href="{{ route('course.delete', ['courses_id' => $courses_processing_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        刪除
+                                                    </a>
                                                 </td>
 
                                             </tr>
@@ -176,11 +174,12 @@
                                                         {{ $common_courses_finished_updated_at[$i] }}
                                                     </td>
                                                     <td>
-                                                        <form action="{{ route('course.showCourseStudents') }}" method="post">
-                                                            <input hidden name="course_id" value="{{ $courses_finished_id[$i] }}"/>
-                                                            <input type="submit" class="btn btn-primary btn-sm" value="查看詳情">
-                                                            {{ csrf_field() }}
-                                                        </form>
+                                                        <a href="{{ route('course.showCourseStudents', ['courses_id' => $courses_finished_id[$i]]) }}" class="btn btn-primary btn-sm">
+                                                            查看詳情
+                                                        </a>
+                                                        <a href="{{ route('course.delete', ['courses_id' => $courses_finished_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                            刪除
+                                                        </a>
                                                     </td>
 
                                                 </tr>

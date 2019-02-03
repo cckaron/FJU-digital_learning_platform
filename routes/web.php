@@ -210,14 +210,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'course.addCourse'
         ]);
 
-        //查看學生名單 (showStudent)
-        Route::post('showStudent', [
+        //查看學生名單 (post)
+        Route::get('/showCourseStudent/{courses_id}', [
             'uses' => 'CourseController@showCourseStudents',
             'as' => 'course.showCourseStudents'
         ]);
 
+        //退選 (get)
+        Route::get('/drop/{courses_id}/{student_id}', [
+            'uses' => 'CourseController@dropCourse',
+            'as' => 'course.dropCourse'
+        ]);
+
         //刪除 (get)
-        Route::get('/delete/{id}', [
+        Route::get('/delete/{courses_id}', [
             'uses' => 'CourseController@deleteCourse',
             'as' => 'course.delete'
         ]);

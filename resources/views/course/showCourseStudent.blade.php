@@ -37,6 +37,22 @@
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
+                <div class="row">
+
+                    @if(session()->has('message'))
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">提示</h5>
+
+                                    <div class="alert alert-success" role="alert">
+                                        {{ session()->get('message') }}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                 <div class="col-md-6">
                     <div class="card">
@@ -66,7 +82,7 @@
                                 <td class="text-success">{{ $student->grade }}</td>
                                 <td class="text-success">{{ $student->class }}</td>
                                 <td>
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="將此學生退選" onclick="return confirm('該學生於此課程的資料將會一併刪除，確定刪除?')">
+                                    <a href="{{ route('course.dropCourse', ['courses_id' => $courses_id, 'student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="將此學生退選" onclick="return confirm('該學生於此課程的資料將會一併刪除，確定刪除?')">
                                         <i class="mdi mdi-close"></i>
                                     </a>
                                 </td>
@@ -88,6 +104,7 @@
                 <!-- ============================================================== -->
                 <!-- End Right sidebar -->
                 <!-- ============================================================== -->
+            </div>
             </div>
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
