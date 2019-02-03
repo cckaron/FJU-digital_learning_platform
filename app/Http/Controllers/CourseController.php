@@ -130,6 +130,23 @@ class CourseController extends Controller
         return redirect()->back()->with('message', '已成功新增課程');
     }
 
+    public function showCourseStudents(Request $request){
+        $id = $request->input('course_id');
+        $student_ids = DB::table('student_course')
+            ->where('courses_id', $id)
+            ->pluck('students_id');
+
+        $students = DB::table('students')
+            ->whereIn('users_id', $student_ids)
+            ->get();
+
+
+        return view('course.showCourseStudent', [
+            'students' => $students,
+            ]);
+
+    }
+
     public function deleteCourse($id){
         DB::table('courses')
             ->where('id', $id)

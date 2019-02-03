@@ -210,6 +210,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'course.addCourse'
         ]);
 
+        //查看學生名單 (showStudent)
+        Route::post('showStudent', [
+            'uses' => 'CourseController@showCourseStudents',
+            'as' => 'course.showCourseStudents'
+        ]);
+
         //刪除 (get)
         Route::get('/delete/{id}', [
             'uses' => 'CourseController@deleteCourse',

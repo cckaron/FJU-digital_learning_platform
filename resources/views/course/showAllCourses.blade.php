@@ -36,8 +36,6 @@
                     <!-- Start Page Content -->
                     <!-- ============================================================== -->
 
-                    <form action="{{ route('course.addCourse') }}" method="post">
-
                     <!-- editor -->
                     <div class="row">
 
@@ -107,10 +105,14 @@
                                                     {{ $common_courses_processing_updated_at[$i] }}
                                                 </td>
                                                 <td>
-                                                    {{--<button type="button" class="btn btn-cyan btn-sm">編輯</button>--}}
-                                                    <a href="{{ route('course.delete', ['id' => $courses_processing_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
-                                                        刪除
-                                                    </a>
+                                                    <form action="{{ route('course.showCourseStudents') }}" method="post">
+                                                        <input hidden name="course_id" value="{{ $courses_processing_id[$i] }}"/>
+                                                        <input type="submit" class="btn btn-primary btn-sm" value="查看詳情">
+                                                        {{ csrf_field() }}
+                                                        <a href="{{ route('course.delete', ['id' => $courses_processing_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                            刪除
+                                                        </a>
+                                                    </form>
                                                 </td>
 
                                             </tr>
@@ -174,10 +176,11 @@
                                                         {{ $common_courses_finished_updated_at[$i] }}
                                                     </td>
                                                     <td>
-                                                        {{--<button type="button" class="btn btn-cyan btn-sm">編輯</button>--}}
-                                                        <a href="{{ route('course.delete', ['id' => $courses_finished_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
-                                                            刪除
-                                                        </a>
+                                                        <form action="{{ route('course.showCourseStudents') }}" method="post">
+                                                            <input hidden name="course_id" value="{{ $courses_finished_id[$i] }}"/>
+                                                            <input type="submit" class="btn btn-primary btn-sm" value="查看詳情">
+                                                            {{ csrf_field() }}
+                                                        </form>
                                                     </td>
 
                                                 </tr>
@@ -192,8 +195,6 @@
 
 
                     </div>
-                        {{ csrf_field() }}
-                    </form>
 
                     <!-- ============================================================== -->
                     <!-- End PAge Content -->
@@ -289,20 +290,6 @@
 
     </script>
 
-    {{--<script>--}}
-
-        {{--$('#courseAll').DataTable({--}}
-            {{--processing:true,--}}
-            {{--serverSide:true,--}}
-            {{--ajax: '{!! route('get.allCourses') !!}',--}}
-            {{--columns: [--}}
-                {{--{ data: 'name', name: 'name'},--}}
-                {{--{ data: 'updated_at', name: 'updated_at'},--}}
-            {{--]--}}
-        {{--});--}}
-
-    {{--</script>--}}
-
     <script>
         /****************************************
          *       Basic Table                   *
@@ -329,6 +316,14 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
+        });
+    </script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
     </script>
 
