@@ -72,7 +72,7 @@
 
                                                 <h4 class="font-medium">
                                                     {{ $courses_processing_year[$i] }} 年 第 {{ $courses_processing_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $courses_processing_end_date[$i] }}</span>
+                                                    <span class="text-muted float-right">截止日期：{{ $assignments_processing_end_date[$i] }} {{ $assignments_processing_end_time[$i] }}</span>
                                                 </h4>
                                                 <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
                                                 指導老師:
@@ -123,7 +123,7 @@
 
                                                 <h4 class="font-medium">
                                                     {{ $courses_finished_year[$i] }} 年 第 {{ $courses_finished_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $courses_finished_end_date[$i] }}</span>
+                                                    <span class="text-muted float-right">截止日期：{{ $assignments_finished_end_date[$i] }} {{ $assignments_finished_end_time[$i] }}</span>
                                                 </h4>
                                                 <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
                                                 指導老師:

@@ -17,6 +17,7 @@ class CreateCourseTable extends Migration
             $table->integer('id')->autoIncrement()->unsigned();
             $table->integer('common_courses_id')->unsigned();
             $table->string('name');
+            $table->integer('class');
             $table->timestamps();
 
             //need to add the 1 to many relationship for teacher_id

@@ -63,6 +63,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="col-md-3 m-t-10" for="courseName">班級</label>
+                                        <div class="col-md-9">
+                                            <select name="courseClass" class="select2 form-control m-t-15" style="height: 36px;width: 100%;" required>
+                                                <option value=1> 甲 </option>
+                                                <option value=2> 乙 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-md-3 m-t-15">授課教師</label>
                                         <div class="col-md-9">
                                             <select name="courseTeachers[]" class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;" required>

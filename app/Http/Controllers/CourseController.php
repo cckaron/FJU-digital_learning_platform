@@ -100,7 +100,11 @@ class CourseController extends Controller
         //after save, it should be the last id inserted
         $course_id = DB::table('courses')
             ->insertGetId([
-                'common_courses_id' => $common_courses_id, 'name' => $request->input('courseName'), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
+                'common_courses_id' => $common_courses_id,
+                    'name' => $request->input('courseName'),
+                    'class' => $request->input('courseClass'),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()]
             );
 
         //save courses_id to teacher table

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    protected  $fillable = ['common_courses_id, name'];
+    protected  $fillable = ['common_courses_id', 'name', 'class'];
 
     public function teacher(){
         return $this->hasMany('App\Teacher');

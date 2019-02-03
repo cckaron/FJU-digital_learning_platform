@@ -643,11 +643,12 @@ class AssignmentController extends Controller
 
         //該作業的名稱
         $assignments_processing_name = $assignments_processing->pluck('name');
+        $assignments_processing_end_date = $assignments_processing->pluck('end_date');
+        $assignments_processing_end_time = $assignments_processing->pluck('end_time');
 
         //取得該作業的課程資訊
         $courses_processing_year = array();
         $courses_processing_semester = array();
-        $courses_processing_end_date = array();
         $course_processing_name= array();
         $common_course_processing_name = array();
 
@@ -671,11 +672,9 @@ class AssignmentController extends Controller
 
             $year = $common_courses_detail->value('year');
             $semester = $common_courses_detail->value('semester');
-            $end_date = $common_courses_detail->value('end_date');
 
             array_push($courses_processing_year, $year);
             array_push($courses_processing_semester, $semester);
-            array_push($courses_processing_end_date, $end_date);
 
             array_push($common_course_processing_name, $common_course_name);
             array_push($course_processing_name, $course_name);
@@ -718,12 +717,12 @@ class AssignmentController extends Controller
 
         //該作業的名稱
         $assignments_finished_name = $assignments_finished->pluck('name');
-
+        $assignments_finished_end_date = $assignments_finished->pluck('end_date');
+        $assignments_finished_end_time = $assignments_finished->pluck('end_time');
 
         //取得該作業的課程資訊
         $courses_finished_year = array();
         $courses_finished_semester = array();
-        $courses_finished_end_date = array();
         $course_finished_name= array();
         $common_course_finished_name = array();
 
@@ -747,11 +746,9 @@ class AssignmentController extends Controller
 
             $year = $common_courses_detail->value('year');
             $semester = $common_courses_detail->value('semester');
-            $end_date = $common_courses_detail->value('end_date');
 
             array_push($courses_finished_year, $year);
             array_push($courses_finished_semester, $semester);
-            array_push($courses_finished_end_date, $end_date);
 
             array_push($common_course_finished_name, $common_course_name);
             array_push($course_finished_name, $course_name);
@@ -804,10 +801,11 @@ class AssignmentController extends Controller
             'assignments_processing' => $assignments_processing,
             'assignments_processing_id' => $assignments_processing_id,
             'assignments_processing_name' => $assignments_processing_name,
+            'assignments_processing_end_date' => $assignments_processing_end_date,
+            'assignments_processing_end_time' => $assignments_processing_end_time,
            'courses_processing_id' => $courses_processing_id,
            'courses_processing_year' => $courses_processing_year,
            'courses_processing_semester' => $courses_processing_semester,
-            'courses_processing_end_date' => $courses_processing_end_date,
             'courses_processing_name' => $course_processing_name,
             'common_course_processing_name' => $common_course_processing_name,
             'teachers_processing' => $teachers_processing,
@@ -815,10 +813,11 @@ class AssignmentController extends Controller
             'assignments_finished' => $assignments_finished,
             'assignments_finished_id' => $assignments_finished_id,
             'assignments_finished_name' => $assignments_finished_name,
+            'assignments_finished_end_date' => $assignments_finished_end_date,
+            'assignments_finished_end_time' => $assignments_finished_end_time,
             'courses_finished_id' => $courses_finished_id,
             'courses_finished_year' => $courses_finished_year,
             'courses_finished_semester' => $courses_finished_semester,
-            'courses_finished_end_date' => $courses_finished_end_date,
             'courses_finished_name' => $course_finished_name,
             'common_course_finished_name' => $common_course_finished_name,
             'teachers_finished' => $teachers_finished,
@@ -850,11 +849,12 @@ class AssignmentController extends Controller
 
         //該作業的名稱
         $assignments_processing_name = $assignments_processing->pluck('name');
+        $assignments_processing_end_date = $assignments_processing->pluck('end_date');
+        $assignments_processing_end_time = $assignments_processing->pluck('end_time');
 
         //取得該作業的課程資訊
         $courses_processing_year = array();
         $courses_processing_semester = array();
-        $courses_processing_end_date = array();
         $course_processing_name= array();
         $common_course_processing_name = array();
 
@@ -878,11 +878,9 @@ class AssignmentController extends Controller
 
             $year = $common_courses_detail->value('year');
             $semester = $common_courses_detail->value('semester');
-            $end_date = $common_courses_detail->value('end_date');
 
             array_push($courses_processing_year, $year);
             array_push($courses_processing_semester, $semester);
-            array_push($courses_processing_end_date, $end_date);
 
             array_push($common_course_processing_name, $common_course_name);
             array_push($course_processing_name, $course_name);
@@ -925,12 +923,12 @@ class AssignmentController extends Controller
 
         //該作業的名稱
         $assignments_finished_name = $assignments_finished->pluck('name');
-
+        $assignments_finished_end_date = $assignments_finished->pluck('end_date');
+        $assignments_finished_end_time = $assignments_finished->pluck('end_time');
 
         //取得該作業的課程資訊
         $courses_finished_year = array();
         $courses_finished_semester = array();
-        $courses_finished_end_date = array();
         $course_finished_name= array();
         $common_course_finished_name = array();
 
@@ -954,11 +952,9 @@ class AssignmentController extends Controller
 
             $year = $common_courses_detail->value('year');
             $semester = $common_courses_detail->value('semester');
-            $end_date = $common_courses_detail->value('end_date');
 
             array_push($courses_finished_year, $year);
             array_push($courses_finished_semester, $semester);
-            array_push($courses_finished_end_date, $end_date);
 
             array_push($common_course_finished_name, $common_course_name);
             array_push($course_finished_name, $course_name);
@@ -1011,10 +1007,11 @@ class AssignmentController extends Controller
             'assignments_processing' => $assignments_processing,
             'assignments_processing_id' => $assignments_processing_id,
             'assignments_processing_name' => $assignments_processing_name,
+            'assignments_processing_end_date' => $assignments_processing_end_date,
+            'assignments_processing_end_time' => $assignments_processing_end_time,
             'courses_processing_id' => $courses_processing_id,
             'courses_processing_year' => $courses_processing_year,
             'courses_processing_semester' => $courses_processing_semester,
-            'courses_processing_end_date' => $courses_processing_end_date,
             'courses_processing_name' => $course_processing_name,
             'common_course_processing_name' => $common_course_processing_name,
             'teachers_processing' => $teachers_processing,
@@ -1022,10 +1019,11 @@ class AssignmentController extends Controller
             'assignments_finished' => $assignments_finished,
             'assignments_finished_id' => $assignments_finished_id,
             'assignments_finished_name' => $assignments_finished_name,
+            'assignments_finished_end_date' => $assignments_finished_end_date,
+            'assignments_finished_end_time' => $assignments_finished_end_time,
             'courses_finished_id' => $courses_finished_id,
             'courses_finished_year' => $courses_finished_year,
             'courses_finished_semester' => $courses_finished_semester,
-            'courses_finished_end_date' => $courses_finished_end_date,
             'courses_finished_name' => $course_finished_name,
             'common_course_finished_name' => $common_course_finished_name,
             'teachers_finished' => $teachers_finished,

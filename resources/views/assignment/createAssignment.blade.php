@@ -115,7 +115,7 @@
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="timepicker-end" name="assignmentEndTime" placeholder="時間" required>
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                    <span class="input-group-text"><i class="fa fa-calendar-times"></i></span>
                                                 </div>
                                             </div>
                                         </div>
