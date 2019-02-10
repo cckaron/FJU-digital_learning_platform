@@ -66,6 +66,7 @@
                                                 <th>隸屬共同課程</th>
                                                 <th>學年</th>
                                                 <th>學期</th>
+                                                <th>班級</th>
                                                 <th>指導教師</th>
                                                 <th>開課日期</th>
                                                 <th>結課日期</th>
@@ -90,6 +91,13 @@
                                                     {{ $common_courses_processing_semester[$i] }}
                                                 </td>
                                                 <td>
+                                                    @if($courses_processing_class[$i] == 1)
+                                                        甲
+                                                    @elseif($courses_processing_class[$i] == 2)
+                                                        乙
+                                                    @endif
+                                                </td>
+                                                <td>
                                                     @for($j=0; $j<count($courses_processing_teacher[$i]); $j++)
                                                         {{ $courses_processing_teacher[$i][$j] }}
                                                         @if($j!=count($courses_processing_teacher[$i])-1) , @endif <!-- 逗號 -->
@@ -105,10 +113,10 @@
                                                     {{ $common_courses_processing_updated_at[$i] }}
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('course.showCourseStudents', ['courses_id' => $courses_processing_id[$i]]) }}" class="btn btn-primary btn-sm">
+                                                    <a href="{{ route('course.showCourseStudents', ['courses_id' => $courses_processing_id[$i]]) }}" class="btn btn-primary btn-sm" style="margin-bottom: 5px;">
                                                         查看詳情
                                                     </a>
-                                                    <a href="{{ route('course.delete', ['courses_id' => $courses_processing_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                    <a href="{{ route('course.delete', ['courses_id' => $courses_processing_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')" style="margin-bottom: 5px;">
                                                         刪除
                                                     </a>
                                                 </td>
@@ -123,7 +131,7 @@
                             </div>
                         </div>
 
-                            <div class="col-12">
+                            <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 style="margin-bottom: 20px"> 已結束的課程 </h4>
@@ -135,6 +143,7 @@
                                                     <th>隸屬共同課程</th>
                                                     <th>學年</th>
                                                     <th>學期</th>
+                                                    <th>班級</th>
                                                     <th>指導教師</th>
                                                     <th>開課日期</th>
                                                     <th>結課日期</th>
@@ -159,6 +168,12 @@
                                                         {{ $common_courses_finished_semester[$i] }}
                                                     </td>
                                                     <td>
+                                                        @if($courses_finished_class[$i] == 1)
+                                                            甲
+                                                        @elseif($courses_finished_class[$i] == 2)
+                                                            乙
+                                                        @endif                                                    </td>
+                                                    <td>
                                                         @for($j=0; $j<count($courses_finished_teacher[$i]); $j++)
                                                             {{ $courses_finished_teacher[$i][$j] }}
                                                             @if($j!=count($courses_finished_teacher[$i])-1) , @endif <!-- 逗號 -->
@@ -174,10 +189,10 @@
                                                         {{ $common_courses_finished_updated_at[$i] }}
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('course.showCourseStudents', ['courses_id' => $courses_finished_id[$i]]) }}" class="btn btn-primary btn-sm">
+                                                        <a href="{{ route('course.showCourseStudents', ['courses_id' => $courses_finished_id[$i]]) }}" class="btn btn-primary btn-sm" style="margin-bottom: 5px;">
                                                             查看詳情
                                                         </a>
-                                                        <a href="{{ route('course.delete', ['courses_id' => $courses_finished_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        <a href="{{ route('course.delete', ['courses_id' => $courses_finished_id[$i]]) }}" class="btn btn-danger btn-sm" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')" style="margin-bottom: 5px;">
                                                             刪除
                                                         </a>
                                                     </td>
@@ -191,6 +206,8 @@
                                     </div>
                                 </div>
                             </div>
+
+
 
 
                     </div>
@@ -318,12 +335,5 @@
         });
     </script>
 
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-    </script>
 
 @endsection

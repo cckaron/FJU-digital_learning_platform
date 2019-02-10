@@ -12,6 +12,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class CourseController extends Controller
@@ -124,7 +125,7 @@ class CourseController extends Controller
             //add to student_course
             DB::table('student_course')
                 ->insert([
-                    ['students_id' => (int)$students[$k],'courses_id' => $course_id]
+                    ['students_id' => (int)$students[$k],'courses_id' => $course_id, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
                 ]);
         }
         return redirect()->back()->with('message', '已成功新增課程');
@@ -264,12 +265,20 @@ class CourseController extends Controller
         //課程名稱
         $courses_processing_name = array();
 
+        //課程班級
+        $courses_processing_class = array();
+
         for($i=0; $i<count($courses_processing_id); $i++){
             $course_name = DB::table('courses')
                 ->where('id', $courses_processing_id[$i])
                 ->value('name');
 
+            $course_class = DB::table('courses')
+                ->where('id', $courses_processing_id[$i])
+                ->value('class');
+
             array_push($courses_processing_name, $course_name);
+            array_push($courses_processing_class, $course_class);
         }
 
         //已結束的課程
@@ -334,9 +343,23 @@ class CourseController extends Controller
         }
 
         //課程名稱
-        $courses_finished_name = DB::table('courses')
-            ->whereIn('id', $courses_finished_id)
-            ->pluck('name');
+        $courses_finished_name = array();
+
+        //課程班級
+        $courses_finished_class = array();
+
+        for($i=0; $i<count($courses_finished_id); $i++){
+            $course_name = DB::table('courses')
+                ->where('id', $courses_finished_id[$i])
+                ->value('name');
+
+            $course_class = DB::table('courses')
+                ->where('id', $courses_finished_id[$i])
+                ->value('class');
+
+            array_push($courses_finished_name, $course_name);
+            array_push($courses_finished_class, $course_class);
+        }
 
         //hashid
         $hashids = new Hashids('courses_id', 7);
@@ -360,6 +383,7 @@ class CourseController extends Controller
             'common_courses_processing_updated_at' => $common_courses_processing_updated_at,
             'courses_processing_teacher' => $courses_processing_teachers,
             'courses_processing_name' => $courses_processing_name,
+            'courses_processing_class' => $courses_processing_class,
 
             'courses_finished_id' => $courses_finished_id,
             'common_courses_finished_id' => $common_courses_finished_id,
@@ -371,6 +395,7 @@ class CourseController extends Controller
             'common_courses_finished_updated_at' => $common_courses_finished_updated_at,
             'courses_finished_teacher' => $courses_finished_teachers,
             'courses_finished_name' => $courses_finished_name,
+            'courses_finished_class' => $courses_finished_class,
         ]);
     }
 
@@ -762,6 +787,61 @@ class CourseController extends Controller
                 return $course->updated_at->diffForHumans();
             })
             ->make(true);
+    }
+
+    public function signClass_ajax(Request $request){
+        $validation = Validator::make($request->all(), [
+            'student_number' => [
+                'required',
+                'exists:users,id',
+                function($attribute, $value, $fail) {
+                    if (!mb_detect_encoding($value, 'ASCII', true)) {
+                        return $fail('帳號 不可含有非 英文/數字 的字元');
+                    }
+                },
+            ]
+        ]);
+
+        $error_array = array();
+        $success_output = '';
+
+        $courses_id = $request->input('courses_id');
+        $encode_courses_id = new Hashids('courses_id', 7);
+        $courses_id = $encode_courses_id->decode($courses_id)[0]; //decode 之後會變成 array
+        $student_number = $request->input('student_number');
+
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            if ($request->get('button_action') == "插入")
+            {
+                if (!DB::table('student_course')
+                    ->where('courses_id', $courses_id)
+                    ->where('students_id', $student_number)
+                    ->exists())
+                {
+                    DB::table('student_course')
+                        ->insert([
+                            'courses_id' => $courses_id,
+                            'students_id' => $student_number,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ]);
+                    $success_output = '<div class="alert alert-success"> 加選成功！ </div>';
+                } else {
+                    $success_output = '<div class="alert alert-success"> 加選錯誤！該學生已於課程內。 </div>';
+                }
+            }
+
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output
+        );
+        echo json_encode($output);
     }
 
 }

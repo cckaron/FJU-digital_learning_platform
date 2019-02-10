@@ -18,9 +18,10 @@ class CreateStudentAssignmentTable extends Migration
             $table->string('students_id')->nullable();
             $table->integer('assignments_id')->unsigned();
             $table->double('score')->nullable();
+            $table->double('percentage')->nullable();
             $table->text('remark')->nullable();
             $table->text('comment')->nullable();
-            $table->integer('status')->default(1); //1->未繳交; 2->已繳交; 3->審核完成
+            $table->integer('status')->default(1); //1->未繳交; 2->已繳交; 3->審核完成; 4->補繳; 5->已補繳
             $table->timestamps();
 
             $table->index('id');

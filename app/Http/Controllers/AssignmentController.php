@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use App\common_course;
 use App\student_assignment;
+use App\Course;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
@@ -13,6 +16,7 @@ use Hashids\Hashids;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use function PHPSTORM_META\type;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
@@ -129,6 +133,108 @@ class AssignmentController extends Controller
             ->delete();
 
         return redirect()->back()->with('message', '刪除作業成功！');
+    }
+
+    public function getBatchCreateAssignments(){
+        //確認該 one 是否存在 many
+        $common_courses = common_course::with('course')->get();
+
+        //把不含 course 的 common course 刪掉（過濾）
+        for ($i=0; $i<= count($common_courses); $i++){
+            if (! $common_courses[$i]->course()->exists()){
+                $common_courses->forget($i);
+            }
+        }
+
+
+        $teachers_name = collect();
+        //把課程的老師塞進去 collection 裡面
+        for ($i=0; $i < count($common_courses); $i++){
+            for ($k=0; $k < count($common_courses[$i]->course); $k++){
+                $course_id = $common_courses[$i]->course[$k]->id;
+                $teachers_id = DB::table('teacher_course')
+                    ->where('courses_id', $course_id)
+                    ->pluck('teachers_id');
+
+                $teachers_name_temp = array();
+                foreach($teachers_id as $teacher_id){
+                    $teacher_name = User::find($teacher_id)->name;
+                    array_push($teachers_name_temp, $teacher_name);
+                }
+
+                $teachers_name->push($teachers_name_temp);
+            }
+        }
+
+        $test = $teachers_name;
+
+        return view('assignment.batchCreateAssignments', [
+            'common_courses' => $common_courses,
+            'teachers_name' => $teachers_name
+        ]);
+    }
+
+    public function postBatchCreateAssignments(Request $request){
+        $request->validate([
+            'assignmentName' => 'required',
+            'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
+            'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
+            'assignmentStartTime' => 'required',
+            'assignmentEndTime' => 'required',
+            'courses_id' => 'required'
+        ]);
+
+        $courses_id = $request->input('courses_id');
+
+        //取得該課程所有授課教師
+        $teachers = DB::table('teacher_course')
+            ->where('courses_id', $courses_id)
+            ->get();
+        $teachers_id = $teachers->pluck('teachers_id');
+
+        $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
+        $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
+
+        //新增作業
+        $assignment = new Assignment([
+            'name' => $request->input('assignmentName'),
+            'start_date' => $request->input('assignmentStart'),
+            'start_time' => $start_time,
+            'end_date' => $request->input('assignmentEnd'),
+            'end_time' => $end_time,
+            'courses_id' => $courses_id,
+        ]);
+
+        $assignment->save();
+
+        //取得剛剛新增的作業id
+        $assignment_id = $assignment->id;
+
+        for($i=0; $i<count($teachers); $i++){
+            DB::table('teacher_assignment')
+                ->insert(
+                    ['teachers_id' => $teachers_id[$i], 'assignments_id' => $assignment_id]
+                );
+        }
+
+        //create assignment for students
+        //create student_course first
+
+        //get the course's student count
+        $students = DB::table('student_course')->where('courses_id', $course_id)->get();
+        $students_id = $students->pluck('students_id');
+
+        for ($i=0; $i<count($students); $i++){
+
+            DB::table('student_assignment')
+                ->insert([
+                    ['students_id' => $students_id[$i], 'assignments_id' => $assignment_id]
+                ]);
+
+            Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);
+        }
+
+        return redirect()->back()->with('message', '新增作業成功！');
     }
 
 

@@ -54,12 +54,23 @@
                         </div>
                     @endif
 
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="btn-group">
+                                        <h5 class="card-title m-t-10" style="padding-right: 20px">公告</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="btn-group">
-                                <h5 class="card-title m-t-10" style="padding-right: 20px">學生列表</h5>
-                                <button type="button" class="btn btn-default">加選</button>
+                                <h5 class="card-title m-t-10" style="padding-right: 20px">學生清單</h5>
+                                <button type="button" class="btn btn-default" id="signClassBtn">加選</button>
                             </div>
                         </div>
                         <table id="zero_config" class="table">
@@ -93,6 +104,37 @@
                         </table>
                     </div>
                 </div>
+
+
+                        <!-- Modal -->
+                        <div id="signClassModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="post" id="signClass_form">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">學生加選</h4>
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                &times;
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ csrf_field() }}
+                                            <span id="form_output"></span>
+                                            <div class="form-group">
+                                                <label>學號</label>
+                                                <input type="text" name="student_number" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="button_action" id="button_action" value="插入" />
+                                            <input type="hidden" name="courses_id" value="{{ $courses_id }}" />
+                                            <input type="submit" name="submit" id="action" value="新增" class="btn btn-info">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -168,6 +210,62 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function(){
+            $('#signClassBtn').click(function(){
+                $('#signClassModal').modal('show');
+                $('#signClass_form')[0].reset();
+                $('#form_output').html('');
+                $('#button_action').val('插入');
+                $('#action').val('加簽');
+            })
+
+            $('#signClass_form').on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url: '{{ route('ajax.signClass') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#form_output').html(error_html);
+                        }
+                        else
+                        {
+                            $('#form_output').html(data.success);
+                            $('#signClass_form')[0].reset();
+                            $('#action').val('加簽');
+                            $('.modal-title').text('學生加簽');
+                            $('#button_action').val('插入');
+                        }
+                    }
+                })
+            })
+
+            $('#signClassModal').on('hidden.bs.modal', function () {
+                location.reload();
+            })
+        });
+    </script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
     </script>
 

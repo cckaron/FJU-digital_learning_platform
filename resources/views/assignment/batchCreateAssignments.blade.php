@@ -44,43 +44,96 @@
                     <div class="row">
 
                         @include('layouts.partials.returnMessage')
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 style="margin-bottom: 20px"> 批次選取課程 </h4>
+                                    <div class="table-responsive">
+                                        <table id="zero_config" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>勾選</th>
+                                                <th>課程名稱</th>
+                                                <th>隸屬共同課程</th>
+                                                <th>學年</th>
+                                                <th>學期</th>
+                                                <th>班級</th>
+                                                <th>指導教師</th>
+                                                <th>開課日期</th>
+                                                <th>結課日期</th>
+                                                <th>上次修改時間</th>
+                                            </tr>
+                                            </thead>
 
-                        <div class="col-md-6">
+                                            <tbody>
+                                            @php($teacher_index_count = 0)
+                                            @foreach($common_courses as $common_course)
+                                                @foreach($common_course->course as $courses)
+                                                <tr>
+                                                    <td>
+                                                        <label class="customcheckbox">
+                                                            <input type="checkbox" class="listCheckbox" name="courses_id[]" value="{{ $courses->id }}" /><span class="checkmark"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        {{ $courses->name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_course->name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_course->year }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_course->semester }}
+                                                    </td>
+                                                    <td>
+                                                        @if($courses->class == 1)
+                                                            甲
+                                                        @elseif($courses->class == 2)
+                                                            乙
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @foreach($teachers_name[$teacher_index_count] as $teacher_name)
+                                                            {{ $teacher_name }}
+                                                        @endforeach
+
+                                                        @php($teacher_index_count += 1)
+                                                    </td>
+                                                    <td>
+                                                        {{ $common_course->start_date }}                                                    </td>
+                                                    <td>
+                                                        {{ $common_course->end_date }}                                                    </td>
+                                                    <td>
+                                                        {{ $courses->updated_at->diffForHumans() }}
+                                                    </td>
+                                                </tr>
+                                                    @endforeach
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
 
-                                    <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程名稱</label>
-                                        <div class="col-md-3">
-                                            <select id="courseName" name="courseName" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                                @for($i=0; $i<count($course_names); $i++)
-                                                    <option>{{ $course_names[$i] }}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 m-t-10">
-                                            <h4>
-                                                隸屬共同課程：
-                                                <span style="color:blue" id="common_course_name">
-                                                    @if(count($common_courses_name) > 0)
-                                                        {{ $common_courses_name[0] }}
-                                                    @endif
-                                                </span>
-
-                                            </h4>
-                                        </div>
-                                    </div>
-
+                                    <h4 style="margin-bottom: 20px"> 作業詳情 </h4>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="assignmentName">作業名稱</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="assignmentName" class="form-control" placeholder="作業名稱" name="assignmentName" required>
+                                        <label class="col-md-2 m-t-10" for="userAccount">作業名稱</label>
+                                        <div class="col-md-6">
+                                            <input type="text" id="userAccount" class="form-control" placeholder="作業名稱" name="assignmentName" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開放繳交時間</label>
+                                        <label class="col-md-2 m-t-15">開放繳交時間</label>
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="datepicker-start" name="assignmentStart" placeholder="日期" required>
@@ -102,7 +155,7 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">截止時間</label>
+                                        <label class="col-md-2 m-t-15">截止時間</label>
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="datepicker-end" name="assignmentEnd" placeholder="日期" required>
@@ -129,6 +182,8 @@
                                 </div>
                             </div>
                         </div>
+
+
 
                     </div>
                     {{ csrf_field() }}
@@ -252,23 +307,52 @@
 
     </script>
 
-    <script>
+    {{--<script>--}}
 
-        var courseName = $('#courseName');
+        {{--var courseName = $('#courseName');--}}
 
-        var commonCourseName = {!! $common_courses_name !!};
+        {{--var commonCourseName = {!! $common_courses_name !!};--}}
 
-        courseName.change(function () {
-            var index = courseName[0].selectedIndex;
-            document.getElementById("common_course_name").innerHTML= commonCourseName[index];
+        {{--courseName.change(function () {--}}
+            {{--var index = courseName[0].selectedIndex;--}}
+            {{--document.getElementById("common_course_name").innerHTML= commonCourseName[index];--}}
 
-        })
-    </script>
+        {{--})--}}
+    {{--</script>--}}
 
     <!-- close autocomplete of datetime picker -->
     <script>
         $('#datepicker-start').attr('autocomplete','off');
         $('#datepicker-end').attr('autocomplete','off');
+    </script>
+
+    <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable({
+            language: {
+                "processing":   "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu":   "顯示 _MENU_ 項結果",
+                "zeroRecords":  "沒有符合的結果",
+                "info":         "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
+                "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+                "infoPostFix":  "",
+                "search":       "搜尋:",
+                "paginate": {
+                    "first":    "第一頁",
+                    "previous": "上一頁",
+                    "next":     "下一頁",
+                    "last":     "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            },
+        });
     </script>
 
 @endsection

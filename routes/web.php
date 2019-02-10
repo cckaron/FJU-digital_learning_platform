@@ -143,13 +143,13 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
     Route::group(['prefix' => 'assignment', 'middleware' => 'auth'], function(){
 
         //新增 (get)
-        Route::get('/assignment/new', [
+        Route::get('/new', [
             'uses' => 'AssignmentController@getCreateAssignment',
             'as' => 'Assignment.createAssignment'
         ]);
 
         //新增 (post)
-        Route::post('assignment/new', [
+        Route::post('/new', [
             'uses' => 'AssignmentController@postCreateAssignment',
             'as' => 'Assignment.createAssignment'
         ]);
@@ -243,6 +243,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
         Route::get('/allAssignments', [
             'uses' => 'AssignmentController@getAllAssignments' ,
             'as' => 'assignment.showAllAssignments'
+        ]);
+
+        Route::get('/batchCreateAssignments', [
+            'uses' => 'AssignmentController@getBatchCreateAssignments',
+            'as' => 'assignment.batchCreateAssignments'
         ]);
     });
 
@@ -365,9 +370,13 @@ Route::group(['prefix' => 'dropZone'], function() {
 
 //blade ajax
 Route::group(['prefix' => 'ajax'], function(){
-   Route::post('/ajax/correctAssignment', [
+   Route::post('correctAssignment', [
        'uses' => 'AssignmentController@correctAssignment',
        'as' => 'ajax.correctAssignment'
+   ]);
+   Route::post('/signClass', [
+       'uses' => 'CourseController@signClass_ajax',
+       'as' => 'ajax.signClass'
    ]);
 });
 
