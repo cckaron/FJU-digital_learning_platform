@@ -180,8 +180,44 @@ class UserController extends Controller
             ->delete();
 
         return redirect()->back()->with('message', '刪除成功');
+    }
 
+    public function getAllSecrets(){
+        $secrets = DB::table('users')
+            ->where('type', 1)
+            ->get();
 
+        return view('secret.showAllSecrets', [
+            'secrets' => $secrets
+        ]);
+    }
+
+    public function deleteSecrets($id){
+
+        DB::table('users')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()->back()->with('message', '刪除成功');
+    }
+
+    public function getAllEmployees(){
+        $employees = DB::table('users')
+            ->where('type', 2)
+            ->get();
+
+        return view('employee.showAllEmployees', [
+            'employees' => $employees
+        ]);
+    }
+
+    public function deleteEmployees($id){
+
+        DB::table('users')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()->back()->with('message', '刪除成功');
     }
 
     public function getAllStudents_dt(){
@@ -229,4 +265,5 @@ class UserController extends Controller
             ->rawColumns(['motion'])
             ->make(true);
     }
+
 }

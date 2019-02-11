@@ -162,6 +162,16 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
     });
 });
 
+// 工讀生 (type = 2)
+Route::group(['prefix' => 'employee', 'middleware' => 'auth'], function() {
+
+});
+
+// 秘書 (type = 1)
+Route::group(['prefix' => 'secret', 'middleware' => 'auth'], function() {
+
+});
+
 
 //管理員 (type = 0)
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
@@ -249,6 +259,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'uses' => 'AssignmentController@getBatchCreateAssignments',
             'as' => 'assignment.batchCreateAssignments'
         ]);
+
+        Route::post('batchCreateAssignments', [
+            'uses' => 'AssignmentController@postBatchCreateAssignments',
+            'as' => 'assignment.batchCreateAssignments'
+        ]);
     });
 
     //使用者
@@ -284,15 +299,40 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'user.getAllTeachers'
         ]);
 
+        //列出工讀生 (get)
+        Route::get('employees', [
+            'uses' => 'UserController@getAllEmployees',
+            'as' => 'user.getAllEmployees'
+        ]);
+
+        //列出秘書 (get)
+        Route::get('secrets', [
+            'uses' => 'UserController@getAllSecrets',
+            'as' => 'user.getAllSecrets'
+        ]);
+
         //刪除學生 (get)
         Route::get('/student/delete/{id}', [
             'uses' => 'UserController@deleteStudent',
             'as' => 'user.deleteStudent'
         ]);
 
+        //刪除老師 (get)
         Route::get('/teacher/delete/{id}', [
             'uses' => 'UserController@deleteTeacher',
             'as' => 'user.deleteTeacher'
+        ]);
+
+        //刪除工讀生 (get)
+        Route::get('/employee/delete/{id}', [
+            'uses' => 'UserController@deleteEmployee',
+            'as' => 'user.deleteEmployee'
+        ]);
+
+        //刪除秘書 (get)
+        Route::get('/secret/delete/{id}', [
+            'uses' => 'UserController@deleteSecret',
+            'as' => 'user.deleteSecret'
         ]);
     });
 

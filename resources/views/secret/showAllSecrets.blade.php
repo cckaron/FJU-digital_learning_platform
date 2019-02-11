@@ -26,7 +26,9 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-            <!-- ============================================================== -->
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有秘書'])
+
+        <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid">
@@ -34,7 +36,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('course.addCourse') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
@@ -54,100 +56,55 @@
                             </div>
                         @endif
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">進行中的課程 </h4>
-                                </div>
-                                <div class="comment-widgets scrollable">
+                                    <div class="table-responsive">
+                                        <table id="zero_config" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>姓名</th>
+                                                <th>ID</th>
+                                                <th>Email</th>
+                                                <th>備註</th>
+                                                <th>上次修改時間</th>
+                                                <th>動作</th>
+                                            </tr>
+                                            </thead>
 
-                                    <!-- Course Loop Start -->
-                                @for($i=0; $i<count($common_courses_processing_id); $i++)
-
-                                    <!-- Comment Row -->
-                                        <div class="d-flex flex-row comment-row m-t-0">
-
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
-                                            <div class="comment-text w-100">
-
-                                                <h4 class="font-medium">
-                                                    {{ $common_courses_processing_year[$i] }} 年 第 {{ $common_courses_processing_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">結束日期：{{ $common_courses_processing_end_date[$i] }}</span>
-                                                </h4>
-
-                                                <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($courses_processing_teacher[$i]); $j++)
-                                                        {{ $courses_processing_teacher[$i][$j] }}
-                                                        @if($j!=count($courses_processing_teacher[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
-                                                </span>
-
-                                                <h4>
-                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $courses_processing_name[$i] }}</span>
-                                                </h4>
-                                                <div class="comment-footer">
-                                                    <!-- 按鈕 -->
-                                                    <a href="{{ route('course.showCourseStudents', $courses_processing_id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>
-
-                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $common_courses_processing_id[$i],'courses_id' => $courses_processing_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
-                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
-                                                        {{ $common_courses_processing_name[$i] }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    @endfor
+                                            <tbody>
+                                                @foreach($secrets as $secret)
+                                                    <tr>
+                                                        <td>
+                                                            {{ $secret->name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $secret->id }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $secret->email }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $secret->remark }}
+                                                        </td>
+                                                        <td>
+                                                            {{ Carbon\Carbon::parse($secret->updated_at)->diffForHumans() }}
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('user.deleteSecret', ['id' => $secret->id]) }}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除?')" style="margin-bottom: 5px;">
+                                                                刪除
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
 
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">已結束的課程 </h4>
-                                </div>
-                                <div class="comment-widgets scrollable">
-
-                                    <!-- Course Loop Start -->
-                                @for($i=0; $i<count($common_courses_finished_id); $i++)
-
-                                    <!-- Comment Row -->
-                                        <div class="d-flex flex-row comment-row m-t-0">
-
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
-                                            <div class="comment-text w-100">
-
-                                                <h4 class="font-medium">
-                                                    {{ $common_courses_finished_year[$i] }} 年 第 {{ $common_courses_finished_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $common_courses_finished_end_date[$i] }}</span>
-                                                </h4>
-                                                <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($courses_finished_teacher[$i]); $j++)
-                                                        {{ $courses_finished_teacher[$i][$j] }}
-                                                        @if($j!=count($courses_finished_teacher[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
-                                                </span>
-                                                <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $courses_finished_name[$i] }}</span></h4>
-                                                <div class="comment-footer">
-                                                    <!-- 按鈕 -->
-                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $common_courses_finished_id[$i],'courses_id' => $courses_finished_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
-
-                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
-                                                        {{ $common_courses_finished_name[$i] }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    @endfor
-
-                                </div>
-                            </div>
-
                         </div>
+
 
                     </div>
                     {{ csrf_field() }}
@@ -247,5 +204,34 @@
 
     </script>
 
+    <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable({
+            language: {
+                "processing":   "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu":   "顯示 _MENU_ 項結果",
+                "zeroRecords":  "沒有符合的結果",
+                "info":         "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
+                "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+                "infoPostFix":  "",
+                "search":       "搜尋:",
+                "paginate": {
+                    "first":    "第一頁",
+                    "previous": "上一頁",
+                    "next":     "下一頁",
+                    "last":     "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            },
+        });
+    </script>
 
 @endsection
+

@@ -28,7 +28,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '新增作業'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '批量新增作業'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -38,7 +38,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('assignment.batchCreateAssignments') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
@@ -47,7 +47,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 style="margin-bottom: 20px"> 批次選取課程 </h4>
+                                    <h4 style="margin-bottom: 20px"> 選取課程(可複選) </h4>
                                     <div class="table-responsive">
                                         <table id="zero_config" class="table table-striped table-bordered">
                                             <thead>

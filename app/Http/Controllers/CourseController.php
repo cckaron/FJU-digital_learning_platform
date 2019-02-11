@@ -542,7 +542,7 @@ class CourseController extends Controller
         //hash course id
         for($i=0; $i<count($common_courses_processing); $i++){
 
-            $hashids = new Hashids('courses_id', 6);
+            $hashids = new Hashids('courses_id', 7);
             $hashed_course_id = $hashids->encode($courses_processing_id[$i]);
 
             $courses_processing_id[$i] = $hashed_course_id;
@@ -550,7 +550,7 @@ class CourseController extends Controller
 
         for($i=0; $i<count($common_courses_finished); $i++){
 
-            $hashids = new Hashids('courses_id', 6);
+            $hashids = new Hashids('courses_id', 7);
             $hashed_course_id = $hashids->encode($courses_finished_id[$i]);
 
             $courses_finished_id[$i] = $hashed_course_id;
@@ -732,7 +732,7 @@ class CourseController extends Controller
         //hash course id
         for($i=0; $i<count($courses_id); $i++){
 
-            $hashids = new Hashids('courses_id', 6);
+            $hashids = new Hashids('courses_id', 7);
             $hashed_course_id = $hashids->encode($courses_id[$i]);
 
             $courses_id[$i] = $hashed_course_id;

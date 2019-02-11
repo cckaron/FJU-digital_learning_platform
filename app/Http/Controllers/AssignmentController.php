@@ -187,52 +187,56 @@ class AssignmentController extends Controller
         $courses_id = $request->input('courses_id');
 
         //取得該課程所有授課教師
-        $teachers = DB::table('teacher_course')
-            ->where('courses_id', $courses_id)
-            ->get();
-        $teachers_id = $teachers->pluck('teachers_id');
+        foreach ($courses_id as $course_id){
 
-        $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
-        $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
+            $teachers = DB::table('teacher_course')
+                ->where('courses_id', $course_id)
+                ->get();
+            $teachers_id = $teachers->pluck('teachers_id');
 
-        //新增作業
-        $assignment = new Assignment([
-            'name' => $request->input('assignmentName'),
-            'start_date' => $request->input('assignmentStart'),
-            'start_time' => $start_time,
-            'end_date' => $request->input('assignmentEnd'),
-            'end_time' => $end_time,
-            'courses_id' => $courses_id,
-        ]);
+            $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
+            $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
 
-        $assignment->save();
+            //新增作業
+            $assignment = new Assignment([
+                'name' => $request->input('assignmentName'),
+                'start_date' => $request->input('assignmentStart'),
+                'start_time' => $start_time,
+                'end_date' => $request->input('assignmentEnd'),
+                'end_time' => $end_time,
+                'courses_id' => $course_id,
+            ]);
 
-        //取得剛剛新增的作業id
-        $assignment_id = $assignment->id;
+            $assignment->save();
 
-        for($i=0; $i<count($teachers); $i++){
-            DB::table('teacher_assignment')
-                ->insert(
-                    ['teachers_id' => $teachers_id[$i], 'assignments_id' => $assignment_id]
-                );
+            //取得剛剛新增的作業id
+            $assignment_id = $assignment->id;
+
+            for($i=0; $i<count($teachers); $i++){
+                DB::table('teacher_assignment')
+                    ->insert(
+                        ['teachers_id' => $teachers_id[$i], 'assignments_id' => $assignment_id]
+                    );
+            }
+
+            //create assignment for students
+            //create student_course first
+
+            //get the course's student count
+            $students = DB::table('student_course')->where('courses_id', $course_id)->get();
+            $students_id = $students->pluck('students_id');
+
+            for ($i=0; $i<count($students); $i++){
+
+                DB::table('student_assignment')
+                    ->insert([
+                        ['students_id' => $students_id[$i], 'assignments_id' => $assignment_id]
+                    ]);
+
+                Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);
+            }
         }
 
-        //create assignment for students
-        //create student_course first
-
-        //get the course's student count
-        $students = DB::table('student_course')->where('courses_id', $course_id)->get();
-        $students_id = $students->pluck('students_id');
-
-        for ($i=0; $i<count($students); $i++){
-
-            DB::table('student_assignment')
-                ->insert([
-                    ['students_id' => $students_id[$i], 'assignments_id' => $assignment_id]
-                ]);
-
-            Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);
-        }
 
         return redirect()->back()->with('message', '新增作業成功！');
     }
@@ -937,7 +941,7 @@ class AssignmentController extends Controller
     public function getSingleAssignments_Teacher($common_courses_id, $courses_id){
 
         $encode_common_course_id = new Hashids('common_courses_id', 10);
-        $encode_course_id = new Hashids('courses_id', 6);
+        $encode_course_id = new Hashids('courses_id', 7);
         $common_courses_id = $encode_common_course_id->decode($common_courses_id); //用不到
         $courses_id = $encode_course_id->decode($courses_id);
 

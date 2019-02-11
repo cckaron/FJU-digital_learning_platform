@@ -12,7 +12,7 @@
                 @if(Auth::user()->type != 4)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 共同課程 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        @if(Auth::user()->type == 0)
+                        @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                         <li class="sidebar-item"><a href="{{ route('course.showAllCommonCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有共同課程 </span></a></li>
                         @endif
                             @if(Auth::user()->type == 3)
@@ -48,8 +48,9 @@
 
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-pencil"></i><span class="hide-menu">作業 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        @if(Auth::user()->type == 0)
+                        @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                             <li class="sidebar-item"><a href="{{ route('assignment.showAllAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有作業 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('assignment.batchCreateAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 批量新增作業 </span></a></li>
                         @endif
                         @if(Auth::user()->type == 3)
                             <li class="sidebar-item"><a href="{{ route('assignment.showAssignments_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>
@@ -58,20 +59,19 @@
                             <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 查看作業 </span></a></li>
                         @endif
 
-                        @if(Auth::user()->type == 3)
+                        @if(Auth::user()->type == 3 and Auth::user()->type == 0)
                             <li class="sidebar-item"><a href="{{ route('Assignment.createAssignment') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
                         @endif
                     </ul>
                 </li>
 
-                @if(Auth::user()->type == 0)
+                @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">使用者 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a href="{{ route('user.getAllStudents') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 學生 </span></a></li>
                         <li class="sidebar-item"><a href="{{ route('user.getAllTeachers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 教師 </span></a></li>
-                        <li class="sidebar-item"><a href="{{ route('user.getAllTeachers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 工讀生 </span></a></li>
-                        <li class="sidebar-item"><a href="{{ route('user.getAllTeachers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 秘書 </span></a></li>
-                        <li class="sidebar-item"><a href="{{ route('user.getAllTeachers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 管理員 </span></a></li>
+                        <li class="sidebar-item"><a href="{{ route('user.getAllEmployees') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 工讀生 </span></a></li>
+                        <li class="sidebar-item"><a href="{{ route('user.getAllSecrets') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 秘書 </span></a></li>
                     </ul>
                 </li>
                 @endif
@@ -79,7 +79,7 @@
 
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">帳號 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        @if(Auth::user()->type == 0)
+                        @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                             <li class="sidebar-item"><a href="{{ route('user.createUser') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增帳號 </span></a></li>
                             <li class="sidebar-item"><a href="{{ route('user.importUsers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 匯入帳號 </span></a></li>
                         @endif
