@@ -1203,7 +1203,36 @@ class AssignmentController extends Controller
             array_push($file_urls, $urls);
         }
 
+        $notHandIn = DB::table('student_assignment')
+            ->where('assignments_id', $assignment_id)
+            ->where('status', 1)
+            ->count();
 
+        $finishedHandIn = DB::table('student_assignment')
+            ->where('assignments_id', $assignment_id)
+            ->where('status', 2)
+            ->count();
+
+        $corrected = DB::table('student_assignment')
+            ->where('assignments_id', $assignment_id)
+            ->where('status', 3)
+            ->count();
+
+        $notMakeUp = DB::table('student_assignment')
+            ->where('assignments_id', $assignment_id)
+            ->where('status', 4)
+            ->count();
+
+        $finishedMakeUp = DB::table('student_assignment')
+            ->where('assignments_id', $assignment_id)
+            ->where('status', 5)
+            ->count();
+
+        $finished = $finishedHandIn + $finishedMakeUp + $corrected;
+        $notFinished = $notMakeUp + $notHandIn;
+        $all = DB::table('student_assignment')
+            ->where('assignments_id', $assignment_id)
+            ->count();
 
         return view('assignment.showStudentAssignmentsList', [
             'students_assignments' => $student_assignments,
@@ -1216,6 +1245,10 @@ class AssignmentController extends Controller
             'file_names' => $file_names,
             'file_urls' => $file_urls,
             'assignment_id' => $assignment_id,
+            'finishedHandIn' => $finishedHandIn,
+            'finished' => $finished,
+            'notFinished' => $notFinished,
+            'all' => $all,
         ]);
     }
 
