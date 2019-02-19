@@ -75,7 +75,7 @@ class UserController extends Controller
         } else if ($request->input('userType') == 4) {
             DB::table('students')
                 ->insert([
-                    'users_id' => $request->input('userID'),
+                    'users_id' => $request->input('id'),
                     'users_name' => $request->input('userName'),
                     'grade' => $request->input('studentGrade'),
                     'class' => $request->input('studentClass'),]
