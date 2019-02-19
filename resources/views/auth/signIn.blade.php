@@ -63,7 +63,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="p-t-20" style="margin-top: 10px;">
-                                        {{--<button class="btn btn-info" id="to-recover" type="button"><i class="fa fa-lock m-r-5"></i> 忘記密碼?</button>--}}
+                                        <a class="btn btn-info" href={{ route('password.request') }} ><i class="fa fa-lock m-r-5"></i>忘記密碼?</a>
                                         <button class="btn btn-success float-right" type="submit">登入</button>
                                     </div>
                                 </div>

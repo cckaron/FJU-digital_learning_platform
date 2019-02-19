@@ -58,7 +58,11 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">繳交狀態</h5>
-                                    <h6 style="padding-top: 10px;">已繳交人數：{{ $finished }} / {{ $all }}人</h6>
+                                    <h6 style="padding-top: 10px;">
+                                        已繳交人數：
+                                        <span style="color:blue">{{ $finished }}</span>
+                                        / {{ $all }}人
+                                    </h6>
                                     @if($finishedHandIn > 0)
                                         <h6 style="padding-top: 10px; color:red">提醒：您尚有 {{ $finishedHandIn }} 份作業未批改</h6>
                                     @endif

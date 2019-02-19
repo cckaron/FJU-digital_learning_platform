@@ -56,7 +56,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="confirmPassword">請再輸入一次新密碼</label>
+                                        <label class="col-md-3" for="confirmPassword">確認密碼</label>
                                         <div class="col-md-9">
                                             <input type="password" id="confirmPassword" class="form-control" placeholder="確認密碼" name="confirmPassword" required>
                                         </div>
