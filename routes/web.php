@@ -101,8 +101,8 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
 
         //列出 (get)
         Route::get('/', [
-            'uses' => 'CourseController@getShowCommonCourses_Teacher',
-            'as' => 'courses.showCommonCourses_Teacher'
+            'uses' => 'CourseController@getShowCommonCourses',
+            'as' => 'courses.showCommonCourses'
         ]);
 
         //列出 共同課程->課程 (get)

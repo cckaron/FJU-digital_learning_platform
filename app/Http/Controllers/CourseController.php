@@ -580,13 +580,23 @@ class CourseController extends Controller
         ]);
     }
 
-    public function getShowCommonCourses_Teacher(){
-        $teacher_id = Auth::user()->id;
+    public function getShowCommonCourses(){
+        $id = Auth::user()->id;
+        $role = Auth::user()->type;
 
-        //找出這個老師的課程
-        $courses = DB::table('teacher_course')
-            ->where('teachers_id', $teacher_id)
-            ->get();
+        if ($role == 3){ //如果是老師的話
+            //找出這個老師的課程
+            $courses = DB::table('teacher_course')
+                ->where('teachers_id', $id)
+                ->get();
+        } else if ($role == 4){ //如果是學生的話
+            $courses = DB::table('student_course')
+                ->where('students_id', $id)
+                ->get();
+        } else {
+            $courses = null;
+        }
+
 
         $courses_id = $courses->pluck('courses_id');
 
@@ -596,8 +606,6 @@ class CourseController extends Controller
             ->get();
 
         $common_courses_id = $courses->pluck('common_courses_id');
-
-
         $common_courses_processing = DB::table('common_courses')
             ->whereIn('id', $common_courses_id)
             ->where('status', 1)
@@ -610,13 +618,6 @@ class CourseController extends Controller
             $hashids = new Hashids('common_courses_id', 5);
             $common_courses_processing_id[$k] = $hashids->encode($common_courses_processing_id[$k]);
         }
-
-        $common_courses_processing_year = $common_courses_processing->pluck('year');
-        $common_courses_processing_semester = $common_courses_processing->pluck('semester');
-        $common_courses_processing_name = $common_courses_processing->pluck('name');
-        $common_courses_processing_start_date = $common_courses_processing->pluck('start_date');
-        $common_courses_processing_end_date = $common_courses_processing->pluck('end_date');
-
 
         //已結束的課程
         $common_courses_finished = DB::table('common_courses')
@@ -633,27 +634,12 @@ class CourseController extends Controller
             $common_courses_finished_id[$k] = $hashids->encode($common_courses_finished_id[$k]);
         }
 
-        $common_courses_finished_year = $common_courses_finished->pluck('year');
-        $common_courses_finished_semester = $common_courses_finished->pluck('semester');
-        $common_courses_finished_name = $common_courses_finished->pluck('name');
-        $common_courses_finished_start_date = $common_courses_finished->pluck('start_date');
-        $common_courses_finished_end_date = $common_courses_finished->pluck('end_date');
-
-
-        return view('course.showCommonCourses_Teacher', [
+        return view('course.showCommonCourses', [
+            'common_courses_processing' => $common_courses_processing,
             'common_courses_processing_id' => $common_courses_processing_id,
-            'common_courses_processing_year' => $common_courses_processing_year,
-            'common_courses_processing_semester' => $common_courses_processing_semester,
-            'common_courses_processing_name' => $common_courses_processing_name,
-            'common_courses_processing_start_date' => $common_courses_processing_start_date,
-            'common_courses_processing_end_date' => $common_courses_processing_end_date,
 
+            'common_courses_finished' => $common_courses_finished,
             'common_courses_finished_id' => $common_courses_finished_id,
-            'common_courses_finished_year' => $common_courses_finished_year,
-            'common_courses_finished_semester' => $common_courses_finished_semester,
-            'common_courses_finished_name' => $common_courses_finished_name,
-            'common_courses_finished_start_date' => $common_courses_finished_start_date,
-            'common_courses_finished_end_date' => $common_courses_finished_end_date,
         ]);
     }
 

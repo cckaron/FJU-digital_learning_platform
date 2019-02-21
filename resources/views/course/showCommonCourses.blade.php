@@ -62,7 +62,7 @@
                                 <div class="comment-widgets scrollable">
 
                                     <!-- Course Loop Start -->
-                                @for($i=0; $i<count($common_courses_processing_id); $i++)
+                                @for($i=0; $i<count($common_courses_processing); $i++)
 
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
@@ -71,13 +71,13 @@
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
-                                                    {{ $common_courses_processing_year[$i] }} 年 第 {{ $common_courses_processing_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">開始日期：{{ $common_courses_processing_start_date[$i] }}</span>
+                                                    {{ $common_courses_processing[$i]->year }} 年 第 {{ $common_courses_processing[$i]->semester }} 學期
+                                                    <span class="text-muted float-right">開始日期：{{ $common_courses_processing[$i]->start_date }}</span>
                                                 </h4>
 
                                                 <h4>
-                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $common_courses_processing_name[$i] }}</span>
-                                                    <span class="text-muted float-right">結束日期：{{ $common_courses_processing_end_date[$i] }}</span>
+                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $common_courses_processing[$i]->name }}</span>
+                                                    <span class="text-muted float-right">結束日期：{{ $common_courses_processing[$i]->end_date }}</span>
                                                 </h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
@@ -106,10 +106,10 @@
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
-                                                    {{ $common_courses_finished_year[$i] }} 年 第 {{ $common_courses_finished_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $common_courses_finished_end_date[$i] }}</span>
+                                                    {{ $common_courses_finished[$i]->year }} 年 第 {{ $common_courses_finished[$i]->semester }} 學期
+                                                    <span class="text-muted float-right">截止日期：{{ $common_courses_finished[$i]->end_date }}</span>
                                                 </h4>
-                                                <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $common_courses_finished_name[$i] }}</span></h4>
+                                                <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $common_courses_finished[$i]->name }}</span></h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
                                                     <a href="{{ route('courses.showSingleCourse_Teacher', ['common_courses_id' => $common_courses_finished_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
