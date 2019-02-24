@@ -169,6 +169,18 @@ class UserController extends Controller
 
     }
 
+    public function getStudentDetail($student_id){
+        $student = DB::table('students')
+            ->where('users_id', $student_id)
+            ->first();
+
+
+
+        return view('student.showStudentDetail', [
+            'student' => $student
+        ]);
+    }
+
     public function getAllTeachers(){
         return view('teacher.showAllTeachers');
     }
@@ -225,6 +237,11 @@ class UserController extends Controller
             ->editColumn('updated_at', function(Student $student){
                 return $student->updated_at->diffForHumans();
             })
+            ->editColumn('users_name', function(Student $student){
+                $route = route('user.studentDetail', ['id' => $student->users_id]);
+                return '<a href="'.$route.'" >
+                          '.$student->users_name.'</a>';
+            })
             ->editColumn('status', function(Student $student){
                 $status = $student->status;
                 if ($status == 1){
@@ -232,14 +249,16 @@ class UserController extends Controller
                 } elseif ($status == 0) {
                     return '休學';
                 }
-
             })
             ->addColumn('motion', function (Student $student) {
-                $route = route('user.deleteStudent', ['id' => $student->users_id]);
-                return '<a href="'.$route.'" class="btn btn-danger btn-sm" onclick="return confirm(\'該學生資料將會一併刪除，確定刪除?\')">
+                $routeDetail = route('user.studentDetail', ['id' => $student->users_id]);
+                $routeDelete = route('user.deleteStudent', ['id' => $student->users_id]);
+                return ' <a href="'.$routeDetail.'" class="btn btn-default btn-sm">
+                          詳情</a>
+                          <a href="'.$routeDelete.'" class="btn btn-danger btn-sm" onclick="return confirm(\'該學生資料將會一併刪除，確定刪除?\')">
                           刪除</a>';
             })
-            ->rawColumns(['motion'])
+            ->rawColumns(['motion', 'users_name'])
             ->make(true);
     }
 

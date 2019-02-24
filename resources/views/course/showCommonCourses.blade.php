@@ -81,7 +81,7 @@
                                                 </h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
-                                                    <a href="{{ route('courses.showSingleCourse_Teacher', ['common_course_id' => $common_courses_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看課程</a>
+                                                    <a href="{{ route('courses.showSingleCourse', ['common_course_id' => $common_courses_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看課程</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +112,7 @@
                                                 <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $common_courses_finished[$i]->name }}</span></h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
-                                                    <a href="{{ route('courses.showSingleCourse_Teacher', ['common_courses_id' => $common_courses_finished_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    <a href="{{ route('courses.showSingleCourse', ['common_courses_id' => $common_courses_finished_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -57,7 +57,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">於<span style="color: blue"> {{ $common_course_name }} </span>內的課程</h4>
+                                    <h4 class="card-title">於<span style="color: blue"> {{ $common_course->name }} </span>內的課程</h4>
                                 </div>
                                 <div class="comment-widgets scrollable">
 
@@ -71,17 +71,21 @@
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
-                                                    {{ $courses_year }} 年 第 {{ $courses_semester }} 學期
-                                                    <span class="text-muted float-right">開始日期：{{ $courses_start_date }}</span>
+                                                    {{ $common_course->year }} 年 第 {{ $common_course->semester }} 學期
+                                                    <span class="text-muted float-right">開始日期：{{ $common_course->start_date }}</span>
                                                 </h4>
 
                                                 <h4>
                                                     <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $courses_name[$i] }}</span>
-                                                    <span class="text-muted float-right">結束日期：{{ $courses_end_date }}</span>
+                                                    <span class="text-muted float-right">結束日期：{{ $common_course->end_date }}</span>
                                                 </h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
-                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $common_courses_id,'courses_id' => $courses_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    @if(Auth::user()->type == 3)
+                                                        <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $common_courses_id,'courses_id' => $courses_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    @elseif(Auth::user()->type == 4)
+                                                        <a href="{{ route('assignment.showAssignments', ['common_courses_id' => $common_courses_id,'courses_id' => $courses_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

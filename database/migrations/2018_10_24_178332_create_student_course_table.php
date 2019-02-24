@@ -19,6 +19,8 @@ class CreateStudentCourseTable extends Migration
 
             $table->primary(['students_id', 'courses_id']);
 
+            //衍生屬性->總成績
+
             $table->timestamps();
         });
     }

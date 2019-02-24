@@ -643,8 +643,9 @@ class CourseController extends Controller
         ]);
     }
 
-    public function getShowSingleCourse_Teacher($common_courses_id){
-        $teacher_id = Auth::user()->id;
+    public function getShowSingleCourse($common_courses_id){
+        $id = Auth::user()->id;
+        $role = Auth::user()->type;
 
         //把 $common_course_id 解碼
         $encode_common_course_id = new Hashids('common_courses_id', 5);
@@ -658,14 +659,22 @@ class CourseController extends Controller
 
         $all_courses_id = $courses->pluck('id');
 
-        //篩選出這個共同課程中，是此老師開的課程
-        $teacher_courses = DB::table('teacher_course')
-            ->whereIn('courses_id', $all_courses_id)
-            ->where('teachers_id', $teacher_id)
-            ->get();
+        if ($role == 3){ //如果是老師的話
+            //篩選出這個共同課程中，是此老師開的課程
+            $courses = DB::table('teacher_course')
+                ->whereIn('courses_id', $all_courses_id)
+                ->where('teachers_id', $id)
+                ->get();
+        } else if ($role == 4){ //如果是學生
+            //篩選出這個共同課程中，有這個學生的課程
+            $courses = DB::table('student_course')
+                ->whereIn('courses_id', $all_courses_id)
+                ->where('students_id', $id)
+                ->get();
+        }
 
         //取得是此老師開的課程的 課程id
-        $courses_id = $teacher_courses->pluck('courses_id');
+        $courses_id = $courses->pluck('courses_id');
 
         //再來取得這個課程的指導老師
         $courses_teachers = array();
@@ -701,14 +710,8 @@ class CourseController extends Controller
         }
 
         $common_course = DB::table('common_courses')
-            ->where('id', $common_courses_id);
-
-        $courses_year = $common_course->value('year');
-        $courses_semester = $common_course->value('semester');
-        $courses_start_date = $common_course->value('start_date');
-        $courses_end_date = $common_course->value('end_date');
-
-        $common_course_name = $common_course->value('name');
+            ->where('id', $common_courses_id)
+            ->first();
 
         //hash common course id
         $hashids = new Hashids('common_courses_id', 5);
@@ -725,16 +728,12 @@ class CourseController extends Controller
         }
 
 
-        return view('course.showSingleCourse_Teacher', [
+        return view('course.showSingleCourse', [
+            'common_course' => $common_course,
             'common_courses_id' => $common_courses_id,
-            'common_course_name' => $common_course_name,
             'courses_id' => $courses_id,
             'courses_teachers' => $courses_teachers,
-            'courses_year' => $courses_year,
-            'courses_semester' => $courses_semester,
             'courses_name' => $courses_name,
-            'courses_start_date' => $courses_start_date,
-            'courses_end_date' => $courses_end_date,
         ]);
     }
 

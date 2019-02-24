@@ -22,7 +22,7 @@ class CreateAssignmentTable extends Migration
             $table->string('end_date');
             $table->string('end_time');
             $table->integer('status')->default(1);
-            $table->boolean('announce_score')->default('true');
+            $table->boolean('announce_score')->default(1);
             $table->timestamps();
 
             $table->index('id');

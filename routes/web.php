@@ -30,6 +30,21 @@ Route::post('/', [
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+//使用者共用route
+Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
+    //列出共同課程 (get)
+    Route::get('/', [
+        'uses' => 'CourseController@getShowCommonCourses',
+        'as' => 'courses.showCommonCourses'
+    ]);
+
+    //列出 ->課程 (get)
+    Route::get('/{common_courses_id}/courses', [
+        'uses' => 'CourseController@getShowSingleCourse',
+        'as' => 'courses.showSingleCourse'
+    ]);
+});
+
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
     //User
     Route::get('/index', [
@@ -90,6 +105,14 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
             'as' => 'assignment.handInAssignment'
         ]);
     });
+
+    //資訊
+    Route::group(['prefix' => 'details', 'middleware' => 'auth'], function (){
+       Route::get('{student_id}', [
+           'uses' => 'UserController@getStudentDetail',
+           'as' => 'user.studentDetail'
+       ]);
+    });
 });
 
 
@@ -98,19 +121,6 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
 
     //共同課程
     Route::group(['prefix' => 'commonCourses', 'middleware' => 'auth'], function(){
-
-        //列出 (get)
-        Route::get('/', [
-            'uses' => 'CourseController@getShowCommonCourses',
-            'as' => 'courses.showCommonCourses'
-        ]);
-
-        //列出 共同課程->課程 (get)
-        Route::get('/{common_courses_id}/courses', [
-            'uses' => 'CourseController@getShowSingleCourse_Teacher',
-            'as' => 'courses.showSingleCourse_Teacher'
-        ]);
-
         //列出 共同課程->課程->作業 (get)
         Route::get('/{common_courses_id}/courses/{courses_id}/assignments/', [
             'uses' => 'AssignmentController@getSingleAssignments_Teacher',
