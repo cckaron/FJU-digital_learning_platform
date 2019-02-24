@@ -93,6 +93,9 @@
                                 <td class="text-success">{{ $student->grade }}</td>
                                 <td class="text-success">{{ $student->class }}</td>
                                 <td>
+                                    <a href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="查看學生資訊">
+                                        <i class="mdi mdi-account-box"></i>
+                                    </a>
                                     <a href="{{ route('course.dropCourse', ['courses_id' => $courses_id, 'student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="將此學生退選" onclick="return confirm('該學生於此課程的資料將會一併刪除，確定刪除?')">
                                         <i class="mdi mdi-close"></i>
                                     </a>

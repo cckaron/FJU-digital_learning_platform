@@ -17,7 +17,8 @@ class Student extends Model
     }
 
     public function course(){
-        return $this->belongsToMany('App\Course');
+        return $this
+            ->belongsToMany('App\Course', 'student_course', 'students_id', 'courses_id', 'users_id', 'id');
     }
 
     public function assignment(){

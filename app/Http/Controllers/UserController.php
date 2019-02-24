@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\common_course;
+use App\Course;
 use App\Imports\StudentsImport;
 use App\Imports\TeachersImport;
 use App\Imports\UsersStudentImport;
@@ -10,6 +12,7 @@ use App\Student;
 use App\Teacher;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -170,14 +173,26 @@ class UserController extends Controller
     }
 
     public function getStudentDetail($student_id){
-        $student = DB::table('students')
-            ->where('users_id', $student_id)
+        $student = Student::where('users_id', $student_id)
             ->first();
 
+        $courses = $student
+            ->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*' ,'common_courses.start_date')
+            ->get();
 
+        $common_courses = collect();
+
+        foreach($courses as $course){
+            $common_course = common_course::find($course->id);
+            $common_courses->push($common_course);
+        }
 
         return view('student.showStudentDetail', [
-            'student' => $student
+            'student' => $student,
+            'courses' => $courses,
+            'common_courses' => $common_courses
         ]);
     }
 

@@ -86,6 +86,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title p-b-10">統計圖表</h4>
+                                {{ $courses }}
+                                <br>
+                                <br>
+                                {{ $common_courses }}
                             </div>
                         </div>
                     </div>

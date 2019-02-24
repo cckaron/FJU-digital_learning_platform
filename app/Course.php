@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    protected  $fillable = ['id', 'common_courses_id', 'name', 'class'];
+    protected  $fillable = ['id', 'common_courses_id','name', 'class'];
 
     public function teacher(){
         return $this->hasMany('App\Teacher');
     }
 
     public function student(){
-        return $this->belongsToMany('App\Student');
+        return $this->belongsToMany('App\Student', 'student_course', 'courses_id', 'students_id', 'id', 'users_id');
     }
 
 
