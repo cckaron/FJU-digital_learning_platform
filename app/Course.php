@@ -9,7 +9,7 @@ class Course extends Model
     protected  $fillable = ['id', 'common_courses_id','name', 'class'];
 
     public function teacher(){
-        return $this->hasMany('App\Teacher');
+        return $this->belongsToMany('App\Teacher', 'teacher_course', 'courses_id', 'teachers_id', 'id', 'users_id');
     }
 
     public function student(){

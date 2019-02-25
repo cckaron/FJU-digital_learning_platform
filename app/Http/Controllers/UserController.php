@@ -179,20 +179,35 @@ class UserController extends Controller
         $courses = $student
             ->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.*' ,'common_courses.start_date')
+            ->select(
+                'courses.*',
+                'common_courses.name as common_course_name',
+                'common_courses.start_date',
+                'common_courses.year',
+                'common_courses.semester',
+                'common_courses.status')
+            ->orderBy('common_courses.status')
             ->get();
 
-        $common_courses = collect();
-
+        $teachers = collect();
         foreach($courses as $course){
-            $common_course = common_course::find($course->id);
-            $common_courses->push($common_course);
+            $course = Course::where('id', $course->id)->first();
+            $teacher = $course->teacher()->select('users_name')->get();
+            $teachers->push($teacher);
         }
+
+
+
+//        $common_courses = collect();
+//        foreach($courses as $course){
+//            $common_course = common_course::find($course->id);
+//            $common_courses->push($common_course);
+//        }
 
         return view('student.showStudentDetail', [
             'student' => $student,
             'courses' => $courses,
-            'common_courses' => $common_courses
+            'teachers' => $teachers,
         ]);
     }
 

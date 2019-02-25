@@ -86,10 +86,11 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title p-b-10">統計圖表</h4>
-                                {{ $courses }}
-                                <br>
-                                <br>
-                                {{ $common_courses }}
+                                {{--{{ $courses }}--}}
+                                {{--<br>--}}
+                                {{--<br>--}}
+                                {{--{{ $teachers }}--}}
+
                             </div>
                         </div>
                     </div>
@@ -101,32 +102,37 @@
                             </div>
 
                             <ul class="list-style-none">
-                                <li class="d-flex no-block card-body">
+
+                                @foreach($courses as $key=>$course)
+                                <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
                                     <i class="fa fa-check-circle w-30px m-t-5"></i>
                                     <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a>
-                                        <span class="text-muted">dolor sit amet, consectetur adipiscing</span>
+                                        <a href="#" class="m-b-0 font-medium p-0">{{ $course->common_course_name }} - {{ $course->name }}</a>
+                                        <span class="text-active" >
+                                            @if($course->status == 1)
+                                                <span class="badge badge-pill badge-primary">進行中</span>
+                                            @else
+                                                <span class="badge badge-pill badge-dark">已結束</span>
+                                            @endif
+                                        </span>
+
+                                        <span class="text-active" >
+                                                <span class="badge badge-pill badge-info">
+                                                    指導老師:
+                                                    @foreach($teachers[$key] as $teacher)
+                                                        {{ $teacher->users_name }}
+                                                    @endforeach
+                                                </span>
+                                        </span>
                                     </div>
                                     <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">20</h5>
-                                            <span class="text-muted font-16">Jan</span>
+                                        <div class="text-right">
+                                            <h5 class="text-muted m-b-0" style="text-align: center;">{{ $course->year }}</h5>
+                                            <strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-check-circle w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a>
-                                        <span class="text-muted">dolor sit amet, consectetur adipiscing</span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">20</h5>
-                                            <span class="text-muted font-16">Jan</span>
-                                        </div>
-                                    </div>
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
