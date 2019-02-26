@@ -430,3 +430,9 @@ Route::group(['prefix' => 'ajax'], function(){
    ]);
 });
 
+Route::group(['prefix' => 'download'], function (){
+   Route::get('assignment/{student_id}/{assignment_id}', [
+       'uses' => 'ZipController@downloadZIP',
+       'as' => 'download.zip'
+   ]);
+});

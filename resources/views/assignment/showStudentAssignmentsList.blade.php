@@ -100,7 +100,7 @@
                                                         <input hidden id="student_assignment_id_{{ $i }}" value="{{ $students_assignments_id[$i] }}"/>
                                                     </td>
                                                 @endif
-                                                <td>{{ $student_names[$i] }}</td>
+                                                <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student_ids[$i]]) }}">{{ $student_names[$i] }}</a></td>
                                                 <td>{{ $student_ids[$i] }}</td>
 
                                                 <td>

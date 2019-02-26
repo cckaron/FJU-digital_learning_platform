@@ -88,7 +88,7 @@
                             @foreach($students->chunk(3) as $item)
                                 @foreach($item as $student)
                             <tr>
-                                <td>{{ $student->users_name }}</td>
+                                <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}">{{ $student->users_name }}</a></td>
                                 <td class="text-success">{{ $student->users_id }}</td>
                                 <td class="text-success">{{ $student->grade }}</td>
                                 <td class="text-success">{{ $student->class }}</td>

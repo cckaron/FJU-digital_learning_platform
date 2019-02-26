@@ -109,7 +109,12 @@
 
                                 @foreach($courses as $key=>$course)
                                     <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
-                                        <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                        @if($course->status == 1)
+                                            <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                        @else
+                                            <i class="fa fa-hourglass-end w-30px m-t-5"></i>
+                                        @endif
+
                                         <div>
                                             <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">{{ $course->common_course_name }} - {{ $course->name }}</a>
                                             <div class="p-t-5">
@@ -134,17 +139,21 @@
                                                     @php($total = null)
                                                     @foreach($student_assignments[$key] as $innerKey=>$temp)
                                                         @foreach($temp as $student_assignment)
-                                                           @php($total += $student_assignment->pivot->score)
+                                                            @php($total += ($student_assignment->pivot->score)*($assignments[$key][$innerKey]->percentage)/100)
                                                         @endforeach
                                                     @endforeach
-                                                        <span class="badge badge-pill badge-info">
+                                                    <span class="badge badge-pill badge-success">
                                                     @if($course->status == 1)
-                                                            暫定成績：
+                                                            累加總分：
                                                         @else
                                                             總成績：
                                                         @endif
 
-
+                                                        @if($total != null)
+                                                            {{ $total }} 分
+                                                        @else
+                                                            尚無
+                                                        @endif
                                                 </span>
                                         </span>
 
@@ -161,9 +170,20 @@
                                                                 <h6>
                                                                     <i class="fas fa-book m-t-5"></i>
                                                                     {{ $assignments[$key][$innerKey]->name }}
-                                                                    <span class="m-l-5">
-                                                                            {{ $student_assignment->pivot->score }}分
+                                                                    <span class="m-l-5" style="color: blue">
+                                                                            @if($student_assignment->pivot->score == null)
+                                                                            <span style="color: red"> 未登記 </span>
+                                                                        @elseif($student_assignment->pivot->score < 60)
+                                                                            <span style="color: red"> {{ $student_assignment->pivot->score }}分 </span>
+                                                                        @else
+                                                                            {{ $student_assignment->pivot->score }}
+                                                                        @endif
                                                                         </span>
+
+                                                                    <span class="m-l-5">
+                                                                        <i class=" fas fa-download m-t-5"></i>
+                                                                        <a class="link" href="{{ route('download.zip', ['student_id' => $student->users_id, 'assignment_id' => $assignments[$key][$innerKey]->id]) }}">檔案下載</a>
+                                                                    </span>
                                                                 </h6>
 
                                                             @endforeach
