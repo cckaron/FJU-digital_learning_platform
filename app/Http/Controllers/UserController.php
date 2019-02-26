@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
 use App\common_course;
 use App\Course;
 use App\Imports\StudentsImport;
@@ -78,10 +79,10 @@ class UserController extends Controller
         } else if ($request->input('userType') == 4) {
             DB::table('students')
                 ->insert([
-                    'users_id' => $request->input('id'),
-                    'users_name' => $request->input('userName'),
-                    'grade' => $request->input('studentGrade'),
-                    'class' => $request->input('studentClass'),]
+                        'users_id' => $request->input('id'),
+                        'users_name' => $request->input('userName'),
+                        'grade' => $request->input('studentGrade'),
+                        'class' => $request->input('studentClass'),]
                 );
         }
 
@@ -190,24 +191,45 @@ class UserController extends Controller
             ->get();
 
         $teachers = collect();
+        $assignments = collect();
+        $student_assignments = collect();
+
         foreach($courses as $course){
+            //覆寫以改變型態
             $course = Course::where('id', $course->id)->first();
+
+            //get courses' teacher
             $teacher = $course->teacher()->select('users_name')->get();
             $teachers->push($teacher);
+
+            //get courses' assignments
+            $assignment = $course->assignment()->get();
+            $assignments->push($assignment);
         }
 
+        //get student's assignments' detail
+        foreach($courses as $key=>$course){
+            $temp = collect();
 
+            foreach($assignments[$key] as $assignment){
+                //覆寫以改變型態
+                $assignment = Assignment::where('id', $assignment->id)->first();
 
-//        $common_courses = collect();
-//        foreach($courses as $course){
-//            $common_course = common_course::find($course->id);
-//            $common_courses->push($common_course);
-//        }
+                $student_assignment = $assignment->student()->where('users_id', $student_id)->withPivot('score')->get();
+
+                $temp->push($student_assignment);
+            }
+
+            $student_assignments->push($temp);
+        }
+
 
         return view('student.showStudentDetail', [
             'student' => $student,
             'courses' => $courses,
             'teachers' => $teachers,
+            'assignments' => $assignments,
+            'student_assignments' => $student_assignments,
         ]);
     }
 

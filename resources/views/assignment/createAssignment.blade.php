@@ -38,7 +38,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('Assignment.createAssignment') }}" method="post">
+                <form action="{{ route('Assignment.createAssignment') }}" method="post" id="createAssignment">
 
                     <!-- editor -->
                     <div class="row">
@@ -80,6 +80,17 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-md-3 m-t-10" for="userAccount">作業內容</label>
+                                        <div class="col-md-6">
+                                            <div id="editor" style="height: 300px;">
+
+                                            </div>
+
+                                            <textarea id="assignmentContent" name="assignmentContent" hidden>  </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-md-3 m-t-15">開放繳交時間</label>
                                         <div class="col-md-3">
                                             <div class="input-group">
@@ -117,6 +128,28 @@
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar-times"></i></span>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-9" for="userAccount">佔分比例</label>
+                                        <div class="col-md-3">
+                                            <div class="input-group mb-3">
+                                                <input type="text" id="userAccount" class="form-control" placeholder="ex. 輸入 25 代表 25%" name="assignmentPercentage" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3">是否公佈成績？</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="notAnnounceScore" name="notAnnounceScore">
+                                                <label class="custom-control-label" for="notAnnounceScore">不公布</label>
                                             </div>
                                         </div>
                                     </div>
@@ -233,6 +266,16 @@
         $('#timepicker-end').timepicker(
             { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
 
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+        });
+
+        $("#createAssignment").on("submit",function(){
+            var myEditor = document.querySelector('#editor');
+            var html = myEditor.children[0].innerHTML;
+
+            $("#assignmentContent").val(html);
+        })
     </script>
 
     <script>

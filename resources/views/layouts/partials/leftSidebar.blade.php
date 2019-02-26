@@ -14,10 +14,7 @@
                         @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                         <li class="sidebar-item"><a href="{{ route('course.showAllCommonCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有共同課程 </span></a></li>
                         @endif
-                            @if(Auth::user()->type == 3)
-                                <li class="sidebar-item"><a href="{{ route('courses.showCommonCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的共同課程 </span></a></li>
-                            @endif
-                            @if(Auth::user()->type == 4)
+                            @if(Auth::user()->type == 3 or Auth::user()->type == 4)
                                 <li class="sidebar-item"><a href="{{ route('courses.showCommonCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的共同課程 </span></a></li>
                             @endif
 
@@ -60,7 +57,7 @@
                             <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 查看作業 </span></a></li>
                         @endif
 
-                        @if(Auth::user()->type == 3 and Auth::user()->type == 0)
+                        @if(Auth::user()->type == 3 or Auth::user()->type == 0)
                             <li class="sidebar-item"><a href="{{ route('Assignment.createAssignment') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
                         @endif
                     </ul>

@@ -38,7 +38,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('assignment.batchCreateAssignments') }}" method="post">
+                <form action="{{ route('assignment.batchCreateAssignments') }}" method="post" id="batchCreateAssignment">
 
                     <!-- editor -->
                     <div class="row">
@@ -69,47 +69,47 @@
                                             @php($teacher_index_count = 0)
                                             @foreach($common_courses as $common_course)
                                                 @foreach($common_course->course as $courses)
-                                                <tr>
-                                                    <td>
-                                                        <label class="customcheckbox">
-                                                            <input type="checkbox" class="listCheckbox" name="courses_id[]" value="{{ $courses->id }}" /><span class="checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses->name }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $common_course->name }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $common_course->year }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $common_course->semester }}
-                                                    </td>
-                                                    <td>
-                                                        @if($courses->class == 1)
-                                                            甲
-                                                        @elseif($courses->class == 2)
-                                                            乙
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @foreach($teachers_name[$teacher_index_count] as $teacher_name)
-                                                            {{ $teacher_name }}
-                                                        @endforeach
+                                                    <tr>
+                                                        <td>
+                                                            <label class="customcheckbox">
+                                                                <input type="checkbox" class="listCheckbox" name="courses_id[]" value="{{ $courses->id }}" /><span class="checkmark"></span>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            {{ $courses->name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $common_course->name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $common_course->year }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $common_course->semester }}
+                                                        </td>
+                                                        <td>
+                                                            @if($courses->class == 1)
+                                                                甲
+                                                            @elseif($courses->class == 2)
+                                                                乙
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @foreach($teachers_name[$teacher_index_count] as $teacher_name)
+                                                                {{ $teacher_name }}
+                                                            @endforeach
 
-                                                        @php($teacher_index_count += 1)
-                                                    </td>
-                                                    <td>
-                                                        {{ $common_course->start_date }}                                                    </td>
-                                                    <td>
-                                                        {{ $common_course->end_date }}                                                    </td>
-                                                    <td>
-                                                        {{ $courses->updated_at->diffForHumans() }}
-                                                    </td>
-                                                </tr>
-                                                    @endforeach
+                                                            @php($teacher_index_count += 1)
+                                                        </td>
+                                                        <td>
+                                                            {{ $common_course->start_date }}                                                    </td>
+                                                        <td>
+                                                            {{ $common_course->end_date }}                                                    </td>
+                                                        <td>
+                                                            {{ $courses->updated_at->diffForHumans() }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                             </tbody>
                                         </table>
@@ -133,6 +133,17 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-md-2 m-t-10" for="userAccount">作業內容</label>
+                                        <div class="col-md-6">
+                                            <div id="editor" style="height: 300px;">
+
+                                            </div>
+
+                                            <textarea id="assignmentContent" name="assignmentContent" hidden>  </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-md-2 m-t-15">開放繳交時間</label>
                                         <div class="col-md-3">
                                             <div class="input-group">
@@ -152,8 +163,6 @@
                                         </div>
                                     </div>
 
-
-
                                     <div class="form-group row">
                                         <label class="col-md-2 m-t-15">截止時間</label>
                                         <div class="col-md-3">
@@ -170,6 +179,28 @@
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fa fa-calendar-times"></i></span>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-2 m-t-10" for="userAccount">佔分比例</label>
+                                        <div class="col-md-2">
+                                            <div class="input-group mb-3">
+                                                <input type="text" id="userAccount" class="form-control" placeholder="ex. 輸入 25 代表 25%" name="assignmentPercentage" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-2">是否公佈成績？</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="notAnnounceScore" name="notAnnounceScore">
+                                                <label class="custom-control-label" for="notAnnounceScore">不公布</label>
                                             </div>
                                         </div>
                                     </div>
@@ -288,6 +319,17 @@
         $('#timepicker-end').timepicker(
             { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
 
+
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+        });
+
+        $("#batchCreateAssignment").on("submit",function(){
+            var myEditor = document.querySelector('#editor');
+            var html = myEditor.children[0].innerHTML;
+
+            $("#assignmentContent").val(html);
+        })
     </script>
 
     <script>
@@ -309,15 +351,15 @@
 
     {{--<script>--}}
 
-        {{--var courseName = $('#courseName');--}}
+    {{--var courseName = $('#courseName');--}}
 
-        {{--var commonCourseName = {!! $common_courses_name !!};--}}
+    {{--var commonCourseName = {!! $common_courses_name !!};--}}
 
-        {{--courseName.change(function () {--}}
-            {{--var index = courseName[0].selectedIndex;--}}
-            {{--document.getElementById("common_course_name").innerHTML= commonCourseName[index];--}}
+    {{--courseName.change(function () {--}}
+    {{--var index = courseName[0].selectedIndex;--}}
+    {{--document.getElementById("common_course_name").innerHTML= commonCourseName[index];--}}
 
-        {{--})--}}
+    {{--})--}}
     {{--</script>--}}
 
     <!-- close autocomplete of datetime picker -->

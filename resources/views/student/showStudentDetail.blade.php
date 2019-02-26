@@ -90,6 +90,10 @@
                                 {{--<br>--}}
                                 {{--<br>--}}
                                 {{--{{ $teachers }}--}}
+                                {{ $assignments }}
+                                <br>
+                                <br>
+                                {{ $student_assignments }}
 
                             </div>
                         </div>
@@ -104,10 +108,11 @@
                             <ul class="list-style-none">
 
                                 @foreach($courses as $key=>$course)
-                                <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
-                                    <i class="fa fa-check-circle w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">{{ $course->common_course_name }} - {{ $course->name }}</a>
+                                    <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
+                                        <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                        <div>
+                                            <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">{{ $course->common_course_name }} - {{ $course->name }}</a>
+                                            <div class="p-t-5">
                                         <span class="text-active" >
                                             @if($course->status == 1)
                                                 <span class="badge badge-pill badge-primary">進行中</span>
@@ -116,7 +121,7 @@
                                             @endif
                                         </span>
 
-                                        <span class="text-active" >
+                                                <span class="text-active" >
                                                 <span class="badge badge-pill badge-info">
                                                     指導老師:
                                                     @foreach($teachers[$key] as $teacher)
@@ -124,14 +129,61 @@
                                                     @endforeach
                                                 </span>
                                         </span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="text-right">
-                                            <h5 class="text-muted m-b-0" style="text-align: center;">{{ $course->year }}</h5>
-                                            <strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>
+
+                                                <span class="text-active" >
+                                                    @php($total = null)
+                                                    @foreach($student_assignments[$key] as $innerKey=>$temp)
+                                                        @foreach($temp as $student_assignment)
+                                                           @php($total += $student_assignment->pivot->score)
+                                                        @endforeach
+                                                    @endforeach
+                                                        <span class="badge badge-pill badge-info">
+                                                    @if($course->status == 1)
+                                                            暫定成績：
+                                                        @else
+                                                            總成績：
+                                                        @endif
+
+
+                                                </span>
+                                        </span>
+
+                                                {{--<a class="link" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">--}}
+                                                {{--<i class="fa fa-arrow-right" aria-hidden="true"></i>--}}
+                                                {{--<span>展開作業紀錄</span>--}}
+                                                {{--</a>--}}
+
+                                                <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
+                                                    <div class="widget-content">
+
+                                                        @foreach($student_assignments[$key] as $innerKey=>$temp)
+                                                            @foreach($temp as $student_assignment)
+                                                                <h6>
+                                                                    <i class="fas fa-book m-t-5"></i>
+                                                                    {{ $assignments[$key][$innerKey]->name }}
+                                                                    <span class="m-l-5">
+                                                                            {{ $student_assignment->pivot->score }}分
+                                                                        </span>
+                                                                </h6>
+
+                                                            @endforeach
+                                                        @endforeach
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                        <div class="ml-auto">
+                                            <div class="text-right">
+                                                <h5 class="text-muted m-b-0" style="text-align: center;">{{ $course->year }}</h5>
+
+                                                <div class="p-t-5">
+                                                    <strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
                                 @endforeach
                             </ul>
                         </div>

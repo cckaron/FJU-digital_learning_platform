@@ -18,7 +18,7 @@ class Course extends Model
 
 
     public function assignment(){
-        return $this->hasMany('App\Assignment');
+        return $this->hasMany('App\Assignment', 'courses_id', 'id');
     }
 
     public function common_course(){

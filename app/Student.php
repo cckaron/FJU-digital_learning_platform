@@ -22,6 +22,6 @@ class Student extends Model
     }
 
     public function assignment(){
-        return $this->hasMany('App\Assignment');
+        return $this->belongsToMany('App\Assignment', 'student_assignment', 'students_id', 'assignments_id', 'users_id', 'id');
     }
 }

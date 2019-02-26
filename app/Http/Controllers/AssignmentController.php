@@ -64,6 +64,7 @@ class AssignmentController extends Controller
             'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
             'assignmentStartTime' => 'required',
             'assignmentEndTime' => 'required',
+            'assignmentPercentage' => 'required|numeric',
             'courseName' => 'required'
         ]);
 
@@ -82,14 +83,24 @@ class AssignmentController extends Controller
         $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
         $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
 
+        $announceScore = $request->input('notAnnounceScore');
+        if ($announceScore){
+            $announceScore = false;
+        } else {
+            $announceScore = true;
+        }
+
         //新增作業
         $assignment = new Assignment([
             'name' => $request->input('assignmentName'),
+            'content' => $request->input('assignmentContent'),
             'start_date' => $request->input('assignmentStart'),
             'start_time' => $start_time,
             'end_date' => $request->input('assignmentEnd'),
             'end_time' => $end_time,
             'courses_id' => $course_id,
+            'percentage' => $request->input('assignmentPercentage'),
+            'announce_score' => $announceScore
         ]);
 
         $assignment->save();
@@ -176,7 +187,8 @@ class AssignmentController extends Controller
 
     public function postBatchCreateAssignments(Request $request){
         $request->validate([
-            'assignmentName' => 'required',
+            'assignmentName' => 'required|unique:assignments,name',
+            'assignmentPercentage' => 'required|numeric',
             'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
             'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
             'assignmentStartTime' => 'required',
@@ -197,14 +209,24 @@ class AssignmentController extends Controller
             $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
             $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
 
+            $announceScore = $request->input('notAnnounceScore');
+            if ($announceScore){
+                $announceScore = false;
+            } else {
+                $announceScore = true;
+            }
+
             //新增作業
             $assignment = new Assignment([
                 'name' => $request->input('assignmentName'),
+                'content' => $request->input('assignmentContent'),
                 'start_date' => $request->input('assignmentStart'),
                 'start_time' => $start_time,
                 'end_date' => $request->input('assignmentEnd'),
                 'end_time' => $end_time,
                 'courses_id' => $course_id,
+                'percentage' => $request->input('assignmentPercentage'),
+                'announce_score' => $announceScore
             ]);
 
             $assignment->save();
