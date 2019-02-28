@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '學生資訊'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '學生資訊(開發中)'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
