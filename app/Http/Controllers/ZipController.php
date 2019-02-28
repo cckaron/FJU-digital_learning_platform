@@ -11,6 +11,9 @@ class ZipController extends Controller
     public function downloadZIP($student_id, $assignment_id) {
         // create a list of files that should be added to the archive.
         $files = glob(storage_path().'/app/public/'.$student_id.'/'.$assignment_id.'/*');
+        if ($files == null){
+            return redirect()->back()->with('message', '該作業無上傳檔案');
+        }
         $assignment = Assignment::where('id', $assignment_id)
             ->first();
 
