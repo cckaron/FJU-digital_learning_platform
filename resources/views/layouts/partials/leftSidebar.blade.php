@@ -57,7 +57,7 @@
                             <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 查看作業 </span></a></li>
                         @endif
 
-                        @if(Auth::user()->type == 3 or Auth::user()->type == 0)
+                        @if(Auth::user()->type == 3)
                             <li class="sidebar-item"><a href="{{ route('Assignment.createAssignment') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
                         @endif
                     </ul>
