@@ -46,6 +46,31 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
+                                    <h5 class="card-title">勾選課程學生</h5>
+                                    <div class="table-responsive">
+                                        <table id="courseUsers" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>勾選</th>
+                                                <th>學號</th>
+                                                <th>姓名</th>
+                                                <th>年級</th>
+                                                <th>班級</th>
+                                                <th>帳號建立時間</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">填寫課程資訊</h5>
+
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-15">隸屬共同課程</label>
                                         <div class="col-md-9">
@@ -94,31 +119,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">勾選課程學生</h5>
-                                    <div class="table-responsive">
-                                        <table id="courseUsers" class="table table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th>勾選</th>
-                                                <th>學號</th>
-                                                <th>姓名</th>
-                                                <th>年級</th>
-                                                <th>班級</th>
-                                                <th>帳號建立時間</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
 
                     </div>
                         {{ csrf_field() }}
