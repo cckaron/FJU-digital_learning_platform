@@ -177,7 +177,7 @@ class CourseController extends Controller
         $course_id = $encode_courses_id->decode($course_id)[0]; //decode 之後會變成 array
 
         DB::table('courses')
-            ->where('id', $id)
+            ->where('id', $course_id)
             ->delete();
 
         return redirect()->back()->with('message', '已成功刪除課程');
