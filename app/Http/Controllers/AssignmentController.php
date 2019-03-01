@@ -151,11 +151,13 @@ class AssignmentController extends Controller
         $common_courses = common_course::with('course')->get();
 
         //把不含 course 的 common course 刪掉（過濾）
-        for ($i=0; $i< count($common_courses); $i++){
-            if (! $common_courses[$i]->course()->exists()){
-                $common_courses->forget($i);
-            }
-        }
+        // (2019/3/2 fixed) 不需要!!因為 with('course') 已經過濾過了
+
+//        for ($i=0; $i< count($common_courses); $i++){
+//            if (! $common_courses[$i]->course()->exists()){
+//                $common_courses->forget($i);
+//            }
+//        }
 
 
         $teachers_name = collect();
