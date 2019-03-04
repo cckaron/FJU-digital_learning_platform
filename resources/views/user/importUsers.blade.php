@@ -96,6 +96,36 @@
                             </div>
                         </div>
                     </div>
+
+                        <div class="col-md-6"></div>
+
+                        <div class="col-md-6">
+
+                            <!-- Tabs -->
+                            <div class="card">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#course" role="tab"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">匯入課程</span></a> </li>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content tabcontent-border">
+                                    <div class="tab-pane active p-20" id="course" role="tabpanel">
+                                        <div class="form-group">
+                                            <h4 align="center">
+                                                匯入
+                                                <span style="color: red">
+                                                課程
+                                            </span>
+
+                                            </h4>
+                                            <form action="{{ route('dropZone.importCourse') }}" class="dropzone" method="post" enctype="multipart/form-data" id="myDropzone">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -92,6 +92,8 @@
                                                                 甲
                                                             @elseif($courses->class == 2)
                                                                 乙
+                                                            @elseif($courses->class == 3)
+                                                                不分班
                                                             @endif
                                                         </td>
                                                         <td>

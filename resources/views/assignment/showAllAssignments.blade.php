@@ -105,7 +105,7 @@
                                                         {{ $courses_processing_start_date[$i] }}
                                                     </td>
                                                     <td>
-                                                        {{ $courses_processing_start_date[$i] }}
+                                                        {{ $courses_processing_end_date[$i] }}
                                                     </td>
                                                     <td>
                                                         {{ $assignments_processing_update_at[$i] }}
@@ -170,7 +170,7 @@
                                                         {{ $courses_finished_start_date[$i] }}
                                                     </td>
                                                     <td>
-                                                        {{ $courses_finished_start_date[$i] }}
+                                                        {{ $courses_finished_end_date[$i] }}
                                                     </td>
                                                     <td>
                                                         {{ $assignments_finished_update_at[$i] }}

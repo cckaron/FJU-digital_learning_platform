@@ -181,8 +181,8 @@
                                                                         </span>
 
                                                                     <span class="m-l-5">
-                                                                        <i class=" fas fa-download m-t-5"></i>
-                                                                        <a class="link" href="{{ route('download.zip', ['student_id' => $student->users_id, 'assignment_id' => $assignments[$key][$innerKey]->id]) }}">檔案下載</a>
+                                                                        <i class=" fas fa-download m-l-5"></i>
+                                                                        <a style="display: inline;" class="link" href="{{ route('download.zip', ['student_id' => $student->users_id, 'assignment_id' => $assignments[$key][$innerKey]->id]) }}">檔案下載</a>
                                                                     </span>
                                                                 </h6>
 

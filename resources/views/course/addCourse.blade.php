@@ -46,7 +46,10 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">勾選課程學生</h5>
+                                    <h5 class="card-title">
+                                        勾選課程學生
+                                    </h5>
+
                                     <div class="table-responsive">
                                         <table id="courseUsers" class="table table-striped table-bordered">
                                             <thead>
@@ -91,6 +94,7 @@
                                         <label class="col-md-3 m-t-10" for="courseName">班級</label>
                                         <div class="col-md-9">
                                             <select name="courseClass" class="select2 form-control m-t-15" style="height: 36px;width: 100%;" required>
+                                                <option value=3> 不分班</option>
                                                 <option value=1> 甲 </option>
                                                 <option value=2> 乙 </option>
                                             </select>

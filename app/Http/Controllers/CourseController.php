@@ -67,7 +67,7 @@ class CourseController extends Controller
     public function getAddCourse(){
         $teachers = DB::table('teachers')->get();
 
-        $common_courses = DB::table('common_courses')->get();
+        $common_courses = DB::table('common_courses')->orderBy('name', 'asc')->get();
 
         $common_courses_name = $common_courses->pluck('name');
 
@@ -739,7 +739,7 @@ class CourseController extends Controller
 
     //Datatables
     public function getUsers_dt(){
-        return DataTables::of(Student::query())
+        return DataTables::of(Student::query()->orderBy('grade', 'asc')->orderBy('class', 'desc'))
             ->editColumn('created_at', function(Student $student){
                 return $student->created_at->diffForHumans();
             })

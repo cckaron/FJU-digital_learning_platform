@@ -11,6 +11,9 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
 
 Route::get('/welcome', function () {
@@ -399,6 +402,11 @@ Route::group(['prefix' => 'dropZone'], function() {
         Route::post('/excels/teacher', [
             'uses' => 'UserController@uploadTeachers',
             'as' => 'dropZone.uploadTeachers',
+        ]);
+
+        Route::post('excels/course', [
+            'uses' => 'ExcelController@importCourse',
+            'as' => 'dropZone.importCourse'
         ]);
     });
 
