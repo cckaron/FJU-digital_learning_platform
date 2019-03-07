@@ -24,7 +24,6 @@ class ExcelController extends Controller
 
         $FullFilePath = 'public/'.$filePath.'/'.$filename;
         Excel::import(new CommoncourseImport(), $FullFilePath);
-        Excel::import(new CourseImport(), $FullFilePath);
         //TODO teacher_course and student_course
 //        Storage::disk('public')->delete($filePath);
     }
