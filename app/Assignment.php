@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Assignment extends Model
 {
+    public $incrementing = false;
+
     protected $fillable = ['courses_id', 'content', 'percentage', 'name', 'start_date', 'start_time', 'end_date', 'end_time', 'announce_score'];
 
     public function teacher(){

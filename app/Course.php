@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+    public $incrementing = false;
+
     protected  $fillable = ['id', 'common_courses_id','name', 'class'];
 
     public function teacher(){

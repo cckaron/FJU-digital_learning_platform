@@ -95,6 +95,8 @@
                                                         甲
                                                     @elseif($courses_processing_class[$i] == 2)
                                                         乙
+                                                    @elseif($courses_processing_class[$i] == 3)
+                                                        不分班
                                                     @endif
                                                 </td>
                                                 <td>

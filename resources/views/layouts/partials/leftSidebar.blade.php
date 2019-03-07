@@ -79,7 +79,7 @@
                     <ul aria-expanded="false" class="collapse  first-level">
                         @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                             <li class="sidebar-item"><a href="{{ route('user.createUser') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增帳號 </span></a></li>
-                            <li class="sidebar-item"><a href="{{ route('user.importUsers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 匯入帳號 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('user.importUsers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 匯入功能 </span></a></li>
                         @endif
                         {{--<li class="sidebar-item"><a href="authentication-login.html" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 個人檔案 </span></a></li>--}}
                             <li class="sidebar-item"><a href="{{ route('user.changePassword') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 更改密碼 </span></a></li>
