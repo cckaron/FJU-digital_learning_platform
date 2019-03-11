@@ -91,29 +91,32 @@ class AssignmentController extends Controller
         }
 
         //新增作業
-        $assignment = new Assignment([
-            'name' => $request->input('assignmentName'),
-            'content' => $request->input('assignmentContent'),
-            'start_date' => $request->input('assignmentStart'),
-            'start_time' => $start_time,
-            'end_date' => $request->input('assignmentEnd'),
-            'end_time' => $end_time,
-            'courses_id' => $course_id,
-            'percentage' => $request->input('assignmentPercentage'),
-            'announce_score' => $announceScore
-        ]);
 
-        $assignment->save();
-
-        //取得剛剛新增的作業id
-        $assignment_id = $assignment->id;
+        $assignment_id = DB::table('assignments')
+            ->insertGetId( [
+                'name' => $request->input('assignmentName'),
+                'content' => $request->input('assignmentContent'),
+                'start_date' => $request->input('assignmentStart'),
+                'start_time' => $start_time,
+                'end_date' => $request->input('assignmentEnd'),
+                'end_time' => $end_time,
+                'courses_id' => $course_id,
+                'percentage' => $request->input('assignmentPercentage'),
+                'announce_score' => $announceScore,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
 
         for($i=0; $i<count($teachers); $i++){
             DB::table('teacher_assignment')
-                ->insert(
-                    ['teachers_id' => $teachers_id[$i], 'assignments_id' => $assignment_id]
-                );
+                ->insert([
+                    'teachers_id' => $teachers_id[$i],
+                    'assignments_id' => $assignment_id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
         }
+
 
         //create assignment for students
         //create student_course first
@@ -189,7 +192,8 @@ class AssignmentController extends Controller
 
     public function postBatchCreateAssignments(Request $request){
         $request->validate([
-            'assignmentName' => 'required|unique:assignments,name',
+//            'assignmentName' => 'required|unique:assignments,name',
+            'assignmentName' => 'required',
             'assignmentPercentage' => 'required|numeric',
             'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
             'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
@@ -219,28 +223,30 @@ class AssignmentController extends Controller
             }
 
             //新增作業
-            $assignment = new Assignment([
-                'name' => $request->input('assignmentName'),
-                'content' => $request->input('assignmentContent'),
-                'start_date' => $request->input('assignmentStart'),
-                'start_time' => $start_time,
-                'end_date' => $request->input('assignmentEnd'),
-                'end_time' => $end_time,
-                'courses_id' => $course_id,
-                'percentage' => $request->input('assignmentPercentage'),
-                'announce_score' => $announceScore
-            ]);
 
-            $assignment->save();
-
-            //取得剛剛新增的作業id
-            $assignment_id = $assignment->id;
+            $assignment_id = DB::table('assignments')
+                ->insertGetId( [
+                    'name' => $request->input('assignmentName'),
+                    'content' => $request->input('assignmentContent'),
+                    'start_date' => $request->input('assignmentStart'),
+                    'start_time' => $start_time,
+                    'end_date' => $request->input('assignmentEnd'),
+                    'end_time' => $end_time,
+                    'courses_id' => $course_id,
+                    'percentage' => $request->input('assignmentPercentage'),
+                    'announce_score' => $announceScore,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
 
             for($i=0; $i<count($teachers); $i++){
                 DB::table('teacher_assignment')
-                    ->insert(
-                        ['teachers_id' => $teachers_id[$i], 'assignments_id' => $assignment_id]
-                    );
+                    ->insert([
+                        'teachers_id' => $teachers_id[$i],
+                        'assignments_id' => $assignment_id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
             }
 
             //create assignment for students
@@ -254,7 +260,10 @@ class AssignmentController extends Controller
 
                 DB::table('student_assignment')
                     ->insert([
-                        ['students_id' => $students_id[$i], 'assignments_id' => $assignment_id]
+                        'students_id' => $students_id[$i],
+                        'assignments_id' => $assignment_id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
                     ]);
 
                 Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);

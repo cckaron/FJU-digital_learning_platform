@@ -25,14 +25,14 @@
                 </li>
 
                 <!-- 課程 -->
-                @if(Auth::user()->type != 4)
+                @if(Auth::user()->type == 0 or Auth::user()->type == 3)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 課程 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        @if(Auth::user()->type == 0)
+                        @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                             <li class="sidebar-item"><a href="{{ route('course.showCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有課程 </span></a></li>
                         @endif
 
-                        @if(Auth::user()->type == 3)
+                        @if(Auth::user()->type == 3 or Auth::user()->type == 3 or Auth::user()->type == 4)
                             <li class="sidebar-item"><a href="{{ route('courses.showCourses_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的課程 </span></a></li>
                         @endif
 
@@ -42,6 +42,7 @@
                     </ul>
                 </li>
                 @endif
+
 
 
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-pencil"></i><span class="hide-menu">作業 </span></a>

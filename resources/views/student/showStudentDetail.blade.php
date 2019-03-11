@@ -90,10 +90,10 @@
                                 {{--<br>--}}
                                 {{--<br>--}}
                                 {{--{{ $teachers }}--}}
-                                {{ $assignments }}
+                                {{--{{ $assignments }}--}}
                                 <br>
                                 <br>
-                                {{ $student_assignments }}
+                                {{--{{ $student_assignments }}--}}
 
                             </div>
                         </div>

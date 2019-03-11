@@ -45,7 +45,7 @@
 
                         @include('layouts.partials.returnMessage')
 
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="card">
                                 <div class="card-body">
 
@@ -81,7 +81,7 @@
 
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-10" for="userAccount">作業內容</label>
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <div id="editor" style="height: 300px;">
 
                                             </div>
@@ -134,7 +134,7 @@
 
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-9" for="userAccount">佔分比例</label>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group mb-3">
                                                 <input type="text" id="userAccount" class="form-control" placeholder="ex. 輸入 25 代表 25%" name="assignmentPercentage" required>
                                                 <div class="input-group-append">
