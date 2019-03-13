@@ -53,7 +53,7 @@
                         </div>
                     @endif
 
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title p-b-10">基本資訊</h4>
@@ -82,7 +82,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title p-b-10">統計圖表</h4>
@@ -99,7 +99,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title m-b-0">修業歷程</h4>
