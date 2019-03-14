@@ -23,7 +23,7 @@
     <link href="{{ URL::to('libs/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('extra-libs/calendar/calendar.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('extra-libs/multicheck/multicheck.css') }} " rel="stylesheet"/>
-    <link href="{{ URL::to('libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::to('extra-libs/DataTables/Datatables-1.10.18/css/jquery.dataTables.min.css') }}" rel="stylesheet"/>
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
     <style type="text/css">
         @font-face {
@@ -66,7 +66,7 @@
 <!--Datatable -->
 <script src="{{ URL::to('extra-libs/multicheck/datatable-checkbox-init.js') }}"></script>
 <script src="{{ URL::to('extra-libs/multicheck/jquery.multicheck.js') }}"></script>
-<script src="{{ URL::to('extra-libs/DataTables/datatables.min.js') }}"></script>
+<script src="{{ URL::to('extra-libs/DataTables/Datatables-1.10.18/js/jquery.dataTables.min.js') }}"></script>
 
 @yield('scripts')
 </body>

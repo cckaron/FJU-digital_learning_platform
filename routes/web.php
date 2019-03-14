@@ -20,12 +20,12 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/', [
+Route::get('/signIn', [
     'uses' => 'UserAuthController@signInPage',
     'as' => 'auth.signIn',
     ]);
 
-Route::post('/', [
+Route::post('/signIn', [
    'uses' => 'UserAuthController@postSignIn',
    'as' => 'auth.signIn'
 ]);

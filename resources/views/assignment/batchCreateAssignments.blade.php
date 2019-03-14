@@ -334,36 +334,6 @@
         })
     </script>
 
-    <script>
-
-        $('#courseUsers').DataTable({
-            processing:true,
-            serverSide:true,
-            ajax: '{!! route('get.courseUsers') !!}',
-            columns: [
-                { data: 'checkbox', name: 'checkbox'},
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name'},
-                { data: 'type', name: 'type'},
-                { data: 'created_at', name: 'created_at'},
-            ]
-        });
-
-    </script>
-
-    {{--<script>--}}
-
-    {{--var courseName = $('#courseName');--}}
-
-    {{--var commonCourseName = {!! $common_courses_name !!};--}}
-
-    {{--courseName.change(function () {--}}
-    {{--var index = courseName[0].selectedIndex;--}}
-    {{--document.getElementById("common_course_name").innerHTML= commonCourseName[index];--}}
-
-    {{--})--}}
-    {{--</script>--}}
-
     <!-- close autocomplete of datetime picker -->
     <script>
         $('#datepicker-start').attr('autocomplete','off');
@@ -374,29 +344,7 @@
         /****************************************
          *       Basic Table                   *
          ****************************************/
-        $('#zero_config').DataTable({
-            language: {
-                "processing":   "處理中...",
-                "loadingRecords": "載入中...",
-                "lengthMenu":   "顯示 _MENU_ 項結果",
-                "zeroRecords":  "沒有符合的結果",
-                "info":         "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
-                "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
-                "infoFiltered": "(從 _MAX_ 項結果中過濾)",
-                "infoPostFix":  "",
-                "search":       "搜尋:",
-                "paginate": {
-                    "first":    "第一頁",
-                    "previous": "上一頁",
-                    "next":     "下一頁",
-                    "last":     "最後一頁"
-                },
-                "aria": {
-                    "sortAscending":  ": 升冪排列",
-                    "sortDescending": ": 降冪排列"
-                }
-            },
-        });
+        var $table = $('#zero_config').DataTable();
     </script>
 
 @endsection
