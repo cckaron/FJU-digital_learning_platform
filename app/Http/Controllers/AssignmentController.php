@@ -1421,6 +1421,7 @@ class AssignmentController extends Controller
 
         $filesizes = array();
 
+        //this line is really important!!!!!!!!!!!!!!
         setlocale(LC_ALL,'en_US.UTF-8');
 
         for($i=0; $i<count($filepaths); $i++){

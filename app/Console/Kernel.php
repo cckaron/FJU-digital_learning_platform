@@ -26,7 +26,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('backup:run')->everyFiveMinutes()->withoutOverlapping();
+        $schedule
+            ->command('backup:run')
+            ->everyFiveMinutes()
+            ->withoutOverlapping()
+            ->appendOutputTo(storage_path('logs/backup.log'));;
 
     }
 
