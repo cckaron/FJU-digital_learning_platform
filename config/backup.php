@@ -8,7 +8,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => 'backup',
+        'name' => env('BACKUP_GOOGLE_DRIVE_FOLDER_ID', ''),
 
         'source' => [
 
@@ -86,7 +86,7 @@ return [
              */
             'disks' => [
                 'local',
-                'google',
+                'backup_google',
             ],
         ],
 
