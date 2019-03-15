@@ -1351,7 +1351,7 @@ class AssignmentController extends Controller
         $file = $request->file('file'); //default file name from request is "file"
         $filename = $file->getClientOriginalName();
         $filepath = $student_id.'/'.$assignment_id;
-        
+
         Storage::disk('public')->putFileAs(
             $filepath, $file, $filename
         );
@@ -1420,6 +1420,8 @@ class AssignmentController extends Controller
         $filenames = array();
 
         $filesizes = array();
+
+        setlocale(LC_ALL,'en_US.UTF-8');
 
         for($i=0; $i<count($filepaths); $i++){
             $filenames[$i] = basename($filepaths[$i]);
