@@ -336,6 +336,7 @@
                 },
                 removedfile: function(file){
                     var filename = file.name;
+                    console.log(filename);
                     var student_assignment_id = $('input[name=student_assignment_id]').val();
                     $.ajax({
                         url:'{{ route('dropZone.deleteAssignment') }}',
