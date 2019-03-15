@@ -1331,9 +1331,11 @@ class AssignmentController extends Controller
     public function postHandInAssignment(Request $request, $course_id, $assignment_id){
         $remark = $request->input('remark');
         $student_assignment_id = $request->input('student_assignment_id');
+
         DB::table('student_assignment')
             ->where('id', $student_assignment_id)
-            ->update(['remark' => $remark]);
+            ->update(['remark' => $remark, 'status' => 2, 'updated_at' => Carbon::now()]);
+
 
         return redirect()->back()->with('message', '繳交作業成功！');
     }
@@ -1349,16 +1351,25 @@ class AssignmentController extends Controller
         $file = $request->file('file'); //default file name from request is "file"
         $filename = $file->getClientOriginalName();
         $filepath = $student_id.'/'.$assignment_id;
-
-        $file->storeAs($filepath, $filename);
-
+        
         Storage::disk('public')->putFileAs(
             $filepath, $file, $filename
         );
 
-        DB::table('student_assignment')
+        //如果 remark 已經存在 (學生填寫過內容了)，就把狀態改成已繳交
+        $old_remark = DB::table('student_assignment')
             ->where('id', $student_assignment_id)
-            ->update(['status' => 2, 'updated_at' => Carbon::now()]);
+            ->value('remark');
+        if ($old_remark != null){
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['status' => 2,'updated_at' => Carbon::now()]);
+        } else {
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['updated_at' => Carbon::now()]);
+        }
+
 
     }
 
