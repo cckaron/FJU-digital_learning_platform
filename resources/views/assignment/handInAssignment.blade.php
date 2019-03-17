@@ -278,7 +278,7 @@
         if({{ $student_assignment_status }} === 1 || {{ $student_assignment_status }} === 2){
             Dropzone.options.myDropzone = {
                 addRemoveLinks: true,
-                maxFilesize: 50,
+                maxFilesize: 200,
                 maxFiles: 10,
                 acceptedFiles: ".pdf",
                 init: function() {
