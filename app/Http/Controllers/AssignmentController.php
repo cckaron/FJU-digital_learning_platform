@@ -1224,6 +1224,10 @@ class AssignmentController extends Controller
 
             $folder_path = storage_path().'/app/public/'.$student_ids[$i].'/'.$assignment_id;
 
+            if (!File::exists($folder_path) ){
+                File::makeDirectory($folder_path, $mode = 0777, true, true);
+            }
+
             $filesInFolder = File::files($folder_path);
             foreach($filesInFolder as $path) {
                 $file = pathinfo($path);
