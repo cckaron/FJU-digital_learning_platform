@@ -26,10 +26,14 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        //if schedule not run, php artisan cache:clear will do the trick
         $schedule
             ->command('backup:run')
             ->everyTenMinutes()
-            ->withoutOverlapping();
+            ->withoutOverlapping(5) //set to five minute
+            ->appendOutputTo(storage_path('logs/backup.log'));
+
     }
 
     /**
