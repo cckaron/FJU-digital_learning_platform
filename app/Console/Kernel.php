@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
             ->command('backup:run')
             ->everyTenMinutes()
             ->withoutOverlapping()
-            ->appendOutputTo(storage_path('logs/backup.log'));;
+            ->appendOutputTo(storage_path('logs/backup.log'));
 
     }
 
