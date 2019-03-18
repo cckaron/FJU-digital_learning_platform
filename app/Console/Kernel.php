@@ -29,9 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule
             ->command('backup:run')
             ->everyTenMinutes()
-            ->withoutOverlapping()
-            ->appendOutputTo(storage_path('logs/backup.log'));
-
+            ->withoutOverlapping();
     }
 
     /**
