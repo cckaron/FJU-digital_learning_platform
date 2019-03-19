@@ -1430,6 +1430,10 @@ class AssignmentController extends Controller
 
         for($i=0; $i<count($filepaths); $i++){
             $filenames[$i] = basename($filepaths[$i]);
+
+            //this will fix the error of not detecting spaces
+            $filenames[$i] = str_replace(' ', '%20', $filenames[$i]);
+
             $filesizes[$i] = Storage::size($filepaths[$i]);
         }
 
