@@ -1356,6 +1356,9 @@ class AssignmentController extends Controller
         $filename = $file->getClientOriginalName();
         $filepath = $student_id.'/'.$assignment_id;
 
+        $filename = str_replace(' ', '', $filename);
+
+
         Storage::disk('public')->putFileAs(
             $filepath, $file, $filename
         );
@@ -1430,10 +1433,6 @@ class AssignmentController extends Controller
 
         for($i=0; $i<count($filepaths); $i++){
             $filenames[$i] = basename($filepaths[$i]);
-
-            //this will fix the error of not detecting spaces
-            $filenames[$i] = str_replace(' ', '_', $filenames[$i]);
-
             $filesizes[$i] = Storage::size($filepaths[$i]);
         }
 
