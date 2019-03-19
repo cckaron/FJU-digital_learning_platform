@@ -1356,7 +1356,7 @@ class AssignmentController extends Controller
         $filename = $file->getClientOriginalName();
         $filepath = $student_id.'/'.$assignment_id;
 
-        $filename = str_replace(' ', '', $filename);
+        $filename = str_replace(' ', '_', $filename);
 
 
         Storage::disk('public')->putFileAs(
