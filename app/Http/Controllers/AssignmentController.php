@@ -1357,7 +1357,8 @@ class AssignmentController extends Controller
         $filepath = $student_id.'/'.$assignment_id;
 
         $filename = str_replace(' ', '_', $filename);
-
+        //this line is really important!!!!!!!!!!!!!!
+        setlocale(LC_ALL,'en_US.UTF-8');
 
         Storage::disk('public')->putFileAs(
             $filepath, $file, $filename
