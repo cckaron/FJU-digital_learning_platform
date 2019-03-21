@@ -14,11 +14,11 @@ class ZipController extends Controller
         if ($files == null){
             return redirect()->back()->with('message', '該作業無上傳檔案');
         }
-//        $assignment = Assignment::where('id', $assignment_id)
-//            ->first();
-//
-//        $common_course = $assignment->course()->common_course()->get();
-        Zipper::make(storage_path().'/app/public/'.$student_id.'_'.'')->add($files)->close();
+        $assignment = Assignment::where('id', $assignment_id)
+            ->first();
+
+        $common_course = $assignment->course()->common_course()->get();
+        Zipper::make(storage_path().'/app/public/file.zip')->add($files)->close();
         return response()->download(storage_path().'/app/public/file.zip')->deleteFileAfterSend(true);
     }
 }
