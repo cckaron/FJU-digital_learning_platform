@@ -13,7 +13,7 @@ class ZipController extends Controller
     public function downloadZIP($student_id, $assignment_id) {
         //this line is really important!!!!!!!!!!!!!!
         setlocale(LC_ALL,'en_US.UTF-8');
-        
+
         // create a list of files that should be added to the archive.
         $files = glob(storage_path().'/app/public/'.$student_id.'/'.$assignment_id.'/*');
         if ($files == null){

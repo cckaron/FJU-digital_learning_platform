@@ -51,7 +51,7 @@ class AssignmentController extends Controller
         }
 
 
-        return view('Assignment.createAssignment', [
+        return view('assignment.createAssignment', [
             'course_names' => $course_names,
             'common_courses_name' => $common_courses_name
             ]);
