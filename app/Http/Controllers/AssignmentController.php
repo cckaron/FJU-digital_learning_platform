@@ -6,6 +6,7 @@ use App\Assignment;
 use App\common_course;
 use App\student_assignment;
 use App\Course;
+use App\Teacher;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
@@ -1297,6 +1298,179 @@ class AssignmentController extends Controller
             ->make(true);
     }
 
+    public function getCorrectAssignment(){
+        $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+        $courses = $teacher->course()->get();
+
+        //get all teacher's assignments
+        $assignments = collect();
+        foreach($courses as $course){
+            $assignments->push($course->assignment()->get());
+        }
+
+        //pluck assignment_id
+        $assignments_id = array();
+        foreach($assignments as $assignment){
+            array_push($assignments_id, $assignment->pluck('id')->toArray());
+        }
+
+        //flatten the 2-dimensional array to 1-dimensional array
+        $assignments_id = call_user_func_array('array_merge', $assignments_id);
+
+
+        //get all student_assignments
+        $student_assignments = collect();
+        foreach($assignments_id as $assignment_id){
+            $student_assignment = DB::table('student_assignment')
+                ->where('assignments_id', $assignment_id)
+                ->get();
+            $student_assignments->push($student_assignment);
+        }
+
+        //pluck assignment id from student_assignment
+        $student_assignment_assignments_id = array();
+        foreach($student_assignments as $student_assignment){
+            array_push($student_assignment_assignments_id, $student_assignment->pluck('assignments_id')->toArray());
+        }
+
+        //flatten the 2-dimensional array to 1-dimensional array
+        $student_assignment_assignments_id = call_user_func_array('array_merge', $student_assignment_assignments_id);
+
+        //get the common course name
+        $common_courses_name = array();
+        foreach($student_assignment_assignments_id as $assignment_id){
+            $assignment = Assignment::where('id', $assignment_id)->first();
+            $common_course_name = $assignment->course()->first()->common_course()->first()->name;
+            array_push($common_courses_name, $common_course_name);
+        }
+
+
+        //pluck student_assignment_id
+        $student_assignments_id = array();
+        foreach($student_assignments as $student_assignment){
+            array_push($student_assignments_id, $student_assignment->pluck('id')->toArray());
+        }
+
+        //flatten the 2-dimensional array to 1-dimensional array
+        $student_assignments_id = call_user_func_array('array_merge', $student_assignments_id);
+
+
+        $student_ids = array();
+        $scores = array();
+        $remarks = array();
+        $updated_at = array();
+
+        foreach($student_assignments as $student_assignment){
+            array_push($student_ids, $student_assignment->pluck('students_id')->toArray());
+            array_push($scores, $student_assignment->pluck('score')->toArray());
+            array_push($remarks, $student_assignment->pluck('title')->toArray());
+            array_push($updated_at, $student_assignment->pluck('updated_at')->toArray());
+        }
+
+        //flatten the 2-dimensional array to 1-dimensional array
+        $student_ids = call_user_func_array('array_merge', $student_ids);
+        $scores = call_user_func_array('array_merge', $scores);
+        $remarks = call_user_func_array('array_merge', $remarks);
+        $updated_at = call_user_func_array('array_merge', $updated_at);
+
+
+        for ($i=0; $i< count($updated_at); $i++){
+            if ($updated_at[$i] != null){
+                $updated_at[$i] = Carbon::parse($updated_at[$i])->diffForHumans();
+            } else {
+                $updated_at[$i] = '尚未上傳';
+            }
+        }
+
+        $student_names = array();
+
+        for ($i=0; $i< count($student_ids); $i++){
+            $name = DB::table('students')
+                ->where('users_id', $student_ids[$i])
+                ->value('users_name');
+            array_push($student_names, $name);
+
+        }
+
+        $file_names = array();
+        $file_urls = array();
+
+        for ($i=0; $i< count($student_assignments_id); $i++){
+
+            $names = array();
+            $urls = array();
+
+            $folder_path = storage_path().'/app/public/'.$student_ids[$i].'/'.$student_assignment_assignments_id[$i];
+
+            if (!File::exists($folder_path) ){
+                File::makeDirectory($folder_path, $mode = 0777, true, true);
+            }
+
+            $filesInFolder = File::files($folder_path);
+            foreach($filesInFolder as $path) {
+                $file = pathinfo($path);
+
+                array_push($names, $file['filename'].'.'.$file['extension']) ;
+                array_push($urls, ['public', $student_ids[$i], $student_assignment_assignments_id[$i], $file['filename'].'.'.$file['extension']]);
+            }
+
+            array_push($file_names, $names);
+            array_push($file_urls, $urls);
+        }
+
+        $notHandIn = DB::table('student_assignment')
+            ->where('assignments_id', $student_assignments_id)
+            ->where('status', 1)
+            ->count();
+
+        $finishedHandIn = DB::table('student_assignment')
+            ->where('assignments_id', $student_assignments_id)
+            ->where('status', 2)
+            ->count();
+
+        $corrected = DB::table('student_assignment')
+            ->where('assignments_id', $student_assignments_id)
+            ->where('status', 3)
+            ->count();
+
+        $notMakeUp = DB::table('student_assignment')
+            ->where('assignments_id', $student_assignments_id)
+            ->where('status', 4)
+            ->count();
+
+        $finishedMakeUp = DB::table('student_assignment')
+            ->where('assignments_id', $student_assignments_id)
+            ->where('status', 5)
+            ->count();
+
+        $finished = $finishedHandIn + $finishedMakeUp + $corrected;
+        $notFinished = $notMakeUp + $notHandIn;
+        $all = DB::table('student_assignment')
+            ->where('assignments_id', $student_assignments_id)
+            ->count();
+
+        return view('assignment.correctAssignment', [
+            'student_assignments' => $student_assignments,
+            'student_assignments_id' => $student_assignments_id,
+            'student_ids' => $student_ids,
+            'scores' => $scores,
+            'remark' => $remarks,
+            'updated_at' => $updated_at,
+            'student_names' => $student_names,
+            'file_names' => $file_names,
+            'file_urls' => $file_urls,
+            'finishedHandIn' => $finishedHandIn,
+            'finished' => $finished,
+            'notFinished' => $notFinished,
+            'all' => $all,
+            'teacher' => $teacher,
+            'courses' => $courses,
+            'assignments' => $assignments,
+            'assignments_id' => $assignments_id,
+            'common_courses_name' => $common_courses_name,
+            'student_assignment_assignments_id' => $student_assignment_assignments_id,
+        ]);
+    }
 
     public function getHandInAssignment($course_id, $assignment_id){
         $student_id = Auth::user()->id;

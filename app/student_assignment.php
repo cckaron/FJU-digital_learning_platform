@@ -8,6 +8,6 @@ class student_assignment extends Model
 {
     public $incrementing = false;
 
-    protected $fillable = ['students_id', 'score', 'status', 'remark', 'comment'];
+    protected $fillable = ['students_id', 'score', 'status', 'title', 'comment'];
 
 }

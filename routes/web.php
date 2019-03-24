@@ -33,6 +33,8 @@ Route::post('/signIn', [
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+
 //使用者共用route
 Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
     //列出共同課程 (get)
@@ -121,6 +123,16 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
 
 // 教師 (type = 3)
 Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
+
+    Route::get('index', [
+        'uses' => 'IndexController@getTeacherIndex',
+        'as' => 'index.teacher'
+    ]);
+
+    Route::get('correctAssignment', [
+        'uses' => 'AssignmentController@getCorrectAssignment',
+        'as' => 'teacher.correctAssignment'
+    ]);
 
     //共同課程
     Route::group(['prefix' => 'commonCourses', 'middleware' => 'auth'], function(){
@@ -432,6 +444,7 @@ Route::group(['prefix' => 'ajax'], function(){
        'uses' => 'AssignmentController@correctAssignment',
        'as' => 'ajax.correctAssignment'
    ]);
+
    Route::post('/signClass', [
        'uses' => 'CourseController@signClass_ajax',
        'as' => 'ajax.signClass'
