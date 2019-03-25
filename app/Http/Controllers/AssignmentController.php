@@ -1344,6 +1344,14 @@ class AssignmentController extends Controller
             array_push($common_courses_name, $common_course_name);
         }
 
+        //get assignment name
+        $assignments_name = array();
+        foreach($student_assignment_assignments_id as $assignment_id){
+            $assignment = Assignment::where('id', $assignment_id)->first();
+            $assignment_name = $assignment->name;
+            array_push($assignments_name, $assignment_name);
+        }
+
 
         //pluck student_assignment_id
         $student_assignments_id = array();
@@ -1469,6 +1477,7 @@ class AssignmentController extends Controller
             'assignments_id' => $assignments_id,
             'common_courses_name' => $common_courses_name,
             'student_assignment_assignments_id' => $student_assignment_assignments_id,
+            'assignments_name' => $assignments_name,
         ]);
     }
 

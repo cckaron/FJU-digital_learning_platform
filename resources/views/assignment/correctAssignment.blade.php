@@ -8,10 +8,12 @@
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
 
     <style>
-        tfoot input {
+        input {
             width: 100%;
             padding: 3px;
             box-sizing: border-box;
+            -webkit-box-sizing:border-box;
+            -moz-box-sizing: border-box;
         }
     </style>
 @endsection
@@ -82,12 +84,13 @@
                                 {{--@php(dd($student_ids))--}}
                                 {{--@php(dd($student_assignments_id))--}}
 
-                                <div class="table-responsive">
+                            <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered display" style="width:100%">
                                         <thead>
                                         <tr>
                                             <th>批改狀態</th>
                                             <th>共同課程</th>
+                                            <th>作業名稱</th>
                                             <th>姓名</th>
                                             <th>學號</th>
                                             <th>分數</th>
@@ -113,7 +116,9 @@
                                                     </td>
                                                 @endif
                                                 <td>{{ $common_courses_name[$i] }}</td>
-                                                <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student_ids[$i]]) }}">{{ $student_names[$i] }}</a></td>
+                                                    <td>{{ $assignments_name[$i] }}</td>
+
+                                                    <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student_ids[$i]]) }}">{{ $student_names[$i] }}</a></td>
                                                 <td>{{ $student_ids[$i] }}</td>
 
                                                 <td>
@@ -146,14 +151,15 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <th>批改狀態</th>
-                                            <th>產業創新</th>
-                                            <th>姓名</th>
-                                            <th>學號</th>
-                                            <th>分數</th>
-                                            <th>主題</th>
-                                            <th>附檔</th>
-                                            <th>上傳時間</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -351,13 +357,21 @@
          *       Basic Table                   *
          ****************************************/
 
-        // Setup - add a text input to each footer cell
-        $('#zero_config tfoot th').each( function () {
-            var title = $(this).text();
-            $(this).html( '<input type="text" placeholder="搜尋 '+title+' 欄位" />' );
-        } );
-
         var table = $('#zero_config').DataTable({
+            order: [[ 2, "asc" ]],
+            autoWidth: false,
+            columnDefs: [
+                { "width": "10%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "10%", "targets": 2 },
+                { "width": "10%", "targets": 3 },
+                { "width": "10%", "targets": 4 },
+                { "width": "10%", "targets": 5 },
+                { "width": "10%", "targets": 6 },
+                { "width": "20%", "targets": 7 },
+                { "width": "10%", "targets": 8 }
+
+            ],
             language: {
                 "processing":   "處理中...",
                 "loadingRecords": "載入中...",
@@ -367,7 +381,7 @@
                 "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
                 "infoFiltered": "(從 _MAX_ 項結果中過濾)",
                 "infoPostFix":  "",
-                "search":       "搜尋:",
+                "search":       "搜尋全部:",
                 "paginate": {
                     "first":    "第一頁",
                     "previous": "上一頁",
@@ -379,7 +393,23 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
+
         });
+
+        // Setup - add a text input to each footer cell
+        $('#zero_config tfoot th').each( function () {
+            var title = $(this).text();
+            // $(this).html( '<input type="text" placeholder="搜尋 '+title+' 欄位" />' );
+            $(this).html( '<input type="text" placeholder="搜尋" />' );
+
+        } );
+
+        var r = $('#zero_config tfoot tr');
+        r.find('th').each(function(){
+            $(this).css('padding', 8);
+        });
+        // $('#zero_config thead').append(r);
+        r.appendTo($('#zero_config thead'));
 
         // Apply the search
         table.columns().every( function () {
@@ -394,12 +424,6 @@
             } );
         } );
 
-        var r = $('#zero_config tfoot tr');
-        r.find('th').each(function(){
-            $(this).css('padding', 8);
-        });
-        $('#zero_config thead').append(r);
-        // $('#search_0').css('text-align', 'center');
 
 
 
