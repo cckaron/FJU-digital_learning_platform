@@ -134,6 +134,16 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
         'as' => 'teacher.correctAssignment'
     ]);
 
+    Route::get('announcement', [
+        'uses' => 'AnnouncementController@getCreateAnnouncement',
+        'as' => 'announcement.create'
+    ]);
+
+    Route::post('announcement', [
+        'uses' => 'AnnouncementController@postCreateAnnouncement',
+        'as' => 'announcement.create'
+    ]);
+
     //共同課程
     Route::group(['prefix' => 'commonCourses', 'middleware' => 'auth'], function(){
         //列出 共同課程->課程->作業 (get)

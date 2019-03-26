@@ -27,4 +27,10 @@ class Course extends Model
         return $this->belongsTo('App\common_course', 'common_courses_id');
     }
 
+    public function announcement(){
+        return $this->hasMany('App\course_announcement', 'courses_id', 'id');
+    }
+
+
+
 }

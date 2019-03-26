@@ -93,13 +93,13 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">備註</h4>
+                                    <h4 class="card-title">主題</h4>
                                     <!-- Create the editor container -->
                                     <div id="editor" style="height: 300px;">
-                                        {!! $remark !!}
+                                        {!! $title !!}
                                     </div>
 
-                                    <textarea id="remark" name="remark" hidden> {{$remark}} </textarea>
+                                    <textarea id="title" name="title" hidden> {{$title}} </textarea>
 
                                     <input type="text" name="student_assignment_id" value={{ $student_assignment_id }} hidden/>
 
@@ -254,7 +254,7 @@
             var myEditor = document.querySelector('#editor');
             var html = myEditor.children[0].innerHTML;
 
-            $("#remark").val(html);
+            $("#title").val(html);
         })
 
     </script>

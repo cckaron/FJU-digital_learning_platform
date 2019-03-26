@@ -144,12 +144,19 @@ class CourseController extends Controller
             ->whereIn('users_id', $student_ids)
             ->get();
 
+
+        //公告
+        $course = Course::where('id', $courses_id)->first();
+        $announcements = $course->announcement()->get();
+
+
         // encode 回來，這一頁還會用到 course_id
         $courses_id = $encode_courses_id->encode($courses_id);
 
         return view('course.showCourseStudent', [
             'students' => $students,
             'courses_id' => $courses_id,
+            'announcements' => $announcements,
             ]);
 
     }

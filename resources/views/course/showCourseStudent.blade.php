@@ -54,102 +54,157 @@
                         </div>
                     @endif
 
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="btn-group">
-                                        <h5 class="card-title m-t-10" style="padding-right: 20px">公告</h5>
-                                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="btn-group">
+                                    <h5 class="card-title m-t-10" style="padding-right: 20px">公告</h5>
                                 </div>
 
-                            </div>
-                        </div>
+                                <ul class="list-style-none">
 
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="btn-group">
-                                <h5 class="card-title m-t-10" style="padding-right: 20px">學生清單</h5>
-                                <button type="button" class="btn btn-default" id="signClassBtn">加選</button>
-                            </div>
-                        </div>
-                        <table id="zero_config" class="table">
-                            <thead>
+                                    @foreach($announcements as $key=>$announcement)
+                                        <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
+                                            @if($announcement->status == 1) {{-- active --}}
+                                            <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                            @else {{-- not active --}}
+                                            <i class="fa fa-hourglass-end w-30px m-t-5"></i>
+                                            @endif
 
-                            <tr>
-                                <th scope="col">姓名</th>
-                                <th scope="col">學號</th>
-                                <th scope="col">年級</th>
-                                <th scope="col">班級</th>
-                                <th scope="col">動作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($students->chunk(3) as $item)
-                                @foreach($item as $student)
-                            <tr>
-                                <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}">{{ $student->users_name }}</a></td>
-                                <td class="text-success">{{ $student->users_id }}</td>
-                                <td class="text-success">{{ $student->grade }}</td>
-                                <td class="text-success">{{ $student->class }}</td>
-                                <td>
-                                    <a href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="查看學生資訊">
-                                        <i class="mdi mdi-account-box"></i>
-                                    </a>
-                                    <a href="{{ route('course.dropCourse', ['courses_id' => $courses_id, 'student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="將此學生退選" onclick="return confirm('該學生於此課程的資料將會一併刪除，確定刪除?')">
-                                        <i class="mdi mdi-close"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                                @endforeach
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                            <div>
+                                                <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
+                                                    {{ $announcement->title }}
 
+                                                    <span class="text-active p-l-5" >
+                                                        @if($announcement->status == 1)
+                                                            <span class="badge badge-pill badge-primary">已發布</span>
+                                                        @else
+                                                            <span class="badge badge-pill badge-dark">未發佈</span>
+                                                        @endif
+                                                        </span>
 
-                        <!-- Modal -->
-                        <div id="signClassModal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <form method="post" id="signClass_form">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">學生加選</h4>
-                                            <button type="button" class="close" data-dismiss="modal">
-                                                &times;
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            {{ csrf_field() }}
-                                            <span id="form_output"></span>
-                                            <div class="form-group">
-                                                <label>學號</label>
-                                                <input type="text" name="student_number" class="form-control"/>
+                                                    <span class="text-active p-l-5" >
+                                                            @if($announcement->priority == 0)
+                                                                <span class="badge badge-pill badge-danger">置頂</span>
+                                                            @elseif($announcement->priority == 1)
+                                                                <span class="badge badge-pill badge-light">一般</span>
+                                                            @endif
+                                                        </span>
+                                                </a>
+
+                                                <div class="p-t-5">
+
+                                                    <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
+                                                        <div class="widget-content">
+                                                            <h6>
+                                                                {!! $announcement->content !!}
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input type="hidden" name="button_action" id="button_action" value="插入" />
-                                            <input type="hidden" name="courses_id" value="{{ $courses_id }}" />
-                                            <input type="submit" name="submit" id="action" value="新增" class="btn btn-info">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                            <div class="ml-auto">
+                                                <div class="text-right">
+                                                    <div class="p-t-5">
+                                                        {{--<strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>--}}
+                                                        <h5 class="text-muted m-b-0" style="text-align: center;">{{ \Carbon\Carbon::parse($announcement->created_at)->diffForHumans() }} 發佈</h5>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
+                    </div>
 
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
-            </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="btn-group">
+                                    <h5 class="card-title m-t-10" style="padding-right: 20px">學生清單</h5>
+                                    <button type="button" class="btn btn-default" id="signClassBtn">加選</button>
+                                </div>
+                            </div>
+                            <table id="zero_config" class="table">
+                                <thead>
+
+                                <tr>
+                                    <th scope="col">姓名</th>
+                                    <th scope="col">學號</th>
+                                    <th scope="col">年級</th>
+                                    <th scope="col">班級</th>
+                                    <th scope="col">動作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($students->chunk(3) as $item)
+                                    @foreach($item as $student)
+                                        <tr>
+                                            <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}">{{ $student->users_name }}</a></td>
+                                            <td class="text-success">{{ $student->users_id }}</td>
+                                            <td class="text-success">{{ $student->grade }}</td>
+                                            <td class="text-success">{{ $student->class }}</td>
+                                            <td>
+                                                <a href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="查看學生資訊">
+                                                    <i class="mdi mdi-account-box"></i>
+                                                </a>
+                                                <a href="{{ route('course.dropCourse', ['courses_id' => $courses_id, 'student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="將此學生退選" onclick="return confirm('該學生於此課程的資料將會一併刪除，確定刪除?')">
+                                                    <i class="mdi mdi-close"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <!-- Modal -->
+                    <div id="signClassModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" id="signClass_form">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">學生加選</h4>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            &times;
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ csrf_field() }}
+                                        <span id="form_output"></span>
+                                        <div class="form-group">
+                                            <label>學號</label>
+                                            <input type="text" name="student_number" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="hidden" name="button_action" id="button_action" value="插入" />
+                                        <input type="hidden" name="courses_id" value="{{ $courses_id }}" />
+                                        <input type="submit" name="submit" id="action" value="新增" class="btn btn-info">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================== -->
+                    <!-- End PAge Content -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Right sidebar -->
+                    <!-- ============================================================== -->
+                    <!-- .right-sidebar -->
+                    <!-- ============================================================== -->
+                    <!-- End Right sidebar -->
+                    <!-- ============================================================== -->
+                </div>
             </div>
             <!-- ============================================================== -->
             <!-- End Container fluid  -->

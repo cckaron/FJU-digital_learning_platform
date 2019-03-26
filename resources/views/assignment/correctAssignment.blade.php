@@ -102,19 +102,36 @@
                                         <tbody>
                                         @for($i=0; $i< count($student_assignments_id); $i++)
                                             <tr>
-                                                @if($scores[$i] == null)
-                                                    <td>
-                                                        <h6>尚未批改</h6>
-                                                        <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
-                                                        <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        <h6>已批改</h6>
-                                                        <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
-                                                        <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
-                                                    </td>
+                                                @if($common_courses_status[$i] == 1)
+                                                    @if($scores[$i] == null)
+                                                        <td>
+                                                            <h6>尚未批改</h6>
+                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
+                                                            <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
+                                                        </td>
+                                                    @else
+                                                        <td>
+                                                            <h6>已批改</h6>
+                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
+                                                            <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
+                                                        </td>
+                                                    @endif
+                                                @elseif($common_courses_status[$i] == 0)
+                                                    @if($scores[$i] == null)
+                                                        <td>
+                                                            <h6>尚未批改</h6>
+                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
+                                                            <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
+                                                        </td>
+                                                    @else
+                                                        <td>
+                                                            <h6>已批改</h6>
+                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
+                                                            <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
+                                                        </td>
+                                                    @endif
                                                 @endif
+
                                                 <td>{{ $common_courses_name[$i] }}</td>
                                                     <td>{{ $assignments_name[$i] }}</td>
 

@@ -93,7 +93,7 @@ class AssignmentController extends Controller
 
         //新增作業
 
-        $assignment_id = DB::table('assignments')
+        $assignment_id = DB::table('courses_announcement')
             ->insertGetId( [
                 'name' => $request->input('assignmentName'),
                 'content' => $request->input('assignmentContent'),
@@ -270,7 +270,6 @@ class AssignmentController extends Controller
                 Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);
             }
         }
-
 
         return redirect()->back()->with('message', '新增作業成功！');
     }
@@ -1336,12 +1335,19 @@ class AssignmentController extends Controller
         //flatten the 2-dimensional array to 1-dimensional array
         $student_assignment_assignments_id = call_user_func_array('array_merge', $student_assignment_assignments_id);
 
-        //get the common course name
+        //get the common course name and status
         $common_courses_name = array();
+        $common_courses_status = array();
+
         foreach($student_assignment_assignments_id as $assignment_id){
             $assignment = Assignment::where('id', $assignment_id)->first();
-            $common_course_name = $assignment->course()->first()->common_course()->first()->name;
+            $common_course = $assignment->course()->first()->common_course()->first();
+            $common_course_name = $common_course->name;
+            $common_course_status = $common_course->status;
+
             array_push($common_courses_name, $common_course_name);
+            array_push($common_courses_status, $common_course_status);
+
         }
 
         //get assignment name
@@ -1476,6 +1482,7 @@ class AssignmentController extends Controller
             'assignments' => $assignments,
             'assignments_id' => $assignments_id,
             'common_courses_name' => $common_courses_name,
+            'common_courses_status' => $common_courses_status,
             'student_assignment_assignments_id' => $student_assignment_assignments_id,
             'assignments_name' => $assignments_name,
         ]);
@@ -1498,7 +1505,7 @@ class AssignmentController extends Controller
 
         $student_assignment_status = $student_assignment->status;
 
-        $remark = $student_assignment->remark;
+        $title = $student_assignment->title;
 
         $comment = $student_assignment->comment;
 
@@ -1508,7 +1515,7 @@ class AssignmentController extends Controller
             'course_id' => $course_id,
             'assignment_id' => $assignment_id,
             'student_assignment_id' => $student_assignment_id,
-            'remark' => $remark,
+            'title' => $title,
             'comment' => $comment,
             'score' => $score,
             'student_assignment_status' => $student_assignment_status,
@@ -1516,12 +1523,12 @@ class AssignmentController extends Controller
     }
 
     public function postHandInAssignment(Request $request, $course_id, $assignment_id){
-        $remark = $request->input('remark');
+        $title = $request->input('title');
         $student_assignment_id = $request->input('student_assignment_id');
 
         DB::table('student_assignment')
             ->where('id', $student_assignment_id)
-            ->update(['remark' => $remark, 'status' => 2, 'updated_at' => Carbon::now()]);
+            ->update(['title' => $title, 'status' => 2, 'updated_at' => Carbon::now()]);
 
 
         return redirect()->back()->with('message', '繳交作業成功！');
