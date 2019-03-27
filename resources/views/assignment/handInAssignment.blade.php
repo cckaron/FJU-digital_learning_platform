@@ -67,6 +67,10 @@
                                             上傳文件
                                         @elseif($student_assignment_status == 3)
                                             查看文件
+                                        @elseif($student_assignment_status == 4)
+                                            重繳作業
+                                        @elseif($student_assignment_status == 6)
+                                            補繳作業
                                         @endif
                                     </h4>
                                 </div>
@@ -275,7 +279,7 @@
         Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "已超出檔案數量限制";
 
         // 未繳交作業 or 已繳交作業 -> 提供上傳
-        if({{ $student_assignment_status }} === 1 || {{ $student_assignment_status }} === 2){
+        if({{ $student_assignment_status }} === 1 || {{ $student_assignment_status }} === 2 || {{ $student_assignment_status }} === 4 || {{ $student_assignment_status }} === 6) {
             Dropzone.options.myDropzone = {
                 addRemoveLinks: true,
                 maxFilesize: 200,

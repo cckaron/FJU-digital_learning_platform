@@ -1328,12 +1328,16 @@ class AssignmentController extends Controller
 
         //pluck assignment id from student_assignment
         $student_assignment_assignments_id = array();
+        $student_assignment_status = array();
         foreach($student_assignments as $student_assignment){
             array_push($student_assignment_assignments_id, $student_assignment->pluck('assignments_id')->toArray());
+            array_push($student_assignment_status, $student_assignment->pluck('status')->toArray());
+
         }
 
         //flatten the 2-dimensional array to 1-dimensional array
         $student_assignment_assignments_id = call_user_func_array('array_merge', $student_assignment_assignments_id);
+        $student_assignment_status = call_user_func_array('array_merge', $student_assignment_status);
 
         //get the common course name and status
         $common_courses_name = array();
@@ -1352,10 +1356,13 @@ class AssignmentController extends Controller
 
         //get assignment name
         $assignments_name = array();
+        $assignments_status = array();
         foreach($student_assignment_assignments_id as $assignment_id){
             $assignment = Assignment::where('id', $assignment_id)->first();
             $assignment_name = $assignment->name;
+            $assignment_status = $assignment->status;
             array_push($assignments_name, $assignment_name);
+            array_push($assignments_status, $assignment_status);
         }
 
 
@@ -1484,8 +1491,40 @@ class AssignmentController extends Controller
             'common_courses_name' => $common_courses_name,
             'common_courses_status' => $common_courses_status,
             'student_assignment_assignments_id' => $student_assignment_assignments_id,
+            'student_assignment_status' => $student_assignment_status,
             'assignments_name' => $assignments_name,
+            'assignments_status' => $assignments_status,
+
         ]);
+    }
+
+    public function openHandInAssignment(Request $request){
+        $validation = Validator::make($request->all(), [
+            'student_assignment_id' => 'required',
+            'status' => 'required',
+        ]);
+
+        $error_array = array();
+        $success_output = '';
+        $student_assignment_id = '';
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            $student_assignment_id = $request->get('student_assignment_id');
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['status' => $request->get('status')]);
+            $success_output = '成功';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+            'id' => $student_assignment_id,
+        );
+        return $output;
     }
 
     public function getHandInAssignment($course_id, $assignment_id){
@@ -1526,9 +1565,24 @@ class AssignmentController extends Controller
         $title = $request->input('title');
         $student_assignment_id = $request->input('student_assignment_id');
 
-        DB::table('student_assignment')
+        $status = DB::table('student_assignment')
             ->where('id', $student_assignment_id)
-            ->update(['title' => $title, 'status' => 2, 'updated_at' => Carbon::now()]);
+            ->value('status');
+
+        if ($status == 1){
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['title' => $title, 'status' => 2, 'updated_at' => Carbon::now()]);
+        } else if ($status == 4){
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['title' => $title, 'status' => 5, 'updated_at' => Carbon::now()]);
+        } else if ($status == 6){
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['title' => $title, 'status' => 7, 'updated_at' => Carbon::now()]);
+        }
+
 
 
         return redirect()->back()->with('message', '繳交作業成功！');

@@ -102,34 +102,166 @@
                                         <tbody>
                                         @for($i=0; $i< count($student_assignments_id); $i++)
                                             <tr>
-                                                @if($common_courses_status[$i] == 1)
+                                                @if($common_courses_status[$i] == 1) {{-- 課程進行中 --}}
                                                     @if($scores[$i] == null)
                                                         <td>
-                                                            <h6>尚未批改</h6>
+                                                            {{--<span class="badge badge-pill badge-info float-left"  style="font-size: 100%;">--}}
+                                                                {{--尚未批改--}}
+                                                            {{--</span>--}}
                                                             <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
                                                             <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
                                                         </td>
                                                     @else
                                                         <td>
-                                                            <h6>已批改</h6>
-                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
+
+                                                            <span>
+                                                                @if($assignments_status[$i] == 1) {{-- 作業進行中 --}}
+                                                                    @if($student_assignment_status[$i] == 1) {{-- 學生作業狀態為 未繳交--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            未批改
+                                                                        </span>
+                                                                    @elseif($student_assignment_status[$i] == 2) {{-- 學生作業狀態為 已繳交--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            未批改
+                                                                        </span>
+                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
+                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
+                                                                            <input hidden name="status" value=6 /> {{-- 學生作業狀態設為:開放重繳 --}}
+                                                                        <input id="btn_student_assignment_id_{{ $student_assignments_id[$i] }}" class="btn btn-sm btn-secondary m-b-5" onclick="return confirm('確定開放重繳作業?')" type="submit"  value="開放重繳"/>
+                                                                        {{ csrf_field() }}
+                                                                        </form>
+                                                                    @elseif($student_assignment_status[$i] == 3) {{-- 學生作業狀態為 已批改--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            已批改
+                                                                        </span>
+                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
+                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
+                                                                            <input hidden name="status" value=6 /> {{-- 學生作業狀態設為:開放重繳 --}}
+                                                                            <input id="btn_student_assignment_id_{{ $student_assignments_id[$i] }}" class="btn btn-sm btn-secondary m-b-5" onclick="return confirm('確定開放重繳作業?')" type="submit"  value="開放重繳"/>
+                                                                            {{ csrf_field() }}
+                                                                        </form>
+                                                                    @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 補繳中--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            等待學生補繳
+                                                                        </span>
+                                                                    @elseif($student_assignment_status[$i] == 5) {{-- 學生作業狀態為 已補繳--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            學生已補繳
+                                                                        </span>
+                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
+                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
+                                                                            <input hidden name="status" value=4 /> {{-- 學生作業狀態設為:開放重繳 --}}
+                                                                            <input id="btn_student_assignment_id_{{ $student_assignments_id[$i] }}" class="btn btn-sm btn-secondary m-b-5" onclick="return confirm('確定開放重繳作業?')" type="submit"  value="要求再度補繳"/>
+                                                                            {{ csrf_field() }}
+                                                                        </form>
+                                                                    @elseif($student_assignment_status[$i] == 6) {{-- 學生作業狀態已為 開放繳交--}}
+                                                                        <span class="badge badge-pill badge-secondary float-left m-b-5"  style="font-size: 100%;">
+                                                                            已開放重繳
+                                                                        </span>
+                                                                    @elseif($student_assignment_status[$i] == 7) {{-- 學生作業狀態為 已重繳--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            學生已重繳
+                                                                        </span>
+                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
+                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
+                                                                            <input hidden name="status" value=6 /> {{-- 學生作業狀態設為:開放重繳 --}}
+                                                                            <input id="btn_student_assignment_id_{{ $student_assignments_id[$i] }}" class="btn btn-sm btn-secondary m-b-5" onclick="return confirm('確定要求再度重繳作業?')" type="submit"  value="要求再度重繳"/>
+                                                                            {{ csrf_field() }}
+                                                                        </form>
+                                                                    @endif
+
+                                                                @elseif($assignments_status[$i] == 0) {{-- 作業已經結束 --}}
+                                                                    @if($student_assignment_status[$i] == 3) {{-- 學生作業狀態為 已批改--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            已批改
+                                                                        </span>
+                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
+                                                                            <input hidden name="status" value=4 /> {{-- 學生作業狀態設為:補繳 --}}
+                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
+                                                                            <input class="btn btn-sm btn-secondary m-b-5" type="submit" onclick="return confirm('確定開放補繳作業?')" value="開放補繳"/>
+                                                                            {{ csrf_field() }}
+                                                                        </form>
+                                                                    @elseif($student_assignment_status[$i] == 2) {{-- 學生作業狀態為 未繳交--}}
+                                                                         <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            學生未繳交作業
+                                                                        </span>
+                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
+                                                                            <input hidden name="status" value=4 /> {{-- 學生作業狀態設為:補繳 --}}
+                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
+                                                                            <input class="btn btn-sm btn-secondary m-b-5" type="submit" onclick="return confirm('確定開放補繳作業?')" value="開放補繳"/>
+                                                                            {{ csrf_field() }}
+                                                                        </form>
+                                                                    @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 未繳交--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            等待學生補交
+                                                                        </span>
+                                                                    @elseif($student_assignment_status[$i] == 5) {{-- 學生作業狀態為 未繳交--}}
+                                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                            學生已補繳
+                                                                        </span>
+                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
+                                                                            <input hidden name="status" value=4 /> {{-- 學生作業狀態設為:補繳 --}}
+                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
+                                                                            <input class="btn btn-sm btn-secondary m-b-5" type="submit" onclick="return confirm('確定開放補繳作業?')" value="開放補繳"/>
+                                                                            {{ csrf_field() }}
+                                                                        </form>
+                                                                    @endif
+                                                                @endif
+                                                            </span>
+                                                            <span>
+                                                                <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
+                                                            </span>
+
                                                             <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
                                                         </td>
-                                                    @endif
-                                                @elseif($common_courses_status[$i] == 0)
+                                                @endif
+                                                @elseif($common_courses_status[$i] == 0) {{-- 課程已經結束 --}}
                                                     @if($scores[$i] == null)
                                                         <td>
-                                                            <h6>尚未批改</h6>
-                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
-                                                            <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
+                                                            <h6>課程已結束</h6>
+                                                            {{--<input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>--}}
+                                                            {{--<input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>--}}
                                                         </td>
                                                     @else
                                                         <td>
-                                                            <h6>已批改</h6>
-                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
+                                                            @if($student_assignment_status[$i] == 3 or 6)
+                                                                <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                    已批改
+                                                                </span>
+                                                            @elseif($student_assignment_status[$i] == 2)
+                                                                <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                    教師未批改
+                                                                </span>
+                                                            @elseif($student_assignment_status[$i] == 4)
+                                                                <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                    未繳交
+                                                                </span>
+                                                            @elseif($student_assignment_status[$i] == 5)
+                                                                <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                                    已批改(補繳)
+                                                                </span>
+                                                            @endif
+
+                                                            <span>
+                                                                @if($assignments_status[$i] == 1) {{-- 作業進行中(錯誤) --}}
+                                                                    {{--<p>發生錯誤</p>--}}
+                                                                @elseif($assignments_status[$i] == 0) {{-- 作業已經結束 --}}
+                                                                {{--<form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">--}}
+                                                                        {{--<input hidden name="status" value=4 /> --}}{{-- 學生作業狀態設為:補繳 --}}
+                                                                    {{--<input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>--}}
+                                                                    {{--<input class="btn btn-sm btn-primary m-b-5" type="submit" onclick="return confirm('確定開放補繳作業?')" value="開放補繳"/>--}}
+                                                                    {{--{{ csrf_field() }}--}}
+                                                                    {{--</form>--}}
+                                                                    <p>課程已結束</p>
+                                                                @endif
+                                                            </span>
+                                                            <span>
+                                                                {{--<input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>--}}
+                                                            </span>
+
                                                             <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
                                                         </td>
-                                                    @endif
+                                                @endif
                                                 @endif
 
                                                 <td>{{ $common_courses_name[$i] }}</td>
@@ -324,6 +456,7 @@
                 var name = '#student_assignment_id_'+i;
                 var student_assignment_id = $(name).val();
 
+                var form2 = '#openHandInAssignment';
 
                 $(id).click(function(){
                     var modal = '#correctModal';
@@ -334,7 +467,7 @@
                 });
 
 
-                $(form).on('submit', function(event){
+                $(form).off().on('submit', function(event){
                     event.preventDefault();
                     var form_data = $(this).serialize();
                     $.ajax({
@@ -359,7 +492,33 @@
                             }
                         }
                     })
-                })
+                });
+
+                $(form2).off().on('submit', function(event){
+                    event.preventDefault();
+                    var form_data = $(this).serialize();
+                    $.ajax({
+                        url:'{{ route('ajax.openHandInAssignment') }}',
+                        method:"POST",
+                        data:form_data,
+                        dataType:"json",
+                        success:function(data)
+                        {
+                            if (data.error.length > 0)
+                            {
+                                console.log(data.error)
+                            }
+                            else
+                            {
+                                console.log(data.success);
+                                var myid = '#btn_student_assignment_id_'+data.id;
+                                console.log(myid);
+                                document.getElementById(myid).value = '開放成功!';
+                                // btn.prop('value', '開放成功!');
+                            }
+                        }
+                    })
+                });
             })();
         }
 
@@ -378,7 +537,7 @@
             order: [[ 2, "asc" ]],
             autoWidth: false,
             columnDefs: [
-                { "width": "10%", "targets": 0 },
+                { "width": "15%", "targets": 0 },
                 { "width": "10%", "targets": 1 },
                 { "width": "10%", "targets": 2 },
                 { "width": "10%", "targets": 3 },
@@ -440,10 +599,14 @@
                 }
             } );
         } );
+    </script>
 
-
-
-
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     </script>
 
 @endsection

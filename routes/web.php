@@ -459,6 +459,11 @@ Route::group(['prefix' => 'ajax'], function(){
        'uses' => 'CourseController@signClass_ajax',
        'as' => 'ajax.signClass'
    ]);
+
+   Route::post('/openHandInAssignment', [
+       'uses' => 'AssignmentController@openHandInAssignment',
+       'as' => 'ajax.openHandInAssignment'
+   ]);
 });
 
 Route::group(['prefix' => 'download'], function (){

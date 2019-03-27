@@ -88,8 +88,12 @@
                                                     <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
                                                     @if($assignments_processing_status[$i] == 1 or $assignments_processing_status[$i] == 2)
                                                         <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_processing_course_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">繳交作業</a>
-                                                    @elseif($assignments_processing_status[$i] == 3)
+                                                    @elseif($assignments_processing_status[$i] == 3 or $assignments_processing_status[$i] == 5 or $assignments_processing_status[$i] == 7)
                                                         <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_processing_course_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
+                                                    @elseif($assignments_processing_status[$i] == 4)
+                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_processing_course_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">補繳作業</a>
+                                                    @elseif($assignments_processing_status[$i] == 6)
+                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_processing_course_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">重繳作業</a>
                                                     @endif
 
                                                     <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
@@ -169,6 +173,8 @@
                                                         <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_finished_course_id[$i] ,'assignment_id' => $assignments_finished_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">繳交作業</a>
                                                     @elseif($assignments_finished_status[$i] == 3)
                                                         <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_finished_course_id[$i] ,'assignment_id' => $assignments_finished_id[$i]]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
+                                                    @elseif($assignments_finished_status[$i] == 4)
+                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignments_processing_course_id[$i] ,'assignment_id' => $assignments_processing_id[$i]]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">補繳作業</a>
                                                     @endif
 
                                                 <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
@@ -184,6 +190,7 @@
                                                         <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
                                                             狀態：已評分
                                                         </span>
+
                                                     @endif
 
                                                 <!-- 成績 -->
