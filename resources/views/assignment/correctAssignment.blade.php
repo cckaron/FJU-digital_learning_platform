@@ -315,7 +315,7 @@
                                     </table>
                                 </div>
 
-                                <!-- for popup window-->
+                                <!-- start ajax correct assignment window-->
                                 <div id="correctModal" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -347,7 +347,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- end popup window -->
+                                <!-- end ajax correct assignment window -->
 
                             </div>
                         </div>
@@ -525,7 +525,7 @@
 
         $('#correctModal').on('hidden.bs.modal', function () {
             // location.reload();
-        })
+        });
 
     </script>
 
@@ -539,23 +539,51 @@
             autoWidth: false,
             buttons: [
                 {
-                  extend: 'copy',
-                    text: '複製表格內容'
+                    extend: 'colvis',
+                    text: '顯示/隱藏欄位',
+                    // columns: ':gt(0)'
+                    // this will make first column cannot be hided
                 },
+                // {
+                //   extend: 'copy',
+                //     text: '複製表格內容',
+                //     exportOptions: {
+                //         columns: ':visible'
+                //     },
+                // },
                 {
                     extend: 'excelHtml5',
+                    filename: '作業批改',
                     text: '匯出 EXCEL',
-                    bom : true
+                    bom : true,
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    customize: function(xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        //modify text in [A1]
+                        $('c[r=A1] t', sheet).text( '匯出表單' );
+                    }
                 },
                 {
                     extend: 'csv',
+                    filename: '作業批改',
                     text: '匯出 csv',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
                     bom: true
                 },
                 {
                     extend: 'print',
                     text: '列印/匯出PDF',
+                    filename: '作業批改',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
                 },
+
             ],
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
