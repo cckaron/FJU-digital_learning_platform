@@ -55,4 +55,33 @@ class AnnouncementController extends Controller
 
         return redirect()->back()->with('message', '發佈公告成功!');
     }
+
+    public function getCreateSystemAnnouncement()
+    {
+        return view('announcement.createSystemAnnouncement');
+    }
+
+    public function postCreateSystemAnnouncement(Request $request)
+    {
+        $request->validate([
+            'announcementTitle' => 'required',
+            'announcementContent' => 'required',
+        ]);
+
+//        dd($request->all());
+
+//        Log::info(print_r($courses_id,true));
+
+        DB::table('system_announcement')
+            ->insert([
+                'title' => $request->input('announcementTitle'),
+                'content' => $request->input('announcementContent'),
+                'priority' => $request->input('topPost') ? 0 : 1, // if topPost == true, set 0, or set 1
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+
+        return redirect()->back()->with('message', '發佈公告成功!');
+    }
 }

@@ -56,12 +56,14 @@
                     <!-- Column -->
                     <!-- Column -->
                     <div class="col-md-6 col-lg-2 col-xlg-3">
+                        <a href="{{ route('courses.showCourses_Teacher') }}">
                         <div class="card card-hover">
                             <div class="box bg-warning text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-collage"></i></h1>
-                                <h6 class="text-white">指定學生批改</h6>
+                                <h6 class="text-white">課程管理</h6>
                             </div>
                         </div>
+                        </a>
                     </div>
                     <!-- Column -->
                     <div class="col-md-6 col-lg-2 col-xlg-3">

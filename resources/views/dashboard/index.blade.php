@@ -189,6 +189,18 @@
                         {{--</div>--}}
                     {{--</div>--}}
                 {{--</div>--}}
+
+                <div class="col-md-6 col-lg-4 col-xlg-3">
+                    <a href="{{ route('admin.announcement.create') }}">
+                        <div class="card card-hover">
+                            <div class="box bg-success text-center">
+                                <h1 class="font-light text-white"><i class="mdi mdi-chart-areaspline"></i></h1>
+                                <h6 class="text-white">發布公告</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
                 <div class="col-md-6" style="margin-bottom: 500px">
                     <!-- card -->
                     <div class="card">

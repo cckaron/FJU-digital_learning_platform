@@ -15,6 +15,7 @@
             -webkit-box-sizing:border-box;
             -moz-box-sizing: border-box;
         }
+
     </style>
 @endsection
 
@@ -536,6 +537,28 @@
         var table = $('#zero_config').DataTable({
             order: [[ 2, "asc" ]],
             autoWidth: false,
+            buttons: [
+                {
+                  extend: 'copy',
+                    text: '複製表格內容'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '匯出 EXCEL',
+                    bom : true
+                },
+                {
+                    extend: 'csv',
+                    text: '匯出 csv',
+                    bom: true
+                },
+                {
+                    extend: 'print',
+                    text: '列印/匯出PDF',
+                },
+            ],
+            dom: 'lBfrtip',
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
             columnDefs: [
                 { "width": "15%", "targets": 0 },
                 { "width": "10%", "targets": 1 },

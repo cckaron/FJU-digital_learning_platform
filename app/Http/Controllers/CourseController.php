@@ -147,7 +147,8 @@ class CourseController extends Controller
 
         //公告
         $course = Course::where('id', $courses_id)->first();
-        $announcements = $course->announcement()->get();
+        $announcements = $course->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
+        //use ->paginate(), so don't need ->get()
 
 
         // encode 回來，這一頁還會用到 course_id

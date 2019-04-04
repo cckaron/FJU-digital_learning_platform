@@ -85,6 +85,11 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
 // 學生 (type = 4)
 Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
 
+    Route::get('index', [
+        'uses' => 'IndexController@getStudentIndex',
+        'as' => 'index.student'
+    ]);
+
     //作業
     Route::group(['prefix' => 'assignments', 'middleware' => 'auth'], function(){
 
@@ -210,6 +215,16 @@ Route::group(['prefix' => 'secret', 'middleware' => 'auth'], function() {
 
 //管理員 (type = 0)
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
+
+    Route::get('announcement', [
+        'uses' => 'AnnouncementController@getCreateSystemAnnouncement',
+        'as' => 'admin.announcement.create'
+    ]);
+
+    Route::post('announcement', [
+        'uses' => 'AnnouncementController@postCreateSystemAnnouncement',
+        'as' => 'admin.announcement.create'
+    ]);
 
     //共同課程
     Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){

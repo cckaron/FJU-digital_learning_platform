@@ -116,6 +116,7 @@
 
                                     @endforeach
                                 </ul>
+                                {{ $announcements->links() }}
                             </div>
                         </div>
                     </div>

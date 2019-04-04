@@ -16,7 +16,7 @@ class MainController extends Controller
         if ($type == 3){
             return $indexController->getTeacherIndex();
         } else if ($type == 4){
-            return $controller->getAssignments();
+            return $indexController->getStudentIndex();
         }
         return view('dashboard.index');
     }
