@@ -200,6 +200,15 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
             'as' => 'assignment.showAssignments_Teacher'
         ]);
     });
+
+    //成績
+    Route::group(['prefix' => 'grade'], function(){
+        //列出 (get)
+        Route::get('/list', [
+            'uses' => 'GradeController@getGradeList',
+            'as' => 'grade.showlist'
+        ]);
+    });
 });
 
 // 工讀生 (type = 2)
