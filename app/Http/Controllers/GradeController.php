@@ -30,7 +30,7 @@ class GradeController extends Controller
             $students->push($student);
         }
 
-        // TODO flatten the students from 2d to 1d 
+        // TODO flatten the students from 2d to 1d
 
 
         foreach($students as $student){
