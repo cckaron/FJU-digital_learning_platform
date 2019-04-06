@@ -41,6 +41,6 @@ class ExcelController extends Controller
         );
 
         $FullFilePath = 'public/'.$filePath.'/'.$filename;
-        Excel::import(new GradeImport(), $FullFilePath);
+        Excel::import(new gradeImport(), $FullFilePath);
     }
 }
