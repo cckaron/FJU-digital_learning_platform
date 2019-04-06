@@ -454,6 +454,11 @@ Route::group(['prefix' => 'dropZone'], function() {
             'uses' => 'ExcelController@importCourse',
             'as' => 'dropZone.importCourse'
         ]);
+
+        Route::post('excels/grade', [
+            'uses' => 'ExcelController@importGrade',
+            'as' => 'dropZone.importGrade'
+        ]);
     });
 
     Route::post('/delete', [

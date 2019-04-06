@@ -6,6 +6,8 @@
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+    <!-- DropZone JS-->
+    <link href="{{ URL::to('css/dropzone.css') }}" rel="stylesheet" />
 
     <style>
         input {
@@ -84,7 +86,10 @@
                             <div class="card-body">
                                 {{--@php(dd($student_ids))--}}
                                 {{--@php(dd($student_assignments_id))--}}
-                                {{ $students }}
+                                {{--{{ $student_assignments[0] }}--}}
+                                <br>
+                                {{--{{ $test }}--}}
+                                {{--{{ $assignments }}--}}
 
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered display" style="width:100%">
@@ -95,7 +100,7 @@
                                             <th>學生班級</th>
                                             <th>產創編入班級</th>
                                             @foreach($assignments as $assignment)
-                                                <th>{{ $assignment->name }}</th>
+                                                <th> {{ $assignment->name }} ({{ $assignment->percentage }}%)</th>
                                             @endforeach
                                             <th>原始成績</th>
                                             <th>最終成績</th>
@@ -103,30 +108,38 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($students as $student)
+                                        @foreach($students as $key => $student)
                                             <tr>
-                                                {{--<td>{{ $student->users_id }}</td>--}}
-                                                {{--<td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student->id]) }}">{{ $student->users_name }}</a></td>--}}
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                {{--<td>{{ $student->class }}</td>--}}
-                                                {{--<td>{{ $course->common_course_name }}</td>--}}
-                                                <td></td>
-                                                @foreach($assignments as $assignment)
+                                                <td>{{ $student->users_id }}</td>
+                                                <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student->id]) }}">{{ $student->users_name }}</a></td>
+                                                <td>{{ $student->class }}</td>
+                                                <td>{{ $student->common_course_name }}</td>
+
+                                                @foreach($student_assignments[$key] as $student_assignment)
                                                     <td>
-                                                        {{--@if($scores[$i] < 60)--}}
-                                                            {{--<span style="color:red; font-size: 20px;">{{ $scores[$i] }}</span>--}}
-                                                        {{--@elseif($scores[$i] >= 60)--}}
-                                                            {{--<span style="color:blue; font-size: 20px;"> {{ $scores[$i] }}</span>--}}
-                                                        {{--@endif--}}
-                                                        score
+                                                        @if($student_assignment->pivot->score < 60)
+                                                            <span style="color:red; font-size: 20px;">{{ $student_assignment->pivot->score }}</span>
+                                                        @elseif($student_assignment->pivot->score >= 60)
+                                                            <span style="color:blue; font-size: 20px;"> {{ $student_assignment->pivot->score }}</span>
+                                                        @endif
                                                     </td>
+
+                                                    @if($loop->last)
+                                                        <td>
+                                                            @if($student_assignment->accumulated_score < 60)
+                                                                <span style="color:red; font-size: 20px;">{{ $student_assignment->accumulated_score }}</span>
+                                                            @elseif($student_assignment->accumulated_score >= 60)
+                                                                <span style="color:blue; font-size: 20px;"> {{ $student_assignment->accumulated_score }}</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <td></td>
+                                                        <td>{{ $student_assignment->comment }}</td>
+                                                    @endif
                                                 @endforeach
 
-                                                <td>source</td>
-                                                <td>final</td>
-                                                <td>remark</td>
+
+
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -149,6 +162,28 @@
 
                             </div>
                         </div>
+
+                        <!-- start ajax correct assignment window-->
+                        <div id="uploadModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">上傳 Excel 檔</h4>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            &times;
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="overflow:auto; ">
+                                            <form action="{{ route('dropZone.importGrade') }}" class="dropzone" method="post" enctype="multipart/form-data" id="myDropzone">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end ajax correct assignment window -->
                     </div>
                 </div>
 
@@ -197,6 +232,8 @@
     <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
+    <!-- DropZone JS-->
+    <script src="{{ URL::to('js/dropzone.js') }}"></script>
 
     <script>
         //***********************************//
@@ -261,16 +298,18 @@
                     // columns: ':gt(0)'
                     // this will make first column cannot be hided
                 },
-                // {
-                //   extend: 'copy',
-                //     text: '複製表格內容',
-                //     exportOptions: {
-                //         columns: ':visible'
-                //     },
-                // },
+                {
+                  extend: 'copy',
+                    title: '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表',
+                    text: '複製評分表內容',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                },
                 {
                     extend: 'excelHtml5',
-                    filename: '作業批改',
+                    title: '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表',
+                    filename: '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表',
                     text: '匯出 EXCEL',
                     bom : true,
                     exportOptions: {
@@ -280,12 +319,13 @@
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
                         //modify text in [A1]
-                        $('c[r=A1] t', sheet).text( '匯出表單' );
+                        $('c[r=A1] t', sheet).text( '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表' );
                     }
                 },
                 {
                     extend: 'csv',
-                    filename: '作業批改',
+                    title: '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表',
+                    filename: '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表',
                     text: '匯出 csv',
                     exportOptions: {
                         columns: ':visible'
@@ -294,12 +334,20 @@
                 },
                 {
                     extend: 'print',
+                    title: '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表',
+                    filename: '{!! $course->year !!}_{!! $course->semester !!}_{!! $teacher->users_name !!}老師_評分表',
                     text: '列印/匯出PDF',
-                    filename: '作業批改',
                     exportOptions: {
                         columns: ':visible'
                     },
                 },
+                {
+                    text: '匯入成績',
+                    action: function ( e, dt, node, config ) {
+                        var modal = '#uploadModal';
+                        $(modal).modal('show');
+                    }
+                }
 
             ],
             dom: 'lBfrtip',
@@ -358,6 +406,29 @@
                 }
             } );
         } );
+    </script>
+
+    <script>
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳 excel 檔案 (副檔名: .xls, .xlsx)";
+        Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
+        Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+        Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";
+        Dropzone.prototype.defaultOptions.dictInvalidFileType = "上傳的文件格式不正確";
+        Dropzone.prototype.defaultOptions.dictCancelUpload = "取消上傳";
+        Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "確定取消上傳?";
+        Dropzone.prototype.defaultOptions.dictRemoveFile = "刪除檔案";
+        Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "已超出檔案數量限制";
+
+        Dropzone.options.myDropzone = {
+            maxFilesize: 100,
+            maxFiles: 10,
+            acceptedFiles: ".xls, .xlsx",
+        };
+
+        $('#uploadModal').on('hidden.bs.modal', function () {
+            location.reload();
+        });
+
     </script>
 
     <script>
