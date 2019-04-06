@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\CommoncourseImport;
 use App\Imports\CourseImport;
-use App\Imports\gradeImport;
+use App\Imports\GradeImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -41,6 +41,6 @@ class ExcelController extends Controller
         );
 
         $FullFilePath = 'public/'.$filePath.'/'.$filename;
-        Excel::import(new gradeImport(), $FullFilePath);
+        Excel::import(new GradeImport(), $FullFilePath);
     }
 }
