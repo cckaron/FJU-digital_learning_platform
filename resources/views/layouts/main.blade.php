@@ -25,6 +25,7 @@
     <link href="{{ URL::to('extra-libs/multicheck/multicheck.css') }} " rel="stylesheet"/>
     <link href="{{ URL::to('libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet"/>
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('css/custom.modal.css') }}" rel="stylesheet" />
 
     <!-- Datatable Export -->
     <link href="{{ URL::to('extra-libs/DataTables/export/buttons.dataTables.min.css') }}" rel="stylesheet" />

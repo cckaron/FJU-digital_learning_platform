@@ -99,6 +99,7 @@
                                         <div class="col-md-9">
                                             <select id="studentGrade" name="studentGrade" class="select2 form-control custom-select" style="width: 100%; height:36px;">
                                                 <option value="" selected> 請選擇年級 </option>
+                                                <option value='一' > 一 </option>
                                                 <option value='二' > 二 </option>
                                                 <option value='三' > 三 </option>
                                                 <option value='四' > 四 </option>

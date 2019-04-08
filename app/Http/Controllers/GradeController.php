@@ -7,6 +7,7 @@ use App\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class GradeController extends Controller
 {
@@ -45,7 +46,15 @@ class GradeController extends Controller
         $assignments = collect();
 
         foreach($students as $key=> $student){
-            $student_assignment = $student->assignment()->withPivot(['score', 'comment'])->orderBy('name')->select('name', 'percentage', 'score', 'comment')->get();
+            $student_assignment = $student->assignment()
+                ->withPivot(['score', 'comment'])
+                ->orderBy('name')
+                ->select('assignments.id as assignment_id',
+                    'assignments.name as name',
+                    'assignments.percentage as percentage',
+                    'student_assignment.score as score',
+                    'student_assignment.comment as comment')
+                ->get();
 
             $accumulated_score = 0;
 
@@ -57,6 +66,7 @@ class GradeController extends Controller
                 if ($key == 0){
                     //add attribute to temp collect
                     $temp = collect();
+                    $temp->id = $assignment->assignment_id;
                     $temp->name = $assignment->name;
                     $temp->percentage = $assignment->percentage;
 
@@ -85,5 +95,61 @@ class GradeController extends Controller
             'students' => $students,
             'student_assignments' => $student_assignments,
         ]);
+    }
+
+    public function postUpdatePercentage(Request $request){
+        $validation = Validator::make($request->all(), [
+            'assignmentID' => 'required',
+            'assignmentPercentage' => [
+                'required',
+                'between:0,99.99',
+                function($attribute, $value, $fail) {
+                    $total_percentage = 0;
+                    foreach($value as $percentage){
+                        $total_percentage += $percentage;
+                    }
+
+                    if ($total_percentage > 100) {
+                        $overPercentage = floor(($total_percentage*100)-10000)/100;
+                        return $fail('錯誤：總比率為 '.$total_percentage.'% ,超過 '.$overPercentage.' %');
+                    }
+                },
+                ]
+        ]);
+
+        $assignments_id = $request->get('assignmentID');
+        $assignments_percentage = $request->get('assignmentPercentage');
+
+        $error_array = array();
+        $success_output = '';
+
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+
+            foreach($assignments_id as $key => $assignment_id){
+
+                $percentage = $assignments_percentage[$key];
+
+                if ($percentage != null){
+                    DB::table('assignments')
+                        ->where('id', $assignment_id)
+                        ->update(['percentage' => $assignments_percentage[$key]]);
+                } else {
+                    $success_output = '<div class="alert alert-danger"> 錯誤:比率不可為空！ </div>';
+                }
+
+            }
+            $success_output = '<div class="alert alert-success"> 設定成功！ </div>';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+            'myid' => $assignments_percentage
+        );
+        echo json_encode($output);
     }
 }

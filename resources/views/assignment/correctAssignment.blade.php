@@ -153,14 +153,10 @@
                                                                         <span class="badge badge-pill badge-primary m-b-5"  style="font-size: 100%;">
                                                                             已批改
                                                                         </span>
-                                                                        <form id="openHandInAssignment" method="post" action="{{ route('ajax.openHandInAssignment') }}">
-                                                                            <input hidden name="student_assignment_id" value="{{ $student_assignments_id[$i] }}"/>
-                                                                            <input hidden name="status" value=6 /> {{-- 學生作業狀態設為:開放重繳 --}}
-                                                                            <button id="btn_student_assignment_id_{{ $student_assignments_id[$i] }}" class="btn-href" onclick="return confirm('確定開放重繳作業?')" type="submit">
-                                                                                <i class="fas fa-times"></i> 要求重繳
-                                                                            </button>
-                                                                            {{ csrf_field() }}
-                                                                        </form>
+
+                                                                        <a id="rehandIn" class="btn-href" onclick="return confirm('確定開放重繳作業?')" href="{{ route('assignment.openHandInAssignment', ['student_assignment_id' => $student_assignments_id[$i]]) }}">
+                                                                                <i class="fas fa-times"></i> <b id="bold_rehandIn">要求重繳</b>
+                                                                        </a>
                                                                     @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 補繳中--}}
                                                                         <!-- It should not be happened-->
                                                                     @elseif($student_assignment_status[$i] == 5) {{-- 學生作業狀態為 已補繳--}}
@@ -227,12 +223,12 @@
                                                                 @endif
                                                             </span>
                                                             <span>
-                                                                <button name="add" id="correct_data{{ $i }}" type="submit" class="btn-href" style="color:blue">
-                                                                    <i class="fas fa-pencil-alt"></i><b id="correct_button{{ $i }}"> 重新批改</b>
+                                                                <button name="add" data-toggle="modal" data-target="#correctModal" type="submit" class="btn-href" style="color:blue" data-student-assignment-id="{{ $student_assignments_id[$i] }}">
+                                                                    <i class="fas fa-pencil-alt"></i><b id="bold_recorrect"> 重新批改</b>
                                                                 </button>
                                                             </span>
 
-                                                            <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
+                                                            {{--<input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>--}}
                                                         </td>
                                                 @endif
                                                 @elseif($common_courses_status[$i] == 0) {{-- 課程已經結束 --}}
@@ -290,7 +286,7 @@
                                                     <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student_ids[$i]]) }}">{{ $student_names[$i] }}</a></td>
                                                 <td>{{ $student_ids[$i] }}</td>
 
-                                                <td>
+                                                <td id="score">
                                                     @if($scores[$i] < 60)
                                                         <span style="color:red; font-size: 20px;">{{ $scores[$i] }}</span>
                                                     @elseif($scores[$i] >= 60)
@@ -469,93 +465,75 @@
 
 
     <script>
-        for (var i =0; i< {{ count($student_assignments_id) }}; i++){
-            (function(){
-                var id = '#correct_data'+i;
-                var button = 'correct_button'+i;
-                var form = '#correct_form';
-                var name = '#student_assignment_id_'+i;
-                var student_assignment_id = $(name).val();
 
-                var form2 = '#openHandInAssignment';
+        var form = '#correct_form';
+        var form2 = '#openHandInAssignment';
 
-                $(id).click(function(){
-                    var modal = '#correctModal';
-                    $(modal).modal('show');
-                    $('#student_assignment_id').val(student_assignment_id);
-                    if (document.getElementById(button)){
-                        document.getElementById(button).innerText = "請重新整理頁面"
+        $("#correctModal").on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget);
+            var student_assignment_id = button.data('student-assignment-id');
+            $('#student_assignment_id').val(student_assignment_id);
+
+            if (document.getElementById(button)){
+                document.getElementById(button).innerText = "請重新整理頁面"
+            }
+
+            $(form).off().on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url:'{{ route('ajax.correctAssignment') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#form_output').html(error_html);
+
+                            button.children("#bold_recorrect").html('<span style="color:red">批改失敗!</span>')
+                        }
+                        else
+                        {
+                            $('#form_output').html(data.success);
+                            button.children("#bold_recorrect").html('<span style="color:green">批改成功!</span>');
+                            button.closest('td').siblings('#score').html('<span style="color:black; font-size: 20px;">'+data.score+'</span>')
+                        }
                     }
+                })
+            });
+        });
 
 
-                });
-
-
-                $(form).off().on('submit', function(event){
-                    event.preventDefault();
-                    var form_data = $(this).serialize();
-                    $.ajax({
-                        url:'{{ route('ajax.correctAssignment') }}',
-                        method:"POST",
-                        data:form_data,
-                        dataType:"json",
-                        success:function(data)
-                        {
-                            if (data.error.length > 0)
-                            {
-                                var error_html = '';
-                                for (var count = 0; count < data.error.length; count++)
-                                {
-                                    error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
-                                }
-                                $('#form_output').html(error_html);
-                            }
-                            else
-                            {
-                                $('#form_output').html(data.success);
-
-                                console.log(button)
-                                if (document.getElementById(button)){
-                                    document.getElementById(button).innerText = "批改成功"
-                                } else {
-                                    console.log('fail')
-                                }
-
-                            }
-                        }
-                    })
-                });
-
-                $(form2).off().on('submit', function(event){
-                    event.preventDefault();
-                    var form_data = $(this).serialize();
-                    $.ajax({
-                        url:'{{ route('ajax.openHandInAssignment') }}',
-                        method:"POST",
-                        data:form_data,
-                        dataType:"json",
-                        success:function(data)
-                        {
-                            if (data.error.length > 0)
-                            {
-                                console.log(data.error)
-                            }
-                            else
-                            {
-                                console.log(data.success);
-                                var myid = '#btn_student_assignment_id_'+data.id;
-                                console.log(myid);
-                                document.getElementById(myid).value = '開放成功!';
-                                // btn.prop('value', '開放成功!');
-                            }
-                        }
-                    })
-                });
-            })();
-        }
-
-        $('#correctModal').on('hidden.bs.modal', function () {
-            // location.reload();
+        $(form2).off().on('submit', function(event){
+            event.preventDefault();
+            var myform = $(event.relatedTarget);
+            var form_data = $(this).serialize();
+            $.ajax({
+                url:'{{ route('ajax.openHandInAssignment') }}',
+                method:"POST",
+                data:form_data,
+                dataType:"json",
+                success:function(data)
+                {
+                    if (data.error.length > 0)
+                    {
+                        console.log(data.error)
+                    }
+                    else
+                    {
+                        console.log(data.success);
+                        myform.children("#bold_rehandIn").html('<span style="color:green">開放成功!</span>');
+                        windows.reload();
+                    }
+                }
+            })
         });
 
     </script>
@@ -618,7 +596,6 @@
                         columns: ':visible'
                     },
                 },
-
             ],
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],

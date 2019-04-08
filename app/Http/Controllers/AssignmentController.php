@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\common_course;
-use App\student_assignment;
-use App\Course;
 use App\Teacher;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +14,6 @@ use Hashids\Hashids;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use function PHPSTORM_META\type;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
@@ -274,7 +270,6 @@ class AssignmentController extends Controller
         return redirect()->back()->with('message', '新增作業成功！');
     }
 
-
     public function getAllAssignments(){
 
         //找出這個老師的課程
@@ -482,8 +477,6 @@ class AssignmentController extends Controller
 
 
         ]);    }
-
-
 
     public function getAssignments(){
         $student_id = Auth::user()->id;
@@ -760,8 +753,6 @@ class AssignmentController extends Controller
          ]);
     }
 
-
-
     public function getAssignments_Teacher(){
         $teacher_id = Auth::user()->id;
 
@@ -969,8 +960,6 @@ class AssignmentController extends Controller
         ]);
     }
 
-
-
     public function getSingleAssignments_Teacher($common_courses_id, $courses_id){
 
         $encode_common_course_id = new Hashids('common_courses_id', 10);
@@ -1174,7 +1163,6 @@ class AssignmentController extends Controller
 
         ]);
     }
-
 
     public function getStudentAssignmentsList($course_id, $assignment_id){
         $encode_course_id = new Hashids('course_id', 6);
@@ -1533,6 +1521,14 @@ class AssignmentController extends Controller
         return $output;
     }
 
+    public function getOpenHandInAssignment($student_assignment_id){
+        DB::table('student_assignment')
+            ->where('id', $student_assignment_id)
+            ->update(['status' => 6]);
+
+        return redirect()->back()->with('message', '開放繳交成功！');
+    }
+
     public function getHandInAssignment($course_id, $assignment_id){
         $student_id = Auth::user()->id;
 
@@ -1712,6 +1708,8 @@ class AssignmentController extends Controller
             'score' => 'Integer',
         ]);
 
+        $score = $request->get('score');
+
         $error_array = array();
         $success_output = '';
         if ($validation->fails()){
@@ -1723,12 +1721,13 @@ class AssignmentController extends Controller
             $student_assignment_id = $request->get('student_assignment_id');
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
-                ->update(['score' => $request->get('score'), 'comment' =>$request->get('comment'), 'status' => 3]);
+                ->update(['score' => $score, 'comment' =>$request->get('comment'), 'status' => 3]);
             $success_output = '<div class="alert alert-success"> 批改成功！ </div>';
         }
         $output = array(
             'error' => $error_array,
-            'success' => $success_output
+            'success' => $success_output,
+            'score' => $score,
         );
         echo json_encode($output);
     }

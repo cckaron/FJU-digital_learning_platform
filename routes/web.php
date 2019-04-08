@@ -199,6 +199,13 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
             'uses' => 'AssignmentController@getAssignments_Teacher',
             'as' => 'assignment.showAssignments_Teacher'
         ]);
+
+        //開放繳交作業 (get)
+        Route::get('/openHandInAssignment/{student_assignment_id}', [
+            'uses' => 'AssignmentController@getOpenHandInAssignment',
+            'as' => 'assignment.openHandInAssignment'
+        ]);
+
     });
 
     //成績
@@ -208,6 +215,13 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
             'uses' => 'GradeController@getGradeList',
             'as' => 'grade.showlist'
         ]);
+
+        Route::group(['prefix' => 'ajax'], function(){
+            Route::post('/updatePercentage', [
+                'uses' => 'GradeController@postUpdatePercentage',
+                'as' => 'grade.ajax.updatePercentage'
+            ]);
+        });
     });
 });
 
