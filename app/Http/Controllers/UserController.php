@@ -215,7 +215,7 @@ class UserController extends Controller
                 //覆寫以改變型態
                 $assignment = Assignment::where('id', $assignment->id)->first();
 
-                $student_assignment = $assignment->student()->where('users_id', $student_id)->withPivot('score')->get();
+                $student_assignment = $assignment->student()->where('users_id', $student_id)->withPivot(['score', 'title'])->get();
 
                 $temp->push($student_assignment);
             }

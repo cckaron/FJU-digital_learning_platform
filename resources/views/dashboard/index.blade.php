@@ -190,68 +190,125 @@
                     {{--</div>--}}
                 {{--</div>--}}
 
-                <div class="col-md-6 col-lg-4 col-xlg-3">
+                <div class="col-md-6 col-lg-2 col-xlg-3">
                     <a href="{{ route('admin.announcement.create') }}">
                         <div class="card card-hover">
-                            <div class="box bg-success text-center">
+                            <div class="box bg-cyan text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-chart-areaspline"></i></h1>
-                                <h6 class="text-white">發布公告</h6>
+                                <h6 class="text-white">發布系統公告</h6>
                             </div>
                         </div>
                     </a>
                 </div>
 
-                <div class="col-md-6" style="margin-bottom: 500px">
-                    <!-- card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title m-b-0">平台資訊 (開發中)</h4>
-                            <div class="m-t-20">
-                                <div class="d-flex no-block align-items-center">
-                                    <span>81% Clicks</span>
-                                    <div class="ml-auto">
-                                        <span>125</span>
-                                    </div>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 81%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="d-flex no-block align-items-center m-t-25">
-                                    <span>72% Uniquie Clicks</span>
-                                    <div class="ml-auto">
-                                        <span>120</span>
-                                    </div>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 72%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="d-flex no-block align-items-center m-t-25">
-                                    <span>53% Impressions</span>
-                                    <div class="ml-auto">
-                                        <span>785</span>
-                                    </div>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 53%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="d-flex no-block align-items-center m-t-25">
-                                    <span>3% Online Users</span>
-                                    <div class="ml-auto">
-                                        <span>8</span>
-                                    </div>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 3%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                <!-- Column -->
+                <div class="col-md-6 col-lg-2 col-xlg-3">
+                    <a href="{{ route('user.getAllStudents') }}">
+                        <div class="card card-hover">
+                            <div class="box bg-success text-center">
+                                <h1 class="font-light text-white"><i class="mdi mdi-collage"></i></h1>
+                                <h6 class="text-white">學生資訊</h6>
                             </div>
                         </div>
+                    </a>
+                </div>
+                <!-- Column -->
+
+
+
+                <!-- Column -->
+                <div class="col-md-6 col-lg-2 col-xlg-3">
+                    <a href="{{ route('course.showAllCommonCourses') }}">
+                        <div class="card card-hover">
+                            <div class="box bg-danger text-center">
+                                <h1 class="font-light text-white"><i class="mdi mdi-book-multiple"></i></h1>
+                                <h6 class="text-white">課程管理</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Column -->
+
+                <!-- Column -->
+                <div class="col-md-6 col-lg-2 col-xlg-3">
+                    <a href="{{ route('user.createUser') }}">
+                    <div class="card card-hover">
+                        <div class="box bg-info text-center">
+                            <h1 class="font-light text-white"><i class="mdi mdi-account"></i></h1>
+                            <h6 class="text-white">新增帳號</h6>
+                        </div>
                     </div>
+                    </a>
+                </div>
+                <!-- Column -->
+
+                <!-- Column -->
+                <div class="col-md-6 col-lg-2 col-xlg-3">
+                    <a href="{{ route('user.importUsers') }}">
+                    <div class="card card-hover">
+                        <div class="box bg-warning text-center">
+                            <h1 class="font-light text-white"><i class="mdi mdi-account"></i></h1>
+                            <h6 class="text-white">匯入功能</h6>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <!-- Column -->
+
+                {{--<div class="col-md-6" style="margin-bottom: 500px">--}}
+                    {{--<!-- card -->--}}
+                    {{--<div class="card">--}}
+                        {{--<div class="card-body">--}}
+                            {{--<h4 class="card-title m-b-0">平台資訊 (開發中)</h4>--}}
+                            {{--<div class="m-t-20">--}}
+                                {{--<div class="d-flex no-block align-items-center">--}}
+                                    {{--<span>81% Clicks</span>--}}
+                                    {{--<div class="ml-auto">--}}
+                                        {{--<span>125</span>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="progress">--}}
+                                    {{--<div class="progress-bar progress-bar-striped" role="progressbar" style="width: 81%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div>--}}
+                                {{--<div class="d-flex no-block align-items-center m-t-25">--}}
+                                    {{--<span>72% Uniquie Clicks</span>--}}
+                                    {{--<div class="ml-auto">--}}
+                                        {{--<span>120</span>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="progress">--}}
+                                    {{--<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 72%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div>--}}
+                                {{--<div class="d-flex no-block align-items-center m-t-25">--}}
+                                    {{--<span>53% Impressions</span>--}}
+                                    {{--<div class="ml-auto">--}}
+                                        {{--<span>785</span>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="progress">--}}
+                                    {{--<div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 53%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div>--}}
+                                {{--<div class="d-flex no-block align-items-center m-t-25">--}}
+                                    {{--<span>3% Online Users</span>--}}
+                                    {{--<div class="ml-auto">--}}
+                                        {{--<span>8</span>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="progress">--}}
+                                    {{--<div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 3%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+
+
+
                     {{--<!-- card new -->--}}
                     {{--<div class="card">--}}
                         {{--<div class="card-body">--}}

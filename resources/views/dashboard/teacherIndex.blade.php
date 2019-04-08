@@ -33,11 +33,17 @@
                 <div class="row">
                     <!-- Column -->
                     <div class="col-md-6 col-lg-2 col-xlg-3">
-                        <a href="{{ route('teacher.correctAssignment') }}">
+                        <!-- if has any in progress courses, give hyperlink-->
+                        <a href="@if($hasInProgressCourse) {{ route('teacher.correctAssignment') }} @else # @endif">
+                            <!-- end if -->
                         <div class="card card-hover">
                             <div class="box bg-cyan text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-view-dashboard"></i></h1>
-                                <h6 class="text-white">作業批改</h6>
+                                @if($hasInProgressCourse)
+                                    <h6 class="text-white">作業批改</h6>
+                                @else
+                                    <h6 class="text-white">批改系統未開放 (無進行中課程）</h6>
+                                @endif
                             </div>
                         </div>
                         </a>
@@ -81,7 +87,7 @@
                         <div class="card card-hover">
                             <div class="box bg-info text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-arrow-all"></i></h1>
-                                <h6 class="text-white">匯入成績</h6>
+                                <h6 class="text-white">學生通訊錄</h6>
                             </div>
                         </div>
                     </div>

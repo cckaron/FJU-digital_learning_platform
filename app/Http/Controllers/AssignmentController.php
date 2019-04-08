@@ -1299,7 +1299,13 @@ class AssignmentController extends Controller
 
     public function getCorrectAssignment(){
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
-        $courses = $teacher->course()->get();
+
+        //取得進行中的課程
+        $courses = $teacher->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+            ->where('status', 1)
+            ->get();
 
         //get all teacher's assignments
         $assignments = collect();

@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '學生資訊(開發中)'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '學生資訊'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -60,6 +60,9 @@
                                 <p class="card-text"><strong>姓名 </strong> <span class="p-l-30">{{ $student->users_name }}</span></p>
                                 <p class="card-text"><strong>系所 </strong> <span class="p-l-30">{{ $student->department }}</span></p>
                                 <p class="card-text"><strong>年級 </strong> <span class="p-l-30">{{ $student->grade }}年{{ $student->class }}班 </span></p>
+                                <p class="card-text"><strong>信箱 </strong> <span class="p-l-30"> example@gmail.com</span></p>
+                                <p class="card-text"><strong>電話 </strong> <span class="p-l-30"> 0912345678</span></p>
+                                <p class="card-text"><strong>授權 </strong> <span class="p-l-30" style="color:red"> 不同意</span></p>
                                 <p class="card-text"><strong>狀態 </strong> <span
                                         @if($student->status == 1)
                                         class="p-l-30" >在學中
@@ -82,23 +85,25 @@
                         </div>
                     </div>
 
-                    <div class="col-md-7">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title p-b-10">統計圖表</h4>
+                    {{--<div class="col-md-7">--}}
+                        {{--<div class="card">--}}
+                            {{--<div class="card-body">--}}
+                                {{--<h4 class="card-title p-b-10">統計圖表</h4>--}}
                                 {{--{{ $courses }}--}}
                                 {{--<br>--}}
                                 {{--<br>--}}
                                 {{--{{ $teachers }}--}}
                                 {{--{{ $assignments }}--}}
-                                <br>
-                                <br>
+                                {{--<br>--}}
+                                {{--<br>--}}
                                 {{--{{ $student_assignments }}--}}
 
-                            </div>
-                        </div>
-                    </div>
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
 
+                        <div class="col-md-7">
+                        </div>
                     <div class="col-md-5">
                         <div class="card">
                             <div class="card-body">
@@ -167,6 +172,11 @@
 
                                                         @foreach($student_assignments[$key] as $innerKey=>$temp)
                                                             @foreach($temp as $student_assignment)
+                                                                @if($assignments[$key][$innerKey]->name == 'A4海報')
+                                                                <div>
+                                                                    <h5>主題: {!! $student_assignment->pivot->title !!}</h5>
+                                                                </div>
+                                                                @endif
                                                                 <h6>
                                                                     <i class="fas fa-book m-t-5"></i>
                                                                     {{ $assignments[$key][$innerKey]->name }}
@@ -226,9 +236,9 @@
                 <!-- ============================================================== -->
                 <!-- footer -->
                 <!-- ============================================================== -->
-                <footer class="footer text-center">
-                    All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cg.workst@gmail.com
-                </footer>
+                {{--<footer class="footer text-center">--}}
+                    {{--All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cg.workst@gmail.com--}}
+                {{--</footer>--}}
                 <!-- ============================================================== -->
                 <!-- End footer -->
                 <!-- ============================================================== -->

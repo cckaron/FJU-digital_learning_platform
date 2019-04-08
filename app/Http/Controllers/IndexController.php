@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Student;
+use App\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,16 @@ use Illuminate\Support\Facades\DB;
 class IndexController extends Controller
 {
     public function getTeacherIndex(){
-        return view('dashboard.teacherIndex');
+        $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+
+        $hasInProgressCourse = $teacher->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+            ->where('status', 1)
+            ->exists();
+        return view('dashboard.teacherIndex', [
+            'hasInProgressCourse' => $hasInProgressCourse,
+        ]);
     }
 
     public function getStudentIndex(){
