@@ -114,7 +114,7 @@
                                         @foreach($students as $key => $student)
                                             <tr>
                                                 <td>{{ $student->users_id }}</td>
-                                                <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student->id]) }}">{{ $student->users_name }}</a></td>
+                                                <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}">{{ $student->users_name }}</a></td>
                                                 <td>{{ $student->class }}</td>
                                                 <td>{{ $student->common_course_name }}</td>
 

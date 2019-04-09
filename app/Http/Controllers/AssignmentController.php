@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Hashids\Hashids;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,39 +20,17 @@ use Yajra\DataTables\Facades\DataTables;
 class AssignmentController extends Controller
 {
     public function getCreateAssignment(){
-        $course_id = array();
-        $course_names = array();
-
-        $teacher_id = Auth::user()->id;
-
-
-        // 取得老師的所有課程
-        if (DB::table('teacher_course')->where('teachers_id', $teacher_id)->exists()){
-            $teacher = DB::table('teacher_course')->where('teachers_id', $teacher_id)->get();
-            $course_id = $teacher->pluck('courses_id');
+        $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+        //取得該課程ID
+        $courses_id = $teacher->course()->pluck('id');
+        $courses = $teacher->course()->get();
+        foreach($courses as $course){
+            $course->student()->get();
         }
-
-        //取得課程的 共同課程名稱
-        $common_courses_id = DB::table('courses')
-            ->whereIn('id', $course_id)
-            ->pluck('common_courses_id');
-
-        $common_courses_name = DB::table('common_courses')
-            ->whereIn('id', $common_courses_id)
-            ->pluck('name');
-
-        for ($i=0; $i<count($course_id); $i++){
-            if (DB::table('courses')->where('id', $course_id[$i])->exists()){
-                $course_name = DB::table('courses')->where('id', $course_id[$i])->value('name');
-                array_push($course_names, $course_name);
-            }
-        }
-
 
         return view('assignment.createAssignment', [
-            'course_names' => $course_names,
-            'common_courses_name' => $common_courses_name
-            ]);
+            'test' => $courses_id
+        ]);
     }
 
     public function postCreateAssignment(Request $request){
@@ -61,21 +40,33 @@ class AssignmentController extends Controller
             'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
             'assignmentStartTime' => 'required',
             'assignmentEndTime' => 'required',
-            'assignmentPercentage' => 'required|numeric',
-            'courseName' => 'required'
+            'assignmentPercentage' => [
+                'required',
+                'between:0,99.99',
+                function($attribute, $value, $fail) {
+                    $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+                    $percentages = $teacher->course()->first()->assignment->pluck('percentage');
+
+                    $total_percentage = 0;
+                    foreach($percentages as $percentage){
+                        $total_percentage += $percentage;
+                    }
+
+                    $total_percentage += $value;
+
+                    if ($total_percentage > 100) {
+                        $overPercentage = floor(($total_percentage*100)-10000)/100;
+                        return $fail('錯誤：總比率為 '.$total_percentage.'% ,超過 '.$overPercentage.' %');
+                    }
+                },
+            ]
         ]);
 
-        $course_name = $request->input('courseName');
+        $teacher = Teacher::where('users_id', Auth::user()->id)->first();
 
-        $course_id = DB::table('courses')
-            ->where('name', $course_name)
-            ->value('id');
+        //取得該課程ID
+        $courses_id = $teacher->course()->pluck('id');
 
-        //取得該課程所有授課教師
-        $teachers = DB::table('teacher_course')
-            ->where('courses_id', $course_id)
-            ->get();
-        $teachers_id = $teachers->pluck('teachers_id');
 
         $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
         $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
@@ -88,48 +79,48 @@ class AssignmentController extends Controller
         }
 
         //新增作業
-
-        $assignment_id = DB::table('courses_announcement')
-            ->insertGetId( [
-                'name' => $request->input('assignmentName'),
-                'content' => $request->input('assignmentContent'),
-                'start_date' => $request->input('assignmentStart'),
-                'start_time' => $start_time,
-                'end_date' => $request->input('assignmentEnd'),
-                'end_time' => $end_time,
-                'courses_id' => $course_id,
-                'percentage' => $request->input('assignmentPercentage'),
-                'announce_score' => $announceScore,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]);
-
-        for($i=0; $i<count($teachers); $i++){
-            DB::table('teacher_assignment')
-                ->insert([
-                    'teachers_id' => $teachers_id[$i],
-                    'assignments_id' => $assignment_id,
+        $assignments_id = array();
+        foreach($courses_id as $course_id){
+            $assignment_id = DB::table('assignments')
+                ->insertGetId( [
+                    'name' => $request->input('assignmentName'),
+                    'content' => $request->input('assignmentContent'),
+                    'start_date' => $request->input('assignmentStart'),
+                    'start_time' => $start_time,
+                    'end_date' => $request->input('assignmentEnd'),
+                    'end_time' => $end_time,
+                    'courses_id' => $course_id,
+                    'percentage' => $request->input('assignmentPercentage'),
+                    'announce_score' => $announceScore,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ]);
+
+            array_push($assignments_id, $assignment_id);
         }
 
 
         //create assignment for students
-        //create student_course first
+        //so need to create student_assignment
+        $courses = $teacher->course()->get();
 
-        //get the course's student count
-        $students = DB::table('student_course')->where('courses_id', $course_id)->get();
-        $students_id = $students->pluck('students_id');
+        foreach($courses as $course){
+            //get this course's students
+            $students_id = $course->student()->pluck('users_id');
 
-        for ($i=0; $i<count($students); $i++){
+            //get this course's assignments
+            $assignments_id = $course->assignment()->pluck('id');
 
-            DB::table('student_assignment')
-                ->insert([
-                    ['students_id' => $students_id[$i], 'assignments_id' => $assignment_id]
-                ]);
-
-            Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);
+            //add new student_assignment
+            foreach($assignments_id as $assignment_id){
+                foreach($students_id as $student_id){
+                    DB::table('student_assignment')
+                        ->insert([
+                            ['students_id' => $student_id, 'assignments_id' => $assignment_id]
+                        ]);
+                    Storage::makeDirectory('public/'.$student_id.'/'.$assignment_id);
+                }
+            }
         }
 
         return redirect()->back()->with('message', '新增作業成功！');
@@ -139,9 +130,29 @@ class AssignmentController extends Controller
         $encode_assignment_id = new Hashids('assignment_id', 10);
         $assignment_id = $encode_assignment_id->decode($id);
 
-        DB::table('assignments')
-            ->where('id', $assignment_id)
-            ->delete();
+        $assignment = Assignment::where('id', $assignment_id)->first();
+        $teacher = $assignment->course()->first()->teacher()->first();
+        $courses = $teacher->course()->get();
+
+        foreach($courses as $course){
+            //get this course's students
+            $students_id = $course->student()->pluck('users_id');
+
+            //get this course's assignments
+            //!! Should get the assignments which name is same as assignment->name
+            $assignments_id = $course->assignment()->where('name', $assignment->name)->pluck('id');
+
+            foreach($assignments_id as $assignment_id){
+                DB::table('assignments')
+                    ->where('id', $assignment_id)
+                    ->delete();
+
+                //delete student's assignment folder
+                foreach($students_id as $student_id){
+                    File::deleteDirectory(public_path($student_id.'/'.$assignment_id));
+                }
+            }
+        }
 
         return redirect()->back()->with('message', '刪除作業成功！');
     }
@@ -1295,10 +1306,18 @@ class AssignmentController extends Controller
             ->where('status', 1)
             ->get();
 
-        //get all teacher's assignments
+        //get all assignments of teacher
         $assignments = collect();
+
         foreach($courses as $course){
-            $assignments->push($course->assignment()->get());
+            if ($course->assignment()->get()->isNotEmpty()){
+                $assignments->push($course->assignment()->get());
+            }
+        }
+
+        //if assignment is empty, redirect back
+        if ($assignments->isEmpty()){
+            return redirect()->back()->with(['message' => '沒有進行中的作業']);
         }
 
         //pluck assignment_id

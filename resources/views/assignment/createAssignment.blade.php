@@ -50,29 +50,6 @@
                                 <div class="card-body">
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程名稱</label>
-                                        <div class="col-md-3">
-                                            <select id="courseName" name="courseName" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                                @for($i=0; $i<count($course_names); $i++)
-                                                    <option>{{ $course_names[$i] }}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 m-t-10">
-                                            <h4>
-                                                隸屬共同課程：
-                                                <span style="color:blue" id="common_course_name">
-                                                    @if(count($common_courses_name) > 0)
-                                                        {{ $common_courses_name[0] }}
-                                                    @endif
-                                                </span>
-
-                                            </h4>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group row">
                                         <label class="col-md-3" for="assignmentName">作業名稱</label>
                                         <div class="col-md-9">
                                             <input type="text" id="assignmentName" class="form-control" placeholder="作業名稱" name="assignmentName" required>
@@ -133,10 +110,10 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-9" for="userAccount">佔分比例</label>
-                                        <div class="col-md-5">
+                                        <label class="col-md-3 m-t-9" for="userAccount">佔分比率</label>
+                                        <div class="col-md-3">
                                             <div class="input-group mb-3">
-                                                <input type="text" id="userAccount" class="form-control" placeholder="ex. 輸入 25 代表 25%" name="assignmentPercentage" required>
+                                                <input type="number" step="0.01" id="userAccount" class="form-control" placeholder="ex. 輸入 25 代表 25%" name="assignmentPercentage" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">%</span>
                                                 </div>
@@ -295,18 +272,18 @@
 
     </script>
 
-    <script>
+    {{--<script>--}}
 
-        var courseName = $('#courseName');
+        {{--var courseName = $('#courseName');--}}
 
-        var commonCourseName = {!! $common_courses_name !!};
+        {{--var commonCourseName = {!! $common_courses_name !!};--}}
 
-        courseName.change(function () {
-            var index = courseName[0].selectedIndex;
-            document.getElementById("common_course_name").innerHTML= commonCourseName[index];
+        {{--courseName.change(function () {--}}
+            {{--var index = courseName[0].selectedIndex;--}}
+            {{--document.getElementById("common_course_name").innerHTML= commonCourseName[index];--}}
 
-        })
-    </script>
+        {{--})--}}
+    {{--</script>--}}
 
     <!-- close autocomplete of datetime picker -->
     <script>
