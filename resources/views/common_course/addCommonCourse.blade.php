@@ -36,7 +36,7 @@
                     <!-- Start Page Content -->
                     <!-- ============================================================== -->
 
-                    <form action="{{ route('course.addCommonCourse') }}" method="post">
+                    <form action="{{ route('common_course.add') }}" method="post">
 
                     <!-- editor -->
                     <div class="row">
@@ -47,14 +47,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="courseName">課程名稱</label>
+                                        <label class="col-md-3 m-t-10" for="courseName">共同課程名稱</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="courseName" class="form-control" placeholder="課程名稱" name="courseName" required>
+                                            <input type="text" id="courseName" class="form-control" placeholder="共同課程名稱" name="courseName" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學年</label>
+                                        <label class="col-md-3 m-t-10">學年</label>
                                         <div class="col-md-9">
                                             <select name="year" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
                                                 <option>{{ $year }}</option>
@@ -72,7 +72,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">學期</label>
+                                        <label class="col-md-3 m-t-10">學期</label>
                                         <div class="col-md-9">
                                             <select name="semester" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
                                                 <option>1</option>
@@ -82,7 +82,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">開課時間</label>
+                                        <label class="col-md-3 m-t-10">開課時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="datepicker-start" name="courseStart" placeholder="開課時間" required>
@@ -94,7 +94,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-15">課程結束時間</label>
+                                        <label class="col-md-3 m-t-10">課程結束時間</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="datepicker-end" name="courseEnd" placeholder="課程結束時間" required>

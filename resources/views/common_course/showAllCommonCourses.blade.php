@@ -74,42 +74,51 @@
                                         <table id="zero_config" class="table table-striped table-bordered display" style="width:100%">
                                             <thead>
                                             <tr>
-                                                <th>課程名稱</th>
-                                                <th>共同課程</th>
+                                                <th>共同課程名稱</th>
                                                 <th>學年</th>
                                                 <th>學期</th>
                                                 <th>開課日期</th>
                                                 <th>結束日期</th>
                                                 <th>上次修改時間</th>
                                                 <th>狀態</th>
+                                                <th>更改狀態</th>
                                                 <th>動作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($courses as $course)
+                                            @foreach($common_courses as $common_course)
                                                 <tr align="center">
-                                                    <td>{{ $course->course_name }}</td>
-                                                    <td>{{ $course->common_course->name }}</td>
-                                                    <td>{{ $course->common_course->year }}</td>
-                                                    <td>{{ $course->common_course->semester }}</td>
-                                                    <td>{{ $course->common_course->start_date }}</td>
-                                                    <td>{{ $course->common_course->end_date }}</td>
-                                                    <td>{{ $course->common_course->updated_at->diffForHumans() }}</td>
+                                                    <td>{{ $common_course->name }}</td>
+                                                    <td>{{ $common_course->year }}</td>
+                                                    <td>{{ $common_course->semester }}</td>
+                                                    <td>{{ $common_course->start_date }}</td>
+                                                    <td>{{ $common_course->end_date }}</td>
+                                                    <td>{{ $common_course->updated_at->diffForHumans() }}</td>
                                                     <td>
-                                                        @if($course->common_course->status == 1)
+                                                        @if($common_course->status == 1)
                                                             <p style="color: blue">進行中</p>
                                                         @else
                                                             <p style="color: green">已結束</p>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('course.showCourseStudents', ['courses_id' => $course->id]) }}" class="btn btn-info btn-md">
-                                                            查看詳情
-                                                        </a>
-                                                        <a href="{{ route('course.delete', ['courses_id' => $course->id]) }}" class="btn btn-cyan btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        @if( $common_course->status == 1)
+                                                            <div class="btn-group" id="toggle_event_editing">
+                                                                <button type="button" class="btn btn-primary locked_active">開啟</button>
+                                                                <button type="button" class="btn btn-light unlocked_inactive">關閉</button>
+                                                            </div>
+                                                        @else
+                                                            <div class="btn-group" id="toggle_event_editing">
+                                                                <button type="button" class="btn btn-light locked_active">開啟</button>
+                                                                <button type="button" class="btn btn-primary unlocked_inactive">關閉</button>
+                                                            </div>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('commonCourse.delete', ['id' => $common_course->id]) }}" class="btn btn-cyan btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
                                                             編輯
                                                         </a>
-                                                        <a href="{{ route('course.delete', ['courses_id' => $course->id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        <a href="{{ route('commonCourse.delete', ['id' => $common_course->id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
                                                             刪除
                                                         </a>
                                                     </td>
@@ -259,7 +268,7 @@
                 },
                 {
                     extend: 'copy',
-                    title: '所有課程',
+                    title: '所有共同課程',
                     text: '複製表格內容',
                     exportOptions: {
                         columns: ':visible'
@@ -267,8 +276,8 @@
                 },
                 {
                     extend: 'excelHtml5',
-                    title: '所有課程',
-                    filename: '所有課程',
+                    title: '所有共同課程',
+                    filename: '所有共同課程',
                     text: '匯出 excel',
                     bom : true,
                     exportOptions: {
@@ -278,13 +287,13 @@
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
                         //modify text in [A1]
-                        $('c[r=A1] t', sheet).text( '所有課程' );
+                        $('c[r=A1] t', sheet).text( '所有共同課程' );
                     }
                 },
                 {
                     extend: 'csv',
-                    title: '所有課程',
-                    filename: '所有課程',
+                    title: '所有共同課程',
+                    filename: '所有共同課程',
                     text: '匯出 csv',
                     exportOptions: {
                         columns: ':visible'
@@ -293,8 +302,8 @@
                 },
                 {
                     extend: 'print',
-                    title: '所有課程',
-                    filename: '所有課程',
+                    title: '所有共同課程',
+                    filename: '所有共同課程',
                     text: '列印/匯出PDF',
                     exportOptions: {
                         columns: ':visible'

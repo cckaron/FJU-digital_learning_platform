@@ -167,7 +167,7 @@
         Dropzone.autoDiscover = false;
         Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
         Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
-        Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";
+        Dropzone.prototype.defaultOptions.dictFileTooBig = "超出檔案大小限制(最大: 20MB)";
         Dropzone.prototype.defaultOptions.dictInvalidFileType = "上傳的文件格式不正確";
         Dropzone.prototype.defaultOptions.dictCancelUpload = "取消上傳";
         Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "確定取消上傳?";
@@ -181,6 +181,8 @@
             method: 'POST',
             autoProcessQueue: false,
             parallelUploads: 10,
+            maxFilesize: 100,
+            maxFiles: 10,
             uploadMultiple: true,
             addRemoveLinks: true,
             paramName: "file",

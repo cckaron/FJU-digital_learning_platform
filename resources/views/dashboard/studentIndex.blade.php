@@ -38,8 +38,8 @@
                                     <h4 class="card-title m-t-10" style="padding-right: 20px">系統公告</h4>
                                 </div>
 
+                                @if(count($sys_announcements) > 0)
                                 <ul class="list-style-none">
-
                                     @foreach($sys_announcements as $key=>$sys_announcement)
                                         <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
                                             @if($sys_announcement->status == 1)  {{--active --}}
@@ -49,7 +49,7 @@
                                             @endif
 
                                             <div>
-                                                <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
+                                                <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-sys-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
                                                     {{ $sys_announcement->title }}
 
                                                     {{--<span class="text-active p-l-5" >--}}
@@ -71,7 +71,7 @@
 
                                                 <div class="p-t-5">
 
-                                                    <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
+                                                    <div id="Toggle-sys-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
                                                         <div class="widget-content">
                                                             <h6>
                                                                 {!! $sys_announcement->content !!}
@@ -83,7 +83,6 @@
                                             <div class="ml-auto">
                                                 <div class="text-right">
                                                     <div class="p-t-5">
-                                                        {{--<strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>--}}
                                                         <h5 class="text-muted m-b-0" style="text-align: center;">{{ \Carbon\Carbon::parse($sys_announcement->created_at)->diffForHumans() }} 發佈</h5>
 
                                                     </div>
@@ -94,6 +93,8 @@
                                     @endforeach
                                 </ul>
                                 {{ $sys_announcements->links() }}
+
+                                    @endif
                             </div>
                         </div>
                     </div>
@@ -106,6 +107,8 @@
                                 <div class="btn-group">
                                     <h4 class="card-title m-t-10" style="padding-right: 20px">課程公告</h4>
                                 </div>
+
+                                @if(count($announcements) > 0)
 
                                 <ul class="list-style-none">
 
@@ -163,6 +166,8 @@
                                     @endforeach
                                 </ul>
                                 {{ $announcements->links() }}
+
+                                @endif
                             </div>
                         </div>
                     </div>

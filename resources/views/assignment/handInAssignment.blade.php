@@ -282,9 +282,10 @@
         if({{ $student_assignment_status }} === 1 || {{ $student_assignment_status }} === 2 || {{ $student_assignment_status }} === 4 || {{ $student_assignment_status }} === 6) {
             Dropzone.options.myDropzone = {
                 addRemoveLinks: true,
-                maxFilesize: 200,
+                maxFilesize: 100,
                 maxFiles: 10,
-                createImageThumbnails: false,
+                uploadMultiple: true,
+                parallelUploads: 10,
                 acceptedFiles: ".pdf",
                 init: function() {
                     var filepaths = {!! json_encode($files["filepaths"])  !!};

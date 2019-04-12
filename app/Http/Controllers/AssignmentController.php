@@ -1646,22 +1646,25 @@ class AssignmentController extends Controller
             ->where('id', $student_assignment_id)
             ->value('assignments_id');
 
-        $file = $request->file('file'); //default file name from request is "file"
-        $filename = $file->getClientOriginalName();
-        $filepath = $student_id.'/'.$assignment_id;
+        $files = $request->file('file'); //default file name from request is "file"
 
-        $filename = str_replace(' ', '_', $filename);
-        //this line is really important!!!!!!!!!!!!!!
-        setlocale(LC_ALL,'en_US.UTF-8');
+        foreach($files as $file){
+            $filename = $file->getClientOriginalName();
+            $filepath = $student_id.'/'.$assignment_id;
 
-        Storage::disk('public')->putFileAs(
-            $filepath, $file, $filename
-        );
+            $filename = str_replace(' ', '_', $filename);
+            //this line is really important!!!!!!!!!!!!!!
+            setlocale(LC_ALL,'en_US.UTF-8');
 
-        //如果 remark 已經存在 (學生填寫過內容了)，就把狀態改成已繳交
+            Storage::disk('public')->putFileAs(
+                $filepath, $file, $filename
+            );
+        }
+
+        //如果 title 已經存在 (學生填寫過內容了)，就把狀態改成已繳交
         $old_remark = DB::table('student_assignment')
             ->where('id', $student_assignment_id)
-            ->value('remark');
+            ->value('title');
         if ($old_remark != null){
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)

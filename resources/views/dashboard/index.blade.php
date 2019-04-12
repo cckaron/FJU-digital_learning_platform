@@ -218,7 +218,7 @@
 
                 <!-- Column -->
                 <div class="col-md-6 col-lg-2 col-xlg-3">
-                    <a href="{{ route('course.showAllCommonCourses') }}">
+                    <a href="{{ route('common_course.showAll') }}">
                         <div class="card card-hover">
                             <div class="box bg-danger text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-book-multiple"></i></h1>

@@ -12,14 +12,14 @@
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 共同課程 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         @if(Auth::user()->type == 0 or Auth::user()->type == 1)
-                        <li class="sidebar-item"><a href="{{ route('course.showAllCommonCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有共同課程 </span></a></li>
+                        <li class="sidebar-item"><a href="{{ route('common_course.showAll') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有共同課程 </span></a></li>
                         @endif
                             @if(Auth::user()->type == 3 or Auth::user()->type == 4)
                                 <li class="sidebar-item"><a href="{{ route('courses.showCommonCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的共同課程 </span></a></li>
                             @endif
 
                             @if(Auth::user()->type == 0 or Auth::user()->type == 1)
-                        <li class="sidebar-item"><a href="{{ route('course.addCommonCourse') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增共同課程 </span></a></li>
+                        <li class="sidebar-item"><a href="{{ route('common_course.add') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增共同課程 </span></a></li>
                             @endif
                     </ul>
                 </li>

@@ -39,7 +39,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
     //列出共同課程 (get)
     Route::get('/', [
-        'uses' => 'CourseController@getShowCommonCourses',
+        'uses' => 'CommonCourseController@getShowCommonCourses',
         'as' => 'courses.showCommonCourses'
     ]);
 
@@ -254,26 +254,26 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
 
         //新增 (get)
         Route::get('/add', [
-            'uses' => 'CourseController@getAddCommonCourse',
-            'as' => 'course.addCommonCourse'
+            'uses' => 'CommonCourseController@getAddCommonCourse',
+            'as' => 'common_course.add'
         ]);
 
         //新增 (post)
         Route::post('/add', [
-            'uses' => 'CourseController@postAddCommonCourse',
-            'as' => 'course.addCommonCourse'
+            'uses' => 'CommonCourseController@postAddCommonCourse',
+            'as' => 'common_course.add'
         ]);
 
         //刪除 (get)
         Route::get('/delete/{id}', [
-            'uses' => 'CourseController@deleteCommonCourse',
+            'uses' => 'CommonCourseController@deleteCommonCourse',
             'as' => 'commonCourse.delete'
         ]);
 
         //列出 (get)
-        Route::get('/allCommonCourses', [
-            'uses' => 'CourseController@getAllCommonCourses' ,
-            'as' => 'course.showAllCommonCourses'
+        Route::get('/all', [
+            'uses' => 'CommonCourseController@getAllCommonCourses' ,
+            'as' => 'common_course.showAll'
         ]);
 
     });
@@ -421,7 +421,7 @@ Route::group(['prefix' => 'datatables', 'middleware' => 'auth'], function(){
     ]);
 
     Route::get('/allCommonCourses', [
-        'uses' => 'CourseController@getAllCommonCourses_dt',
+        'uses' => 'CommonCourseController@getAllCommonCourses_dt',
         'as' => 'get.allCommonCourses'
     ]);
 

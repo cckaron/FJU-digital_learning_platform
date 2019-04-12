@@ -73,12 +73,10 @@ class AnnouncementController extends Controller
             'announcementContent' => 'required',
         ]);
 
-        $file = $request->file('file'); //default file name from request is "file"
+        $files = $request->file('file'); //default file name from request is "file"
 
-        Log::info(print_r($file,true));
-
-        DB::table('system_announcement')
-            ->insert([
+        $sys_announcementID = DB::table('system_announcement')
+            ->insertGetId([
                 'title' => $request->input('announcementTitle'),
                 'content' => $request->input('announcementContent'),
                 'priority' => $request->input('topPost') ? 0 : 1, // if topPost == true, set 0, or set 1
@@ -86,48 +84,22 @@ class AnnouncementController extends Controller
                 'updated_at' => Carbon::now()
             ]);
 
+        foreach ($files as $file){
+            $filename = $file->getClientOriginalName();
+            $filepath = 'sys_announcement/'.$sys_announcementID;
+
+            $filename = str_replace(' ', '_', $filename);
+            //this line is really important!!!!!!!!!!!!!!
+            setlocale(LC_ALL,'en_US.UTF-8');
+
+            Storage::disk('public')->putFileAs(
+                $filepath, $file, $filename
+            );
+        }
 
         return redirect()->back()->with('message', '發佈公告成功!');
     }
 
-    public function uploadAttachment(Request $request){
-        // TODO Dropzone JS with Normal Form
-
-        $student_id = Auth::user()->id;
-        $student_assignment_id = $request->input('student_assignment_id');
-
-        $assignment_id = DB::table('student_assignment')
-            ->where('id', $student_assignment_id)
-            ->value('assignments_id');
-
-        $file = $request->file('file'); //default file name from request is "file"
-        $filename = $file->getClientOriginalName();
-        $filepath = $student_id.'/'.$assignment_id;
-
-        $filename = str_replace(' ', '_', $filename);
-        //this line is really important!!!!!!!!!!!!!!
-        setlocale(LC_ALL,'en_US.UTF-8');
-
-        Storage::disk('public')->putFileAs(
-            $filepath, $file, $filename
-        );
-
-        //如果 remark 已經存在 (學生填寫過內容了)，就把狀態改成已繳交
-        $old_remark = DB::table('student_assignment')
-            ->where('id', $student_assignment_id)
-            ->value('remark');
-        if ($old_remark != null){
-            DB::table('student_assignment')
-                ->where('id', $student_assignment_id)
-                ->update(['status' => 2,'updated_at' => Carbon::now()]);
-        } else {
-            DB::table('student_assignment')
-                ->where('id', $student_assignment_id)
-                ->update(['updated_at' => Carbon::now()]);
-        }
-
-
-    }
 
     public function deleteAttachment(Request $request){
         $student_id = Auth::user()->id;
@@ -159,41 +131,6 @@ class AnnouncementController extends Controller
         );
 
         echo json_encode($output);
-    }
-
-    public function getAttachmentDetail(Request $request){
-        $student_id = Auth::user()->id;
-        $student_assignment_id = $request->get('student_assignment_id');
-
-        $assignment_id = DB::table('student_assignment')
-            ->where('id', $student_assignment_id)
-            ->value('assignments_id');
-
-        $path = 'public/'.$student_id.'/'.$assignment_id;
-
-        $filepaths = Storage::allFiles($path);
-
-        $filenames = array();
-
-        $filesizes = array();
-
-        //this line is really important!!!!!!!!!!!!!!
-        setlocale(LC_ALL,'en_US.UTF-8');
-
-        for($i=0; $i<count($filepaths); $i++){
-            $filenames[$i] = basename($filepaths[$i]);
-            $filesizes[$i] = Storage::size($filepaths[$i]);
-        }
-
-        $output = array(
-            'filepaths' => $filepaths,
-            'filenames' => $filenames,
-            'filesizes' => $filesizes,
-        );
-
-        echo json_encode($output);
-
-
     }
 
     public function downloadAttachment($first, $second, $third, $fourth){

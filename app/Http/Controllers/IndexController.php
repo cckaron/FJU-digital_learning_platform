@@ -27,11 +27,29 @@ class IndexController extends Controller
     public function getStudentIndex(){
         $student_id = Auth::user()->id;
         $student = Student::where('users_id', $student_id)->first();
+
+        $course = null;
+        $announcements = null;
+        $sys_announcements = null;
+
         $course = $student->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
             ->select('courses.id', 'courses.name', 'courses.common_courses_id', 'common_courses.status as status', 'common_courses.name as com_name')
-            ->where('status', 1) //in progress
-            ->first(); //just showing one class, even though student has two class(it should not be happened)
+            ->where('status', 1); //in progress
+
+        //課程公告
+        if ($course->exists()){
+            $course = $course->first();
+            $announcements = $course->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
+        }
+//        $course = $student->course()
+//            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+//            ->select('courses.id', 'courses.name', 'courses.common_courses_id', 'common_courses.status as status', 'common_courses.name as com_name')
+//            ->where('status', 1) //in progress
+//            ->first(); //just showing one class, even though student has two class(it should not be happened)
+
+
+
 
         //系統公告
         $sys_announcements = DB::table('system_announcement')
@@ -39,8 +57,7 @@ class IndexController extends Controller
             ->orderBy('updated_at', 'desc')
             ->paginate(5);
 
-        //課程公告
-        $announcements = $course->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
+
         //use ->paginate(), so don't need ->get()
 
         return view('dashboard.studentIndex', [
