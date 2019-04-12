@@ -62,7 +62,7 @@
                                 <div class="comment-widgets scrollable">
 
                                     <!-- Course Loop Start -->
-                                @for($i=0; $i<count($common_courses_processing_id); $i++)
+                                @foreach($teacher_courses_processing as $teacher_course)
 
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
@@ -71,35 +71,29 @@
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
-                                                    {{ $common_courses_processing_year[$i] }} 年 第 {{ $common_courses_processing_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">結束日期：{{ $common_courses_processing_end_date[$i] }}</span>
+                                                    {{ $teacher_course->year }} 年 第 {{ $teacher_course->semester }} 學期
+                                                    <span class="text-muted float-right">結束日期：{{ $teacher_course->end_date }}</span>
                                                 </h4>
 
                                                 <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($courses_processing_teacher[$i]); $j++)
-                                                        {{ $courses_processing_teacher[$i][$j] }}
-                                                        @if($j!=count($courses_processing_teacher[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
+                                                    {{ $teacher_course->common_course_name }}
                                                 </span>
 
                                                 <h4>
-                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $courses_processing_name[$i] }}</span>
+                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $teacher_course->name }}</span>
                                                 </h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
-                                                    <a href="{{ route('course.showCourseStudents', $courses_processing_id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>
+                                                    <a href="{{ route('course.showCourseStudents', $teacher_course->id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>
 
-                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $common_courses_processing_id[$i],'courses_id' => $courses_processing_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
-                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
-                                                        {{ $common_courses_processing_name[$i] }}
-                                                    </span>
+                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $teacher_course->common_course_id,'courses_id' => $teacher_course->id, ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    {{--<span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">--}}
+                                                    {{--</span>--}}
                                                 </div>
                                             </div>
                                         </div>
 
-                                    @endfor
+                                    @endforeach
 
                                 </div>
                             </div>
@@ -110,7 +104,7 @@
                                 <div class="comment-widgets scrollable">
 
                                     <!-- Course Loop Start -->
-                                @for($i=0; $i<count($common_courses_finished_id); $i++)
+                                @foreach($teacher_courses_ended as $teacher_course)
 
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
@@ -119,30 +113,29 @@
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
-                                                    {{ $common_courses_finished_year[$i] }} 年 第 {{ $common_courses_finished_semester[$i] }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $common_courses_finished_end_date[$i] }}</span>
+                                                    {{ $teacher_course->year }} 年 第 {{ $teacher_course->semester }} 學期
+                                                    <span class="text-muted float-right">結束日期：{{ $teacher_course->end_date }}</span>
                                                 </h4>
+
                                                 <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
-                                                指導老師:
-                                                    <!-- teacher name -->
-                                                    @for($j=0; $j<count($courses_finished_teacher[$i]); $j++)
-                                                        {{ $courses_finished_teacher[$i][$j] }}
-                                                        @if($j!=count($courses_finished_teacher[$i])-1) , @endif <!-- 逗號 -->
-                                                    @endfor
+                                                    {{ $teacher_course->common_course_name }}
                                                 </span>
-                                                <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $courses_finished_name[$i] }}</span></h4>
+
+                                                <h4>
+                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $teacher_course->name }}</span>
+                                                </h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
-                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $common_courses_finished_id[$i],'courses_id' => $courses_finished_id[$i], ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    <a href="{{ route('course.showCourseStudents', $teacher_course->id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>
 
-                                                    <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
-                                                        {{ $common_courses_finished_name[$i] }}
-                                                    </span>
+                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $teacher_course->common_course_id,'courses_id' => $teacher_course->id, ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    {{--<span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">--}}
+                                                    {{--</span>--}}
                                                 </div>
                                             </div>
                                         </div>
 
-                                    @endfor
+                                    @endforeach
 
                                 </div>
                             </div>

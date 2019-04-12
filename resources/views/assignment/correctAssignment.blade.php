@@ -231,7 +231,7 @@
                                                             {{--<input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>--}}
                                                         </td>
                                                 @endif
-                                                @elseif($common_courses_status[$i] == 0) {{-- 課程已經結束 --}}
+                                                @elseif($common_courses_status[$i] == 1) {{-- 課程已經結束 --}}
                                                     @if($scores[$i] == null)
                                                         <td>
                                                             <h6>課程已結束</h6>

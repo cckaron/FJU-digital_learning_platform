@@ -45,6 +45,8 @@ class GradeController extends Controller
         $student_assignments = collect();
         $assignments = collect();
 
+
+
         foreach($students as $key=> $student){
             $student_assignment = $student->assignment()
                 ->withPivot(['score', 'comment'])
@@ -54,9 +56,13 @@ class GradeController extends Controller
                     'assignments.percentage as percentage',
                     'student_assignment.score as score',
                     'student_assignment.comment as comment')
+                ->where('assignments.status', 1)
                 ->get();
 
             $accumulated_score = 0;
+
+            $student_assignment = $student_assignment->unique('assignment_id');
+//            dd($student_assignment);
 
 
             foreach ($student_assignment as $key2 => $assignment){
@@ -73,7 +79,6 @@ class GradeController extends Controller
                     $assignments->push($temp);
                 }
 
-
                 // 計算加權分數, 累加總分
                 $weighted_score = $assignment->score * $assignment->percentage / 100;
                 $assignment->weighted_score = $weighted_score;
@@ -83,6 +88,7 @@ class GradeController extends Controller
                     $assignment->accumulated_score = $accumulated_score;
                 }
             }
+
 
             $student_assignments->push($student_assignment);
 

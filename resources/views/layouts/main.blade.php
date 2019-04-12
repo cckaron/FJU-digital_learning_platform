@@ -73,6 +73,7 @@
 <script src="{{ URL::to('extra-libs/multicheck/datatable-checkbox-init.js') }}"></script>
 <script src="{{ URL::to('extra-libs/multicheck/jquery.multicheck.js') }}"></script>
 <script src="{{ URL::to('extra-libs/DataTables/datatables.min.js') }}"></script>
+<script src="{{ URL::to('extra-libs/DataTables/enum.js') }}"></script>
 
 <!-- Datatable Export -->
 <script src="{{ URL::to('extra-libs/DataTables/export/dataTables.buttons.min.js') }}"></script>

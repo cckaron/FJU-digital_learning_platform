@@ -72,30 +72,42 @@
                                             @endif
 
                                             <div>
-                                                <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
-                                                    {{ $announcement->title }}
+                                                <div>
+                                                    <span style="float: left">
+                                                        <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
+                                                            {{ $announcement->title }}
 
-                                                    <span class="text-active p-l-5" >
-                                                        @if($announcement->status == 1)
-                                                            <span class="badge badge-pill badge-primary">已發布</span>
-                                                        @else
-                                                            <span class="badge badge-pill badge-dark">未發佈</span>
-                                                        @endif
+                                                            <span class="text-active p-l-5" >
+                                                                @if($announcement->status == 1)
+                                                                    <span class="badge badge-pill badge-primary">已發布</span>
+                                                                @else
+                                                                    <span class="badge badge-pill badge-dark">未發佈</span>
+                                                                @endif
+                                                                </span>
+
+                                                            <span class="text-active p-l-5" >
+                                                                    @if($announcement->priority == 0)
+                                                                        <span class="badge badge-pill badge-danger">置頂</span>
+                                                                    @elseif($announcement->priority == 1)
+                                                                        <span class="badge badge-pill badge-light">一般</span>
+                                                                    @endif
+                                                                </span>
+                                                        </a>
+                                                    </span>
+
+                                                    <span style="float: right; padding: 0px 0px 0px 10px;">
+                                                            <a href="#" data-toggle="tooltip" data-placement="top" title="刪除公告" style="padding: 0px 0px 0px 0px;">
+                                                                <i class="far fa-trash-alt" style="font-size: 18px"></i>
+                                                        </a>
                                                         </span>
 
-                                                    <span class="text-active p-l-5" >
-                                                            @if($announcement->priority == 0)
-                                                                <span class="badge badge-pill badge-danger">置頂</span>
-                                                            @elseif($announcement->priority == 1)
-                                                                <span class="badge badge-pill badge-light">一般</span>
-                                                            @endif
-                                                        </span>
-                                                </a>
+                                                </div>
 
                                                 <div class="p-t-5">
 
                                                     <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
                                                         <div class="widget-content">
+                                                            <br>
                                                             <h6>
                                                                 {!! $announcement->content !!}
                                                             </h6>
@@ -103,11 +115,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                             <div class="ml-auto">
                                                 <div class="text-right">
                                                     <div class="p-t-5">
+
                                                         {{--<strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>--}}
-                                                        <h5 class="text-muted m-b-0" style="text-align: center;">{{ \Carbon\Carbon::parse($announcement->created_at)->diffForHumans() }} 發佈</h5>
+                                                        <span style="float:right" class="text-muted m-b-0" style="text-align: center;">{{ \Carbon\Carbon::parse($announcement->created_at)->diffForHumans() }} 發佈</span>
 
                                                     </div>
                                                 </div>

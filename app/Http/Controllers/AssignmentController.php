@@ -1571,6 +1571,34 @@ class AssignmentController extends Controller
 
         $score = $student_assignment->score;
 
+
+        //get assignment file detail
+        $assignment_id = DB::table('student_assignment')
+            ->where('id', $student_assignment_id)
+            ->value('assignments_id');
+
+        $path = 'public/'.$student_id.'/'.$assignment_id;
+
+        $filepaths = Storage::allFiles($path);
+
+        $filenames = array();
+
+        $filesizes = array();
+
+        //this line is really important!!!!!!!!!!!!!!
+        setlocale(LC_ALL,'en_US.UTF-8');
+
+        for($i=0; $i<count($filepaths); $i++){
+            $filenames[$i] = basename($filepaths[$i]);
+            $filesizes[$i] = Storage::size($filepaths[$i]);
+        }
+
+        $files = array(
+            'filepaths' => $filepaths,
+            'filenames' => $filenames,
+            'filesizes' => $filesizes,
+        );
+
         return view('assignment.handInAssignment', [
             'course_id' => $course_id,
             'assignment_id' => $assignment_id,
@@ -1579,6 +1607,7 @@ class AssignmentController extends Controller
             'comment' => $comment,
             'score' => $score,
             'student_assignment_status' => $student_assignment_status,
+            'files' => $files
             ]);
     }
 

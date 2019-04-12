@@ -135,6 +135,7 @@ class CourseController extends Controller
         // 先 decode course_id，用於DB查詢
         $encode_courses_id = new Hashids('courses_id', 7);
         $courses_id = $encode_courses_id->decode($courses_id)[0]; //decode 之後會變成 array
+        $test = $courses_id;
 
         $student_ids = DB::table('student_course')
             ->where('courses_id', $courses_id)
@@ -151,12 +152,14 @@ class CourseController extends Controller
         //use ->paginate(), so don't need ->get()
 
 
+
         // encode 回來，這一頁還會用到 course_id
         $courses_id = $encode_courses_id->encode($courses_id);
 
         return view('course.showCourseStudent', [
             'students' => $students,
             'courses_id' => $courses_id,
+            'test' => $test,
             'announcements' => $announcements,
             ]);
 
@@ -410,181 +413,55 @@ class CourseController extends Controller
     public function getShowCourses_Teacher(){
         $teacher_id = Auth::user()->id;
 
-        //找出這個老師的課程
-        $teacher_courses = DB::table('teacher_course')
-            ->where('teachers_id', $teacher_id)
+        $teacher = Teacher::where('users_id', $teacher_id)->first();
+        $teacher_courses_processing = $teacher->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*',
+                'common_courses.id as common_course_id',
+                'common_courses.name as common_course_name',
+                'common_courses.status',
+                'common_courses.year',
+                'common_courses.semester',
+                'common_courses.start_date',
+                'common_courses.end_date'
+            )
+            ->where('status', '1')
             ->get();
 
-        $teacher_courses_id = $teacher_courses->pluck('courses_id');
-
-        $courses = DB::table('courses')
-            ->whereIn('id', $teacher_courses_id)
+        $teacher_courses_ended = $teacher->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*',
+                'common_courses.id as common_course_id',
+                'common_courses.name as common_course_name',
+                'common_courses.status',
+                'common_courses.year',
+                'common_courses.semester',
+                'common_courses.start_date',
+                'common_courses.end_date'
+            )
+            ->where('status', '0')
             ->get();
 
-        $courses_id = $courses->pluck('id');
+        //hashids
+        foreach($teacher_courses_processing as $teacher_course) {
+            $hashids_common_course = new Hashids('common_courses_id', 5);
+            $teacher_course->common_course_id = $hashids_common_course->encode($teacher_course->common_course_id);
 
-        $common_courses_id = $courses->pluck('common_courses_id');
-
-        //進行中的課程
-        $common_courses_processing = DB::table('common_courses')
-            ->whereIn('id', $common_courses_id)
-            ->where('status', 1)
-            ->get();
-
-
-        //取得共同課程的id
-        $common_courses_processing_id = $common_courses_processing->pluck('id');
-
-        //取得進行中的課程id
-        $courses_processing_id = array();
-        for($i=0; $i<count($common_courses_processing); $i++){
-            $course_id = DB::table('courses')
-                ->whereIn('id', $courses_id)
-                ->where('common_courses_id', $common_courses_processing_id[$i])
-                ->value('id');
-
-            array_push($courses_processing_id, $course_id);
+            $hashids_course = new Hashids('courses_id', 7);
+            $teacher_course->id = $hashids_course->encode($teacher_course->id);
         }
 
-
-        //基本資料
-        $common_courses_processing_year = $common_courses_processing->pluck('year');
-        $common_courses_processing_semester = $common_courses_processing->pluck('semester');
-        $common_courses_processing_name = $common_courses_processing->pluck('name');
-        $common_courses_processing_start_date = $common_courses_processing->pluck('start_date');
-        $common_courses_processing_end_date = $common_courses_processing->pluck('end_date');
-
-        //取得這個課程的指導老師
-        $courses_processing_teachers = array();
-
-        for($i=0; $i<count($courses_processing_id); $i++){
-            $teacher_course = DB::table('teacher_course')
-                ->where('courses_id', $courses_processing_id[$i])
-                ->get();
-
-            $teachers_id = $teacher_course->pluck('teachers_id');
-
-            $teachers_name = array();
-
-            for($k=0; $k<count($teachers_id); $k++){
-                $teacher_name = DB::table('users')
-                    ->where('id', $teachers_id[$k])
-                    ->value('name');
-
-                array_push($teachers_name, $teacher_name);
-            }
-
-            array_push($courses_processing_teachers, $teachers_name);
-        }
-
-        //課程名稱
-        $courses_processing_name = DB::table('courses')
-            ->whereIn('id', $courses_processing_id)
-            ->pluck('name');
-
-        //已結束的課程
-        $common_courses_finished = DB::table('common_courses')
-            ->whereIn('id', $common_courses_id)
-            ->where('status', 0)
-            ->get();
-
-        //取得共同課程的id
-        $common_courses_finished_id = $common_courses_finished->pluck('id');
-
-        //取得已結束的課程id
-        $courses_finished_id = array();
-        for($i=0; $i<count($common_courses_finished); $i++){
-            $course_id = DB::table('courses')
-                ->whereIn('id', $courses_id)
-                ->where('common_courses_id', $common_courses_finished_id[$i])
-                ->value('id');
-
-            array_push($courses_finished_id, $course_id);
-        }
-        //基本資料
-        $common_courses_finished_year = $common_courses_finished->pluck('year');
-        $common_courses_finished_semester = $common_courses_finished->pluck('semester');
-        $common_courses_finished_name = $common_courses_finished->pluck('name');
-        $common_courses_finished_start_date = $common_courses_finished->pluck('start_date');
-        $common_courses_finished_end_date = $common_courses_finished->pluck('end_date');
-
-        //取得這個課程的指導老師
-        $courses_finished_teachers = array();
-
-        for($i=0; $i<count($courses_finished_id); $i++){
-            $teacher_course = DB::table('teacher_course')
-                ->where('courses_id', $courses_finished_id[$i])
-                ->get();
-
-            $teachers_id = $teacher_course->pluck('teachers_id');
-
-            $teachers_name = array();
-
-            for($k=0; $k<count($teachers_id); $k++){
-                $teacher_name = DB::table('users')
-                    ->where('id', $teachers_id[$k])
-                    ->value('name');
-
-                array_push($teachers_name, $teacher_name);
-            }
-
-            array_push($courses_finished_teachers, $teachers_name);
-        }
-
-        //課程名稱
-        $courses_finished_name = DB::table('courses')
-            ->whereIn('id', $courses_finished_id)
-            ->pluck('name');
-
-        //hash common course id
-        for ($k=0; $k<count($common_courses_processing_id); $k++){
+        foreach($teacher_courses_ended as $teacher_course) {
             $hashids = new Hashids('common_courses_id', 5);
-            $common_courses_processing_id[$k] = $hashids->encode($common_courses_processing_id[$k]);
+            $teacher_course->common_course_id = $hashids->encode($teacher_course->common_course_id);
+
+            $hashids_course = new Hashids('courses_id', 7);
+            $teacher_course->id = $hashids_course->encode($teacher_course->id);
         }
-
-        for ($k=0; $k<count($common_courses_finished_id); $k++){
-            $hashids = new Hashids('common_courses_id', 5);
-            $common_courses_finished_id[$k] = $hashids->encode($common_courses_finished_id[$k]);
-        }
-
-        //hash course id
-        for($i=0; $i<count($common_courses_processing); $i++){
-
-            $hashids = new Hashids('courses_id', 7);
-            $hashed_course_id = $hashids->encode($courses_processing_id[$i]);
-
-            $courses_processing_id[$i] = $hashed_course_id;
-        }
-
-        for($i=0; $i<count($common_courses_finished); $i++){
-
-            $hashids = new Hashids('courses_id', 7);
-            $hashed_course_id = $hashids->encode($courses_finished_id[$i]);
-
-            $courses_finished_id[$i] = $hashed_course_id;
-        }
-
 
         return view('course.showCourses_Teacher', [
-            'courses_processing_id' => $courses_processing_id,
-            'common_courses_processing_id' => $common_courses_processing_id,
-            'common_courses_processing_year' => $common_courses_processing_year,
-            'common_courses_processing_semester' => $common_courses_processing_semester,
-            'common_courses_processing_name' => $common_courses_processing_name,
-            'common_courses_processing_start_date' => $common_courses_processing_start_date,
-            'common_courses_processing_end_date' => $common_courses_processing_end_date,
-            'courses_processing_teacher' => $courses_processing_teachers,
-            'courses_processing_name' => $courses_processing_name,
-
-            'courses_finished_id' => $courses_finished_id,
-            'common_courses_finished_id' => $common_courses_finished_id,
-            'common_courses_finished_year' => $common_courses_finished_year,
-            'common_courses_finished_semester' => $common_courses_finished_semester,
-            'common_courses_finished_name' => $common_courses_finished_name,
-            'common_courses_finished_start_date' => $common_courses_finished_start_date,
-            'common_courses_finished_end_date' => $common_courses_finished_end_date,
-            'courses_finished_teacher' => $courses_finished_teachers,
-            'courses_finished_name' => $courses_finished_name,
+            'teacher_courses_processing' => $teacher_courses_processing,
+            'teacher_courses_ended' => $teacher_courses_ended
         ]);
     }
 

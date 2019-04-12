@@ -181,6 +181,29 @@
 
     <script>
 
+        // $.fn.dataTable.enum( [
+        //     '產業創新(一)',
+        //     '產業創新(二)',
+        //     '產業創新(三)',
+        //     '產業創新(四)',
+        //     '產業創新(五)',
+        //     '產業創新(六)',
+        //     '產業創新(七)',
+        //     '產業創新(八)',
+        // ] );
+
+        $.fn.dataTable.ext.type.order['salary-grade-pre'] = function ( d ) {
+            console.log(d);
+            switch ( d ) {
+                case '產業創新(一)': return 1;
+                case '產業創新(二)': return 2;
+                case '產業創新(三)': return 3;
+                case '產業創新(四)': return 4;
+                case '產業創新(五)': return 5;
+            }
+            return 0;
+        };
+
         $('#courseAll').DataTable({
             processing:true,
             serverSide:true,
@@ -215,6 +238,12 @@
                 { data: 'end_date', name: 'end_date'},
                 { data: 'updated_at', name: 'updated_at'},
                 { data: 'motion', name: 'motion'},
+            ],
+            columnDefs: [
+                {
+                    type: "salary-grade",
+                    targets: 0
+                },
             ]
         });
 

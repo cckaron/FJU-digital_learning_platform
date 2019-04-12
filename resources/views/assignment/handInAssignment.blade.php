@@ -284,29 +284,12 @@
                 addRemoveLinks: true,
                 maxFilesize: 200,
                 maxFiles: 10,
+                createImageThumbnails: false,
                 acceptedFiles: ".pdf",
                 init: function() {
-                    var filepaths = [];
-                    var filenames = [];
-                    var filesizes = [];
-
-                    //get the assignment's files detail
-                    var student_assignment_id = $('input[name=student_assignment_id]').val();
-                    $.ajax({
-                        url:'{{ route('dropZone.getAssignmentFileDetail') }}',
-                        method:'POST',
-                        data:{
-                            'student_assignment_id': student_assignment_id,
-                        },
-                        dataType:'json',
-                        async: false,
-                        success:function(data)
-                        {
-                            filepaths = data.filepaths;
-                            filenames = data.filenames;
-                            filesizes = data.filesizes;
-                        }
-                    });
+                    var filepaths = {!! json_encode($files["filepaths"])  !!};
+                    var filenames = {!! json_encode($files["filenames"])  !!};
+                    var filesizes = {!! json_encode($files["filesizes"])  !!};
 
                     for(var i=0; i<filepaths.length; i++){
                         var filepath = filepaths[i];
@@ -367,27 +350,9 @@
             Dropzone.options.myDropzone = {
 
                 init: function() {
-                    var filepaths = [];
-                    var filenames = [];
-                    var filesizes = [];
-
-                    //get the assignment's files detail
-                    var student_assignment_id = $('input[name=student_assignment_id]').val();
-                    $.ajax({
-                        url:'{{ route('dropZone.getAssignmentFileDetail') }}',
-                        method:'POST',
-                        data:{
-                            'student_assignment_id': student_assignment_id,
-                        },
-                        dataType:'json',
-                        async: false,
-                        success:function(data)
-                        {
-                            filepaths = data.filepaths;
-                            filenames = data.filenames;
-                            filesizes = data.filesizes;
-                        }
-                    });
+                    var filepaths = {!! json_encode($files["filepaths"])  !!};
+                    var filenames = {!! json_encode($files["filenames"])  !!};
+                    var filesizes = {!! json_encode($files["filesizes"])  !!};
 
                     for(var i=0; i<filepaths.length; i++){
                         var filepath = filepaths[i];

@@ -8,6 +8,8 @@
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/jquery.timepicker.min.css') }}" rel="stylesheet" />
 
+    <!-- DropZone JS-->
+    <link href="{{ URL::to('css/dropzone.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -38,12 +40,24 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('admin.announcement.create') }}" method="post" id="createAnnouncement">
+                <form action="{{ route('admin.announcement.create') }}" method="post" id="createAnnouncement" enctype="multipart/form-data">
 
                     <!-- editor -->
                     <div class="row">
 
-                        @include('layouts.partials.returnMessage')
+                        <!-- Return Success Message -->
+                        <div class="col-md-8" hidden id="successMessage">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">提示</h5>
+
+                                    <div class="alert alert-success" role="alert">
+                                        新增公告成功！
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="col-md-8">
                             <div class="card">
@@ -69,6 +83,14 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-md-3 m-t-10" for="announcementContent">附加檔案</label>
+                                        <div class="dropzone dropzone-previews col-md-8" id="my_awesome_dropzone">
+                                        </div>
+                                    </div>
+                                    {{--<div id="myAwesomeDropzone" class="dropzone"></div>--}}
+
+
+                                    <div class="form-group row">
                                         <label class="col-md-3">置頂公告</label>
                                         <div class="col-md-9">
                                             <div class="custom-control custom-checkbox mr-sm-2">
@@ -79,9 +101,10 @@
                                     </div>
 
                                 </div>
+
                                 <div class="border-top">
                                     <div class="card-body">
-                                        <input type="submit" class="btn btn-primary">
+                                        <input type="submit" class="btn btn-primary" id="btn-sendForm">
                                     </div>
                                 </div>
                             </div>
@@ -137,6 +160,61 @@
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
     <script src="{{ URL::to('js/jquery.timepicker.min.js') }}"></script>
+    <!-- DropZone JS-->
+    <script src="{{ URL::to('js/dropzone.js') }}"></script>
+
+    <script>
+        Dropzone.autoDiscover = false;
+        Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
+        Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+        Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";
+        Dropzone.prototype.defaultOptions.dictInvalidFileType = "上傳的文件格式不正確";
+        Dropzone.prototype.defaultOptions.dictCancelUpload = "取消上傳";
+        Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "確定取消上傳?";
+        Dropzone.prototype.defaultOptions.dictRemoveFile = "刪除檔案";
+        Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "已超出檔案數量限制";
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳";
+
+        var mydropZone = new Dropzone("#my_awesome_dropzone", {
+            // The configuration we've talked about above
+            url: '{{ route('admin.announcement.create') }}',
+            method: 'POST',
+            autoProcessQueue: false,
+            parallelUploads: 10,
+            uploadMultiple: true,
+            addRemoveLinks: true,
+            paramName: "file",
+            withCredentials: true,
+
+            init: function () {
+                $("#btn-sendForm").click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    mydropZone.processQueue();
+                });
+
+
+                this.on('sending', function(file, xhr, formData) {
+                    var myEditor = document.querySelector('#editor');
+                    var html = myEditor.children[0].innerHTML;
+
+                    $("#announcementContent").val(html);
+
+                    // Append all form inputs to the formData Dropzone will POST
+                    var data = $('#createAnnouncement').serializeArray();
+                    $.each(data, function(key, el) {
+                        formData.append(el.name, el.value);
+                    });
+                });
+            },
+            success: function(){
+                this.options['dictRemoveFile'] = "";
+                $("#successMessage").removeAttr("hidden");
+            }
+        });
+
+    </script>
 
     <script>
         //***********************************//
@@ -194,31 +272,9 @@
             theme: 'snow',
         });
 
-        $("#createAnnouncement").on("submit",function(){
-            var myEditor = document.querySelector('#editor');
-            var html = myEditor.children[0].innerHTML;
 
-            $("#announcementContent").val(html);
-        })
     </script>
 
-    {{--<script>--}}
 
-        {{--var courseName = $('#courseName');--}}
-
-        {{--var commonCourseName = {!! $common_courses_name !!};--}}
-
-        {{--courseName.change(function () {--}}
-            {{--var index = courseName[0].selectedIndex;--}}
-            {{--document.getElementById("common_course_name").innerHTML= commonCourseName[index];--}}
-
-        {{--})--}}
-    {{--</script>--}}
-
-    <!-- close autocomplete of datetime picker -->
-    <script>
-        $('#datepicker-start').attr('autocomplete','off');
-        $('#datepicker-end').attr('autocomplete','off');
-    </script>
 
 @endsection
