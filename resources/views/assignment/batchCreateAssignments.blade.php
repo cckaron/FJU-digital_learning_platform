@@ -4,9 +4,13 @@
     <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/jquery.timepicker.min.css') }}" rel="stylesheet" />
+
+    <link href="{{ URL::to('libs/quill/dist/katex.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/quill/dist/monokai-sublime.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
+
 
 @endsection
 
@@ -117,6 +121,20 @@
                                                 @endforeach
                                             @endforeach
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
 
@@ -218,9 +236,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                     </div>
                     {{ csrf_field() }}
                 </form>
@@ -269,8 +284,12 @@
     <script src="{{ URL::to('libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
     <script src="{{ URL::to('js/jquery.timepicker.min.js') }}"></script>
+
+    <script src="{{ URL::to('libs/quill/dist/katex.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/highlight.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/image-resize.min.js') }}"></script>
 
     <script>
         //***********************************//
@@ -324,11 +343,6 @@
         $('#timepicker-end').timepicker(
             { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
 
-
-        var quill = new Quill('#editor', {
-            theme: 'snow',
-        });
-
         $("#batchCreateAssignment").on("submit",function(){
             var myEditor = document.querySelector('#editor');
             var html = myEditor.children[0].innerHTML;
@@ -344,10 +358,45 @@
     </script>
 
     <script>
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+            [{ 'direction': 'rtl' }],                         // text direction
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['formula'],
+            ['image'],
+            ['clean']                                         // remove formatting button
+        ];
+        var quill = new Quill('#editor', {
+            modules: {
+                formula: true,
+                syntax: true,
+                toolbar: toolbarOptions,
+                imageResize: {}
+            },
+            placeholder: '請輸入作業內容..',
+            theme: 'snow',
+        });
+
+    </script>
+
+    <script>
         /****************************************
          *       Basic Table                   *
          ****************************************/
         var table = $('#zero_config').DataTable({
+            autoWidth: false,
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "全部"]],
             language: {
                 "processing":   "處理中...",
@@ -370,6 +419,18 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
+            columnDefs: [
+                { "width": "5%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "10%", "targets": 2 },
+                { "width": "5%", "targets": 3 },
+                { "width": "5%", "targets": 4 },
+                { "width": "5%", "targets": 5 },
+                { "width": "5%", "targets": 6 },
+                { "width": "10%", "targets": 7 },
+                { "width": "10%", "targets": 8 },
+                { "width": "10%", "targets": 9 },
+            ],
         });
 
         $('#selectAll').click(function (e) {
@@ -377,6 +438,34 @@
             $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
 
         });
+
+        // Setup - add a text input to each footer cell
+        $('#zero_config tfoot th').each( function () {
+            var title = $(this).text();
+            // $(this).html( '<input type="text" placeholder="搜尋 '+title+' 欄位" />' );
+            $(this).html( '<input type="text" placeholder="搜尋" />' );
+
+        } );
+
+        var r = $('#zero_config tfoot tr');
+        r.find('th').each(function(){
+            $(this).css('padding', 8);
+        });
+        // $('#zero_config thead').append(r);
+        r.appendTo($('#zero_config thead'));
+
+        // Apply the search
+        table.columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
 
     </script>
 

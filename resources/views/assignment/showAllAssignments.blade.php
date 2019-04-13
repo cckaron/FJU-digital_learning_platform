@@ -1,11 +1,22 @@
 @extends('layouts.main')
 
 @section('css')
-    <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet"/>
-    <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet"/>
-    <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"/>
-    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet"/>
-    <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+
+    <style>
+        input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+            -webkit-box-sizing:border-box;
+            -moz-box-sizing: border-box;
+        }
+
+    </style>
 @endsection
 
 @section('content')
@@ -26,7 +37,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '所有課程'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有作業'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -36,160 +47,70 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('course.addCourse') }}" method="post">
+                <!-- editor -->
+                <div class="row">
 
-                    <!-- editor -->
-                    <div class="row">
-
-                        @if(session()->has('message'))
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">提示</h5>
-
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session()->get('message') }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 style="margin-bottom: 20px"> 進行中的作業</h4>
-                                    <div class="table-responsive">
-                                        <table id="zero_config" class="table table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th>作業名稱</th>
-                                                <th>隸屬共同課程</th>
-                                                <th>課程</th>
-                                                <th>學年</th>
-                                                <th>學期</th>
-                                                <th>指導教師</th>
-                                                <th>開課日期</th>
-                                                <th>結課日期</th>
-                                                <th>上次修改時間</th>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="zero_config" class="table table-striped table-bordered display" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>作業名稱</th>
+                                            <th>狀態</th>
+                                            <th>共同課程</th>
+                                            <th>課程</th>
+                                            <th>學年</th>
+                                            <th>學期</th>
+                                            <th>開課日期</th>
+                                            <th>結束日期</th>
+                                            <th>上次修改時間</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($assignments as $assignment)
+                                            <tr align="center">
+                                                <td>{{ $assignment->assignment_name }}</td>
+                                                <td>
+                                                    @if($assignment->assignment_status == 1)
+                                                        <p style="color: blue">進行中</p>
+                                                    @else
+                                                        <p style="color: green">已結束</p>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $assignment->common_course_name }}</td>
+                                                <td>{{ $assignment->course_name }}</td>
+                                                <td>{{ $assignment->year }}</td>
+                                                <td>{{ $assignment->semester }}</td>
+                                                <td>{{ $assignment->start_date }}</td>
+                                                <td>{{ $assignment->end_date }}</td>
+                                                <td>{{ $assignment->updated_at->diffForHumans() }}</td>
                                             </tr>
-                                            </thead>
-
-                                            <tbody>
-                                            @for($i=0; $i<count($assignments_processing_id); $i++)
-                                                <tr>
-                                                    <td>
-                                                        {{ $assignments_processing_name[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $common_course_processing_name[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_processing_name[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_processing_year[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_processing_semester[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        @for($j=0; $j<count($teachers_processing[$i]); $j++)
-                                                            {{ $teachers_processing[$i][$j] }}
-                                                            @if($j!=count($teachers_processing[$i])-1)
-                                                                , @endif <!-- 逗號 -->
-                                                        @endfor
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_processing_start_date[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_processing_end_date[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $assignments_processing_update_at[$i] }}
-                                                    </td>
-
-                                                </tr>
-                                            @endfor
-                                            </tbody>
-                                        </table>
-                                    </div>
-
+                                        @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
+
                             </div>
                         </div>
-
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 style="margin-bottom: 20px"> 已結束的作業</h4>
-                                    <div class="table-responsive">
-                                        <table id="zero_config" class="table table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th>作業名稱</th>
-                                                <th>隸屬共同課程</th>
-                                                <th>課程</th>
-                                                <th>學年</th>
-                                                <th>學期</th>
-                                                <th>指導教師</th>
-                                                <th>開課日期</th>
-                                                <th>結課日期</th>
-                                                <th>上次修改時間</th>
-                                            </tr>
-                                            </thead>
-
-                                            <tbody>
-                                            @for($i=0; $i<count($assignments_finished_id); $i++)
-                                                <tr>
-                                                    <td>
-                                                        {{ $assignments_finished_name[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $common_course_finished_name[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_finished_name[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_finished_year[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_finished_semester[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        @for($j=0; $j<count($teachers_finished[$i]); $j++)
-                                                            {{ $teachers_finished[$i][$j] }}
-                                                            @if($j!=count($teachers_finished[$i])-1)
-                                                                , @endif <!-- 逗號 -->
-                                                        @endfor
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_finished_start_date[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $courses_finished_end_date[$i] }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $assignments_finished_update_at[$i] }}
-                                                    </td>
-
-                                                </tr>
-                                            @endfor
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
                     </div>
-                    {{ csrf_field() }}
-                </form>
+
+
+                </div>
 
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -244,7 +165,7 @@
         $(".select2").select2();
 
         /*colorpicker*/
-        $('.demo').each(function () {
+        $('.demo').each(function() {
             //
             // Dear reader, it's actually very easy to initialize MiniColors. For example:
             //
@@ -258,7 +179,7 @@
                 control: $(this).attr('data-control') || 'hue',
                 position: $(this).attr('data-position') || 'bottom left',
 
-                change: function (value, opacity) {
+                change: function(value, opacity) {
                     if (!value) return;
                     if (opacity) value += ', ' + opacity;
                     if (typeof console === 'object') {
@@ -285,27 +206,85 @@
 
     </script>
 
-    {{--<script>--}}
-
-    {{--$('#courseAll').DataTable({--}}
-    {{--processing:true,--}}
-    {{--serverSide:true,--}}
-    {{--ajax: '{!! route('get.allAssignments') !!}',--}}
-    {{--columns: [--}}
-    {{--{ data: 'name', name: 'name'},--}}
-    {{--{ data: 'start_date', name: 'start_date'},--}}
-    {{--{ data: 'end_date', name: 'end_date'},--}}
-    {{--{ data: 'updated_at', name: 'updated_at'},--}}
-    {{--]--}}
-    {{--});--}}
-
-    {{--</script>--}}
-
     <script>
-        /****************************************
-         *       Basic Table                   *
-         ****************************************/
-        $('#zero_config').DataTable({
+
+        // $.fn.dataTable.enum( [
+        //     '產業創新(一)',
+        //     '產業創新(二)',
+        //     '產業創新(三)',
+        //     '產業創新(四)',
+        //     '產業創新(五)',
+        //     '產業創新(六)',
+        //     '產業創新(七)',
+        //     '產業創新(八)',
+        // ] );
+
+        var table = $('#zero_config').DataTable({
+            autoWidth: false,
+            buttons: [
+                {
+                    extend: 'colvis',
+                    text: '顯示/隱藏欄位',
+                    // columns: ':gt(0)'
+                    // this will make first column cannot be hided
+                },
+                {
+                    extend: 'copy',
+                    title: '所有作業',
+                    text: '複製表格內容',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: '所有作業',
+                    filename: '所有作業',
+                    text: '匯出 excel',
+                    bom : true,
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    customize: function(xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        //modify text in [A1]
+                        $('c[r=A1] t', sheet).text( '所有作業' );
+                    }
+                },
+                {
+                    extend: 'csv',
+                    title: '所有作業',
+                    filename: '所有作業',
+                    text: '匯出 csv',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    bom: true
+                },
+                {
+                    extend: 'print',
+                    title: '所有作業',
+                    filename: '所有作業',
+                    text: '列印/匯出PDF',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                },
+            ],
+            dom: 'lBfrtip',
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
+            columnDefs: [
+                { "width": "5%", "targets": 0 },
+                { "width": "5%", "targets": 1 },
+                { "width": "5%", "targets": 2 },
+                { "width": "5%", "targets": 3 },
+                { "width": "5%", "targets": 4 },
+                { "width": "5%", "targets": 5 },
+                { "width": "5%", "targets": 6 },
+                { "width": "5%", "targets": 7 },
+                { "width": "10%", "targets": 8 },
+            ],
             language: {
                 "processing":   "處理中...",
                 "loadingRecords": "載入中...",
@@ -315,7 +294,7 @@
                 "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
                 "infoFiltered": "(從 _MAX_ 項結果中過濾)",
                 "infoPostFix":  "",
-                "search":       "搜尋:",
+                "search":       "搜尋全部:",
                 "paginate": {
                     "first":    "第一頁",
                     "previous": "上一頁",
@@ -327,7 +306,45 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
+
         });
+
+        // Setup - add a text input to each footer cell
+        $('#zero_config tfoot th').each( function () {
+            var title = $(this).text();
+            // $(this).html( '<input type="text" placeholder="搜尋 '+title+' 欄位" />' );
+            $(this).html( '<input type="text" placeholder="搜尋" />' );
+
+        } );
+
+        var r = $('#zero_config tfoot tr');
+        r.find('th').each(function(){
+            $(this).css('padding', 8);
+        });
+        // $('#zero_config thead').append(r);
+        r.appendTo($('#zero_config thead'));
+
+        // Apply the search
+        table.columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
+
     </script>
 
+    <script>
+        $('#toggle_event_editing button').click(function(){
+
+            /* reverse locking status */
+            $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-light btn-primary');
+            $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-primary btn-light');
+        });
+    </script>
 @endsection

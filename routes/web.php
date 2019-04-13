@@ -276,6 +276,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'common_course.showAll'
         ]);
 
+        //修改狀態 (ajax post)
+        Route::post('/change/status', [
+            'uses' => 'CommonCourseController@postChangeCommonCourseStatus',
+            'as' => 'common_courses.changeStatus'
+        ]);
+
+        //修改內容 (ajax post)
+        Route::post('/change/content', [
+            'uses' => 'CommonCourseController@postChangeCommonCourseContent',
+            'as' => 'common_courses.changeContent'
+        ]);
+
     });
 
     //課程
@@ -315,6 +327,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
         Route::get('/allCourses', [
             'uses' => 'CourseController@getAllCourses' ,
             'as' => 'course.showCourses'
+        ]);
+
+        //修改內容 (ajax post)
+        Route::post('/change/content', [
+            'uses' => 'CourseController@postChangeCourseContent',
+            'as' => 'course.changeContent'
         ]);
 
     });

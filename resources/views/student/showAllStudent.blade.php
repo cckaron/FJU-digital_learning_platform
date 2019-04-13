@@ -6,6 +6,17 @@
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+
+    <style>
+        input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+            -webkit-box-sizing:border-box;
+            -moz-box-sizing: border-box;
+        }
+
+    </style>
 @endsection
 
 @section('content')
@@ -26,7 +37,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '所有學生'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有共同課程'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -36,55 +47,75 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('course.addCourse') }}" method="post">
+                <!-- editor -->
+                <div class="row">
 
-                    <!-- editor -->
-                    <div class="row">
-
-                        @if(session()->has('message'))
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">提示</h5>
-
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session()->get('message') }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table id="courseAll" class="table table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th>姓名</th>
-                                                <th>學號</th>
-                                                <th>年級</th>
-                                                <th>班級</th>
-                                                <th>狀態</th>
-                                                <th>備註</th>
-                                                <th>上次修改時間</th>
-                                                <th>動作</th>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="zero_config" class="table table-striped table-bordered display" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>姓名</th>
+                                            <th>學號</th>
+                                            <th>年級</th>
+                                            <th>班級</th>
+                                            <th>聯絡電話</th>
+                                            <th>Email</th>
+                                            <th>狀態</th>
+                                            <th>備註</th>
+                                            <th>最近更改時間</th>
+                                            <th>動作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($students as $student)
+                                            <tr align="center">
+                                                <td>{{ $student->users_name }}</td>
+                                                <td>{{ $student->users_id }}</td>
+                                                <td>{{ $student->grade }}</td>
+                                                <td>{{ $student->class }}</td>
+                                                <td>{{ $student->phone }}</td>
+                                                <td>{{ $student->email }}</td>
+                                                <td>{{ $student->status }}</td>
+                                                <td>{{ $student->remark }}</td>
+                                                <td>{{ $student->updated_at->diffForHumans() }}</td>
+                                                <td>
+                                                    <a href="{{ route('user.studentDetail', ['id' => $student->users_id]) }}" class="btn btn-info btn-md">
+                                                        學生詳情
+                                                    </a>
+                                                    <a href="{{ route('user.deleteStudent', ['id' => $student->users_id]) }}" class="btn btn-cyan btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        編輯
+                                                    </a>
+                                                    <a href="{{ route('user.deleteStudent', ['id' => $student->users_id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        刪除
+                                                    </a>
+                                                </td>
                                             </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-
+                                        @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
+
                             </div>
                         </div>
-
-
                     </div>
-                    {{ csrf_field() }}
-                </form>
-
+                </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
                 <!-- ============================================================== -->
@@ -181,9 +212,73 @@
 
     <script>
 
-        $('#courseAll').DataTable({
-            processing:true,
-            serverSide:true,
+        var table = $('#zero_config').DataTable({
+            autoWidth: false,
+            buttons: [
+                {
+                    extend: 'colvis',
+                    text: '顯示/隱藏欄位',
+                    // columns: ':gt(0)'
+                    // this will make first column cannot be hided
+                },
+                {
+                    extend: 'copy',
+                    title: '所有課程',
+                    text: '複製表格內容',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: '所有課程',
+                    filename: '所有課程',
+                    text: '匯出 excel',
+                    bom : true,
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    customize: function(xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        //modify text in [A1]
+                        $('c[r=A1] t', sheet).text( '所有課程' );
+                    }
+                },
+                {
+                    extend: 'csv',
+                    title: '所有課程',
+                    filename: '所有課程',
+                    text: '匯出 csv',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    bom: true
+                },
+                {
+                    extend: 'print',
+                    title: '所有課程',
+                    filename: '所有課程',
+                    text: '列印/匯出PDF',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                },
+            ],
+            dom: 'lBfrtip',
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
+            columnDefs: [
+                { "width": "10%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "5%", "targets": 2 },
+                { "width": "5%", "targets": 3 },
+                { "width": "10%", "targets": 4 },
+                { "width": "10%", "targets": 5 },
+                { "width": "10%", "targets": 6 },
+                { "width": "10%", "targets": 7 },
+                { "width": "10%", "targets": 8 },
+                { "width": "20%", "targets": 9 },
+            ],
             language: {
                 "processing":   "處理中...",
                 "loadingRecords": "載入中...",
@@ -193,7 +288,7 @@
                 "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
                 "infoFiltered": "(從 _MAX_ 項結果中過濾)",
                 "infoPostFix":  "",
-                "search":       "搜尋:",
+                "search":       "搜尋全部:",
                 "paginate": {
                     "first":    "第一頁",
                     "previous": "上一頁",
@@ -205,19 +300,45 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
-            ajax: '{!! route('get.allStudents') !!}',
-            columns: [
-                { data: 'users_name', name: 'users_name'},
-                { data: 'users_id', name: 'users_id' },
-                { data: 'grade', name: 'grade'},
-                { data: 'class', name: 'class'},
-                { data: 'status', name: 'status'},
-                { data: 'remark', name: 'remark'},
-                { data: 'updated_at', name: 'updated_at'},
-                { data: 'motion', name: 'motion'},
-            ]
+
         });
 
+        // Setup - add a text input to each footer cell
+        $('#zero_config tfoot th').each( function () {
+            var title = $(this).text();
+            // $(this).html( '<input type="text" placeholder="搜尋 '+title+' 欄位" />' );
+            $(this).html( '<input type="text" placeholder="搜尋" />' );
+
+        } );
+
+        var r = $('#zero_config tfoot tr');
+        r.find('th').each(function(){
+            $(this).css('padding', 8);
+        });
+        // $('#zero_config thead').append(r);
+        r.appendTo($('#zero_config thead'));
+
+        // Apply the search
+        table.columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
+
+    </script>
+
+    <script>
+        $('#toggle_event_editing button').click(function(){
+
+            /* reverse locking status */
+            $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-light btn-primary');
+            $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-primary btn-light');
+        });
     </script>
 @endsection
-

@@ -4,11 +4,15 @@
     <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
 
     <!-- DropZone JS-->
     <link href="{{ URL::to('css/dropzone.css') }}" rel="stylesheet" />
+
+
+    <link href="{{ URL::to('libs/quill/dist/katex.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/quill/dist/monokai-sublime.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -203,6 +207,9 @@
     <script src="{{ URL::to('libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script src="{{ URL::to('libs/quill/dist/katex.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/highlight.min.js') }}"></script>
     <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
 
     <!-- DropZone JS-->
@@ -250,9 +257,6 @@
             autoclose: true,
             todayHighlight: true
         });
-        var quill = new Quill('#editor', {
-            theme: 'snow',
-        });
 
         $("#editContent").on("submit",function(){
             var myEditor = document.querySelector('#editor');
@@ -260,6 +264,39 @@
 
             $("#title").val(html);
         })
+
+    </script>
+
+    <script>
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+            [{ 'direction': 'rtl' }],                         // text direction
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['formula'],
+            ['image'],
+            ['clean']                                         // remove formatting button
+        ];
+        var quill = new Quill('#editor', {
+            modules: {
+                formula: true,
+                syntax: true,
+                toolbar: toolbarOptions
+            },
+            placeholder: '請輸入作業內容..',
+            theme: 'snow',
+        });
 
     </script>
 

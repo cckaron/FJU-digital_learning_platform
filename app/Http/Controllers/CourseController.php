@@ -149,11 +149,39 @@ class CourseController extends Controller
         return redirect()->back()->with('message', '已成功刪除課程');
     }
 
+    public function postChangeCourseContent(Request $request){
+        $validation = Validator::make($request->all(), [
+            'name' => 'required',
 
+        ]);
+
+        $name = $request->get('name');
+        $course_id = $request->get('course_id');
+
+        $error_array = array();
+        $success_output = '';
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            DB::table('courses')
+                ->where('id', $course_id)
+                ->update([
+                    'name' => $name,
+                ]);
+            $success_output = '<div class="alert alert-success"> 修改成功！ </div>';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+        );
+        echo json_encode($output);
+    }
 
     //所有課程列表 (get)
     public function getAllCourses(){
-
         $courses = Course::with('common_course')
             ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
             ->join('teacher_course', 'courses.id', 'teacher_course.courses_id')
@@ -161,16 +189,16 @@ class CourseController extends Controller
             ->orderBy('common_courses.year')
             ->get();
 
-//
 //        //hashid
         $hashids = new Hashids('courses_id', 7);
         foreach($courses as $course){
+            $course->real_id = $course->id;
             $course->id = $hashids->encode($course->id);
         }
 
 
         return view('course.showAllCourses', [
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 

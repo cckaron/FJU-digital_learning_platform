@@ -158,7 +158,10 @@ class UserController extends Controller
     }
 
     public function getAllStudents(){
-        return view('student.showAllStudent');
+        $students = Student::all();
+        return view('student.showAllStudent', [
+            'students' => $students
+        ]);
     }
 
     public function deleteStudent($id){

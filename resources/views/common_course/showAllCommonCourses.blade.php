@@ -6,6 +6,7 @@
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/bootstrap-toggle/bootstrap-toggle.min.css') }}" rel="stylesheet" />
 
     <style>
         input {
@@ -46,9 +47,6 @@
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
-
-                <form action="{{ route('course.addCourse') }}" method="post">
-
                     <!-- editor -->
                     <div class="row">
 
@@ -81,43 +79,26 @@
                                                 <th>結束日期</th>
                                                 <th>上次修改時間</th>
                                                 <th>狀態</th>
-                                                <th>更改狀態</th>
                                                 <th>動作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             @foreach($common_courses as $common_course)
                                                 <tr align="center">
-                                                    <td>{{ $common_course->name }}</td>
-                                                    <td>{{ $common_course->year }}</td>
-                                                    <td>{{ $common_course->semester }}</td>
-                                                    <td>{{ $common_course->start_date }}</td>
-                                                    <td>{{ $common_course->end_date }}</td>
+                                                    <td id="name">{{ $common_course->name }}</td>
+                                                    <td id="year">{{ $common_course->year }}</td>
+                                                    <td id="semester">{{ $common_course->semester }}</td>
+                                                    <td id="start_date">{{ $common_course->start_date }}</td>
+                                                    <td id="end_date">{{ $common_course->end_date }}</td>
                                                     <td>{{ $common_course->updated_at->diffForHumans() }}</td>
                                                     <td>
-                                                        @if($common_course->status == 1)
-                                                            <p style="color: blue">進行中</p>
-                                                        @else
-                                                            <p style="color: green">已結束</p>
-                                                        @endif
+                                                        <input id="status-toggle" type="checkbox" data-common-course-id="{{ $common_course->id }}" data-toggle="toggle" data-on="進行中" data-off="已結束" @if($common_course->status == 1) checked @endif>
                                                     </td>
                                                     <td>
-                                                        @if( $common_course->status == 1)
-                                                            <div class="btn-group" id="toggle_event_editing">
-                                                                <button type="button" class="btn btn-primary locked_active">開啟</button>
-                                                                <button type="button" class="btn btn-light unlocked_inactive">關閉</button>
-                                                            </div>
-                                                        @else
-                                                            <div class="btn-group" id="toggle_event_editing">
-                                                                <button type="button" class="btn btn-light locked_active">開啟</button>
-                                                                <button type="button" class="btn btn-primary unlocked_inactive">關閉</button>
-                                                            </div>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('commonCourse.delete', ['id' => $common_course->id]) }}" class="btn btn-cyan btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-common-course-id="{{ $common_course->id }}">
                                                             編輯
-                                                        </a>
+                                                        </button>
+
                                                         <a href="{{ route('commonCourse.delete', ['id' => $common_course->id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
                                                             刪除
                                                         </a>
@@ -135,7 +116,6 @@
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
-                                                <th></th>
                                             </tr>
                                             </tfoot>
                                         </table>
@@ -145,10 +125,53 @@
                             </div>
                         </div>
 
+                        <!-- start ajax correct assignment window-->
+                        <div id="changeModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="post" id="change_form">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">編輯共同課程</h4>
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                &times;
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ csrf_field() }}
+                                            <span id="form_output"></span>
+                                            <div class="form-group">
+                                                <label>共同課程名稱</label>
+                                                <input type="text" id="modal_name" name="name" class="form-control" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>學年</label>
+                                                <input type="text" id="modal_year" name="year" class="form-control" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>學期</label>
+                                                <input type="text" id="modal_semester" name="semester" class="form-control" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>開課日期</label>
+                                                <input type="text" id="modal_start_date" name="start_date" placeholder="開課時間" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>結束日期</label>
+                                                <input type="text" id="modal_end_date" name="end_date" placeholder="課程結束時間" required>
+                                            </div>
 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="common_course_id" id="common_course_id" value="" />
+                                            <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
+                                            <p></p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end ajax correct assignment window -->
                     </div>
-                    {{ csrf_field() }}
-                </form>
 
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -185,63 +208,23 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ URL::to('libs/inputmask/dist/min/jquery.inputmask.bundle.min.js') }}"></script>
-    <script src="{{ URL::to('js/pages/mask/mask.init.js') }}"></script>
-    <script src="{{ URL::to('libs/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ URL::to('libs/select2/dist/js/select2.min.js') }}"></script>
-    <script src="{{ URL::to('libs/jquery-asColor/dist/jquery-asColor.min.js') }}"></script>
-    <script src="{{ URL::to('libs/jquery-asGradient/dist/jquery-asGradient.js') }}"></script>
-    <script src="{{ URL::to('libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js') }}"></script>
-    <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
+    <script src="{{ URL::to('libs/bootstrap-toggle/bootstrap-toggle.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
 
     <script>
-        //***********************************//
-        // For select 2
-        //***********************************//
-        $(".select2").select2();
+        /*datepicker*/
 
-        /*colorpicker*/
-        $('.demo').each(function() {
-            //
-            // Dear reader, it's actually very easy to initialize MiniColors. For example:
-            //
-            //  $(selector).minicolors();
-            //
-            // The way I've done it below is just for the demo, so don't get confused
-            // by it. Also, data- attributes aren't supported at this time...they're
-            // only used for this demo.
-            //
-            $(this).minicolors({
-                control: $(this).attr('data-control') || 'hue',
-                position: $(this).attr('data-position') || 'bottom left',
-
-                change: function(value, opacity) {
-                    if (!value) return;
-                    if (opacity) value += ', ' + opacity;
-                    if (typeof console === 'object') {
-                        console.log(value);
-                    }
-                },
-                theme: 'bootstrap'
-            });
-
-        });
-        /*datwpicker*/
-        jQuery('.mydatepicker').datepicker();
-        jQuery('#datepicker-start').datepicker({
+        $('#modal_start_date').datepicker({
             autoclose: true,
-            todayHighlight: true
-        });
-        jQuery('#datepicker-end').datepicker({
-            autoclose: true,
-            todayHighlight: true
-        });
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
+            todayHighlight: true,
+            format: "yyyy/mm/dd",
 
+        });
+        $('#modal_end_date').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: "yyyy/mm/dd",
+        });
     </script>
 
     <script>
@@ -320,8 +303,7 @@
                 { "width": "5%", "targets": 4 },
                 { "width": "5%", "targets": 5 },
                 { "width": "5%", "targets": 6 },
-                { "width": "5%", "targets": 7 },
-                { "width": "10%", "targets": 8 },
+                { "width": "10%", "targets": 7 },
             ],
             language: {
                 "processing":   "處理中...",
@@ -378,11 +360,86 @@
     </script>
 
     <script>
-        $('#toggle_event_editing button').click(function(){
+        $(function() {
+            $('[id="status-toggle"]').change(function() {
+                var status = $(this).prop('checked')? 1 : 0;
+                var common_course_id = $(this).data('common-course-id');
+                console.log(common_course_id);
 
-            /* reverse locking status */
-            $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-light btn-primary');
-            $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-primary btn-light');
+                $.ajax({
+                    type:'POST',
+                    dataType:'JSON',
+                    url:'{{ route('common_courses.changeStatus') }}',
+                    data: {'status': status, 'common_course_id': common_course_id},
+                    success:function(data)
+                    {
+                        console.log('common course '+data.cmcsid+' is changed to '+ data.status)
+                    }
+                });
+            })
+        })
+    </script>
+
+    <script>
+        var form = '#change_form';
+
+        $("#changeModal").on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget);
+            var common_course_id = button.data('common-course-id');
+            var common_course = button.parent().parent();
+            var common_course_name = common_course.children('#name').html();
+            var common_course_year = common_course.children('#year').html();
+            var common_course_semester = common_course.children('#semester').html();
+            var common_course_start_date = common_course.children('#start_date').html();
+            var common_course_end_date = common_course.children('#end_date').html();
+
+            $('#common_course_id').val(common_course_id);
+            $('#modal_name').val(common_course_name);
+            $('#modal_year').val(common_course_year);
+            $('#modal_semester').val(common_course_semester);
+            $('#modal_start_date').val(common_course_start_date);
+            $('#modal_end_date').val(common_course_end_date);
+
+            $(form).off().on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url:'{{ route('common_courses.changeContent') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#form_output').html(error_html);
+                        }
+                        else
+                        {
+                            $('#form_output').html(data.success);
+                        }
+                    }
+                })
+            });
+        });
+
+
+        $('#changeModal').on('hidden.bs.modal', function () {
+            location.reload();
+        });
+
+    </script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
     </script>
 @endsection

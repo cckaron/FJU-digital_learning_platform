@@ -8,6 +8,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class CommonCourseController extends Controller
@@ -65,6 +66,79 @@ class CommonCourseController extends Controller
         return view('common_course.showAllCommonCourses', [
             'common_courses' => $common_courses
         ]);
+    }
+
+    //修改狀態
+    public function postChangeCommonCourseStatus(Request $request){
+        $validation = Validator::make($request->all(), [
+            'status' => 'required'
+        ]);
+
+        $status = $request->get('status');
+        $common_course_id = $request->get('common_course_id');
+
+        $error_array = array();
+        $success_output = '';
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            DB::table('common_courses')
+                ->where('id', $common_course_id)
+                ->update(['status' => $status]);
+            $success_output = '<div class="alert alert-success"> 修改成功！ </div>';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+            'cmcsid' => $common_course_id,
+            'status' => $request->get('status')
+        );
+        echo json_encode($output);
+    }
+
+    public function postChangeCommonCourseContent(Request $request){
+        $validation = Validator::make($request->all(), [
+            'name' => 'required',
+            'year' => 'required',
+            'semester' => 'required',
+            'start_date' => 'required|date|date-format:Y/m/d|before:end_date',
+            'end_date' => 'required|date|date-format:Y/m/d|after:start_date',
+        ]);
+
+        $name = $request->get('name');
+        $year = $request->get('year');
+        $semester = $request->get('semester');
+        $start_date = $request->get('start_date');
+        $end_date = $request->get('end_date');
+        $common_course_id = $request->get('common_course_id');
+
+        $error_array = array();
+        $success_output = '';
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            DB::table('common_courses')
+                ->where('id', $common_course_id)
+                ->update([
+                    'name' => $name,
+                    'year' => $year,
+                    'semester' => $semester,
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
+                ]);
+            $success_output = '<div class="alert alert-success"> 修改成功！ </div>';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+        );
+        echo json_encode($output);
     }
 
     public function getShowCommonCourses(){

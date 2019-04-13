@@ -47,100 +47,107 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('course.addCourse') }}" method="post">
-
-                    <!-- editor -->
-                    <div class="row">
-
-                        @if(session()->has('message'))
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">提示</h5>
-
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session()->get('message') }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table id="zero_config" class="table table-striped table-bordered display" style="width:100%">
-                                            <thead>
-                                            <tr>
-                                                <th>課程名稱</th>
-                                                <th>共同課程</th>
-                                                <th>學年</th>
-                                                <th>學期</th>
-                                                <th>開課日期</th>
-                                                <th>結束日期</th>
-                                                <th>上次修改時間</th>
-                                                <th>狀態</th>
-                                                <th>動作</th>
+                <!-- editor -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="zero_config" class="table table-striped table-bordered display" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>課程名稱</th>
+                                            <th>共同課程</th>
+                                            <th>學年</th>
+                                            <th>學期</th>
+                                            <th>開課日期</th>
+                                            <th>結束日期</th>
+                                            <th>上次修改時間</th>
+                                            <th>狀態</th>
+                                            <th>動作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($courses as $course)
+                                            <tr align="center">
+                                                <td id="name">{{ $course->course_name }}</td>
+                                                <td>{{ $course->common_course->name }}</td>
+                                                <td>{{ $course->common_course->year }}</td>
+                                                <td>{{ $course->common_course->semester }}</td>
+                                                <td>{{ $course->common_course->start_date }}</td>
+                                                <td>{{ $course->common_course->end_date }}</td>
+                                                <td>{{ $course->common_course->updated_at->diffForHumans() }}</td>
+                                                <td>
+                                                    @if($course->common_course->status == 1)
+                                                        <p style="color: blue">進行中</p>
+                                                    @else
+                                                        <p style="color: green">已結束</p>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('course.showCourseStudents', ['courses_id' => $course->id]) }}" class="btn btn-info btn-md">
+                                                        查看詳情
+                                                    </a>
+                                                    <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-course-id="{{ $course->real_id }}">
+                                                        編輯
+                                                    </button>
+                                                    <a href="{{ route('course.delete', ['courses_id' => $course->id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                        刪除
+                                                    </a>
+                                                </td>
                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($courses as $course)
-                                                <tr align="center">
-                                                    <td>{{ $course->course_name }}</td>
-                                                    <td>{{ $course->common_course->name }}</td>
-                                                    <td>{{ $course->common_course->year }}</td>
-                                                    <td>{{ $course->common_course->semester }}</td>
-                                                    <td>{{ $course->common_course->start_date }}</td>
-                                                    <td>{{ $course->common_course->end_date }}</td>
-                                                    <td>{{ $course->common_course->updated_at->diffForHumans() }}</td>
-                                                    <td>
-                                                        @if($course->common_course->status == 1)
-                                                            <p style="color: blue">進行中</p>
-                                                        @else
-                                                            <p style="color: green">已結束</p>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('course.showCourseStudents', ['courses_id' => $course->id]) }}" class="btn btn-info btn-md">
-                                                            查看詳情
-                                                        </a>
-                                                        <a href="{{ route('course.delete', ['courses_id' => $course->id]) }}" class="btn btn-cyan btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
-                                                            編輯
-                                                        </a>
-                                                        <a href="{{ route('course.delete', ['courses_id' => $course->id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
-                                                            刪除
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-
+                                        @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
+
                             </div>
                         </div>
-
-
                     </div>
-                    {{ csrf_field() }}
-                </form>
 
+                    <!-- start ajax correct assignment window-->
+                    <div id="changeModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" id="change_form">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">編輯課程</h4>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            &times;
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ csrf_field() }}
+                                        <span id="form_output"></span>
+                                        <div class="form-group">
+                                            <label>課程名稱</label>
+                                            <input type="text" id="modal_name" name="name" class="form-control" required/>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="hidden" name="course_id" id="course_id" value="" />
+                                        <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
+                                        <p></p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end ajax correct assignment window -->
+                </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
                 <!-- ============================================================== -->
@@ -374,6 +381,61 @@
             /* reverse locking status */
             $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-light btn-primary');
             $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-primary btn-light');
+        });
+    </script>
+
+    <script>
+        var form = '#change_form';
+
+        $("#changeModal").on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget);
+            var course_id = button.data('course-id');
+            var common_course = button.parent().parent();
+            var common_course_name = common_course.children('#name').html();
+
+            $('#course_id').val(course_id);
+            $('#modal_name').val(common_course_name);
+
+            $(form).off().on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url:'{{ route('course.changeContent') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#form_output').html(error_html);
+                        }
+                        else
+                        {
+                            $('#form_output').html(data.success);
+                        }
+                    }
+                })
+            });
+        });
+
+
+        $('#changeModal').on('hidden.bs.modal', function () {
+            location.reload();
+        });
+
+    </script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
     </script>
 @endsection
