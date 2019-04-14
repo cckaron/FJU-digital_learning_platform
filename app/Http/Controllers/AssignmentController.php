@@ -299,9 +299,55 @@ class AssignmentController extends Controller
                 'assignments.updated_at')
             ->get();
 
+        //for grade adjustment
+        $assignments_adjust = Course::with('assignment')
+            ->join('assignments', 'courses.id', 'assignments.courses_id')
+            ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
+            ->select('assignments.*')
+            ->where('common_courses.status', 1)
+            ->get();
+
+        $assignments_a4 = collect();
+        $assignments_attendance = collect();
+        $assignments_ppt = collect();
+        $assignments_word = collect();
+        $assignments_a4_id = array();
+        $assignments_attendance_id = array();
+        $assignments_ppt_id = array();
+        $assignments_word_id = array();
+
+        foreach($assignments_adjust as $key => $assignment){
+
+            //get the id of each homework
+            //not include teacher's custom homework ex. 課堂作業
+            if ($assignment->name == 'A4海報'){
+                $assignments_a4->push($assignment);
+                array_push($assignments_a4_id, $assignment->id);
+            } else if ($assignment->name == '上課出席'){
+                $assignments_attendance->push($assignment);
+                array_push($assignments_attendance_id, $assignment->id);
+
+            } else if ($assignment->name == '口頭報告與PPT'){
+                $assignments_ppt->push($assignment);
+                array_push($assignments_ppt_id, $assignment->id);
+
+            } else if ($assignment->name == '書面報告Word'){
+                $assignments_word->push($assignment);
+                array_push($assignments_word_id, $assignment->id);
+            }
+        }
+
 
         return view('assignment.showAllAssignments', [
-            'assignments' => $assignments
+            'assignments' => $assignments,
+            'assignments_a4' => $assignments_a4,
+            'assignments_attendance' => $assignments_attendance,
+            'assignments_ppt' => $assignments_ppt,
+            'assignments_word' => $assignments_word,
+            'assignments_a4_id' => $assignments_a4_id,
+            'assignments_attendance_id' => $assignments_attendance_id,
+            'assignments_ppt_id' => $assignments_ppt_id,
+            'assignments_word_id' => $assignments_word_id,
         ]);
     }
 

@@ -87,10 +87,17 @@
                                             <select id="userType" name="userType" class="select2 form-control custom-select" style="width: 100%; height:36px;">
                                                 <option value=4 selected> 學生 </option>
                                                 <option value=3 > 教師 </option>
-                                                <option value=2 > 秘書 </option>
-                                                <option value=1 > 工讀生 </option>
+                                                <option value=2 > TA </option>
+                                                <option value=1 > 秘書 </option>
                                                 <option value=0 > 系統管理員 </option>
                                             </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row student">
+                                        <label class="col-md-3" for="studentDepartment">學生系級</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="studentDepartment" class="form-control" placeholder="例: 商管" name="studentDepartment">
                                         </div>
                                     </div>
 
@@ -120,6 +127,7 @@
                                             </select>
                                         </div>
                                     </div>
+
 
                                 </div>
                                 <div class="border-top">
@@ -231,6 +239,7 @@
     <script>
 
         var student = $('.student');
+        var studentDepartment = $('#studentDepartment');
         var studentGrade = $('#studentGrade');
         var studentClass = $('#studentClass');
 
@@ -239,11 +248,13 @@
 
         $('#userType').change(function () {
             var type = $(this).val();
-            if (type === '4'){
+            if (type === '4' || type ==='2'){
+                studentDepartment.attr('required', 1);
                 studentClass.attr('required',1);
                 studentGrade.attr('required',1);
                 student.show();
             } else {
+                studentDepartment.removeAttr('required');
                 studentClass.removeAttr('required');
                 studentGrade.removeAttr('required');
                 student.hide();

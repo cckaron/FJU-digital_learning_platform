@@ -110,6 +110,97 @@
                     </div>
 
 
+                    <!-- start ajax set percentage window-->
+                    <div id="updatePercentageModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" id="UpdatePercentageForm">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">成績比率設定</h4>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            &times;
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        {{ csrf_field() }}
+                                        <span id="form_output"></span>
+                                        @php($totalPercentage = $assignments_a4[0]->percentage +
+                                        $assignments_attendance[0]->percentage +
+                                        $assignments_ppt[0]->percentage +
+                                        $assignments_word[0]->percentage
+                                        )
+                                        <p>總成績比率 100% (目前可分配的比率為 {{ 100 - $totalPercentage }}%)</p>
+                                        <div class="form-group row" >
+                                            <label class="col-md-3 m-t-9" for="userAccount">{{ $assignments_a4[0]->name }}</label>
+                                            <div class="col-md-5">
+                                                <div class="input-group mb-3">
+                                                    <input type="number" step="0.01" class="form-control" value="{{ $assignments_a4[0]->percentage }}" name="assignmentPercentage[]">
+                                                    @foreach($assignments_a4_id as $value)
+                                                        <input type="hidden" name="assignments_a4_id[]" value=".'{{ $value }}.'" required>
+                                                    @endforeach
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" >
+                                            <label class="col-md-3 m-t-9" for="userAccount">{{ $assignments_attendance[0]->name }}</label>
+                                            <div class="col-md-5">
+                                                <div class="input-group mb-3">
+                                                    <input type="number" step="0.01" class="form-control" value="{{ $assignments_attendance[0]->percentage }}" name="assignmentPercentage[]">
+                                                    @foreach($assignments_attendance_id as $value)
+                                                        <input type="hidden" name="assignments_attendance_id[]" value="'.{{ $value }}.'" required>
+                                                    @endforeach
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" >
+                                            <label class="col-md-3 m-t-9" for="userAccount">{{ $assignments_ppt[0]->name }}</label>
+                                            <div class="col-md-5">
+                                                <div class="input-group mb-3">
+                                                    <input type="number" step="0.01" class="form-control" value="{{ $assignments_ppt[0]->percentage }}" name="assignmentPercentage[]">
+
+                                                    @foreach($assignments_ppt_id as $value)
+                                                        <input type="hidden" name="assignments_ppt_id[]" value="'.{{ $value }}.'" required>
+                                                    @endforeach
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" >
+                                            <label class="col-md-3 m-t-9" for="userAccount">{{ $assignments_word[0]->name }}</label>
+                                            <div class="col-md-5">
+                                                <div class="input-group mb-3">
+                                                    <input type="number" step="0.01" class="form-control" value="{{ $assignments_word[0]->percentage }}" name="assignmentPercentage[]">
+
+                                                    @foreach($assignments_word_id as $value)
+                                                        <input type="hidden" name="assignments_word_id[]" value="'.{{ $value }}.'" required>
+                                                    @endforeach
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="hidden" name="student_assignment_id" id="student_assignment_id" value="" />
+                                        {{--<button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">關閉</button>--}}
+                                        <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end ajax set percentage window -->
+
                 </div>
 
                 <!-- ============================================================== -->
@@ -271,6 +362,13 @@
                         columns: ':visible'
                     },
                 },
+                {
+                    text: '當學期成績比率設定',
+                    action: function ( e, dt, node, config ) {
+                        var modal = '#updatePercentageModal';
+                        $(modal).modal('show');
+                    }
+                }
             ],
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
@@ -345,6 +443,38 @@
             /* reverse locking status */
             $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-light btn-primary');
             $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-primary btn-light');
+        });
+    </script>
+
+    <script>
+        var form = '#UpdatePercentageForm';
+        $(form).off().on('submit', function(event){
+            event.preventDefault();
+            var form_data = $(this).serialize();
+            $.ajax({
+                url:'{{ route('grade.ajax.updatePercentage_admin') }}',
+                method:"POST",
+                data:form_data,
+                dataType:"json",
+                success:function(data)
+                {
+                    if (data.error.length > 0)
+                    {
+                        var error_html = '';
+                        for (var count = 0; count < data.error.length; count++)
+                        {
+                            error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                        }
+                        $('#form_output').html(error_html);
+
+                    }
+                    else
+                    {
+                        $('#form_output').html(data.success);
+                        console.log(data.myid);
+                    }
+                }
+            })
         });
     </script>
 @endsection

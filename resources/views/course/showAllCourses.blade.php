@@ -37,7 +37,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '所有共同課程'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有課程'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -147,6 +147,8 @@
                         </div>
                     </div>
                     <!-- end ajax correct assignment window -->
+
+
                 </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -307,6 +309,7 @@
                         columns: ':visible'
                     },
                 },
+
             ],
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
@@ -342,6 +345,7 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
+
 
         });
 
@@ -430,6 +434,7 @@
         });
 
     </script>
+
 
     <script>
         $.ajaxSetup({

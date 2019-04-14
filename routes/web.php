@@ -222,6 +222,8 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
                 'as' => 'grade.ajax.updatePercentage'
             ]);
         });
+
+
     });
 });
 
@@ -355,6 +357,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'uses' => 'AssignmentController@postBatchCreateAssignments',
             'as' => 'assignment.batchCreateAssignments'
         ]);
+
+        Route::group(['prefix' => 'ajax'], function(){
+            Route::post('/updatePercentage', [
+                'uses' => 'GradeController@postUpdatePercentage_admin',
+                'as' => 'grade.ajax.updatePercentage_admin'
+            ]);
+        });
     });
 
     //使用者
@@ -384,16 +393,29 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'user.getAllStudents'
         ]);
 
+        //修改學生 (ajax post)
+        Route::post('student/change/content', [
+            'uses' => 'UserController@postChangeStudentContent',
+            'as' => 'student.changeContent'
+        ]);
+
         //列出老師 (get)
         Route::get('teachers', [
             'uses' => 'UserController@getAllTeachers',
             'as' => 'user.getAllTeachers'
         ]);
 
-        //列出工讀生 (get)
-        Route::get('employees', [
-            'uses' => 'UserController@getAllEmployees',
-            'as' => 'user.getAllEmployees'
+        //修改老師 (ajax post)
+        Route::post('student/change/content', [
+            'uses' => 'UserController@postChangeTeacherContent',
+            'as' => 'teacher.changeContent'
+        ]);
+
+
+        //列出TA (get)
+        Route::get('ta', [
+            'uses' => 'UserController@getAllTAs',
+            'as' => 'user.getAllTAs'
         ]);
 
         //列出秘書 (get)
@@ -414,10 +436,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'user.deleteTeacher'
         ]);
 
-        //刪除工讀生 (get)
-        Route::get('/employee/delete/{id}', [
-            'uses' => 'UserController@deleteEmployee',
-            'as' => 'user.deleteEmployee'
+        //刪除TA (get)
+        Route::get('/ta/delete/{id}', [
+            'uses' => 'UserController@deleteTAs',
+            'as' => 'user.deleteTA'
         ]);
 
         //刪除秘書 (get)

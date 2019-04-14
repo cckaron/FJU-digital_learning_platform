@@ -49,7 +49,6 @@
 
                 <!-- editor -->
                 <div class="row">
-
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
@@ -59,6 +58,7 @@
                                         <tr>
                                             <th>姓名</th>
                                             <th>學號</th>
+                                            <th>系所</th>
                                             <th>年級</th>
                                             <th>班級</th>
                                             <th>聯絡電話</th>
@@ -72,23 +72,34 @@
                                         <tbody>
                                         @foreach($students as $student)
                                             <tr align="center">
-                                                <td>{{ $student->users_name }}</td>
-                                                <td>{{ $student->users_id }}</td>
-                                                <td>{{ $student->grade }}</td>
-                                                <td>{{ $student->class }}</td>
-                                                <td>{{ $student->phone }}</td>
-                                                <td>{{ $student->email }}</td>
-                                                <td>{{ $student->status }}</td>
-                                                <td>{{ $student->remark }}</td>
+                                                <td id="name">{{ $student->users_name }}</td>
+                                                <td id="id">{{ $student->users_id }}</td>
+                                                <td id="department">{{ $student->department }}</td>
+                                                <td id="grade">{{ $student->grade }}</td>
+                                                <td id="class">{{ $student->class }}</td>
+                                                <td id="phone">{{ $student->user->phone }}</td>
+                                                <td id="email">{{ $student->user->email }}</td>
+                                                <td id="status" data-status="{{ $student->status }}">
+                                                    @if($student->status == 1)
+                                                        在學
+                                                    @elseif($student->status == 2)
+                                                        退學
+                                                    @elseif($student->status == 3)
+                                                        已畢業
+                                                    @elseif($student->status == 0)
+                                                        休學
+                                                    @endif
+                                                </td>
+                                                <td id="remark">{{ $student->remark }}</td>
                                                 <td>{{ $student->updated_at->diffForHumans() }}</td>
                                                 <td>
                                                     <a href="{{ route('user.studentDetail', ['id' => $student->users_id]) }}" class="btn btn-info btn-md">
                                                         學生詳情
                                                     </a>
-                                                    <a href="{{ route('user.deleteStudent', ['id' => $student->users_id]) }}" class="btn btn-cyan btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                    <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-id="{{ $student->users_id }}">
                                                         編輯
-                                                    </a>
-                                                    <a href="{{ route('user.deleteStudent', ['id' => $student->users_id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                    </button>
+                                                    <a href="{{ route('user.deleteStudent', ['id' => $student->users_id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該學生資料將會一併刪除，確定刪除?')">
                                                         刪除
                                                     </a>
                                                 </td>
@@ -107,6 +118,7 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -115,6 +127,72 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- start ajax correct assignment window-->
+                    <div id="changeModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" id="change_form">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">編輯學生資料</h4>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            &times;
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ csrf_field() }}
+                                        <span id="form_output"></span>
+                                        <div class="form-group">
+                                            <label>姓名</label>
+                                            <input type="text" id="modal_name" name="name" class="form-control" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>學號</label>
+                                            <input type="text" id="modal_id" name="id" class="form-control" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>系所</label>
+                                            <input type="text" id="modal_department" name="department" class="form-control" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>年級</label>
+                                            <input type="text" id="modal_grade" name="grade" class="form-control" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>班級</label>
+                                            <input type="text" id="modal_class" name="class" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>聯絡電話</label>
+                                            <input type="text" id="modal_phone" name="phone">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="text" id="modal_email" name="email" class="form-control" />
+                                        </div>
+                                        <div class="form-group row">
+                                            <label>狀態</label>
+                                            <select id="modal_status" name="status" class="form-control m-t-15" style="height: 36px;width: 100%;" required>
+                                                <option value=0> 休學</option>
+                                                <option value=1> 在學 </option>
+                                                <option value=2> 退學 </option>
+                                                <option value=3> 已畢業 </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>備註</label>
+                                            <input type="text" id="modal_remark" name="remark" class="form-control"/>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end ajax correct assignment window -->
                 </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -223,7 +301,7 @@
                 },
                 {
                     extend: 'copy',
-                    title: '所有課程',
+                    title: '所有學生',
                     text: '複製表格內容',
                     exportOptions: {
                         columns: ':visible'
@@ -231,8 +309,8 @@
                 },
                 {
                     extend: 'excelHtml5',
-                    title: '所有課程',
-                    filename: '所有課程',
+                    title: '所有學生',
+                    filename: '所有學生',
                     text: '匯出 excel',
                     bom : true,
                     exportOptions: {
@@ -242,13 +320,13 @@
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
                         //modify text in [A1]
-                        $('c[r=A1] t', sheet).text( '所有課程' );
+                        $('c[r=A1] t', sheet).text( '所有學生' );
                     }
                 },
                 {
                     extend: 'csv',
-                    title: '所有課程',
-                    filename: '所有課程',
+                    title: '所有學生',
+                    filename: '所有學生',
                     text: '匯出 csv',
                     exportOptions: {
                         columns: ':visible'
@@ -257,8 +335,8 @@
                 },
                 {
                     extend: 'print',
-                    title: '所有課程',
-                    filename: '所有課程',
+                    title: '所有學生',
+                    filename: '所有學生',
                     text: '列印/匯出PDF',
                     exportOptions: {
                         columns: ':visible'
@@ -272,12 +350,13 @@
                 { "width": "10%", "targets": 1 },
                 { "width": "5%", "targets": 2 },
                 { "width": "5%", "targets": 3 },
-                { "width": "10%", "targets": 4 },
+                { "width": "5%", "targets": 4 },
                 { "width": "10%", "targets": 5 },
                 { "width": "10%", "targets": 6 },
-                { "width": "10%", "targets": 7 },
+                { "width": "5%", "targets": 7 },
                 { "width": "10%", "targets": 8 },
-                { "width": "20%", "targets": 9 },
+                { "width": "10%", "targets": 9 },
+                { "width": "20%", "targets": 10 },
             ],
             language: {
                 "processing":   "處理中...",
@@ -340,5 +419,88 @@
             $('#toggle_event_editing button').eq(0).toggleClass('locked_inactive locked_active btn-light btn-primary');
             $('#toggle_event_editing button').eq(1).toggleClass('unlocked_inactive unlocked_active btn-primary btn-light');
         });
+    </script>
+
+    <script>
+        var form = '#change_form';
+
+        $("#changeModal").on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget);
+            var student = button.parent().parent();
+            var common_course_name = student.children('#name').html();
+            var common_course_id = student.children('#id').html();
+            var common_course_department = student.children('#department').html();
+            var common_course_grade = student.children('#grade').html();
+            var common_course_class = student.children('#class').html();
+            var common_course_phone = student.children('#phone').html();
+            var common_course_email = student.children('#email').html();
+            var common_course_status = student.children('#status').attr('data-status');
+            var common_course_remark = student.children('#remark').html();
+
+            $('#modal_name').val(common_course_name);
+            $('#modal_id').val(common_course_id);
+            $('#modal_department').val(common_course_department);
+            $('#modal_grade').val(common_course_grade);
+            $('#modal_class').val(common_course_class);
+            $('#modal_phone').val(common_course_phone);
+            $('#modal_email').val(common_course_email);
+
+            var option = "#modal_status option[value="+common_course_status+"]";
+            $(option).attr('selected', 'selected');
+            $('#modal_status').val(common_course_status);
+
+
+            $('#modal_remark').val(common_course_remark);
+
+            $(form).off().on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url:'{{ route('teacher.changeContent') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#form_output').html(error_html);
+                        }
+                        else
+                        {
+                            $('#form_output').html(data.success);
+                            student.children('#name').html(data.name);
+                            student.children('#id').html(data.id);
+                            student.children('#department').html(data.department);
+                            student.children('#grade').html(data.grade);
+                            student.children('#class').html(data.class);
+                            student.children('#phone').html(data.phone);
+                            student.children('#email').html(data.email);
+
+                            if (data.status === '0'){
+                                student.children('#status').html('休學');
+                            } else if (data.status === '1' ){
+                                student.children('#status').html('在學');
+                            } else if (data.status === '2'){
+                                student.children('#status').html('退學');
+                            } else if (data.status === '3'){
+                                student.children('#status').html('已畢業');
+                            }
+
+                            student.children('#remark').html(data.remark);
+
+
+                        }
+                    }
+                })
+            });
+        });
+
+
     </script>
 @endsection

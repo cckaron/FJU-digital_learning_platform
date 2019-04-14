@@ -69,7 +69,7 @@
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a href="{{ route('user.getAllStudents') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 學生 </span></a></li>
                         <li class="sidebar-item"><a href="{{ route('user.getAllTeachers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 教師 </span></a></li>
-                        <li class="sidebar-item"><a href="{{ route('user.getAllEmployees') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 工讀生 </span></a></li>
+                        <li class="sidebar-item"><a href="{{ route('user.getAllTAs') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> TA </span></a></li>
                         <li class="sidebar-item"><a href="{{ route('user.getAllSecrets') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 秘書 </span></a></li>
                     </ul>
                 </li>

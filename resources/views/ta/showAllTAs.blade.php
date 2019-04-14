@@ -37,7 +37,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '所有老師'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有TA'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -57,38 +57,46 @@
                                         <thead>
                                         <tr>
                                             <th>姓名</th>
-                                            <th>ID</th>
+                                            <th>學號</th>
+                                            <th>系所</th>
+                                            <th>年級</th>
+                                            <th>班級</th>
                                             <th>聯絡電話</th>
                                             <th>Email</th>
                                             <th>狀態</th>
                                             <th>備註</th>
-                                            <th>上次修改時間</th>
+                                            <th>最近更改時間</th>
                                             <th>動作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($teachers as $teacher)
+                                        @foreach($tas as $ta)
                                             <tr align="center">
-                                                <td id="name">{{ $teacher->users_name }}</td>
-                                                <td id="id">{{ $teacher->users_id }}</td>
-                                                <td id="phone">{{ $teacher->user[0]->phone }}</td>
-                                                <td id="email">{{ $teacher->user[0]->email }}</td>
-                                                <td id="status" data-status="{{ $teacher->status }}">
-                                                    @if($teacher->status == 1)
-                                                        在職
-                                                    @elseif($teacher->status == 2)
-                                                        離職
-                                                    @elseif($teacher->status == 0)
-                                                        停職
+                                                <td id="name">{{ $ta->users_name }}</td>
+                                                <td id="id">{{ $ta->users_id }}</td>
+                                                <td id="department">{{ $ta->department }}</td>
+                                                <td id="grade">{{ $ta->grade }}</td>
+                                                <td id="class">{{ $ta->class }}</td>
+                                                <td id="phone">{{ $ta->user[0]->phone }}</td>
+                                                <td id="email">{{ $ta->user[0]->email }}</td>
+                                                <td id="status" data-status="{{ $ta->status }}">
+                                                    @if($ta->status == 1)
+                                                        在學
+                                                    @elseif($ta->status == 2)
+                                                        退學
+                                                    @elseif($ta->status == 3)
+                                                        已畢業
+                                                    @elseif($ta->status == 0)
+                                                        休學
                                                     @endif
                                                 </td>
-                                                <td id="remark">{{ $teacher->remark }}</td>
-                                                <td>{{ $teacher->updated_at->diffForHumans() }}</td>
+                                                <td id="remark">{{ $ta->remark }}</td>
+                                                <td>{{ $ta->updated_at->diffForHumans() }}</td>
                                                 <td>
-                                                    <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-id="{{ $teacher->users_id }}">
+                                                    <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-id="{{ $ta->users_id }}">
                                                         編輯
                                                     </button>
-                                                    <a href="{{ route('user.deleteTeacher', ['id' => $teacher->users_id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該教師資料將會一併刪除，確定刪除?')">
+                                                    <a href="{{ route('user.deleteTA', ['id' => $ta->users_id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該學生資料將會一併刪除，確定刪除?')">
                                                         刪除
                                                     </a>
                                                 </td>
@@ -105,7 +113,9 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
-
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -134,8 +144,20 @@
                                             <input type="text" id="modal_name" name="name" class="form-control" required/>
                                         </div>
                                         <div class="form-group">
-                                            <label>ID</label>
+                                            <label>學號</label>
                                             <input type="text" id="modal_id" name="id" class="form-control" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>系所</label>
+                                            <input type="text" id="modal_department" name="department" class="form-control" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>年級</label>
+                                            <input type="text" id="modal_grade" name="grade" class="form-control" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>班級</label>
+                                            <input type="text" id="modal_class" name="class" required>
                                         </div>
                                         <div class="form-group">
                                             <label>聯絡電話</label>
@@ -148,9 +170,10 @@
                                         <div class="form-group row">
                                             <label>狀態</label>
                                             <select id="modal_status" name="status" class="form-control m-t-15" style="height: 36px;width: 100%;" required>
-                                                <option value=0> 停職</option>
-                                                <option value=1> 在職 </option>
-                                                <option value=2> 離職 </option>
+                                                <option value=0> 休學</option>
+                                                <option value=1> 在學 </option>
+                                                <option value=2> 退學 </option>
+                                                <option value=3> 已畢業 </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -322,12 +345,15 @@
             columnDefs: [
                 { "width": "10%", "targets": 0 },
                 { "width": "10%", "targets": 1 },
-                { "width": "15%", "targets": 2 },
-                { "width": "15%", "targets": 3 },
-                { "width": "10%", "targets": 4 },
+                { "width": "5%", "targets": 2 },
+                { "width": "5%", "targets": 3 },
+                { "width": "5%", "targets": 4 },
                 { "width": "10%", "targets": 5 },
                 { "width": "10%", "targets": 6 },
-                { "width": "20%", "targets": 7 },
+                { "width": "5%", "targets": 7 },
+                { "width": "10%", "targets": 8 },
+                { "width": "10%", "targets": 9 },
+                { "width": "20%", "targets": 10 },
             ],
             language: {
                 "processing":   "處理中...",
@@ -447,15 +473,20 @@
                             $('#form_output').html(data.success);
                             student.children('#name').html(data.name);
                             student.children('#id').html(data.id);
+                            student.children('#department').html(data.department);
+                            student.children('#grade').html(data.grade);
+                            student.children('#class').html(data.class);
                             student.children('#phone').html(data.phone);
                             student.children('#email').html(data.email);
 
                             if (data.status === '0'){
-                                student.children('#status').html('離職');
+                                student.children('#status').html('休學');
                             } else if (data.status === '1' ){
-                                student.children('#status').html('在職');
+                                student.children('#status').html('在學');
                             } else if (data.status === '2'){
-                                student.children('#status').html('停職');
+                                student.children('#status').html('退學');
+                            } else if (data.status === '3'){
+                                student.children('#status').html('已畢業');
                             }
 
                             student.children('#remark').html(data.remark);

@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends Model
 {
-    protected $fillable = ['users_id', 'remark', 'users_name', 'status'];
+    protected $fillable = ['users_id', 'remark', 'users_name', 'status', 'created_at', 'updated_at'];
 
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'users_id', 'id');
     }
 
     public function course(){

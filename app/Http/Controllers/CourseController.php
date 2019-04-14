@@ -189,7 +189,7 @@ class CourseController extends Controller
             ->orderBy('common_courses.year')
             ->get();
 
-//        //hashid
+        //hashid
         $hashids = new Hashids('courses_id', 7);
         foreach($courses as $course){
             $course->real_id = $course->id;
@@ -199,6 +199,7 @@ class CourseController extends Controller
 
         return view('course.showAllCourses', [
             'courses' => $courses,
+
         ]);
     }
 
