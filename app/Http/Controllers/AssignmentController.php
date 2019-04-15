@@ -292,8 +292,10 @@ class AssignmentController extends Controller
                 'common_courses.name as common_course_name',
                 'common_courses.year',
                 'common_courses.semester',
+                'common_courses.status as common_course_status',
                 'assignments.name as assignment_name',
                 'assignments.status as assignment_status',
+                'assignments.percentage as assignment_percentage',
                 'assignments.start_date',
                 'assignments.end_date',
                 'assignments.updated_at')

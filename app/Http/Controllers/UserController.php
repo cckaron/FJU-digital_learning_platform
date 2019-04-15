@@ -20,8 +20,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Exception;
@@ -175,6 +177,7 @@ class UserController extends Controller
         Excel::import(new TeachersImport(), $FullFilePath);
     }
 
+    //學生
     public function getAllStudents(){
         $students = Student::with('user')->get();
 
@@ -184,9 +187,11 @@ class UserController extends Controller
     }
 
     public function postChangeStudentContent(Request $request){
+        $id = $request->get('id');
         $validation = Validator::make($request->all(), [
             'name' => 'required',
-            'id' => 'required',
+            'id' => ['required', Rule::unique('users')->ignore($id)],
+            'email' => ['required', Rule::unique('users')->ignore($id)],
             'department' => 'required',
             'grade' => 'required',
             'class' => 'required',
@@ -194,7 +199,7 @@ class UserController extends Controller
         ]);
 
         $name = $request->get('name');
-        $id = $request->get('id');
+        $change_id = $request->get('change_id');
         $department = $request->get('department');
         $grade = $request->get('grade');
         $class = $request->get('class');
@@ -225,6 +230,7 @@ class UserController extends Controller
             DB::table('users')
                 ->where('id', $id)
                 ->update([
+                    'id' => $change_id,
                     'name' => $name,
                     'phone' => $phone,
                     'email' => $email,
@@ -234,6 +240,7 @@ class UserController extends Controller
         }
         $output = array(
             'error' => $error_array,
+            'id' => $change_id,
             'success' => $success_output,
             'name' => $name,
             'department' => $department,
@@ -319,6 +326,7 @@ class UserController extends Controller
         ]);
     }
 
+    //教師
     public function getAllTeachers(){
         $teachers = Teacher::all();
 
@@ -395,6 +403,7 @@ class UserController extends Controller
         return redirect()->back()->with('message', '刪除成功');
     }
 
+    //秘書
     public function getAllSecrets(){
         $secrets = DB::table('users')
             ->where('type', 1)
@@ -403,6 +412,56 @@ class UserController extends Controller
         return view('secret.showAllSecrets', [
             'secrets' => $secrets
         ]);
+    }
+
+    public function postChangeSecretContent(Request $request){
+        $id = $request->get('id');
+
+        $validation = Validator::make($request->all(), [
+            'name' => 'required',
+            'id' => ['required', Rule::unique('users')->ignore($id)],
+            'email' => ['required', Rule::unique('users')->ignore($id)],
+        ]);
+
+        $name = $request->get('name');
+        $phone = $request->get('phone');
+        $change_id = $request->get('change_id');
+        $email = $request->get('email');
+        $remark = $request->get('remark');
+
+        $error_array = array();
+        $success_output = '';
+
+
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+
+            DB::table('users')
+                ->where('id', $id)
+                ->update([
+                    'id' => $change_id,
+                    'name' => $name,
+                    'phone' => $phone,
+                    'email' => $email,
+                    'remark' => $remark
+                ]);
+            $success_output = '<div class="alert alert-success"> 修改成功！ </div>';
+
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+            'id' => $change_id,
+            'name' => $name,
+            'phone' => $phone,
+            'email' => $email,
+            'remark' => $remark,
+        );
+        echo json_encode($output);
     }
 
     public function deleteSecrets($id){
@@ -414,10 +473,11 @@ class UserController extends Controller
         return redirect()->back()->with('message', '刪除成功');
     }
 
+    //TA
     public function getAllTAs(){
         $tas = Ta::all();
 
-        //because teacher_id has "0" at first, like "051266"
+        //because users_id has "0" at first, like "051266"
         //so using with(relationship) will get null, we need to use all()
         foreach($tas as $ta){
             $ta->user = $ta->user()->get();
@@ -426,6 +486,74 @@ class UserController extends Controller
         return view('ta.showAllTAs', [
             'tas' => $tas,
         ]);
+    }
+
+    public function postChangeTAContent(Request $request){
+        $id = $request->get('id');
+        $validation = Validator::make($request->all(), [
+            'name' => 'required',
+            'id' => ['required', Rule::unique('users')->ignore($id)],
+            'email' => ['required', Rule::unique('users')->ignore($id)],
+            'department' => 'required',
+            'grade' => 'required',
+            'class' => 'required',
+            'status' => 'required',
+        ]);
+
+        $name = $request->get('name');
+        $change_id = $request->get('change_id');
+        $department = $request->get('department');
+        $grade = $request->get('grade');
+        $class = $request->get('class');
+        $phone = $request->get('phone');
+        $email = $request->get('email');
+        $status = $request->get('status');
+        $remark = $request->get('remark');
+
+        $error_array = array();
+        $success_output = '';
+
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            DB::table('tas')
+                ->where('users_id', $id)
+                ->update([
+                    'department' => $department,
+                    'grade' => $grade,
+                    'class' => $class,
+                    'status' => $status,
+                    'remark' => $remark
+                ]);
+
+            DB::table('users')
+                ->where('id', $id)
+                ->update([
+                    'id' => $change_id,
+                    'name' => $name,
+                    'phone' => $phone,
+                    'email' => $email,
+                ]);
+            $success_output = '<div class="alert alert-success"> 修改成功！ </div>';
+
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+            'id' => $change_id,
+            'name' => $name,
+            'department' => $department,
+            'grade' => $grade,
+            'class' => $class,
+            'phone' => $phone,
+            'email' => $email,
+            'status' => $status,
+            'remark' => $remark,
+        );
+        echo json_encode($output);
     }
 
     public function deleteTAs($id){
@@ -437,6 +565,7 @@ class UserController extends Controller
         return redirect()->back()->with('message', '刪除成功');
     }
 
+    //deprecated()
     public function getAllStudents_dt(){
         return DataTables::of(Student::query())
             ->editColumn('updated_at', function(Student $student){

@@ -399,6 +399,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'student.changeContent'
         ]);
 
+        //刪除學生 (get)
+        Route::get('/student/delete/{id}', [
+            'uses' => 'UserController@deleteStudent',
+            'as' => 'user.deleteStudent'
+        ]);
+
         //列出老師 (get)
         Route::get('teachers', [
             'uses' => 'UserController@getAllTeachers',
@@ -406,7 +412,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
         ]);
 
         //修改老師 (ajax post)
-        Route::post('student/change/content', [
+        Route::post('teacher/change/content', [
             'uses' => 'UserController@postChangeTeacherContent',
             'as' => 'teacher.changeContent'
         ]);
@@ -418,16 +424,22 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
             'as' => 'user.getAllTAs'
         ]);
 
+        //修改TA (ajax post)
+        Route::post('ta/change/content', [
+            'uses' => 'UserController@postChangeTAContent',
+            'as' => 'ta.changeContent'
+        ]);
+
         //列出秘書 (get)
         Route::get('secrets', [
             'uses' => 'UserController@getAllSecrets',
             'as' => 'user.getAllSecrets'
         ]);
 
-        //刪除學生 (get)
-        Route::get('/student/delete/{id}', [
-            'uses' => 'UserController@deleteStudent',
-            'as' => 'user.deleteStudent'
+        //修改秘書 (ajax post)
+        Route::post('secret/change/content', [
+            'uses' => 'UserController@postChangeSecretContent',
+            'as' => 'secret.changeContent'
         ]);
 
         //刪除老師 (get)

@@ -13,6 +13,7 @@ class ModifyTextToLongtext extends Migration
      */
     public function up()
     {
+        //NOT WORK!!!!!!!!!!!!!!!!!!!!!!!
         Schema::table('assignments', function (Blueprint $table) {
             $table->longText('content')->change();
         });

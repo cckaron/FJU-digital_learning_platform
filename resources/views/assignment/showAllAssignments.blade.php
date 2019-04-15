@@ -58,11 +58,13 @@
                                         <thead>
                                         <tr>
                                             <th>作業名稱</th>
-                                            <th>狀態</th>
+                                            <th>作業狀態</th>
                                             <th>共同課程</th>
+                                            <th>共同課程狀態</th>
                                             <th>課程</th>
                                             <th>學年</th>
                                             <th>學期</th>
+                                            <th>佔分比例</th>
                                             <th>開課日期</th>
                                             <th>結束日期</th>
                                             <th>上次修改時間</th>
@@ -76,13 +78,21 @@
                                                     @if($assignment->assignment_status == 1)
                                                         <p style="color: blue">進行中</p>
                                                     @else
-                                                        <p style="color: green">已結束</p>
+                                                        <p style="color: green">已截止</p>
                                                     @endif
                                                 </td>
                                                 <td>{{ $assignment->common_course_name }}</td>
+                                                <td>
+                                                    @if($assignment->common_course_status == 1)
+                                                        <p style="color: blue">進行中</p>
+                                                    @else
+                                                        <p style="color: green">已結束</p>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $assignment->course_name }}</td>
                                                 <td>{{ $assignment->year }}</td>
                                                 <td>{{ $assignment->semester }}</td>
+                                                <td>{{ $assignment->assignment_percentage }}%</td>
                                                 <td>{{ $assignment->start_date }}</td>
                                                 <td>{{ $assignment->end_date }}</td>
                                                 <td>{{ $assignment->updated_at->diffForHumans() }}</td>
@@ -91,6 +101,8 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -125,19 +137,19 @@
                                     <div class="modal-body">
                                         {{ csrf_field() }}
                                         <span id="form_output"></span>
-                                        @php($totalPercentage = $assignments_a4[0]->percentage +
+                                        @php($availPercentage = $assignments_a4[0]->percentage +
                                         $assignments_attendance[0]->percentage +
                                         $assignments_ppt[0]->percentage +
                                         $assignments_word[0]->percentage
                                         )
-                                        <p>總成績比率 100% (目前可分配的比率為 {{ 100 - $totalPercentage }}%)</p>
+                                        <p>總成績比率 {{ $availPercentage }}% (目前可分配的比率為 {{ 100-$availPercentage }}%)</p>
                                         <div class="form-group row" >
                                             <label class="col-md-3 m-t-9" for="userAccount">{{ $assignments_a4[0]->name }}</label>
                                             <div class="col-md-5">
                                                 <div class="input-group mb-3">
                                                     <input type="number" step="0.01" class="form-control" value="{{ $assignments_a4[0]->percentage }}" name="assignmentPercentage[]">
                                                     @foreach($assignments_a4_id as $value)
-                                                        <input type="hidden" name="assignments_a4_id[]" value=".'{{ $value }}.'" required>
+                                                        <input type="hidden" name="assignments_a4_id[]" value="{{ $value }}" required>
                                                     @endforeach
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">%</span>
@@ -151,7 +163,7 @@
                                                 <div class="input-group mb-3">
                                                     <input type="number" step="0.01" class="form-control" value="{{ $assignments_attendance[0]->percentage }}" name="assignmentPercentage[]">
                                                     @foreach($assignments_attendance_id as $value)
-                                                        <input type="hidden" name="assignments_attendance_id[]" value="'.{{ $value }}.'" required>
+                                                        <input type="hidden" name="assignments_attendance_id[]" value="{{ $value }}" required>
                                                     @endforeach
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">%</span>
@@ -166,7 +178,7 @@
                                                     <input type="number" step="0.01" class="form-control" value="{{ $assignments_ppt[0]->percentage }}" name="assignmentPercentage[]">
 
                                                     @foreach($assignments_ppt_id as $value)
-                                                        <input type="hidden" name="assignments_ppt_id[]" value="'.{{ $value }}.'" required>
+                                                        <input type="hidden" name="assignments_ppt_id[]" value="{{ $value }}" required>
                                                     @endforeach
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">%</span>
@@ -181,7 +193,7 @@
                                                     <input type="number" step="0.01" class="form-control" value="{{ $assignments_word[0]->percentage }}" name="assignmentPercentage[]">
 
                                                     @foreach($assignments_word_id as $value)
-                                                        <input type="hidden" name="assignments_word_id[]" value="'.{{ $value }}.'" required>
+                                                        <input type="hidden" name="assignments_word_id[]" value="{{ $value }}" required>
                                                     @endforeach
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">%</span>
@@ -291,10 +303,6 @@
             autoclose: true,
             todayHighlight: true
         });
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
-
     </script>
 
     <script>
@@ -311,7 +319,6 @@
         // ] );
 
         var table = $('#zero_config').DataTable({
-            autoWidth: false,
             buttons: [
                 {
                     extend: 'colvis',
@@ -373,15 +380,7 @@
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
             columnDefs: [
-                { "width": "5%", "targets": 0 },
-                { "width": "5%", "targets": 1 },
-                { "width": "5%", "targets": 2 },
-                { "width": "5%", "targets": 3 },
-                { "width": "5%", "targets": 4 },
-                { "width": "5%", "targets": 5 },
-                { "width": "5%", "targets": 6 },
-                { "width": "5%", "targets": 7 },
-                { "width": "10%", "targets": 8 },
+
             ],
             language: {
                 "processing":   "處理中...",
@@ -475,6 +474,10 @@
                     }
                 }
             })
+        });
+
+        $('#updatePercentageModal').on('hidden.bs.modal', function () {
+            location.reload();
         });
     </script>
 @endsection

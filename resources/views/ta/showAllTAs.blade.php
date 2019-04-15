@@ -37,7 +37,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '所有TA'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有共同課程'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -73,10 +73,10 @@
                                         @foreach($tas as $ta)
                                             <tr align="center">
                                                 <td id="name">{{ $ta->users_name }}</td>
-                                                <td id="id">{{ $ta->users_id }}</td>
+                                                <td id="userID">{{ $ta->users_id }}</td>
                                                 <td id="department">{{ $ta->department }}</td>
                                                 <td id="grade">{{ $ta->grade }}</td>
-                                                <td id="class">{{ $ta->class }}</td>
+                                                <td id="myclass">{{ $ta->class }}</td>
                                                 <td id="phone">{{ $ta->user[0]->phone }}</td>
                                                 <td id="email">{{ $ta->user[0]->email }}</td>
                                                 <td id="status" data-status="{{ $ta->status }}">
@@ -145,7 +145,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>學號</label>
-                                            <input type="text" id="modal_id" name="id" class="form-control" required/>
+                                            <input type="text" id="modal_change_id" name="change_id" class="form-control" required/>
                                         </div>
                                         <div class="form-group">
                                             <label>系所</label>
@@ -183,6 +183,7 @@
 
                                     </div>
                                     <div class="modal-footer">
+                                        <input type="hidden" id="modal_id" name="id" value="" />
                                         <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
                                     </div>
                                 </form>
@@ -298,7 +299,7 @@
                 },
                 {
                     extend: 'copy',
-                    title: '所有學生',
+                    title: '所有TA',
                     text: '複製表格內容',
                     exportOptions: {
                         columns: ':visible'
@@ -306,8 +307,8 @@
                 },
                 {
                     extend: 'excelHtml5',
-                    title: '所有學生',
-                    filename: '所有學生',
+                    title: '所有TA',
+                    filename: '所有TA',
                     text: '匯出 excel',
                     bom : true,
                     exportOptions: {
@@ -317,13 +318,13 @@
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
                         //modify text in [A1]
-                        $('c[r=A1] t', sheet).text( '所有學生' );
+                        $('c[r=A1] t', sheet).text( '所有TA' );
                     }
                 },
                 {
                     extend: 'csv',
-                    title: '所有學生',
-                    filename: '所有學生',
+                    title: '所有TA',
+                    filename: '所有TA',
                     text: '匯出 csv',
                     exportOptions: {
                         columns: ':visible'
@@ -332,8 +333,8 @@
                 },
                 {
                     extend: 'print',
-                    title: '所有學生',
-                    filename: '所有學生',
+                    title: '所有TA',
+                    filename: '所有TA',
                     text: '列印/匯出PDF',
                     exportOptions: {
                         columns: ':visible'
@@ -423,37 +424,38 @@
 
         $("#changeModal").on('show.bs.modal', function (e) {
             var button = $(e.relatedTarget);
-            var student = button.parent().parent();
-            var common_course_name = student.children('#name').html();
-            var common_course_id = student.children('#id').html();
-            var common_course_department = student.children('#department').html();
-            var common_course_grade = student.children('#grade').html();
-            var common_course_class = student.children('#class').html();
-            var common_course_phone = student.children('#phone').html();
-            var common_course_email = student.children('#email').html();
-            var common_course_status = student.children('#status').attr('data-status');
-            var common_course_remark = student.children('#remark').html();
+            var ta = button.parent().parent();
+            var name = ta.children('#name').html();
+            var userID = ta.children('#userID').html();
+            var department = ta.children('#department').html();
+            var grade = ta.children('#grade').html();
+            var myclass = ta.children('#myclass').html();
+            var phone = ta.children('#phone').html();
+            var email = ta.children('#email').html();
+            var status = ta.children('#status').attr('data-status');
+            var remark = ta.children('#remark').html();
 
-            $('#modal_name').val(common_course_name);
-            $('#modal_id').val(common_course_id);
-            $('#modal_department').val(common_course_department);
-            $('#modal_grade').val(common_course_grade);
-            $('#modal_class').val(common_course_class);
-            $('#modal_phone').val(common_course_phone);
-            $('#modal_email').val(common_course_email);
+            $('#modal_name').val(name);
+            $('#modal_id').val(userID);
+            $('#modal_change_id').val(userID);
+            $('#modal_department').val(department);
+            $('#modal_grade').val(grade);
+            $('#modal_class').val(myclass);
+            $('#modal_phone').val(phone);
+            $('#modal_email').val(email);
 
-            var option = "#modal_status option[value="+common_course_status+"]";
+            var option = "#modal_status option[value="+status+"]";
             $(option).attr('selected', 'selected');
-            $('#modal_status').val(common_course_status);
+            $('#modal_status').val(status);
 
 
-            $('#modal_remark').val(common_course_remark);
+            $('#modal_remark').val(remark);
 
             $(form).off().on('submit', function(event){
                 event.preventDefault();
                 var form_data = $(this).serialize();
                 $.ajax({
-                    url:'{{ route('teacher.changeContent') }}',
+                    url:'{{ route('ta.changeContent') }}',
                     method:"POST",
                     data:form_data,
                     dataType:"json",
@@ -471,25 +473,28 @@
                         else
                         {
                             $('#form_output').html(data.success);
-                            student.children('#name').html(data.name);
-                            student.children('#id').html(data.id);
-                            student.children('#department').html(data.department);
-                            student.children('#grade').html(data.grade);
-                            student.children('#class').html(data.class);
-                            student.children('#phone').html(data.phone);
-                            student.children('#email').html(data.email);
+                            ta.children('#name').html(data.name);
+                            ta.children('#userID').html(data.id);
+                            ta.children('#department').html(data.department);
+                            ta.children('#grade').html(data.grade);
+                            ta.children('#myclass').html(data.class);
+                            ta.children('#phone').html(data.phone);
+                            ta.children('#email').html(data.email);
+
+                            //modal's id should be changed after post
+                            $('#modal_id').val(data.id);
 
                             if (data.status === '0'){
-                                student.children('#status').html('休學');
+                                ta.children('#status').html('休學');
                             } else if (data.status === '1' ){
-                                student.children('#status').html('在學');
+                                ta.children('#status').html('在學');
                             } else if (data.status === '2'){
-                                student.children('#status').html('退學');
+                                ta.children('#status').html('退學');
                             } else if (data.status === '3'){
-                                student.children('#status').html('已畢業');
+                                ta.children('#status').html('已畢業');
                             }
 
-                            student.children('#remark').html(data.remark);
+                            ta.children('#remark').html(data.remark);
 
 
                         }

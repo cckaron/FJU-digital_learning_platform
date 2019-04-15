@@ -73,10 +73,10 @@
                                         @foreach($students as $student)
                                             <tr align="center">
                                                 <td id="name">{{ $student->users_name }}</td>
-                                                <td id="id">{{ $student->users_id }}</td>
+                                                <td id="userID">{{ $student->users_id }}</td>
                                                 <td id="department">{{ $student->department }}</td>
                                                 <td id="grade">{{ $student->grade }}</td>
-                                                <td id="class">{{ $student->class }}</td>
+                                                <td id="myclass">{{ $student->class }}</td>
                                                 <td id="phone">{{ $student->user->phone }}</td>
                                                 <td id="email">{{ $student->user->email }}</td>
                                                 <td id="status" data-status="{{ $student->status }}">
@@ -148,7 +148,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>學號</label>
-                                            <input type="text" id="modal_id" name="id" class="form-control" required/>
+                                            <input type="text" id="modal_change_id" name="change_id" class="form-control" required/>
                                         </div>
                                         <div class="form-group">
                                             <label>系所</label>
@@ -186,6 +186,7 @@
 
                                     </div>
                                     <div class="modal-footer">
+                                        <input type="hidden" id="modal_id" name="id" value="" />
                                         <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
                                     </div>
                                 </form>
@@ -427,36 +428,37 @@
         $("#changeModal").on('show.bs.modal', function (e) {
             var button = $(e.relatedTarget);
             var student = button.parent().parent();
-            var common_course_name = student.children('#name').html();
-            var common_course_id = student.children('#id').html();
-            var common_course_department = student.children('#department').html();
-            var common_course_grade = student.children('#grade').html();
-            var common_course_class = student.children('#class').html();
-            var common_course_phone = student.children('#phone').html();
-            var common_course_email = student.children('#email').html();
-            var common_course_status = student.children('#status').attr('data-status');
-            var common_course_remark = student.children('#remark').html();
+            var name = student.children('#name').html();
+            var userID = student.children('#userID').html();
+            var department = student.children('#department').html();
+            var grade = student.children('#grade').html();
+            var myclass = student.children('#myclass').html();
+            var phone = student.children('#phone').html();
+            var email = student.children('#email').html();
+            var status = student.children('#status').attr('data-status');
+            var remark = student.children('#remark').html();
 
-            $('#modal_name').val(common_course_name);
-            $('#modal_id').val(common_course_id);
-            $('#modal_department').val(common_course_department);
-            $('#modal_grade').val(common_course_grade);
-            $('#modal_class').val(common_course_class);
-            $('#modal_phone').val(common_course_phone);
-            $('#modal_email').val(common_course_email);
+            $('#modal_name').val(name);
+            $('#modal_id').val(userID);
+            $('#modal_change_id').val(userID);
+            $('#modal_department').val(department);
+            $('#modal_grade').val(grade);
+            $('#modal_class').val(myclass);
+            $('#modal_phone').val(phone);
+            $('#modal_email').val(email);
 
-            var option = "#modal_status option[value="+common_course_status+"]";
+            var option = "#modal_status option[value="+status+"]";
             $(option).attr('selected', 'selected');
-            $('#modal_status').val(common_course_status);
+            $('#modal_status').val(status);
 
 
-            $('#modal_remark').val(common_course_remark);
+            $('#modal_remark').val(remark);
 
             $(form).off().on('submit', function(event){
                 event.preventDefault();
                 var form_data = $(this).serialize();
                 $.ajax({
-                    url:'{{ route('teacher.changeContent') }}',
+                    url:'{{ route('student.changeContent') }}',
                     method:"POST",
                     data:form_data,
                     dataType:"json",
@@ -475,12 +477,15 @@
                         {
                             $('#form_output').html(data.success);
                             student.children('#name').html(data.name);
-                            student.children('#id').html(data.id);
+                            student.children('#userID').html(data.id);
                             student.children('#department').html(data.department);
                             student.children('#grade').html(data.grade);
-                            student.children('#class').html(data.class);
+                            student.children('#myclass').html(data.class);
                             student.children('#phone').html(data.phone);
                             student.children('#email').html(data.email);
+
+                            //modal's id should be changed after post
+                            $('#modal_id').val(data.id);
 
                             if (data.status === '0'){
                                 student.children('#status').html('休學');

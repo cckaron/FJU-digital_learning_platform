@@ -8,6 +8,7 @@ use App\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class GradeController extends Controller
@@ -181,10 +182,10 @@ class GradeController extends Controller
 
         $assignments_percentage = $request->get('assignmentPercentage');
 
-        $assignments_a4_id = $request->get('assignment_a4_id');
-        $assignments_attendance_id = $request->get('assignment_attendance_id');
-        $assignments_ppt_id = $request->get('assignment_ppt_id');
-        $assignments_word_id = $request->get('assignment_word_id');
+        $assignments_a4_id = $request->get('assignments_a4_id');
+        $assignments_attendance_id = $request->get('assignments_attendance_id');
+        $assignments_ppt_id = $request->get('assignments_ppt_id');
+        $assignments_word_id = $request->get('assignments_word_id');
 
         $error_array = array();
         $success_output = '';
@@ -198,31 +199,24 @@ class GradeController extends Controller
 
             //index 0 是 A4海報
             for($i=0; $i<count($assignments_a4_id); $i++){
-                $percentage_a4 = $assignments_percentage[0];
-                $percentage_attendance = $assignments_percentage[1];
-                $percentage_ppt = $assignments_percentage[2];
-                $percentage_word = $assignments_percentage[3];
 
-                if ($percentage_a4 != null and $percentage_attendance != null and $percentage_ppt != null and $percentage_word != null){
-                    DB::table('assignments')
-                        ->whereIn('id', $assignments_a4_id)
-                        ->update(['percentage' => $assignments_percentage[0]]);
+                DB::table('assignments')
+                    ->whereIn('id', $assignments_a4_id)
+                    ->update(['percentage' => $assignments_percentage[0]]);
 
-                    DB::table('assignments')
-                        ->whereIn('id', $assignments_attendance_id)
-                        ->update(['percentage' => $assignments_percentage[1]]);
+                DB::table('assignments')
+                    ->whereIn('id', $assignments_attendance_id)
+                    ->update(['percentage' => $assignments_percentage[1]]);
 
-                    DB::table('assignments')
-                        ->whereIn('id', $assignments_ppt_id)
-                        ->update(['percentage' => $assignments_percentage[2]]);
+                DB::table('assignments')
+                    ->whereIn('id', $assignments_ppt_id)
+                    ->update(['percentage' => $assignments_percentage[2]]);
 
-                    DB::table('assignments')
-                        ->whereIn('id', $assignments_word_id)
-                        ->update(['percentage' => $assignments_percentage[3]]);
-                    $success_output = '<div class="alert alert-success"> 設定成功！ </div>';
-                } else {
-                    $success_output = '<div class="alert alert-danger"> 錯誤:比率不可為空！ </div>';
-                }
+                DB::table('assignments')
+                    ->whereIn('id', $assignments_word_id)
+                    ->update(['percentage' => $assignments_percentage[3]]);
+                $success_output = '<div class="alert alert-success"> 設定成功！ </div>';
+
             }
         }
         $output = array(

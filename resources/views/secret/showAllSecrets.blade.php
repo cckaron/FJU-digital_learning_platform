@@ -60,7 +60,6 @@
                                             <th>ID</th>
                                             <th>聯絡電話</th>
                                             <th>Email</th>
-                                            <th>狀態</th>
                                             <th>備註</th>
                                             <th>最近更改時間</th>
                                             <th>動作</th>
@@ -69,28 +68,17 @@
                                         <tbody>
                                         @foreach($secrets as $secret)
                                             <tr align="center">
-                                                <td id="name">{{ $secret->users_name }}</td>
-                                                <td id="id">{{ $secret->users_id }}</td>
+                                                <td id="name">{{ $secret->name }}</td>
+                                                <td id="userID">{{ $secret->id }}</td>
                                                 <td id="phone">{{ $secret->phone }}</td>
                                                 <td id="email">{{ $secret->email }}</td>
-                                                <td id="status" data-status="{{ $secret->status }}">
-                                                    @if($secret->status == 1)
-                                                        在學
-                                                    @elseif($secret->status == 2)
-                                                        退學
-                                                    @elseif($secret->status == 3)
-                                                        已畢業
-                                                    @elseif($secret->status == 0)
-                                                        休學
-                                                    @endif
-                                                </td>
                                                 <td id="remark">{{ $secret->remark }}</td>
-                                                <td>{{ $secret->updated_at->diffForHumans() }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($secret->updated_at)->diffForHumans() }}</td>
                                                 <td>
-                                                    <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-id="{{ $secret->users_id }}">
+                                                    <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-id="{{ $secret->id }}">
                                                         編輯
                                                     </button>
-                                                    <a href="{{ route('user.deleteTA', ['id' => $secret->users_id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該學生資料將會一併刪除，確定刪除?')">
+                                                    <a href="{{ route('user.deleteTA', ['id' => $secret->id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該秘書資料將會一併刪除，確定刪除?')">
                                                         刪除
                                                     </a>
                                                 </td>
@@ -99,7 +87,6 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -135,20 +122,8 @@
                                             <input type="text" id="modal_name" name="name" class="form-control" required/>
                                         </div>
                                         <div class="form-group">
-                                            <label>學號</label>
-                                            <input type="text" id="modal_id" name="id" class="form-control" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>系所</label>
-                                            <input type="text" id="modal_department" name="department" class="form-control" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>年級</label>
-                                            <input type="text" id="modal_grade" name="grade" class="form-control" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>班級</label>
-                                            <input type="text" id="modal_class" name="class" required>
+                                            <label>ID</label>
+                                            <input type="text" id="modal_change_id" name="change_id" class="form-control" required/>
                                         </div>
                                         <div class="form-group">
                                             <label>聯絡電話</label>
@@ -158,15 +133,6 @@
                                             <label>Email</label>
                                             <input type="text" id="modal_email" name="email" class="form-control" />
                                         </div>
-                                        <div class="form-group row">
-                                            <label>狀態</label>
-                                            <select id="modal_status" name="status" class="form-control m-t-15" style="height: 36px;width: 100%;" required>
-                                                <option value=0> 休學</option>
-                                                <option value=1> 在學 </option>
-                                                <option value=2> 退學 </option>
-                                                <option value=3> 已畢業 </option>
-                                            </select>
-                                        </div>
                                         <div class="form-group">
                                             <label>備註</label>
                                             <input type="text" id="modal_remark" name="remark" class="form-control"/>
@@ -174,6 +140,7 @@
 
                                     </div>
                                     <div class="modal-footer">
+                                        <input type="hidden" id="modal_id" name="id" value="" />
                                         <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
                                     </div>
                                 </form>
@@ -270,16 +237,13 @@
             autoclose: true,
             todayHighlight: true
         });
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
+
 
     </script>
 
     <script>
 
         var table = $('#zero_config').DataTable({
-            autoWidth: false,
             buttons: [
                 {
                     extend: 'colvis',
@@ -289,7 +253,7 @@
                 },
                 {
                     extend: 'copy',
-                    title: '所有學生',
+                    title: '所有秘書',
                     text: '複製表格內容',
                     exportOptions: {
                         columns: ':visible'
@@ -297,8 +261,8 @@
                 },
                 {
                     extend: 'excelHtml5',
-                    title: '所有學生',
-                    filename: '所有學生',
+                    title: '所有秘書',
+                    filename: '所有秘書',
                     text: '匯出 excel',
                     bom : true,
                     exportOptions: {
@@ -308,13 +272,13 @@
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
                         //modify text in [A1]
-                        $('c[r=A1] t', sheet).text( '所有學生' );
+                        $('c[r=A1] t', sheet).text( '所有秘書' );
                     }
                 },
                 {
                     extend: 'csv',
-                    title: '所有學生',
-                    filename: '所有學生',
+                    title: '所有秘書',
+                    filename: '所有秘書',
                     text: '匯出 csv',
                     exportOptions: {
                         columns: ':visible'
@@ -323,8 +287,8 @@
                 },
                 {
                     extend: 'print',
-                    title: '所有學生',
-                    filename: '所有學生',
+                    title: '所有秘書',
+                    filename: '所有秘書',
                     text: '列印/匯出PDF',
                     exportOptions: {
                         columns: ':visible'
@@ -334,17 +298,7 @@
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
             columnDefs: [
-                { "width": "10%", "targets": 0 },
-                { "width": "10%", "targets": 1 },
-                { "width": "5%", "targets": 2 },
-                { "width": "5%", "targets": 3 },
-                { "width": "5%", "targets": 4 },
-                { "width": "10%", "targets": 5 },
-                { "width": "10%", "targets": 6 },
-                { "width": "5%", "targets": 7 },
-                { "width": "10%", "targets": 8 },
-                { "width": "10%", "targets": 9 },
-                { "width": "20%", "targets": 10 },
+
             ],
             language: {
                 "processing":   "處理中...",
@@ -415,30 +369,25 @@
         $("#changeModal").on('show.bs.modal', function (e) {
             var button = $(e.relatedTarget);
             var student = button.parent().parent();
-            var common_course_name = student.children('#name').html();
-            var common_course_id = student.children('#id').html();
-            var common_course_phone = student.children('#phone').html();
-            var common_course_email = student.children('#email').html();
-            var common_course_status = student.children('#status').attr('data-status');
-            var common_course_remark = student.children('#remark').html();
+            var name = student.children('#name').html();
+            var userID = student.children('#userID').html();
+            var phone = student.children('#phone').html();
+            var email = student.children('#email').html();
+            var remark = student.children('#remark').html();
 
-            $('#modal_name').val(common_course_name);
-            $('#modal_id').val(common_course_id);
-            $('#modal_phone').val(common_course_phone);
-            $('#modal_email').val(common_course_email);
+            $('#modal_name').val(name);
+            $('#modal_id').val(userID);
+            $('#modal_change_id').val(userID);
+            $('#modal_phone').val(phone);
+            $('#modal_email').val(email);
+            $('#modal_remark').val(remark);
 
-            var option = "#modal_status option[value="+common_course_status+"]";
-            $(option).attr('selected', 'selected');
-            $('#modal_status').val(common_course_status);
-
-
-            $('#modal_remark').val(common_course_remark);
 
             $(form).off().on('submit', function(event){
                 event.preventDefault();
                 var form_data = $(this).serialize();
                 $.ajax({
-                    url:'{{ route('teacher.changeContent') }}',
+                    url:'{{ route('secret.changeContent') }}',
                     method:"POST",
                     data:form_data,
                     dataType:"json",
@@ -457,29 +406,17 @@
                         {
                             $('#form_output').html(data.success);
                             student.children('#name').html(data.name);
-                            student.children('#id').html(data.id);
+                            student.children('#userID').html(data.id);
                             student.children('#phone').html(data.phone);
                             student.children('#email').html(data.email);
-
-                            if (data.status === '0'){
-                                student.children('#status').html('休學');
-                            } else if (data.status === '1' ){
-                                student.children('#status').html('在學');
-                            } else if (data.status === '2'){
-                                student.children('#status').html('退學');
-                            } else if (data.status === '3'){
-                                student.children('#status').html('已畢業');
-                            }
-
                             student.children('#remark').html(data.remark);
 
-
+                            //modal's id should be changed after post
+                            $('#modal_id').val(data.id);
                         }
                     }
                 })
             });
         });
-
-
     </script>
 @endsection
