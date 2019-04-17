@@ -84,50 +84,128 @@ class AnnouncementController extends Controller
                 'updated_at' => Carbon::now()
             ]);
 
-        foreach ($files as $file){
-            $filename = $file->getClientOriginalName();
-            $filepath = 'sys_announcement/'.$sys_announcementID;
+        if ($files){
+            foreach ($files as $file){
+                $filename = $file->getClientOriginalName();
+                $filepath = 'sys_announcement/'.$sys_announcementID;
 
-            $filename = str_replace(' ', '_', $filename);
-            //this line is really important!!!!!!!!!!!!!!
-            setlocale(LC_ALL,'en_US.UTF-8');
+                $filename = str_replace(' ', '_', $filename);
+                //this line is really important!!!!!!!!!!!!!!
+                setlocale(LC_ALL,'en_US.UTF-8');
 
-            Storage::disk('public')->putFileAs(
-                $filepath, $file, $filename
-            );
+                Storage::disk('public')->putFileAs(
+                    $filepath, $file, $filename
+                );
+            }
         }
 
         return redirect()->back()->with('message', '發佈公告成功!');
     }
 
+    public function getShowSystemAnnouncement(){
+        //系統公告
+        $sys_announcements = DB::table('system_announcement')
+            ->orderBy('priority')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(5);
 
-    public function deleteAttachment(Request $request){
-        $student_id = Auth::user()->id;
-        $student_assignment_id = $request->get('student_assignment_id');
+        return view('announcement.showSystemAnnouncement', [
+            'sys_announcements' => $sys_announcements,
+        ]);
+    }
 
-        $assignment_id = DB::table('student_assignment')
-            ->where('id', $student_assignment_id)
-            ->value('assignments_id');
+    public function getDeleteSystemAnnouncement($id){
+        DB::table('system_announcement')
+            ->where('id', $id)
+            ->delete();
+
+        $filepath = 'public/sys_announcement/'.$id;
+        Storage::deleteDirectory($filepath);
+
+        return redirect()->back()->with('message', '刪除成功!');
+    }
+
+    public function getEditSystemAnnouncement($id){
+        $system_announcement = DB::table('system_announcement')
+            ->where('id', $id)
+            ->first();
+        //get file detail
+
+        $path = 'public/sys_announcement/'.$id;
+        $filepaths = Storage::allFiles($path);
+
+        $filenames = array();
+
+        $filesizes = array();
+
+        //this line is really important!!!!!!!!!!!!!!
+        setlocale(LC_ALL,'en_US.UTF-8');
+
+        for($i=0; $i<count($filepaths); $i++){
+            $filenames[$i] = basename($filepaths[$i]);
+            $filesizes[$i] = Storage::size($filepaths[$i]);
+        }
+
+        $files = array(
+            'filepaths' => $filepaths,
+            'filenames' => $filenames,
+            'filesizes' => $filesizes,
+        );
+
+        return view('announcement.editSystemAnnouncement', [
+            'files' => $files,
+            'system_announcement' => $system_announcement
+        ]);
+    }
+
+    public function postEditSystemAnnouncement(Request $request)
+    {
+        $request->validate([
+        ]);
+
+
+        $id = $request->get('announcement_id');
+        $files = $request->file('file'); //default file name from request is "file"
+
+        DB::table('system_announcement')
+            ->where('id', $id)
+            ->update([
+                'title' => $request->input('announcementTitle'),
+                'content' => $request->input('announcementContent'),
+                'priority' => $request->input('topPost') ? 0 : 1, // if topPost == true, set 0, or set 1
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+        if ($files){
+            foreach ($files as $file){
+                $filename = $file->getClientOriginalName();
+                $filepath = 'sys_announcement/'.$id;
+
+                $filename = str_replace(' ', '_', $filename);
+                //this line is really important!!!!!!!!!!!!!!
+                setlocale(LC_ALL,'en_US.UTF-8');
+
+                Storage::disk('public')->putFileAs(
+                    $filepath, $file, $filename
+                );
+            }
+        }
+
+        return redirect()->back()->with('message', '修改公告成功!');
+    }
+
+    public function getDeleteAttachment(Request $request){
+        $announcement_id = $request->get('announcement_id');
 
         $filename = $request->get('filename');
 
-        $filepath = 'public/'.$student_id.'/'.$assignment_id.'/'.$filename;
+        $filepath = 'public/sys_announcement/'.$announcement_id.'/'.$filename;
 
         Storage::delete($filepath);
 
-        $files = Storage::files('public/'.$student_id.'/'.$assignment_id);
-
-        //如果資料夾內沒有檔案，將作業狀態更改為 1 => 未繳交
-        if (empty($files)){
-            DB::table('student_assignment')
-                ->where('id', $student_assignment_id)
-                ->update(['status' => 1]);
-        }
-
-
         $output = array(
             'filepath' => $filepath,
-            'student_assignment_id' => $student_assignment_id,
         );
 
         echo json_encode($output);

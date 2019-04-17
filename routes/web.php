@@ -240,16 +240,53 @@ Route::group(['prefix' => 'secret', 'middleware' => 'auth'], function() {
 
 //管理員 (type = 0)
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
+    //公告
+    Route::group(['prefix' => 'announcement', 'middleware' => 'auth'], function(){
+        //新增
+        Route::get('/create', [
+            'uses' => 'AnnouncementController@getCreateSystemAnnouncement',
+            'as' => 'admin.announcement.create'
+        ]);
 
-    Route::get('announcement', [
-        'uses' => 'AnnouncementController@getCreateSystemAnnouncement',
-        'as' => 'admin.announcement.create'
-    ]);
+        //新增(post)
+        Route::post('/create', [
+            'uses' => 'AnnouncementController@postCreateSystemAnnouncement',
+            'as' => 'admin.announcement.create'
+        ]);
 
-    Route::post('announcement', [
-        'uses' => 'AnnouncementController@postCreateSystemAnnouncement',
-        'as' => 'admin.announcement.create'
-    ]);
+        //編輯
+        Route::get('/edit/{id}', [
+           'uses' => 'AnnouncementController@getEditSystemAnnouncement',
+           'as' => 'admin.announcement.edit'
+        ]);
+
+        Route::post('/edit/{id}', [
+            'uses' => 'AnnouncementController@postEditSystemAnnouncement',
+            'as' => 'admin.announcement.edit'
+        ]);
+
+        //刪除
+        Route::get('delete/{id}', [
+            'uses' => 'AnnouncementController@getDeleteSystemAnnouncement',
+            'as' => 'admin.announcement.delete'
+        ]);
+
+        //刪除檔案
+        Route::post('/delete/attachment', [
+            'uses' => 'AnnouncementController@getDeleteAttachment',
+            'as' => 'admin.announcement.deleteAttachment'
+        ]);
+
+        //列出
+        Route::get('/', [
+            'uses' => 'AnnouncementController@getShowSystemAnnouncement',
+            'as' => 'admin.announcement.show'
+        ]);
+
+
+
+    });
+
 
     //共同課程
     Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){

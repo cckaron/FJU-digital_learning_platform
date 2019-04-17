@@ -8,6 +8,16 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav" class="p-t-30">
 
+                <!-- 公告 -->
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 公告 </span></a>
+                    <ul aria-expanded="false" class="collapse  first-level">
+                        @if(Auth::user()->type == 0)
+                            <li class="sidebar-item"><a href="{{ route('admin.announcement.show') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有系統公告 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('admin.announcement.create') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增系統公告 </span></a></li>
+                        @endif
+                    </ul>
+                </li>
+
                 <!-- 共同課程 -->
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 共同課程 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">

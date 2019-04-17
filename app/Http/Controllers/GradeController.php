@@ -46,26 +46,24 @@ class GradeController extends Controller
 
         $student_assignments = collect();
         $assignments = collect();
-
-
+        $student_course_final_score = collect();
 
         foreach($students as $key=> $student){
             $student_assignment = $student->assignment()
                 ->withPivot(['score', 'comment'])
-                ->orderBy('name')
+                ->join('courses', 'courses.id', '=', 'assignments.courses_id')
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
                 ->select('assignments.id as assignment_id',
                     'assignments.name as name',
                     'assignments.percentage as percentage',
+                    'courses.id as course_id',
                     'student_assignment.score as score',
                     'student_assignment.comment as comment')
-                ->where('assignments.status', 1)
+                ->where('common_courses.status', 1)
+                ->orderBy('name')
                 ->get();
 
             $accumulated_score = 0;
-
-            $student_assignment = $student_assignment->unique('assignment_id');
-//            dd($student_assignment);
-
 
             foreach ($student_assignment as $key2 => $assignment){
 
@@ -94,6 +92,14 @@ class GradeController extends Controller
 
             $student_assignments->push($student_assignment);
 
+            //取得final score
+            $final_score = DB::table('student_course')
+                ->where('students_id', $student->users_id)
+                ->where('courses_id', $student_assignment[0]->course_id)
+                ->value('final_score');
+
+            $student_course_final_score->push($final_score);
+
         }
 
         return view('grade.gradelist', [
@@ -102,6 +108,7 @@ class GradeController extends Controller
             'assignments' => $assignments,
             'students' => $students,
             'student_assignments' => $student_assignments,
+            'student_course_final_score' => $student_course_final_score,
         ]);
     }
 

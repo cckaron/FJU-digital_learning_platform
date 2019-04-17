@@ -30,7 +30,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '新增公告'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '編輯公告'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -40,7 +40,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
 
-                <form action="{{ route('admin.announcement.create') }}" method="post" id="createAnnouncement" enctype="multipart/form-data">
+                <form action="{{ route('admin.announcement.edit', ['id' => $system_announcement->id]) }}" method="post" id="createAnnouncement" enctype="multipart/form-data">
 
                     <!-- editor -->
                     <div class="row">
@@ -62,12 +62,13 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-body">
-                                    {{--{{ $courses }}--}}
+
+                                    <input hidden name="announcement_id" value="{{ $system_announcement->id }}"/>
 
                                     <div class="form-group row">
                                         <label class="col-md-3" for="announcementTitle">公告標題</label>
                                         <div class="col-md-9">
-                                            <input type="text" id="announcementTitle" class="form-control" placeholder="標題" name="announcementTitle" required>
+                                            <input type="text" id="announcementTitle" class="form-control" placeholder="標題" name="announcementTitle" value="{{ $system_announcement->title }}" required>
                                         </div>
                                     </div>
 
@@ -75,7 +76,7 @@
                                         <label class="col-md-3 m-t-10" for="announcementContent">公告內容</label>
                                         <div class="col-md-8">
                                             <div id="editor" style="height: 300px;">
-
+                                                {{ $system_announcement->id }}
                                             </div>
 
                                             <textarea id="announcementContent" name="announcementContent" hidden>  </textarea>
@@ -177,7 +178,7 @@
 
         var mydropZone = new Dropzone("#my_awesome_dropzone", {
             // The configuration we've talked about above
-            url: '{{ route('admin.announcement.create') }}',
+            url: '{{ route('admin.announcement.edit', ['id' => $system_announcement->id]) }}',
             method: 'POST',
             autoProcessQueue: false,
             parallelUploads: 10,
@@ -190,9 +191,7 @@
 
             init: function () {
                 $("#btn-sendForm").click(function (e) {
-                    // if (! $("#btn-sendForm").valid()) {
-                    //     return false;
-                    // }
+
                     if (!mydropZone.files || !mydropZone.files.length) {
                         var myEditor = document.querySelector('#editor');
                         var html = myEditor.children[0].innerHTML;
@@ -204,6 +203,8 @@
 
                         mydropZone.processQueue();
                     }
+
+
                 });
 
 
@@ -215,10 +216,65 @@
 
                     // Append all form inputs to the formData Dropzone will POST
                     var data = $('#createAnnouncement').serializeArray();
+                    console.log(data);
                     $.each(data, function(key, el) {
                         formData.append(el.name, el.value);
                     });
                 });
+
+                //show the file
+                var filepaths = {!! json_encode($files["filepaths"])  !!};
+                var filenames = {!! json_encode($files["filenames"])  !!};
+                var filesizes = {!! json_encode($files["filesizes"])  !!};
+
+                for(var i=0; i<filepaths.length; i++){
+                    var filepath = filepaths[i];
+
+                    var pathArray = filepath.split('/');
+
+
+                    //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
+                    var a = document.createElement('a');
+
+                    a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
+                    a.setAttribute('class',"dz-remove");
+                    // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
+                    a.innerHTML = "下載";
+
+                    this.on("complete", function(file){
+
+                        file.previewTemplate.appendChild(a);
+
+                        // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                    });
+
+                    var mockFile = { name: filenames[i], size: filesizes[i] };
+                    this.files.push(mockFile);
+                    this.emit('addedfile', mockFile);
+                    this.createThumbnailFromUrl(mockFile, mockFile.url);
+                    this.emit('complete', mockFile);
+                    this._updateMaxFilesReachedClass();
+                }
+            },
+            removedfile: function(file){
+                var filename = file.name;
+                console.log(filename);
+                var announcement_id = $('input[name=announcement_id]').val();
+                $.ajax({
+                    url:'{{ route('admin.announcement.deleteAttachment') }}',
+                    method:'POST',
+                    data:{
+                        'filename': filename,
+                        'announcement_id': announcement_id,
+                    },
+                    dataType:'json',
+                    success:function(data)
+                    {
+                        console.log(data.path);
+                    }
+                });
+                var _ref;
+                return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
             },
             success: function(){
                 this.options['dictRemoveFile'] = "";
@@ -227,6 +283,7 @@
         });
 
     </script>
+
 
     <script>
         //***********************************//
@@ -287,6 +344,12 @@
 
     </script>
 
-
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 
 @endsection

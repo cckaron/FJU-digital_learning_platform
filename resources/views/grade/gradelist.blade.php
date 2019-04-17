@@ -136,7 +136,7 @@
                                                             @endif
                                                         </td>
 
-                                                        <td></td>
+                                                        <td>{{ $student_course_final_score[$key] }}</td>
                                                         <td>{{ $student_assignment->comment }}</td>
                                                     @endif
                                                 @endforeach
@@ -394,13 +394,13 @@
                         $(modal).modal('show');
                     }
                 },
-                {
-                    text: '成績比率設定',
-                    action: function ( e, dt, node, config ) {
-                        var modal = '#updatePercentageModal';
-                        $(modal).modal('show');
-                    }
-                }
+                // {
+                //     text: '成績比率設定',
+                //     action: function ( e, dt, node, config ) {
+                //         var modal = '#updatePercentageModal';
+                //         $(modal).modal('show');
+                //     }
+                // }
 
             ],
             dom: 'lBfrtip',

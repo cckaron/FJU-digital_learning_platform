@@ -112,8 +112,9 @@
                                             <th>作業名稱</th>
                                             <th>姓名</th>
                                             <th>學號</th>
-                                            <th>分數</th>
                                             <th>主題</th>
+                                            <th>分數</th>
+                                            <th>評語</th>
                                             <th>附檔</th>
                                             <th>上傳時間</th>
                                         </tr>
@@ -127,8 +128,9 @@
                                                             {{--<span class="badge badge-pill badge-info float-left"  style="font-size: 100%;">--}}
                                                                 {{--尚未批改--}}
                                                             {{--</span>--}}
-                                                            <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
-                                                            <input hidden id="student_assignment_id_{{ $i }}" value="{{ $student_assignments_id[$i] }}"/>
+                                                            <button name="add" data-toggle="modal" data-target="#correctModal" type="submit" class="btn-href" style="color:blue" data-student-assignment-id="{{ $student_assignments_id[$i] }}">
+                                                                <i class="fas fa-pencil-alt"></i><b id="bold_recorrect"> 批改</b>
+                                                            </button>
                                                         </td>
                                                     @else
                                                         <td>
@@ -153,9 +155,9 @@
                                                                         <span class="badge badge-pill badge-primary m-b-5"  style="font-size: 100%;">
                                                                             已批改
                                                                         </span>
-
+                                                                        <br>
                                                                         <a id="rehandIn" class="btn-href" onclick="return confirm('確定開放重繳作業?')" href="{{ route('assignment.openHandInAssignment', ['student_assignment_id' => $student_assignments_id[$i]]) }}">
-                                                                                <i class="fas fa-times"></i> <b id="bold_rehandIn">要求重繳</b>
+                                                                                <b id="bold_rehandIn">要求重繳</b>
                                                                         </a>
                                                                     @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 補繳中--}}
                                                                         <!-- It should not be happened-->
@@ -223,8 +225,9 @@
                                                                 @endif
                                                             </span>
                                                             <span>
+                                                                <br>
                                                                 <button name="add" data-toggle="modal" data-target="#correctModal" type="submit" class="btn-href" style="color:blue" data-student-assignment-id="{{ $student_assignments_id[$i] }}">
-                                                                    <i class="fas fa-pencil-alt"></i><b id="bold_recorrect"> 重新批改</b>
+                                                                    <b id="bold_recorrect"> 重新批改</b>
                                                                 </button>
                                                             </span>
 
@@ -286,17 +289,19 @@
                                                     <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student_ids[$i]]) }}">{{ $student_names[$i] }}</a></td>
                                                 <td>{{ $student_ids[$i] }}</td>
 
-                                                <td id="score">
-                                                    @if($scores[$i] < 60)
-                                                        <span style="color:red; font-size: 20px;">{{ $scores[$i] }}</span>
-                                                    @elseif($scores[$i] >= 60)
-                                                        <span style="color:blue; font-size: 20px;"> {{ $scores[$i] }}</span>
-                                                    @endif
+                                                    <td>
+                                                        {!! $titles[$i] !!}
+                                                    </td>
+
+                                                <td id="score" style="color:@if($scores[$i] < 60) red @else blue @endif; font-size: 18px;">
+                                                    {{ $scores[$i] }}
                                                 </td>
 
-                                                <td>
-                                                    {!! $remark[$i] !!}
+                                                <td id="comment" style="color:black; font-size: 18px;">
+                                                    {!! $comments[$i] !!}
                                                 </td>
+
+
                                                 <td>
                                                     @if(count($file_names[$i]) != 0)
                                                         @for($k=0; $k< count($file_names[$i]); $k++)
@@ -325,6 +330,7 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -333,7 +339,7 @@
                                 <!-- start ajax correct assignment window-->
                                 <div id="correctModal" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
-                                        <div class="modal-content">
+                                        <div class="modal-content" style="width: 400px">
                                             <form method="post" id="correct_form">
                                                 <div class="modal-header">
                                                     <h4 class="modal-title">批改作業</h4>
@@ -344,13 +350,13 @@
                                                 <div class="modal-body">
                                                     {{ csrf_field() }}
                                                     <span id="form_output"></span>
-                                                    <div class="form-group">
+                                                    <div class="form-group col-md-6">
                                                         <label>分數</label>
-                                                        <input type="text" name="score" class="form-control"/>
+                                                        <input type="number" step="0.01" id="modal_score" name="score" class="form-control"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>教師評語</label>
-                                                        <input type="text" name="comment" class="form-control"/>
+                                                        <textarea cols="40"id="modal_comment" rows="5" name="comment" class="form-control"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -472,7 +478,14 @@
         $("#correctModal").on('show.bs.modal', function (e) {
             var button = $(e.relatedTarget);
             var student_assignment_id = button.data('student-assignment-id');
+            var student_assignment = button.parent().parent().parent();
+
+            var score = student_assignment.children('#score').text().trim();
+            var comment = student_assignment.children('#comment').text().trim();
+
             $('#student_assignment_id').val(student_assignment_id);
+            $('#modal_score').val(score);
+            $('#modal_comment').val(comment);
 
             if (document.getElementById(button)){
                 document.getElementById(button).innerText = "請重新整理頁面"
@@ -503,7 +516,8 @@
                         {
                             $('#form_output').html(data.success);
                             button.children("#bold_recorrect").html('<span style="color:green">批改成功!</span>');
-                            button.closest('td').siblings('#score').html('<span style="color:black; font-size: 20px;">'+data.score+'</span>')
+                            button.closest('td').siblings('#score').html('<span style="color:gray; font-size: 20px;">'+data.score+'</span>')
+                            button.closest('td').siblings('#comment').html('<span style="color:gray; font-size: 20px;">'+data.comment+'</span>')
                         }
                     }
                 })
@@ -600,15 +614,16 @@
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
             columnDefs: [
-                { "width": "15%", "targets": 0 },
-                { "width": "10%", "targets": 1 },
+                { "width": "10%", "targets": 0 },
+                { "width": "5%", "targets": 1 },
                 { "width": "10%", "targets": 2 },
-                { "width": "10%", "targets": 3 },
+                { "width": "5%", "targets": 3 },
                 { "width": "10%", "targets": 4 },
                 { "width": "10%", "targets": 5 },
                 { "width": "10%", "targets": 6 },
-                { "width": "20%", "targets": 7 },
-                { "width": "10%", "targets": 8 }
+                { "width": "10%", "targets": 7 },
+                { "width": "10%", "targets": 8 },
+                { "width": "10%", "targets": 9 }
 
             ],
             language: {

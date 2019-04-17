@@ -1255,21 +1255,24 @@ class AssignmentController extends Controller
 
         $student_ids = array();
         $scores = array();
-        $remarks = array();
+        $titles = array();
         $updated_at = array();
+        $comments = array();
 
         foreach($student_assignments as $student_assignment){
             array_push($student_ids, $student_assignment->pluck('students_id')->toArray());
             array_push($scores, $student_assignment->pluck('score')->toArray());
-            array_push($remarks, $student_assignment->pluck('title')->toArray());
+            array_push($titles, $student_assignment->pluck('title')->toArray());
             array_push($updated_at, $student_assignment->pluck('updated_at')->toArray());
+            array_push($comments, $student_assignment->pluck('comment')->toArray());
         }
 
         //flatten the 2-dimensional array to 1-dimensional array
         $student_ids = call_user_func_array('array_merge', $student_ids);
         $scores = call_user_func_array('array_merge', $scores);
-        $remarks = call_user_func_array('array_merge', $remarks);
+        $titles = call_user_func_array('array_merge', $titles);
         $updated_at = call_user_func_array('array_merge', $updated_at);
+        $comments = call_user_func_array('array_merge', $comments);
 
 
         for ($i=0; $i< count($updated_at); $i++){
@@ -1352,7 +1355,7 @@ class AssignmentController extends Controller
             'student_assignments_id' => $student_assignments_id,
             'student_ids' => $student_ids,
             'scores' => $scores,
-            'remark' => $remarks,
+            'titles' => $titles,
             'updated_at' => $updated_at,
             'student_names' => $student_names,
             'file_names' => $file_names,
@@ -1363,6 +1366,7 @@ class AssignmentController extends Controller
             'all' => $all,
             'teacher' => $teacher,
             'courses' => $courses,
+            'comments' => $comments,
             'assignments' => $assignments,
             'assignments_id' => $assignments_id,
             'common_courses_name' => $common_courses_name,
@@ -1620,10 +1624,11 @@ class AssignmentController extends Controller
 
     public function correctAssignment(Request $request){
         $validation = Validator::make($request->all(), [
-            'score' => 'Integer',
+            'score' => 'Integer|between:0, 100',
         ]);
 
         $score = $request->get('score');
+        $comment = $request->get('comment');
 
         $error_array = array();
         $success_output = '';
@@ -1636,13 +1641,14 @@ class AssignmentController extends Controller
             $student_assignment_id = $request->get('student_assignment_id');
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
-                ->update(['score' => $score, 'comment' =>$request->get('comment'), 'status' => 3]);
+                ->update(['score' => $score, 'comment' => $comment, 'status' => 3]);
             $success_output = '<div class="alert alert-success"> 批改成功！ </div>';
         }
         $output = array(
             'error' => $error_array,
             'success' => $success_output,
             'score' => $score,
+            'comment' => $comment,
         );
         echo json_encode($output);
     }
