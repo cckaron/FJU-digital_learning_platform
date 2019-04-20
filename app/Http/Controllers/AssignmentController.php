@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\common_course;
 use App\Course;
+use App\Student;
 use App\Teacher;
 use App\teacher_course;
 use App\User;
@@ -21,6 +22,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
 {
+
+    //新增刪除
     public function getCreateAssignment(){
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
         //取得該課程ID
@@ -283,6 +286,8 @@ class AssignmentController extends Controller
         return redirect()->back()->with('message', '新增作業成功！');
     }
 
+
+    //列出
     public function getAllAssignments(){
 
         $assignments = Course::with('assignment')
@@ -305,37 +310,78 @@ class AssignmentController extends Controller
         $assignments_adjust = Course::with('assignment')
             ->join('assignments', 'courses.id', 'assignments.courses_id')
             ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
-            ->select('assignments.*')
+            ->select('assignments.*', 'common_courses.year as year', 'common_courses.semester as semester')
             ->where('common_courses.status', 1)
             ->get();
 
+        //for getting the detail of course
+        $assignments_first = Course::with('assignment')
+            ->join('assignments', 'courses.id', 'assignments.courses_id')
+            ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
+            ->select('assignments.*', 'common_courses.year as year', 'common_courses.semester as semester')
+            ->where('common_courses.status', 1)
+            ->first();
+
+        $year = $assignments_first->year;
+        $semester = $assignments_first->semester;
+
+
+
         $assignments_a4 = collect();
         $assignments_attendance = collect();
+        $assignments_classParticipation = collect();
         $assignments_ppt = collect();
         $assignments_word = collect();
         $assignments_a4_id = array();
         $assignments_attendance_id = array();
+        $assignments_classParticipation_id = array();
         $assignments_ppt_id = array();
         $assignments_word_id = array();
 
-        foreach($assignments_adjust as $key => $assignment){
+        //107 年 第1學期只有四個作業
+        if ($year == 107 and $semester == 1){
+            foreach($assignments_adjust as $key => $assignment){
 
-            //get the id of each homework
-            //not include teacher's custom homework ex. 課堂作業
-            if ($assignment->name == 'A4海報'){
-                $assignments_a4->push($assignment);
-                array_push($assignments_a4_id, $assignment->id);
-            } else if ($assignment->name == '上課出席'){
-                $assignments_attendance->push($assignment);
-                array_push($assignments_attendance_id, $assignment->id);
+                //get the id of each homework
+                //not include teacher's custom homework ex. 課堂作業
+                if ($assignment->name == 'A4海報'){
+                    $assignments_a4->push($assignment);
+                    array_push($assignments_a4_id, $assignment->id);
+                } else if ($assignment->name == '上課出席'){
+                    $assignments_attendance->push($assignment);
+                    array_push($assignments_attendance_id, $assignment->id);
 
-            } else if ($assignment->name == '口頭報告與PPT'){
-                $assignments_ppt->push($assignment);
-                array_push($assignments_ppt_id, $assignment->id);
+                } else if ($assignment->name == '口頭報告與PPT'){
+                    $assignments_ppt->push($assignment);
+                    array_push($assignments_ppt_id, $assignment->id);
 
-            } else if ($assignment->name == '書面報告Word'){
-                $assignments_word->push($assignment);
-                array_push($assignments_word_id, $assignment->id);
+                } else if ($assignment->name == '書面報告Word'){
+                    $assignments_word->push($assignment);
+                    array_push($assignments_word_id, $assignment->id);
+                }
+            }
+        } else {
+            foreach($assignments_adjust as $key => $assignment){
+
+                //get the id of each homework
+                //not include teacher's custom homework ex. 課堂作業
+                if ($assignment->name == 'A4海報'){
+                    $assignments_a4->push($assignment);
+                    array_push($assignments_a4_id, $assignment->id);
+                } else if ($assignment->name == '上課出席'){
+                    $assignments_attendance->push($assignment);
+                    array_push($assignments_attendance_id, $assignment->id);
+                } else if ($assignment->name == '課堂參與'){
+                    $assignments_classParticipation->push($assignment);
+                    array_push($assignments_classParticipation_id, $assignment->id);
+                } else if ($assignment->name == '口頭報告與PPT'){
+                    $assignments_ppt->push($assignment);
+                    array_push($assignments_ppt_id, $assignment->id);
+
+                } else if ($assignment->name == '書面報告Word'){
+                    $assignments_word->push($assignment);
+                    array_push($assignments_word_id, $assignment->id);
+                }
             }
         }
 
@@ -344,12 +390,17 @@ class AssignmentController extends Controller
             'assignments' => $assignments,
             'assignments_a4' => $assignments_a4,
             'assignments_attendance' => $assignments_attendance,
+            'assignments_classParticipation' => $assignments_classParticipation,
             'assignments_ppt' => $assignments_ppt,
             'assignments_word' => $assignments_word,
             'assignments_a4_id' => $assignments_a4_id,
             'assignments_attendance_id' => $assignments_attendance_id,
+            'assignments_classParticipation_id' => $assignments_classParticipation_id,
             'assignments_ppt_id' => $assignments_ppt_id,
             'assignments_word_id' => $assignments_word_id,
+
+            'year' => $year,
+            'semester' => $semester,
         ]);
     }
 
@@ -1039,6 +1090,62 @@ class AssignmentController extends Controller
         ]);
     }
 
+    public function getCourseAssignments_Student($courses_id){
+
+        $encode_course_id = new Hashids('courses_id', 7);
+        $courses_id = $encode_course_id->decode($courses_id);
+
+        $student = Student::where('users_id', Auth::user()->id)->first();
+
+        $assignments_processing = $student->assignment()
+            ->withPivot(['score', 'comment'])
+            ->join('courses', 'courses.id', '=', 'assignments.courses_id')
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('common_courses.year as year', 'common_courses.semester as semester',
+                'common_courses.name as common_course_name', 'courses.name as course_name',
+                'courses.id as course_id', 'assignments.id as assignment_id', 'assignments.name as assignment_name',
+                'assignments.status as assignment_status', 'student_assignment.score as score',
+                'assignments.end_date as end_date', 'assignments.end_time as end_time')
+            ->where('assignments.status', 1)
+            ->where('courses.id', $courses_id)
+            ->get();
+
+        $assignments_finished = $student->assignment()
+            ->withPivot(['score', 'comment'])
+            ->join('courses', 'courses.id', '=', 'assignments.courses_id')
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('common_courses.year as year', 'common_courses.semester as semester',
+                'common_courses.name as common_course_name', 'courses.name as course_name',
+                'courses.id as course_id', 'assignments.id as assignment_id', 'assignments.name as assignment_name',
+                'assignments.status as assignment_status', 'student_assignment.score as score',
+                'assignments.end_date as end_date', 'assignments.end_time as end_time')
+            ->where('assignments.status', 0)
+            ->where('courses.id', $courses_id)
+            ->get();
+
+        foreach($assignments_processing as $assignment){
+            $hashids_assignment = new Hashids('assignment_id', 10);
+            $hashids_course = new Hashids('course_id', 6);
+
+            $assignment->assignment_id = $hashids_assignment->encode($assignment->assignment_id);
+            $assignment->course_id = $hashids_course->encode($assignment->course_id);
+        }
+
+        foreach($assignments_finished as $assignment){
+            $hashids_assignment = new Hashids('assignment_id', 10);
+            $hashids_course = new Hashids('course_id', 6);
+
+            $assignment->assignment_id = $hashids_assignment->encode($assignment->assignment_id);
+            $assignment->course_id = $hashids_course->encode($assignment->course_id);
+        }
+
+
+        return view('assignment.showCourseAssignments_Student', [
+            'assignments_processing' => $assignments_processing,
+            'assignments_finished' => $assignments_finished,
+        ]);
+    }
+
     public function getStudentAssignmentsList($course_id, $assignment_id){
         $encode_course_id = new Hashids('course_id', 6);
         $encode_assignment_id = new Hashids('assignment_id', 10);
@@ -1160,6 +1267,7 @@ class AssignmentController extends Controller
             ->make(true);
     }
 
+    //批改
     public function getCorrectAssignment(){
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
 
@@ -1181,7 +1289,7 @@ class AssignmentController extends Controller
 
         //if assignment is empty, redirect back
         if ($assignments->isEmpty()){
-            return redirect()->back()->with(['message' => '沒有進行中的作業']);
+            return redirect()->back()->with(['message' => '當學期沒有進行中的作業']);
         }
 
         //pluck assignment_id
@@ -1506,6 +1614,8 @@ class AssignmentController extends Controller
         return redirect()->back()->with('message', '繳交作業成功！');
     }
 
+
+    //上傳
     public function uploadAssignment(Request $request){
         $student_id = Auth::user()->id;
         $student_assignment_id = $request->input('student_assignment_id');

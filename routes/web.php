@@ -33,7 +33,18 @@ Route::post('/signIn', [
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function(){
+    Route::get('/update', [
+        'uses' => 'ProfileController@getUpdateProfile',
+        'as' => 'profile.update'
+    ]);
 
+    Route::post('/update', [
+        'uses' => 'ProfileController@postUpdateProfile',
+        'as' => 'profile.update'
+    ]);
+
+});
 
 //使用者共用route
 Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
@@ -90,6 +101,16 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
         'as' => 'index.student'
     ]);
 
+    //課程
+    Route::group(['prefix' => 'course', 'middleware' => 'auth'], function(){
+
+        //列出 (get)
+        Route::get('/', [
+            'uses' => 'CourseController@getShowCourses_Student',
+            'as' => 'student.showCourses'
+        ]);
+    });
+
     //作業
     Route::group(['prefix' => 'assignments', 'middleware' => 'auth'], function(){
 
@@ -97,6 +118,12 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
         Route::get('/', [
             'uses' => 'AssignmentController@getAssignments',
             'as' => 'assignment.showAssignments'
+        ]);
+
+        //列出單一課程中的作業(get)
+        Route::get('courses/{courses_id}/assignments/', [
+            'uses' => 'AssignmentController@getCourseAssignments_Student',
+            'as' => 'courses.showCourseAssignments_Student'
         ]);
     });
 

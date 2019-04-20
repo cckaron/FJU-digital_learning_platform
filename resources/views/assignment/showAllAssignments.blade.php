@@ -137,11 +137,23 @@
                                     <div class="modal-body">
                                         {{ csrf_field() }}
                                         <span id="form_output"></span>
-                                        @php($availPercentage = $assignments_a4[0]->percentage +
-                                        $assignments_attendance[0]->percentage +
-                                        $assignments_ppt[0]->percentage +
-                                        $assignments_word[0]->percentage
-                                        )
+                                        @if ($year == 107 and $semester == 1)
+                                            @php(
+                                                $availPercentage = $assignments_a4[0]->percentage +
+                                                $assignments_attendance[0]->percentage +
+                                                $assignments_ppt[0]->percentage +
+                                                $assignments_word[0]->percentage
+                                            )
+
+                                        @else
+                                            @php(
+                                                $availPercentage = $assignments_a4[0]->percentage +
+                                                $assignments_attendance[0]->percentage +
+                                                $assignments_classParticipation[0]->percentage+
+                                                $assignments_ppt[0]->percentage +
+                                                $assignments_word[0]->percentage
+                                            )
+                                        @endif
                                         <p>總成績比率 {{ $availPercentage }}% (目前可分配的比率為 {{ 100-$availPercentage }}%)</p>
                                         <div class="form-group row" >
                                             <label class="col-md-3 m-t-9" for="userAccount">{{ $assignments_a4[0]->name }}</label>
@@ -201,10 +213,27 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if($year == 107 and $semester == 1)
+                                        @else
+                                            <div class="form-group row" >
+                                                <label class="col-md-3 m-t-9" for="userAccount">{{ $assignments_classParticipation[0]->name }}</label>
+                                                <div class="col-md-5">
+                                                    <div class="input-group mb-3">
+                                                        <input type="number" step="0.01" class="form-control" value="{{ $assignments_classParticipation[0]->percentage }}" name="assignmentPercentage[]">
+                                                        @foreach($assignments_classParticipation_id as $value)
+                                                            <input type="hidden" name="assignments_classParticipation_id[]" value="{{ $value }}" required>
+                                                        @endforeach
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="modal-footer">
-                                        <input type="hidden" name="student_assignment_id" id="student_assignment_id" value="" />
-                                        {{--<button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">關閉</button>--}}
+                                        <input type="hidden" name="year" value="{{ $year }}" />
+                                        <input type="hidden" name="semester" value="{{ $semester }}" />
                                         <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
                                     </div>
                                 </form>

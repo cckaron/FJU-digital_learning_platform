@@ -9,6 +9,7 @@
             <ul id="sidebarnav" class="p-t-30">
 
                 <!-- 公告 -->
+                @if(Auth::user()->type == 0 and Auth::user()->type == 1 and Auth::user()->type == 2)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 公告 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         @if(Auth::user()->type == 0)
@@ -17,8 +18,10 @@
                         @endif
                     </ul>
                 </li>
+                @endif
 
                 <!-- 共同課程 -->
+                @if(Auth::user()->type == 0 or Auth::user()->type == 1 or Auth::user()->type == 2)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 共同課程 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         @if(Auth::user()->type == 0 or Auth::user()->type == 1)
@@ -33,17 +36,22 @@
                             @endif
                     </ul>
                 </li>
+                @endif
 
                 <!-- 課程 -->
-                @if(Auth::user()->type == 0 or Auth::user()->type == 3)
+                @if(Auth::user()->type == 0 or Auth::user()->type == 3 or Auth::user()->type == 4)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 課程 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         @if(Auth::user()->type == 0 or Auth::user()->type == 1)
                             <li class="sidebar-item"><a href="{{ route('course.showCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有課程 </span></a></li>
                         @endif
 
-                        @if(Auth::user()->type == 3 or Auth::user()->type == 3 or Auth::user()->type == 4)
+                        @if(Auth::user()->type == 3)
                             <li class="sidebar-item"><a href="{{ route('courses.showCourses_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的課程 </span></a></li>
+                        @endif
+
+                        @if( Auth::user()->type == 4)
+                            <li class="sidebar-item"><a href="{{ route('student.showCourses') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的課程 </span></a></li>
                         @endif
 
                         @if(Auth::user()->type == 0 or Auth::user()->type == 1)

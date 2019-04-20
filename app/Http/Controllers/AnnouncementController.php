@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Teacher;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -167,15 +168,20 @@ class AnnouncementController extends Controller
         $id = $request->get('announcement_id');
         $files = $request->file('file'); //default file name from request is "file"
 
-        DB::table('system_announcement')
-            ->where('id', $id)
-            ->update([
-                'title' => $request->input('announcementTitle'),
-                'content' => $request->input('announcementContent'),
-                'priority' => $request->input('topPost') ? 0 : 1, // if topPost == true, set 0, or set 1
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]);
+        try{
+            DB::table('system_announcement')
+                ->where('id', $id)
+                ->update([
+                    'title' => $request->input('announcementTitle'),
+                    'content' => $request->input('announcementContent'),
+                    'priority' => $request->input('topPost') ? 0 : 1, // if topPost == true, set 0, or set 1
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+        } catch (QueryException $e){
+            Log::info($e);
+        }
+
 
         if ($files){
             foreach ($files as $file){

@@ -76,7 +76,7 @@
                                         <label class="col-md-3 m-t-10" for="announcementContent">公告內容</label>
                                         <div class="col-md-8">
                                             <div id="editor" style="height: 300px;">
-                                                {{ $system_announcement->id }}
+                                                {!! $system_announcement->content !!}
                                             </div>
 
                                             <textarea id="announcementContent" name="announcementContent" hidden>  </textarea>
@@ -192,17 +192,32 @@
             init: function () {
                 $("#btn-sendForm").click(function (e) {
 
-                    if (!mydropZone.files || !mydropZone.files.length) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+
+                    /*
+                    (Reference:https://github.com/enyo/dropzone/issues/687)
+                    You should check if there are files in the queue. If the queue is empty call directly dropzone.uploadFile().
+                    This method requires you to pass in a file. As stated on canisue the File constructor isn't supported on IE/Edge, so just use Blob API, as File API is based on that.
+                    The formData.append() method used in dropzone.uploadFile() requires you to pass an object which implements the Blob interface.
+                    That's the reason why you cannot pass in a normal object. dropzone version 5.2.0 requires the upload.chunked option
+                     */
+                    if (mydropZone.getQueuedFiles().length > 0){
+                        mydropZone.processQueue();
+                    } else {
                         var myEditor = document.querySelector('#editor');
                         var html = myEditor.children[0].innerHTML;
 
                         $("#announcementContent").val(html);
-                    } else {
-                        e.preventDefault();
-                        e.stopPropagation();
 
-                        mydropZone.processQueue();
+                        var blob = new Blob();
+                        blob.upload = { 'chunked': mydropZone.defaultOptions.chunking };
+
+                        mydropZone.uploadFile(blob);
                     }
+
+
 
 
                 });
@@ -248,12 +263,24 @@
                         // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
                     });
 
-                    var mockFile = { name: filenames[i], size: filesizes[i] };
-                    this.files.push(mockFile);
-                    this.emit('addedfile', mockFile);
-                    this.createThumbnailFromUrl(mockFile, mockFile.url);
-                    this.emit('complete', mockFile);
-                    this._updateMaxFilesReachedClass();
+                    let mockFile = { name: filenames[i], size: filesizes[i], dataURL: '{{ URL::to('images/file.png') }}' };
+
+                    if (mockFile.name !== "blob"){
+                        let that = this;
+                        this.files.push(mockFile);
+                        this.emit('addedfile', mockFile);
+                        // this.createThumbnailFromUrl(mockFile, mockFile.url);
+                        this.createThumbnailFromUrl(mockFile,
+                            this.options.thumbnailWidth,
+                            this.options.thumbnailHeight,
+                            this.options.thumbnailMethod, true, function (thumbnail)
+                            {
+                                that.emit('thumbnail', mockFile, thumbnail);
+                            });
+                        this.emit('complete', mockFile);
+                        this._updateMaxFilesReachedClass();
+                    }
+
                 }
             },
             removedfile: function(file){

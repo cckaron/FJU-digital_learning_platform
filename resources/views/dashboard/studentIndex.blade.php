@@ -31,6 +31,19 @@
                 <!-- Sales Cards  -->
                 <!-- ============================================================== -->
                 <div class="row">
+                    @if(session()->has('message'))
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">提示</h5>
+                                    <div class="alert alert-success" role="alert">
+                                        {{ session()->get('message') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">

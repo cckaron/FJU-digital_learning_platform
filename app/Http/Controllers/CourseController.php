@@ -258,6 +258,61 @@ class CourseController extends Controller
         ]);
     }
 
+    public function getShowCourses_Student(){
+        $student_id = Auth::user()->id;
+
+        $student = Student::where('users_id', $student_id)->first();
+        $student_courses_processing = $student->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*',
+                'common_courses.id as common_course_id',
+                'common_courses.name as common_course_name',
+                'common_courses.status',
+                'common_courses.year',
+                'common_courses.semester',
+                'common_courses.start_date',
+                'common_courses.end_date'
+            )
+            ->where('status', '1')
+            ->get();
+
+        $student_courses_ended = $student->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*',
+                'common_courses.id as common_course_id',
+                'common_courses.name as common_course_name',
+                'common_courses.status',
+                'common_courses.year',
+                'common_courses.semester',
+                'common_courses.start_date',
+                'common_courses.end_date'
+            )
+            ->where('status', '0')
+            ->get();
+
+        //hashids
+        foreach($student_courses_processing as $student_course) {
+            $hashids_common_course = new Hashids('common_courses_id', 5);
+            $student_course->common_course_id = $hashids_common_course->encode($student_course->common_course_id);
+
+            $hashids_course = new Hashids('courses_id', 7);
+            $student_course->id = $hashids_course->encode($student_course->id);
+        }
+
+        foreach($student_courses_ended as $student_course) {
+            $hashids = new Hashids('common_courses_id', 5);
+            $student_course->common_course_id = $hashids->encode($student_course->common_course_id);
+
+            $hashids_course = new Hashids('courses_id', 7);
+            $student_course->id = $hashids_course->encode($student_course->id);
+        }
+
+        return view('course.showCourses_Student', [
+            'student_courses_processing' => $student_courses_processing,
+            'student_courses_ended' => $student_courses_ended
+        ]);
+    }
+
     public function getShowSingleCourse($common_courses_id){
         $id = Auth::user()->id;
         $role = Auth::user()->type;

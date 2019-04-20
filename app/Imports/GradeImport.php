@@ -77,7 +77,7 @@ class GradeImport implements ToCollection
                         foreach($student_assignment as $student_assignment_pivot){
                             DB::table('student_assignment')
                                 ->where('id', $student_assignment->pivot->id)
-                                ->update(['score' => $row[$i]]);
+                                ->update(['score' => $row[$i], 'status' => 3]); //狀態:已批改
                         }
                     }
 

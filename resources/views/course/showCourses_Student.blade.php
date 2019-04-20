@@ -57,40 +57,81 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">所有系統公告 </h4>
+                                    <h4 class="card-title">進行中的課程 </h4>
                                 </div>
                                 <div class="comment-widgets scrollable">
 
-                                    <!-- Announcement Loop Start -->
-                                @if(count($sys_announcements) > 0)
-                                    @foreach($sys_announcements as $key=>$sys_announcement)
+                                    <!-- Course Loop Start -->
+                                @foreach($student_courses_processing as $student_course)
 
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
                                             <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
                                             <div class="comment-text w-100">
-                                                <span class="font-medium">{{ $sys_announcement->title }}</span>
-                                                <span class="text-active p-l-5" >
-                                                    @if($sys_announcement->priority == 0)
-                                                        <span class="badge badge-pill badge-danger">置頂公告</span>
-                                                    @elseif($sys_announcement->priority == 1)
-                                                        <span class="badge badge-pill badge-primary">一般</span>
-                                                    @endif
+
+                                                <h4 class="font-medium">
+                                                    {{ $student_course->year }} 年 第 {{ $student_course->semester }} 學期
+                                                    <span class="text-muted float-right">結束日期：{{ $student_course->end_date }}</span>
+                                                </h4>
+
+                                                <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
+                                                    {{ $student_course->common_course_name }}
                                                 </span>
-                                                <span class="m-b-15 d-block">{!! substr($sys_announcement->content, 0, 20) !!} </span>
+
+                                                <h4>
+                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $student_course->name }}</span>
+                                                </h4>
                                                 <div class="comment-footer">
-                                                    <span class="text-muted float-right">{{ $sys_announcement->updated_at }}</span>
-                                                    <a class="btn btn-cyan btn-sm" href="{{ route('admin.announcement.edit', ['id' => $sys_announcement->id]) }}">編輯</a>
-                                                    {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
-                                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.announcement.delete', ['id' => $sys_announcement->id]) }}" onclick="return confirm('該公告檔案將會一併刪除，確定刪除?')">刪除</a>
+                                                    <!-- 按鈕 -->
+                                                    {{--<a href="{{ route('course.showCourseStudents', $student_course->id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>--}}
+                                                    <a href="{{ route('courses.showCourseAssignments_Student', ['courses_id' => $student_course->id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
                                                 </div>
                                             </div>
                                         </div>
 
                                     @endforeach
-                                    @endif
-                                        {{ $sys_announcements->links() }}
+
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">已結束的課程 </h4>
+                                </div>
+                                <div class="comment-widgets scrollable">
+
+                                    <!-- Course Loop Start -->
+                                @foreach($student_courses_ended as $student_course)
+
+                                    <!-- Comment Row -->
+                                        <div class="d-flex flex-row comment-row m-t-0">
+
+                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
+                                            <div class="comment-text w-100">
+
+                                                <h4 class="font-medium">
+                                                    {{ $student_course->year }} 年 第 {{ $student_course->semester }} 學期
+                                                    <span class="text-muted float-right">結束日期：{{ $student_course->end_date }}</span>
+                                                </h4>
+
+                                                <span class="badge badge-pill badge-info float-right"  style="font-size: 100%;">
+                                                    {{ $student_course->common_course_name }}
+                                                </span>
+
+                                                <h4>
+                                                    <span class="m-b-15 d-block" style="margin-top: 10px;">{{ $student_course->name }}</span>
+                                                </h4>
+                                                <div class="comment-footer">
+                                                    <!-- 按鈕 -->
+                                                    {{--<a href="{{ route('course.showCourseStudents', $student_course->id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>--}}
+
+                                                    <a href="{{ route('courses.showCourseAssignments_Student', ['courses_id' => $student_course->id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    @endforeach
+
                                 </div>
                             </div>
 
@@ -193,8 +234,6 @@
         });
 
     </script>
-
-
 
 
 @endsection

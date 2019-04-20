@@ -90,6 +90,10 @@ class GradeController extends Controller
             }
 
 
+            if ($student_assignments->isEmpty()){
+                return redirect()->back()->with(['message' => '當學期沒有進行中的作業']);
+            }
+
             $student_assignments->push($student_assignment);
 
             //取得final score
@@ -193,6 +197,11 @@ class GradeController extends Controller
         $assignments_attendance_id = $request->get('assignments_attendance_id');
         $assignments_ppt_id = $request->get('assignments_ppt_id');
         $assignments_word_id = $request->get('assignments_word_id');
+        $assignments_classParticipation_id = $request->get('assignments_classParticipation_id');
+
+        $year = $request->get('year');
+        $semester = $request->get('semester');
+
 
         $error_array = array();
         $success_output = '';
@@ -222,6 +231,14 @@ class GradeController extends Controller
                 DB::table('assignments')
                     ->whereIn('id', $assignments_word_id)
                     ->update(['percentage' => $assignments_percentage[3]]);
+
+                if ($year == 107 and $semester == 1){
+                } else {
+                    DB::table('assignments')
+                        ->whereIn('id', $assignments_classParticipation_id)
+                        ->update(['percentage' => $assignments_percentage[4]]);
+                }
+
                 $success_output = '<div class="alert alert-success"> 設定成功！ </div>';
 
             }
