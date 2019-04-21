@@ -27,6 +27,8 @@ class ProfileController extends Controller
         $user_type = $user->type;
 
         Validator::make($request->all(), [
+            "email" => ['required', Rule::unique('users')->ignore($user_id)],
+            "phone" => ['required', Rule::unique('users')->ignore($user_id)],
             "password"    => [
                 'required',
                 'array',
@@ -38,9 +40,7 @@ class ProfileController extends Controller
                 },
             ],
             "password.*"  => "required|string|min:6",
-            "email" => ['required', Rule::unique('users')->ignore($user_id)],
-            "phone" => ['required', Rule::unique('users')->ignore($user_id)],
-        ]);
+        ])->validate();
 
 
         $indexController = new IndexController();
@@ -50,15 +50,15 @@ class ProfileController extends Controller
         $phone = $request->get('phone');
 
         //update database data
-        DB::table('users')
-            ->where('id', $user_id)
-            ->update([
-                'password' => bcrypt($password),
-                'email' => $email,
-                'phone' => $phone,
-            ]);
-
         if ($user_type == 3){ //teacher
+            DB::table('users')
+                ->where('id', sprintf("%06d", $user_id))
+                ->update([
+                    'password' => bcrypt($password),
+                    'email' => $email,
+                    'phone' => $phone,
+                ]);
+
             DB::table('teachers')
                 ->where('users_id', sprintf("%06d", $user_id)) //自動補0
                 ->update([
@@ -72,6 +72,15 @@ class ProfileController extends Controller
             } else {
                 $agreement = false;
             }
+
+            DB::table('users')
+                ->where('id', $user_id)
+                ->update([
+                    'password' => bcrypt($password),
+                    'email' => $email,
+                    'phone' => $phone,
+                ]);
+
             DB::table('students')
                 ->where('users_id', $user_id)
                 ->update([

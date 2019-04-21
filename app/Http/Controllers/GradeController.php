@@ -89,8 +89,7 @@ class GradeController extends Controller
                 }
             }
 
-
-            if ($student_assignments->isEmpty()){
+            if ($student_assignment->isEmpty()){
                 return redirect()->back()->with(['message' => '當學期沒有進行中的作業']);
             }
 
