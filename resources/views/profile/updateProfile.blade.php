@@ -74,7 +74,7 @@
                                         <div class="custom-control custom-checkbox mr-sm-5">
                                             <input type="checkbox" class="custom-control-input" id="agreement" name="agreement" value=1 checked>
                                             <label class="custom-control-label" for="agreement" style="color:white; font-size: 18px">
-                                                我已閱讀並同意 授權書 中的內容
+                                                我已閱讀並同意 <span><a href="https://zh.scribd.com/document/406976852/%E8%BC%94%E4%BB%81%E5%A4%A7%E5%AD%B8%E5%95%86%E7%AE%A1%E5%AD%B8%E7%A8%8B%E7%94%A2%E6%A5%AD%E5%89%B5%E6%96%B0%E7%B3%BB%E5%88%97%E8%AA%B2%E7%A8%8B%E6%88%90%E6%9E%9C%E5%A0%B1%E5%91%8A%E5%85%AC%E9%96%8B%E6%8E%88%E6%AC%8A%E6%9B%B8-20181211" target="_blank" style="color: yellow">授權書</a></span> 中的內容
                                             </label>
                                         </div>
                                     </div>
