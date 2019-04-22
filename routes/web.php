@@ -228,9 +228,9 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
         ]);
 
         //開放繳交作業 (get)
-        Route::get('/openHandInAssignment/{student_assignment_id}', [
-            'uses' => 'AssignmentController@getOpenHandInAssignment',
-            'as' => 'assignment.openHandInAssignment'
+        Route::get('/openHandInAssignment/{student_assignment_id}/{status}', [
+            'uses' => 'AssignmentController@getChangeAssignmentStatus',
+            'as' => 'assignment.getChangeAssignmentStatus'
         ]);
 
     });

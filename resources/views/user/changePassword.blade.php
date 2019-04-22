@@ -26,7 +26,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '更改密碼'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '更改個人檔案'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -43,29 +43,58 @@
 
                         @include('layouts.partials.returnMessage')
 
-                        <div class="col-6">
+                        <div class="col-4">
                             <div class="card">
                                 <div class="card-body">
 
-
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="newPassword">新密碼</label>
+                                        <label class="col-md-3 m-t-5" for="password">Email</label>
                                         <div class="col-md-9">
-                                            <input type="password" id="newPassword" class="form-control" placeholder="新密碼" name="newPassword" required>
+                                            <div class="input-group mb-3">
+                                                <input type="text" id="email" class="form-control" placeholder="Email" name="email" value="{{ $user->email }}" required>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3" for="confirmPassword">確認密碼</label>
+                                        <label class="col-md-3 m-t-5" for="password">聯絡電話</label>
                                         <div class="col-md-9">
-                                            <input type="password" id="confirmPassword" class="form-control" placeholder="確認密碼" name="confirmPassword" required>
+                                            <div class="input-group mb-3">
+                                                <input type="text" id="phone" class="form-control" placeholder="聯絡電話" name="phone" value="{{ $user->phone }}" required>
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-5" for="password">新密碼</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group mb-3">
+                                                <input type="password" pattern=".{6,}" title="密碼長度需大於 6 個字元" id="password" class="form-control password" placeholder="新密碼" name="password[]">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-eye-slash toggle-password"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-5" for="confirm_password">確認密碼</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group mb-3">
+                                                <input type="password" pattern=".{6,}" title="密碼長度需大於 6 個字元" id="confirm_password" class="form-control password" placeholder="確認密碼" name="password[]">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-eye-slash toggle-password"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h4 style="" id='message'></h4>
+
                                     </div>
 
                                 </div>
                                 <div class="border-top">
                                     <div class="card-body">
-                                        <input type="submit" class="btn btn-primary">
+                                        <input type="submit" class="btn btn-primary" value="儲存">
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +218,30 @@
                 studentGrade.removeAttr('required');
                 student.hide();
             }
-        })
+        });
 
+
+        $('#password, #confirm_password').on('keyup', function () {
+            if ($('#confirm_password').val() != '') {
+
+                if ($('#password').val() == $('#confirm_password').val()) {
+                    $('#message').html('');
+                } else
+                    $('#message').html('新密碼 與 確認密碼 不一致!').css('color', 'red');
+            }
+
+        });
+
+        // toggle password visibility
+        $(".toggle-password").click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $(this).parent().parent().siblings(".password");
+
+            if (input.attr("type") === "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
     </script>
 @endsection

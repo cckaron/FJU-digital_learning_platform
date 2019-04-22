@@ -1334,10 +1334,10 @@ class AssignmentController extends Controller
         return $output;
     }
 
-    public function getOpenHandInAssignment($student_assignment_id){
+    public function getChangeAssignmentStatus($student_assignment_id, $status){
         DB::table('student_assignment')
             ->where('id', $student_assignment_id)
-            ->update(['status' => 6]);
+            ->update(['status' => $status]);
 
         return redirect()->back()->with('message', '開放繳交成功！');
     }

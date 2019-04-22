@@ -112,30 +112,95 @@ class UserController extends Controller
 
     public function getChangePassword(){
         $user_id = Auth::user()->id;
+
+        $user = Auth::user();
+
         return view('user.changePassword', [
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'user' => $user,
         ]);
     }
 
     public function postChangePassword(Request $request){
-        $user_id = Auth::user()->id;
-
         $user = Auth::user();
+        $user_id = (string)$user->id;
+        $user_type = $user->type;
 
-        $request->validate([
-            'newPassword' => ['required', 'min:8', function ($attribute, $value, $fail) use ($user) {
-                if (Hash::check($value, $user->password)) {
-                    return $fail('新密碼 不能和 舊密碼 相同');
+        if ($user_type == '3') { //teacher
+            $user_id = sprintf("%06d", $user_id);
+        }
+
+        Validator::make($request->all(), [
+            "email" => ['required', Rule::unique('users')->ignore($user_id)],
+            "phone" => ['required', Rule::unique('users')->ignore($user_id)],
+            "password"    => [
+                function($attribute, $value, $fail) {
+                    if ($value[0] != $value[1]){
+                        return $fail('新密碼 與 確認新密碼 不相同');
+                    }
+                },
+            ],
+            "password.*"  => [
+                "min:6",
+                function ($attribute, $value, $fail) use ($user) {
+                    if (Hash::check($value, $user->password)) {
+                        return $fail('新密碼 不能和 舊密碼 相同');
+                    }
                 }
-            }],
-            'confirmPassword' => 'required|min:8|same:newPassword'
-        ]);
+            ]
+        ])->validate();
 
-        DB::table('users')
-            ->where('id', $user_id)
-            ->update(['password' => bcrypt($request->input('newPassword'))]);
+        $password = $request->get('password');
+        $password = $password[0];
+        $email = $request->get('email');
+        $phone = $request->get('phone');
 
-        return redirect()->back()->with('message', '已成功更改密碼');
+        if ($user->type == '3'){ //teacher
+            DB::table('users')
+                ->where('id', sprintf("%06d", $user_id))
+                ->update([
+                    'password' => bcrypt($password),
+                    'email' => $email,
+                    'phone' => $phone,
+                ]);
+
+            DB::table('teachers')
+                ->where('users_id', $user_id) //自動補0
+                ->update([
+                    'profileUpdated' => true,
+                ]);
+        } else if ($user->type == '4'){ //student
+            if ($request->get('agreement') != null){
+                $agreement = true;
+            } else {
+                $agreement = false;
+            }
+
+            DB::table('users')
+                ->where('id', $user_id)
+                ->update([
+                    'password' => bcrypt($password),
+                    'email' => $email,
+                    'phone' => $phone,
+                ]);
+
+            DB::table('students')
+                ->where('users_id', $user_id)
+                ->update([
+                    'profileUpdated' => true,
+                    'agreement' => $agreement
+                ]);
+        } else {
+            DB::table('users')
+                ->where('id', $user_id)
+                ->update([
+                    'password' => bcrypt($password),
+                    'email' => $email,
+                    'phone' => $phone,
+                ]);
+        }
+
+        return redirect()->back()->with('message', '個人檔案設定完成!');
     }
 
     public function importUsers(){
