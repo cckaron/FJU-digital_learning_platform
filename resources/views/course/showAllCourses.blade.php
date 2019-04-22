@@ -85,13 +85,13 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('course.showCourseStudents', ['courses_id' => $course->id]) }}" class="btn btn-info btn-md">
+                                                    <a href="{{ route('course.showCourseStudents', ['courses_id' => $course->course_id]) }}" class="btn btn-info btn-md">
                                                         查看詳情
                                                     </a>
                                                     <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-course-id="{{ $course->real_id }}">
                                                         編輯
                                                     </button>
-                                                    <a href="{{ route('course.delete', ['courses_id' => $course->id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
+                                                    <a href="{{ route('course.delete', ['courses_id' => $course->course_id]) }}" class="btn btn-danger btn-md" onclick="return confirm('該課程資料將會一併刪除，確定刪除?')">
                                                         刪除
                                                     </a>
                                                 </td>

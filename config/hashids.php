@@ -40,8 +40,8 @@ return [
     'connections' => [
 
         'main' => [
-            'salt' => 'your-salt-string',
-            'length' => 'your-length-integer',
+            'salt' => 'bbm',
+            'length' => '9',
         ],
 
         'alternative' => [

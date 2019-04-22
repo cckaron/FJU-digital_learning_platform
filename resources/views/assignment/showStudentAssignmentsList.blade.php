@@ -6,6 +6,16 @@
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+
+    <style>
+        input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+            -webkit-box-sizing:border-box;
+            -moz-box-sizing: border-box;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -55,51 +65,78 @@
                         @endif
 
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">繳交狀態</h5>
-                                    <h6 style="padding-top: 10px;">
-                                        已繳交人數：
-                                        <span style="color:blue">{{ $finished }}</span>
-                                        / {{ $all }}人
-                                    </h6>
-                                    @if($finishedHandIn > 0)
-                                        <h6 style="padding-top: 10px; color:red">提醒：您尚有 {{ $finishedHandIn }} 份作業未批改</h6>
-                                    @endif
-                                </div>
-                            </div>
 
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table id="zero_config" class="table table-striped table-bordered">
-                                            <thead>
+                                            <thead align="center">
                                             <tr>
                                                 <th>批改狀態</th>
                                                 <th>姓名</th>
                                                 <th>學號</th>
                                                 <th>分數</th>
-                                                <th>學生留言</th>
+                                                <th>學習主題</th>
                                                 <th>附檔</th>
                                                 <th>上傳時間</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody align="center">
 
                                             @for($i=0; $i< count($student_ids); $i++)
                                             <tr>
-                                                @if($scores[$i] == null)
-                                                    <td>
-                                                        <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-success" value="批改"/>
-                                                        <input hidden id="student_assignment_id_{{ $i }}" value="{{ $students_assignments_id[$i] }}"/>
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        <h6>已批改</h6>
-                                                        <input name="add" id="correct_data{{ $i }}" type="submit" class="btn btn-sm btn-danger" value="修改"/>
-                                                        <input hidden id="student_assignment_id_{{ $i }}" value="{{ $students_assignments_id[$i] }}"/>
-                                                    </td>
+                                                <td>
+                                                @if($assignment_status == 1) {{-- 作業進行中 --}}
+                                                    @if($student_assignment_status[$i] == 1) {{-- 學生作業狀態為 未繳交--}}
+                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                            學生未繳交
+                                                        </span>
+                                                    @elseif($student_assignment_status[$i] == 2) {{-- 學生作業狀態為 已繳交--}}
+                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                            尚未批改
+                                                        </span>
+                                                    @elseif($student_assignment_status[$i] == 3) {{-- 學生作業狀態為 已批改--}}
+                                                        <span class="badge badge-pill badge-primary m-b-5"  style="font-size: 100%;">
+                                                            已批改
+                                                        </span>
+                                                    @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 補繳中--}}
+                                                        <!-- It should not be happened-->
+                                                    @elseif($student_assignment_status[$i] == 5) {{-- 學生作業狀態為 已補繳--}}
+                                                        <!-- It should not be happened-->
+                                                    @elseif($student_assignment_status[$i] == 6) {{-- 學生作業狀態已為 開放繳交--}}
+                                                        <span class="badge badge-pill badge-secondary float-left m-b-5"  style="font-size: 100%;">
+                                                            等待學生重繳
+                                                        </span>
+                                                    @elseif($student_assignment_status[$i] == 7) {{-- 學生作業狀態為 已重繳--}}
+                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                            學生已重繳
+                                                        </span>
+                                                    @endif
+
+                                                @elseif($assignment_status == 0) {{-- 作業已經結束 --}}
+                                                <span class="badge badge-pill badge-danger float-left m-b-5"  style="font-size: 100%;">
+                                                    作業截止
+                                                </span>
+                                                    @if($student_assignment_status[$i] == 2) {{-- 學生作業狀態為 未繳交--}}
+                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                            學生未繳交作業
+                                                        </span>
+                                                    @elseif($student_assignment_status[$i] == 3) {{-- 學生作業狀態為 已批改--}}
+                                                        <span class="badge badge-pill badge-primary float-left m-b-5 m-l-5"  style="font-size: 100%;">
+                                                            已批改
+                                                        </span>
+                                                    @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 補繳中--}}
+                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                            等待學生補交
+                                                        </span>
+                                                    @elseif($student_assignment_status[$i] == 5) {{-- 學生作業狀態為 已補繳--}}
+                                                        <span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">
+                                                            學生已補繳
+                                                        </span>
+                                                    @endif
                                                 @endif
+                                                </td>
+
                                                 <td><a class="link" href="{{ route('user.studentDetail', ['student_id' => $student_ids[$i]]) }}">{{ $student_names[$i] }}</a></td>
                                                 <td>{{ $student_ids[$i] }}</td>
 
@@ -130,6 +167,18 @@
                                                 <td>{{ $updated_at[$i] }}</td>
                                             </tr>
                                             @endfor
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
 
@@ -322,7 +371,73 @@
         /****************************************
          *       Basic Table                   *
          ****************************************/
-        $('#zero_config').DataTable({
+
+        var table = $('#zero_config').DataTable({
+            order: [[ 2, "asc" ]],
+            autoWidth: false,
+            buttons: [
+                {
+                    extend: 'colvis',
+                    text: '顯示/隱藏欄位',
+                    // columns: ':gt(0)'
+                    // this will make first column cannot be hided
+                },
+                {
+                    extend: 'copy',
+                    title: '作業',
+                    text: '複製作業內容',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: '作業',
+                    filename: '作業',
+                    text: '匯出 EXCEL',
+                    bom : true,
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    customize: function(xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        //modify text in [A1]
+                        $('c[r=A1] t', sheet).text( '作業' );
+                    }
+                },
+                {
+                    extend: 'csv',
+                    title: '作業',
+                    filename: '作業',
+                    text: '匯出 csv',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    bom: true
+                },
+                {
+                    extend: 'print',
+                    title: '作業',
+                    filename: '作業',
+                    text: '列印/匯出PDF',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                },
+            ],
+            dom: 'lBfrtip',
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
+            columnDefs: [
+                { "width": "10%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "10%", "targets": 2 },
+                { "width": "10%", "targets": 3 },
+                { "width": "20%", "targets": 4 },
+                { "width": "20%", "targets": 5 },
+                { "width": "20%", "targets": 6 },
+
+            ],
             language: {
                 "processing":   "處理中...",
                 "loadingRecords": "載入中...",
@@ -332,7 +447,7 @@
                 "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
                 "infoFiltered": "(從 _MAX_ 項結果中過濾)",
                 "infoPostFix":  "",
-                "search":       "搜尋:",
+                "search":       "搜尋全部:",
                 "paginate": {
                     "first":    "第一頁",
                     "previous": "上一頁",
@@ -344,7 +459,36 @@
                     "sortDescending": ": 降冪排列"
                 }
             },
+
         });
+
+        // Setup - add a text input to each footer cell
+        $('#zero_config tfoot th').each( function () {
+            var title = $(this).text();
+            // $(this).html( '<input type="text" placeholder="搜尋 '+title+' 欄位" />' );
+            $(this).html( '<input type="text" placeholder="搜尋" />' );
+
+        } );
+
+        var r = $('#zero_config tfoot tr');
+        r.find('th').each(function(){
+            $(this).css('padding', 8);
+        });
+        // $('#zero_config thead').append(r);
+        r.appendTo($('#zero_config thead'));
+
+        // Apply the search
+        table.columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
     </script>
 
 @endsection

@@ -9,6 +9,7 @@ use App\Teacher;
 use App\User;
 use Carbon\Carbon;
 use Hashids\Hashids;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -185,17 +186,16 @@ class CourseController extends Controller
         $courses = Course::with('common_course')
             ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
             ->join('teacher_course', 'courses.id', 'teacher_course.courses_id')
-            ->select('courses.*', 'courses.name as course_name','common_courses.*', 'teacher_course.teachers_id')
+            ->select('courses.*', 'courses.id as course_id', 'courses.name as course_name','common_courses.*', 'teacher_course.teachers_id')
             ->orderBy('common_courses.year')
             ->get();
 
         //hashid
         $hashids = new Hashids('courses_id', 7);
         foreach($courses as $course){
-            $course->real_id = $course->id;
-            $course->id = $hashids->encode($course->id);
+            $course->real_id = $course->course_id;
+            $course->course_id = $hashids->encode($course->course_id);
         }
-
 
         return view('course.showAllCourses', [
             'courses' => $courses,
