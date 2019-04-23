@@ -1184,6 +1184,7 @@ class AssignmentController extends Controller
         $titles = array();
         $updated_at = array();
         $comments = array();
+        $makeupDate = array();
 
         foreach($student_assignments as $student_assignment){
             array_push($student_ids, $student_assignment->pluck('students_id')->toArray());
@@ -1191,6 +1192,7 @@ class AssignmentController extends Controller
             array_push($titles, $student_assignment->pluck('title')->toArray());
             array_push($updated_at, $student_assignment->pluck('updated_at')->toArray());
             array_push($comments, $student_assignment->pluck('comment')->toArray());
+            array_push($makeupDate, $student_assignment->pluck('makeUpDate')->toArray());
         }
 
         //flatten the 2-dimensional array to 1-dimensional array
@@ -1199,6 +1201,7 @@ class AssignmentController extends Controller
         $titles = call_user_func_array('array_merge', $titles);
         $updated_at = call_user_func_array('array_merge', $updated_at);
         $comments = call_user_func_array('array_merge', $comments);
+        $makeupDate = call_user_func_array('array_merge', $makeupDate);
 
 
         for ($i=0; $i< count($updated_at); $i++){
@@ -1282,6 +1285,7 @@ class AssignmentController extends Controller
             'student_ids' => $student_ids,
             'scores' => $scores,
             'titles' => $titles,
+            'makeUpDate' => $makeupDate,
             'updated_at' => $updated_at,
             'student_names' => $student_names,
             'file_names' => $file_names,

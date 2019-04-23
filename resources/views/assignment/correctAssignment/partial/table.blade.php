@@ -80,6 +80,9 @@
                             <i class="fas fa-pencil-alt"></i><b id="bold_recorrect">重新批改</b>
                         </button>
                         @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 補繳中--}}
+                        <button id="rehandIn" class="btn-href" data-student-assignment-id="{{ $student_assignments_id[$i] }}" data-target="#openMakeUpModal" data-toggle="modal" >
+                            <b id="bold_rehandIn">更改補繳期限</b>
+                        </button>
                         <button name="add" data-toggle="modal" data-target="#correctModal" type="submit" class="btn-href" style="color:blue" data-student-assignment-id="{{ $student_assignments_id[$i] }}">
                             <i class="fas fa-pencil-alt"></i><b id="bold_recorrect">直接批改</b>
                         </button>
@@ -95,7 +98,7 @@
                         </button>
                         @elseif($student_assignment_status[$i] == 6) {{-- 學生作業狀態已為 開放重繳中--}}
                         <button id="rehandIn" class="btn-href" data-student-assignment-id="{{ $student_assignments_id[$i] }}" data-target="#openMakeUpModal" data-toggle="modal" >
-                            <b id="bold_rehandIn">開放補繳</b>
+                            <b id="bold_rehandIn">要求補繳</b>
                         </button>
                         <button name="add" data-toggle="modal" data-target="#correctModal" type="submit" class="btn-href" style="color:blue" data-student-assignment-id="{{ $student_assignments_id[$i] }}">
                             <i class="fas fa-pencil-alt"></i><b id="bold_recorrect"> 直接批改 </b>
@@ -171,6 +174,9 @@
                         @elseif($student_assignment_status[$i] == 4) {{-- 學生作業狀態為 補繳中--}}
                         <span class="badge badge-pill badge-secondary float-left m-b-5"  style="font-size: 100%;">
                             等待學生補繳
+                        </span>
+                        <span class="badge badge-pill badge-secondary float-left m-b-5"  style="font-size: 100%;">
+                            補繳期限: {{ $makeUpDate[$i] }}
                         </span>
                         {{--<span class="badge badge-pill badge-primary float-left m-b-5"  style="font-size: 100%;">--}}
                         {{--催繳--}}
