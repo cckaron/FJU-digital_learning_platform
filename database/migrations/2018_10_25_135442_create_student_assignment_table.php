@@ -20,7 +20,7 @@ class CreateStudentAssignmentTable extends Migration
             $table->double('score')->nullable();
             $table->text('remark')->nullable();
             $table->text('comment')->nullable();
-            $table->integer('status')->default(1); //1->未繳交; 2->已繳交; 3->已批改; 4->開放補繳; 5->已補繳; 6->開放重繳; 7->重繳未繳交
+            $table->integer('status')->default(1); //1->未繳交; 2->已繳交; 3->已批改; 4->開放補繳; 5->已補繳; 6->開放重繳; 7->已重繳
             $table->timestamps();
 
             $table->index('id');

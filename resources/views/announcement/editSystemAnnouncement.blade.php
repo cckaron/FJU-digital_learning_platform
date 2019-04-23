@@ -52,7 +52,7 @@
                                     <h5 class="card-title">提示</h5>
 
                                     <div class="alert alert-success" role="alert">
-                                        新增公告成功！
+                                        修改公告成功！
                                     </div>
 
                                 </div>

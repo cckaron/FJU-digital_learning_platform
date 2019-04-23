@@ -13,6 +13,18 @@
     <link href="{{ URL::to('libs/quill/dist/katex.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/monokai-sublime.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
+
+    <style>
+        input.error {
+            border: 6px solid orange;
+        }
+
+        label.error {
+            font-weight: bold;
+            color: red;
+            font-size: 20px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -62,38 +74,27 @@
                             </div>
                         </div>
                     @endif
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <h4>
-                                        @if($student_assignment_status == 1 or $student_assignment_status == 2)
-                                            上傳文件
-                                        @elseif($student_assignment_status == 3)
-                                            查看文件
-                                        @elseif($student_assignment_status == 4)
-                                            重繳作業
-                                        @elseif($student_assignment_status == 6)
-                                            補繳作業
-                                        @endif
-                                    </h4>
-                                </div>
 
-                                <div class="form-group">
-                                    <form action="{{ route('dropZone.uploadAssignment') }}" class="dropzone" method="post" enctype="multipart/form-data" id="myDropzone">
-                                        <input type="text" name="student_assignment_id" value={{ $student_assignment_id }} hidden/>
-                                        {{ csrf_field() }}
-                                    </form>
+                    <!-- Return Success Message -->
+                        <div class="col-md-8 successMessage" hidden>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">提示</h5>
+
+                                    <div class="alert alert-success" role="alert">
+                                        繳交成功！
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                    </div>
+
                 </div>
 
 
                 @if($student_assignment_status != 3)
-                <!--route的 get 和 post 的網址要一樣，所以post也需要 course_id 和 assignmen_id，但沒那麼重要所以就隨機生成 str_random()，不必特別取得正確的 id -->
-                <form action="{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}" id="editContent" method="post" class="form-horizontal">
+                <!--route的 get 和 post 的網址要一樣，所以post也需要 course_id 和 assignment_id，但沒那麼重要所以就隨機生成 str_random()，不必特別取得正確的 id -->
+                <form action="{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}" id="handInAssignment" method="post" class="form-horizontal" enctype="multipart/form-data">
 
                     <!-- editor -->
                     <div class="row">
@@ -101,22 +102,85 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">主題</h4>
+                                    <h4 class="card-title">作業詳情</h4>
                                     <!-- Create the editor container -->
-                                    <div id="editor" style="height: 300px;">
-                                        {!! $title !!}
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2">名稱</label>
+                                        <div class="col-md-3">
+                                            <span>{{ $assignment->name }}</span>
+                                        </div>
                                     </div>
 
-                                    <textarea id="title" name="title" hidden> {{$title}} </textarea>
-
-                                    <input type="text" name="student_assignment_id" value={{ $student_assignment_id }} hidden/>
-
-                                </div>
-                                <div class="border-top">
-                                    <div class="card-body">
-                                        <input type="submit" class="btn btn-primary">
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2">開放繳交日期</label>
+                                        <div class="col-md-3">
+                                            <span>{{ $assignment->start_date }} {{ $assignment->start_time }}</span>
+                                        </div>
                                     </div>
+
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2">截止日期</label>
+                                        <div class="col-md-3">
+                                            <span>{{ $assignment->end_date }} {{ $assignment->end_time }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2">作業內容</label>
+                                        <div class="col-md-3">
+                                            <span>{!! $assignment->content !!}</span>
+                                        </div>
+                                    </div>
+
                                 </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6"></div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    @if($assignment->status == 1)
+                                        <h4 class="card-title">上傳作業</h4>
+                                    @else
+                                        <h4 class="card-title">我的作業</h4>
+                                    @endif
+                                    <!-- Create the editor container -->
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2 m-t-5">學習主題</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="title" name="title" @if($assignment->status == 1)placeholder="請輸入學習主題"@endif value="{{ $title }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row m-t-30">
+                                        <label class="col-md-2" for="announcementContent">附加檔案</label>
+                                        <div class="dropzone dropzone-previews col-md-8" id="my_awesome_dropzone">
+                                        </div>
+                                    </div>
+
+                                    <input hidden name="student_assignment_id" value="{{ $student_assignment_id }}"/>
+                                    <input hidden name="assignment_id" value="{{ $assignment_id }}"/>
+
+                                    @if($assignment->status == 1)
+                                        <div class="border-top">
+                                            <!-- Return Success Message -->
+                                            <div class="card-body">
+                                                <input type="submit" class="btn btn-primary" id="btn-sendForm">
+                                                <span class="alert alert-success successMessage m-l-10" style="font-size: 20px" hidden role="alert">
+                                                    上傳成功！
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
+
                             </div>
                         </div>
 
@@ -215,6 +279,9 @@
     <!-- DropZone JS-->
     <script src="{{ URL::to('js/dropzone.js') }}"></script>
 
+    <script src="{{ URL::to('js/jquery.validate.min.js') }}"></script>
+
+
     <script>
         //***********************************//
         // For select 2
@@ -240,7 +307,7 @@
                     if (!value) return;
                     if (opacity) value += ', ' + opacity;
                     if (typeof console === 'object') {
-                        console.log(value);
+                        // console.log(value);
                     }
                 },
                 theme: 'bootstrap'
@@ -267,171 +334,436 @@
 
     </script>
 
-    <script>
-        var toolbarOptions = [
-            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-            ['blockquote', 'code-block'],
-
-            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-            [{ 'direction': 'rtl' }],                         // text direction
-
-            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-            ['formula'],
-            ['image'],
-            ['clean']                                         // remove formatting button
-        ];
-        var quill = new Quill('#editor', {
-            modules: {
-                formula: true,
-                syntax: true,
-                toolbar: toolbarOptions
-            },
-            placeholder: '請輸入作業內容..',
-            theme: 'snow',
-        });
-
-    </script>
 
     <script>
-        if({{ $student_assignment_status }} === 3){
-            Dropzone.prototype.defaultOptions.dictDefaultMessage = "已超過繳交期限";
-        } else {
-            Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳";
+        if({{ $assignment->status }} === 1){  //作業進行中
+            if({{ $student_assignment_status }} !== 3){ //教師未批改, 提供上傳修改作業功能
+                Dropzone.autoDiscover = false;
+                Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳";
+                Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
+                Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+                Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";
+                Dropzone.prototype.defaultOptions.dictInvalidFileType = "上傳的文件格式不正確";
+                Dropzone.prototype.defaultOptions.dictCancelUpload = "取消上傳";
+                Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "確定取消上傳?";
+                Dropzone.prototype.defaultOptions.dictRemoveFile = "刪除檔案";
+                Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "已超出檔案數量限制";
+            } else {
+                Dropzone.autoDiscover = false;
+                Dropzone.prototype.defaultOptions.dictDefaultMessage = "不允許上傳:教師已完成批改";
+            }
+        } else { //作業已截止
+            if({{ $student_assignment_status }} === 4 || {{ $student_assignment_status }} === 5){ //教師開放補繳 或是 已補繳, 提供上傳修改作業功能
+                Dropzone.autoDiscover = false;
+                Dropzone.prototype.defaultOptions.dictDefaultMessage = "點此 或 拖曳檔案來上傳";
+                Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
+                Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+                Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";
+                Dropzone.prototype.defaultOptions.dictInvalidFileType = "上傳的文件格式不正確";
+                Dropzone.prototype.defaultOptions.dictCancelUpload = "取消上傳";
+                Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "確定取消上傳?";
+                Dropzone.prototype.defaultOptions.dictRemoveFile = "刪除檔案";
+                Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "已超出檔案數量限制";
+            } else {
+                Dropzone.autoDiscover = false;
+                Dropzone.prototype.defaultOptions.dictDefaultMessage = "不允許上傳:作業已截止";
+            }
         }
-        Dropzone.prototype.defaultOptions.dictFallbackMessage = "此瀏覽器不支持拖曳檔案的上傳方式";
-        Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
-        Dropzone.prototype.defaultOptions.dictFileTooBig = "檔案超出最大檔案限制: 20MB.";
-        Dropzone.prototype.defaultOptions.dictInvalidFileType = "上傳的文件格式不正確";
-        Dropzone.prototype.defaultOptions.dictCancelUpload = "取消上傳";
-        Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "確定取消上傳?";
-        Dropzone.prototype.defaultOptions.dictRemoveFile = "刪除檔案";
-        Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "已超出檔案數量限制";
 
-        // 未繳交作業 or 已繳交作業 -> 提供上傳
-        if({{ $student_assignment_status }} === 1 || {{ $student_assignment_status }} === 2 || {{ $student_assignment_status }} === 4 || {{ $student_assignment_status }} === 6) {
-            Dropzone.options.myDropzone = {
-                addRemoveLinks: true,
-                maxFilesize: 100,
-                maxFiles: 10,
-                uploadMultiple: true,
-                parallelUploads: 10,
-                acceptedFiles: ".pdf",
-                init: function() {
-                    var filepaths = {!! json_encode($files["filepaths"])  !!};
-                    var filenames = {!! json_encode($files["filenames"])  !!};
-                    var filesizes = {!! json_encode($files["filesizes"])  !!};
+        if({{ $assignment->status }} === 1){  //作業進行中
+            if({{ $student_assignment_status }} !== 3){ //教師未批改, 提供上傳修改作業功能
+                var mydropZone = new Dropzone("#my_awesome_dropzone", {
+                    // The configuration we've talked about above
+                    url: '{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}',
+                    method: 'POST',
+                    autoProcessQueue: false,
+                    parallelUploads: 10,
+                    maxFilesize: 100,
+                    maxFiles: 10,
+                    uploadMultiple: true,
+                    addRemoveLinks: true,
+                    paramName: "file",
+                    withCredentials: true,
+                    acceptedFiles: '.pdf',
 
-                    for(var i=0; i<filepaths.length; i++){
-                        var filepath = filepaths[i];
-
-                        var pathArray = filepath.split('/');
+                    init: function () {
 
 
-                        //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
-                        var a = document.createElement('a');
+                        $("#btn-sendForm").click(function (e) {
+                            //validate the data first (in the controller, we can't validate the data and return message
+                            //because of using e.preventDefault() and e.stopPropagation();
+                            if ($('#handInAssignment').valid()){
+                                e.preventDefault();
+                                e.stopPropagation();
+                                /*
+                                (Reference:https://github.com/enyo/dropzone/issues/687)
+                                You should check if there are files in the queue. If the queue is empty call directly dropzone.uploadFile().
+                                This method requires you to pass in a file. As stated on canisue the File constructor isn't supported on IE/Edge, so just use Blob API, as File API is based on that.
+                                The formData.append() method used in dropzone.uploadFile() requires you to pass an object which implements the Blob interface.
+                                That's the reason why you cannot pass in a normal object. dropzone version 5.2.0 requires the upload.chunked option
+                                 */
+                                if (mydropZone.getQueuedFiles().length > 0){
+                                    mydropZone.processQueue();
+                                } else {
+                                    var blob = new Blob();
+                                    blob.upload = { 'chunked': mydropZone.defaultOptions.chunking };
 
-                        a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
-                        a.setAttribute('class',"dz-remove");
-                        // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
-                        a.innerHTML = "下載";
-
-                        this.on("complete", function(file){
-
-                            file.previewTemplate.appendChild(a);
-
-                            // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                                    mydropZone.uploadFile(blob);
+                                }
+                            } else {
+                                console.log('fail')
+                            }
                         });
 
-                        var mockFile = { name: filenames[i], size: filesizes[i] };
-                        this.files.push(mockFile);
-                        this.emit('addedfile', mockFile);
-                        this.createThumbnailFromUrl(mockFile, mockFile.url);
-                        this.emit('complete', mockFile);
-                        this._updateMaxFilesReachedClass();
-                    }
 
-                },
-                removedfile: function(file){
-                    var filename = file.name;
-                    console.log(filename);
-                    var student_assignment_id = $('input[name=student_assignment_id]').val();
-                    $.ajax({
-                        url:'{{ route('dropZone.deleteAssignment') }}',
-                        method:'POST',
-                        data:{
-                            'filename': filename,
-                            'student_assignment_id': student_assignment_id,
-                        },
-                        dataType:'json',
-                        success:function(data)
-                        {
-                            //
+                        this.on('sending', function(file, xhr, formData) {
+                            // Append all form inputs to the formData Dropzone will POST
+                            var data = $('#handInAssignment').serializeArray();
+                            // console.log(data);
+                            $.each(data, function(key, el) {
+                                formData.append(el.name, el.value);
+                            });
+                        });
+
+                        //show the file
+                        var filepaths = {!! json_encode($files["filepaths"])  !!};
+                        var filenames = {!! json_encode($files["filenames"])  !!};
+                        var filesizes = {!! json_encode($files["filesizes"])  !!};
+
+                        for(var i=0; i<filepaths.length; i++){
+                            var filepath = filepaths[i];
+
+                            var pathArray = filepath.split('/');
+
+
+                            //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
+                            var a = document.createElement('a');
+
+                            a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
+                            a.setAttribute('class',"dz-remove");
+                            // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
+                            a.innerHTML = "下載";
+
+                            this.on("complete", function(file){
+                                file.previewTemplate.appendChild(a);
+                            });
+
+                            let mockFile = { name: filenames[i], size: filesizes[i], dataURL: '{{ URL::to('images/file.png') }}' };
+
+                            if (mockFile.name !== "blob"){
+                                let that = this;
+                                this.files.push(mockFile);
+                                this.emit('addedfile', mockFile);
+                                // this.createThumbnailFromUrl(mockFile, mockFile.url);
+                                this.createThumbnailFromUrl(mockFile,
+                                    this.options.thumbnailWidth,
+                                    this.options.thumbnailHeight,
+                                    this.options.thumbnailMethod, true, function (thumbnail)
+                                    {
+                                        that.emit('thumbnail', mockFile, thumbnail);
+                                    });
+                                this.emit('complete', mockFile);
+                                this._updateMaxFilesReachedClass();
+                            }
+
                         }
-                    });
-                    var _ref;
-                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-                },
-                success: function(){
-                    location.reload();
-                }
-            };
-        }
-        else if ({{ $student_assignment_status }} === 3){
-            Dropzone.options.myDropzone = {
-
-                init: function() {
-                    var filepaths = {!! json_encode($files["filepaths"])  !!};
-                    var filenames = {!! json_encode($files["filenames"])  !!};
-                    var filesizes = {!! json_encode($files["filesizes"])  !!};
-
-                    for(var i=0; i<filepaths.length; i++){
-                        var filepath = filepaths[i];
-
-                        var pathArray = filepath.split('/');
-
-
-                        //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
-                        var a = document.createElement('a');
-
-                        a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
-                        a.setAttribute('class',"dz-remove");
-                        // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
-                        a.innerHTML = "下載";
-
-                        this.on("complete", function(file){
-
-                            file.previewTemplate.appendChild(a);
-
-                            // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                    },
+                    removedfile: function(file){
+                        var filename = file.name;
+                        // console.log(filename);
+                        $.ajax({
+                            url:'{{ route('dropZone.deleteAssignment') }}',
+                            method:'POST',
+                            data:{
+                                'filename': filename,
+                                'student_assignment_id': '{{ $student_assignment_id }}',
+                            },
+                            dataType:'json',
+                            success:function(data)
+                            {
+                                // console.log(data.path);
+                            }
+                        });
+                        var _ref;
+                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                    },
+                    success: function(){
+                        this.options['dictRemoveFile'] = "";
+                        $(".successMessage").removeAttr("hidden");
+                        setTimeout(function(){
+                            window.location.reload(1);
+                        }, 3000);
+                    }
+                });
+            } else { //教師已批改, 不允許上傳
+                var mydropZone = new Dropzone("#my_awesome_dropzone", {
+                    url: '{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}',
+                    method: 'POST',
+                    init: function () {
+                        $("#btn-sendForm").click(function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
                         });
 
-                        var mockFile = { name: filenames[i], size: filesizes[i] };
-                        this.files.push(mockFile);
-                        this.emit('addedfile', mockFile);
-                        this.createThumbnailFromUrl(mockFile, mockFile.url);
-                        this.emit('complete', mockFile);
-                        this._updateMaxFilesReachedClass();
-                    }
+                        //show the file
+                        var filepaths = {!! json_encode($files["filepaths"])  !!};
+                        var filenames = {!! json_encode($files["filenames"])  !!};
+                        var filesizes = {!! json_encode($files["filesizes"])  !!};
 
-                },
-                accept: function(){
-                    alert('不允許上傳：作業已截止');
-                    location.reload();
-                }
-            };
+                        for(var i=0; i<filepaths.length; i++){
+                            var filepath = filepaths[i];
+
+                            var pathArray = filepath.split('/');
+
+
+                            //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
+                            var a = document.createElement('a');
+
+                            a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
+                            a.setAttribute('class',"dz-remove");
+                            // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
+                            a.innerHTML = "下載";
+
+                            this.on("complete", function(file){
+
+                                file.previewTemplate.appendChild(a);
+
+                                // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                            });
+
+                            let mockFile = { name: filenames[i], size: filesizes[i], dataURL: '{{ URL::to('images/file.png') }}' };
+
+                            if (mockFile.name !== "blob"){
+                                let that = this;
+                                this.files.push(mockFile);
+                                this.emit('addedfile', mockFile);
+                                // this.createThumbnailFromUrl(mockFile, mockFile.url);
+                                this.createThumbnailFromUrl(mockFile,
+                                    this.options.thumbnailWidth,
+                                    this.options.thumbnailHeight,
+                                    this.options.thumbnailMethod, true, function (thumbnail)
+                                    {
+                                        that.emit('thumbnail', mockFile, thumbnail);
+                                    });
+                                this.emit('complete', mockFile);
+                                this._updateMaxFilesReachedClass();
+                            }
+
+                        }
+                    },
+                    accept: function(){
+                        alert('不允許上傳：教師已完成批改');
+                        location.reload();
+                    }
+                });
+            }
+        } else { //作業已截止
+            if({{ $student_assignment_status }} === 4 || {{ $student_assignment_status }} === 5){ //教師開放補繳 或是 已補繳, 提供上傳修改作業功能
+                var mydropZone = new Dropzone("#my_awesome_dropzone", {
+                    // The configuration we've talked about above
+                    url: '{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}',
+                    method: 'POST',
+                    autoProcessQueue: false,
+                    parallelUploads: 10,
+                    maxFilesize: 100,
+                    maxFiles: 10,
+                    uploadMultiple: true,
+                    addRemoveLinks: true,
+                    paramName: "file",
+                    withCredentials: true,
+                    acceptedFiles: '.pdf',
+
+                    init: function () {
+                        $("#btn-sendForm").click(function (e) {
+                            //validate the data first (in the controller, we can't validate the data and return message
+                            //because of using e.preventDefault() and e.stopPropagation();
+                            if ($('#handInAssignment').valid()){
+                                e.preventDefault();
+                                e.stopPropagation();
+                                /*
+                                (Reference:https://github.com/enyo/dropzone/issues/687)
+                                You should check if there are files in the queue. If the queue is empty call directly dropzone.uploadFile().
+                                This method requires you to pass in a file. As stated on canisue the File constructor isn't supported on IE/Edge, so just use Blob API, as File API is based on that.
+                                The formData.append() method used in dropzone.uploadFile() requires you to pass an object which implements the Blob interface.
+                                That's the reason why you cannot pass in a normal object. dropzone version 5.2.0 requires the upload.chunked option
+                                 */
+                                if (mydropZone.getQueuedFiles().length > 0){
+                                    mydropZone.processQueue();
+                                } else {
+                                    var blob = new Blob();
+                                    blob.upload = { 'chunked': mydropZone.defaultOptions.chunking };
+
+                                    mydropZone.uploadFile(blob);
+                                }
+                            } else {
+                                console.log('fail')
+                            }
+                        });
+
+
+                        this.on('sending', function(file, xhr, formData) {
+                            // Append all form inputs to the formData Dropzone will POST
+                            var data = $('#handInAssignment').serializeArray();
+                            // console.log(data);
+                            $.each(data, function(key, el) {
+                                formData.append(el.name, el.value);
+                            });
+                        });
+
+                        //show the file
+                        var filepaths = {!! json_encode($files["filepaths"])  !!};
+                        var filenames = {!! json_encode($files["filenames"])  !!};
+                        var filesizes = {!! json_encode($files["filesizes"])  !!};
+
+                        for(var i=0; i<filepaths.length; i++){
+                            var filepath = filepaths[i];
+
+                            var pathArray = filepath.split('/');
+
+
+                            //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
+                            var a = document.createElement('a');
+
+                            a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
+                            a.setAttribute('class',"dz-remove");
+                            // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
+                            a.innerHTML = "下載";
+
+                            this.on("complete", function(file){
+
+                                file.previewTemplate.appendChild(a);
+
+                                // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                            });
+
+                            let mockFile = { name: filenames[i], size: filesizes[i], dataURL: '{{ URL::to('images/file.png') }}' };
+
+                            if (mockFile.name !== "blob"){
+                                let that = this;
+                                this.files.push(mockFile);
+                                this.emit('addedfile', mockFile);
+                                // this.createThumbnailFromUrl(mockFile, mockFile.url);
+                                this.createThumbnailFromUrl(mockFile,
+                                    this.options.thumbnailWidth,
+                                    this.options.thumbnailHeight,
+                                    this.options.thumbnailMethod, true, function (thumbnail)
+                                    {
+                                        that.emit('thumbnail', mockFile, thumbnail);
+                                    });
+                                this.emit('complete', mockFile);
+                                this._updateMaxFilesReachedClass();
+                            }
+
+                        }
+                    },
+                    removedfile: function(file){
+                        var filename = file.name;
+                        // console.log(filename);
+                        var announcement_id = $('input[name=announcement_id]').val();
+                        $.ajax({
+                            url:'{{ route('dropZone.deleteAssignment') }}',
+                            method:'POST',
+                            data:{
+                                'filename': filename,
+                                'student_assignment_id': '{{ $student_assignment_id }}',
+                            },
+                            dataType:'json',
+                            success:function(data)
+                            {
+                                // console.log(data.path);
+                            }
+                        });
+                        var _ref;
+                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                    },
+                    success: function(){
+                        this.options['dictRemoveFile'] = "";
+                        $(".successMessage").removeAttr("hidden");
+                        setTimeout(function(){
+                            window.location.reload(1);
+                        }, 3000);
+                    }
+                });
+            } else {
+                var mydropZone = new Dropzone("#my_awesome_dropzone", {
+                    url: '{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}',
+                    method: 'POST',
+                    init: function () {
+                        $("#btn-sendForm").click(function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+
+                        //show the file
+                        var filepaths = {!! json_encode($files["filepaths"])  !!};
+                        var filenames = {!! json_encode($files["filenames"])  !!};
+                        var filesizes = {!! json_encode($files["filesizes"])  !!};
+
+                        for(var i=0; i<filepaths.length; i++){
+                            var filepath = filepaths[i];
+
+                            var pathArray = filepath.split('/');
+
+
+                            //這幾句一定要放在這，不能放在 this.on("complete") 裡面，否則會重複
+                            var a = document.createElement('a');
+
+                            a.setAttribute('href', route('dropZone.downloadAssignment', {first: pathArray[0], second: pathArray[1], third:pathArray[2], fourth:pathArray[3]}));
+                            a.setAttribute('class',"dz-remove");
+                            // a.innerHTML = "下載"+file.previewTemplate.childNodes[12].innerHTML;
+                            a.innerHTML = "下載";
+
+                            this.on("complete", function(file){
+
+                                file.previewTemplate.appendChild(a);
+
+                                // file.previewTemplate.removeChild(file.previewTemplate.childNodes[13])
+                            });
+
+                            let mockFile = { name: filenames[i], size: filesizes[i], dataURL: '{{ URL::to('images/file.png') }}' };
+
+                            if (mockFile.name !== "blob"){
+                                let that = this;
+                                this.files.push(mockFile);
+                                this.emit('addedfile', mockFile);
+                                // this.createThumbnailFromUrl(mockFile, mockFile.url);
+                                this.createThumbnailFromUrl(mockFile,
+                                    this.options.thumbnailWidth,
+                                    this.options.thumbnailHeight,
+                                    this.options.thumbnailMethod, true, function (thumbnail)
+                                    {
+                                        that.emit('thumbnail', mockFile, thumbnail);
+                                    });
+                                this.emit('complete', mockFile);
+                                this._updateMaxFilesReachedClass();
+                            }
+
+                        }
+                    },
+                    accept: function(){
+                        alert('不允許上傳：作業已截止');
+                        location.reload();
+                    }
+                });
+            }
         }
 
 
     </script>
 
+
+    <script>
+        $('#handInAssignment').validate({
+            rules: {
+                title: "required",
+                student_assignment_id: "required",
+                assignment_id: "required",
+            },
+            messages: {
+                title: "請輸入學習主題",
+            }
+        });
+    </script>
 
     <script>
         $.ajaxSetup({

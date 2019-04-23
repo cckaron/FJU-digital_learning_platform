@@ -405,277 +405,41 @@ class AssignmentController extends Controller
     }
 
     public function getAssignments(){
-        $student_id = Auth::user()->id;
+        $user = Auth::user();
 
-        //進行中
-        $courses_processing = collect();
-        $teachers_processing = collect();
-
-        //已結束
-        $courses_finished = collect();
-        $teachers_finished = collect();
-
-
-        // 取得該學生的所有作業
-        $assignments = DB::table('student_assignment')
-            ->where('students_id', $student_id)
+        $student = Student::where('users_id', $user->id)->first();
+        $courses = $student->course()
+            ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
+            ->select('common_courses.id as common_course_id', 'common_courses.name as common_course_name',
+                'common_courses.year as year', 'common_courses.semester as semester',
+                'courses.*', 'courses.id as course_id', 'courses.name as course_name')
+            ->where('common_courses.status', 1)
             ->get();
 
-        // 取得所有作業的 ID
-        $assignments_id = $assignments->pluck('assignments_id');
-
-
-
-        // 目的：取得該作業的課程名稱
-        // 將作業分類成 1.進行中 2.已結束
-
-        //進行中的作業
-        $assignments_processing = DB::table('assignments')
-            ->whereIn('id', $assignments_id)
-            ->where('status', 1)
-            ->get();
-
-        //進行中的作業的狀態
-        $assignments_processing_status = array();
-
-        $assignments_processing_id = $assignments_processing->pluck('id');
-
-        for ($r=0; $r<count($assignments_processing_id); $r++){
-            $status = DB::table('student_assignment')
-                ->where('assignments_id', $assignments_processing_id[$r])
-                ->where('students_id', $student_id)
-                ->value('status');
-            array_push($assignments_processing_status, $status);
-        }
-
-        //進行中的作業的成績
-        $assignments_processing_score = array();
-
-        for ($r=0; $r<count($assignments_processing_id); $r++){
-            $score = DB::table('student_assignment')
-                ->where('assignments_id', $assignments_processing_id[$r])
-                ->where('students_id', $student_id)
-                ->value('score');
-            array_push($assignments_processing_score, $score);
-        }
-
-
-        //取得assignment id 然後 hash
-        $assignments_processing_id = $assignments_processing->pluck('id');
-        for ($k=0; $k<count($assignments_processing_id); $k++){
-            $hashids = new Hashids('assignment_id', 10);
-            $assignments_processing_id[$k] = $hashids->encode($assignments_processing_id[$k]);
-        }
-
-        //取得 assignment course id 然後 hash
-        $assignments_processing_course_id = $assignments_processing->pluck('courses_id');
-        for ($k=0; $k<count($assignments_processing_course_id); $k++){
-            $hashids = new Hashids('course_id', 6);
-            $assignments_processing_course_id[$k] = $hashids->encode($assignments_processing_course_id[$k]);
-        }
-
-        // 基本資料
-        $assignments_processing_name = $assignments_processing->pluck('name');
-        $courses_processing_id = $assignments_processing->pluck('courses_id');
-        $assignments_processing_end_date = $assignments_processing->pluck('end_date');
-        $common_courses_processing = array();
-        $course_processing_name= array();
-        $common_course_processing_name = array();
-
-        for ($i=0; $i<count($courses_processing_id); $i++){
-            //課程資訊
-            $course = DB::table('courses')
-                ->where('id', $courses_processing_id[$i]);
-
-            $common_course_id = $course->value('common_courses_id');
-
-            $common_courses_detail = DB::table('common_courses')
-                ->where('id', $common_course_id);
-
-            $common_course_name = $common_courses_detail->value('name');
-            $course_name = $course->value('name');
-
-            $common_course_id = DB::table('courses')
-                ->where('id', $courses_processing_id[$i])
-                ->value('common_courses_id');
-            $common_course_detail = DB::table('common_courses')
-                ->where('id', $common_course_id)
+        foreach ($courses as $course){
+            $assignments = $course->assignment()
+                ->select('assignments.*', 'assignments.id as assignment_id', 'assignments.name',
+                    'assignments.end_date', 'assignments.end_time')
                 ->get();
 
-            array_push($common_courses_processing, $common_course_detail);
-            array_push($course_processing_name, $course_name);
-            array_push($common_course_processing_name, $common_course_name);
-        }
+            $hashids_course = new Hashids('course_id', 6);
+            $course->course_id = $hashids_course->encode($course->course_id);
 
+            $course->assignment = $assignments;
 
-
-        //已結束的作業
-        $assignments_finished = DB::table('assignments')
-            ->whereIn('id', $assignments_id)
-            ->where('status', 0)
-            ->get();
-
-        //已結束的作業的狀態
-        $assignments_finished_status = array();
-
-        $assignments_finished_id = $assignments_finished->pluck('id');
-
-
-        for ($r=0; $r<count($assignments_finished_id); $r++){
-            $status = DB::table('student_assignment')
-                ->where('assignments_id', $assignments_finished_id[$r])
-                ->where('students_id', $student_id)
-                ->value('status');
-            array_push($assignments_finished_status, $status);
-        }
-
-        //已結束的作業的成績
-        $assignments_finished_score = array();
-
-        for ($r=0; $r<count($assignments_finished_id); $r++){
-            $score = DB::table('student_assignment')
-                ->where('assignments_id', $assignments_finished_id[$r])
-                ->where('students_id', $student_id)
-                ->value('score');
-            array_push($assignments_finished_score, $score);
-        }
-
-        //取得 assignment id 然後 hash
-        $assignments_finished_id = $assignments_finished->pluck('id');
-        for ($k=0; $k<count($assignments_finished_id); $k++){
-            $hashids = new Hashids('assignment_id', 10);
-            $assignments_finished_id[$k] = $hashids->encode($assignments_finished_id[$k]);
-        }
-
-        //取得 assignment course id 然後 hash
-        $assignments_finished_course_id = $assignments_finished->pluck('courses_id');
-        for ($k=0; $k<count($assignments_finished_course_id); $k++){
-            $hashids = new Hashids('course_id', 6);
-            $assignments_finished_course_id[$k] = $hashids->encode($assignments_finished_course_id[$k]);
-        }
-
-        // 基本資料
-        $assignments_finished_name = $assignments_finished->pluck('name');
-        $courses_finished_id = $assignments_finished->pluck('courses_id');
-        $assignments_finished_end_date = $assignments_finished->pluck('end_date');
-        $common_courses_finished = array();
-        $course_finished_name= array();
-        $common_course_finished_name = array();
-
-        for ($i=0; $i<count($courses_finished_id); $i++){
-            //課程資訊
-            $course = DB::table('courses')
-                ->where('id', $courses_finished_id[$i]);
-
-            $common_course_id = $course->value('common_courses_id');
-
-            $common_courses_detail = DB::table('common_courses')
-                ->where('id', $common_course_id);
-
-            $common_course_name = $common_courses_detail->value('name');
-            $course_name = $course->value('name');
-
-            $common_course_id = DB::table('courses')
-                ->where('id', $courses_finished_id[$i])
-                ->value('common_courses_id');
-            $common_course_detail = DB::table('common_courses')
-                ->where('id', $common_course_id)
-                ->get();
-
-            array_push($common_courses_finished, $common_course_detail);
-            array_push($common_course_finished_name, $common_course_name);
-            array_push($course_finished_name, $course_name);
-        }
-
-
-
-        //進行中的作業
-        for ($i=0; $i<count($assignments_processing); $i++){
-
-            // 取得進行中作業的指導老師，並且加入 $teachers_processing 集合中
-            $teachers = DB::table('teacher_course')
-                ->where('courses_id', $courses_processing_id[$i])
-                ->get();
-            $teacher_count = DB::table('teacher_course')
-                ->where('courses_id', $courses_processing_id[$i])
-                ->count();
-
-            $teacher_array = array();
-            for ($j=0; $j<$teacher_count; $j++){
-                $teacher_name = DB::table('teachers')
-                    ->where('users_id', $teachers[$j]->teachers_id)
-                    ->value('users_name');
-
-                array_push($teacher_array, $teacher_name);
+            foreach($course->assignment as $assignment){
+                $hashids_assignment = new Hashids('assignment_id', 10);
+                $assignment->assignment_id = $hashids_assignment->encode($assignment->assignment_id);
+                $assignment->student = $assignment->student()
+                    ->withPivot(['score', 'status', 'makeUpDate'])
+                    ->select('student_assignment.id as student_assignment_id','student_assignment.score', 'student_assignment.status', 'student_assignment.makeUpDate')
+                    ->where('users_id', $user->id)
+                    ->first();
             }
-
-            $teachers_processing->push($teacher_array);
-
-            $course = DB::table('courses')
-                ->where('id', $assignments_processing[$i]->courses_id)
-                ->get();
-
-            $courses_processing->push($course);
-        }
-
-        //已結束的作業
-        for ($i=0; $i<count($assignments_finished); $i++){
-
-            // 取得進行中作業的指導老師，並且加入 $teachers_processing 集合中
-            $teachers = DB::table('teacher_course')
-                ->where('courses_id', $courses_finished_id[$i])
-                ->get();
-            $teacher_count = DB::table('teacher_course')
-                ->where('courses_id', $courses_finished_id[$i])
-                ->count();
-
-            $teacher_array = array();
-            for ($j=0; $j<$teacher_count; $j++){
-                $teacher_name = DB::table('teachers')
-                    ->where('users_id', $teachers[$j]->teachers_id)
-                    ->value('users_name');
-
-                array_push($teacher_array, $teacher_name);
-            }
-
-            $teachers_finished->push($teacher_array);
-
-            $course = DB::table('courses')
-                ->where('id', $assignments_finished[$i]->courses_id)
-                ->get();
-
-            $courses_finished->push($course);
         }
 
         return view('assignment.showAssignments', [
-            'assignments' => $assignments,
-
-            'assignments_processing' => $assignments_processing,
-            'assignments_processing_id' => $assignments_processing_id,
-            'assignments_processing_course_id' => $assignments_processing_course_id,
-            'assignments_processing_name' => $assignments_processing_name,
-            'assignments_processing_status' => $assignments_processing_status,
-            'assignments_processing_score' => $assignments_processing_score,
-            'common_course_processing' => $common_courses_processing,
-            'courses_processing'=>$courses_processing,
-            'assignments_processing_end_date' => $assignments_processing_end_date,
-            'teachers_processing' => $teachers_processing,
-            'courses_processing_name' => $course_processing_name,
-            'common_course_processing_name' => $common_course_processing_name,
-
-            'assignments_finished' => $assignments_finished,
-            'assignments_finished_id' => $assignments_finished_id,
-            'assignments_finished_course_id' => $assignments_finished_course_id,
-            'assignments_finished_name' => $assignments_finished_name,
-            'assignments_finished_status' => $assignments_finished_status,
-            'assignments_finished_score' => $assignments_finished_score,
-            'common_courses_finished' => $common_courses_finished,
-            'courses_finished' => $courses_finished,
-            'assignments_finished_end_date' => $assignments_finished_end_date,
-            'teachers_finished' => $teachers_finished,
-            'courses_finished_name' => $course_finished_name,
-            'common_courses_finished_name' => $common_course_finished_name,
-
+            'courses' => $courses
          ]);
     }
 
@@ -1364,6 +1128,10 @@ class AssignmentController extends Controller
         $encode_assignment_id = new Hashids('assignment_id', 10);
         $course_id = $encode_course_id->decode($course_id);
         $assignment_id = $encode_assignment_id->decode($assignment_id);
+        $assignment= DB::table('assignments')
+            ->where('id', $assignment_id)
+            ->first();
+
 
         $student_assignment = DB::table('student_assignment')
             ->where('students_id', $student_id)
@@ -1416,30 +1184,69 @@ class AssignmentController extends Controller
             'comment' => $comment,
             'score' => $score,
             'student_assignment_status' => $student_assignment_status,
-            'files' => $files
+            'files' => $files,
+            'assignment' => $assignment
             ]);
     }
 
     public function postHandInAssignment(Request $request, $course_id, $assignment_id){
+        $student_id = Auth::user()->id;
         $title = $request->input('title');
         $student_assignment_id = $request->input('student_assignment_id');
+        $assignment_id = $request->input('assignment_id');
+        $files = $request->file('file'); //default file name from request is "file"
 
         $status = DB::table('student_assignment')
             ->where('id', $student_assignment_id)
             ->value('status');
 
-        if ($status == 1){
+        if ($status == 1){ //未繳交
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
                 ->update(['title' => $title, 'status' => 2, 'updated_at' => Carbon::now()]);
-        } else if ($status == 4){
+
+        } else if ($status == 2){ //已繳交
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['title' => $title, 'updated_at' => Carbon::now()]);
+
+        } else if ($status == 3){ //教師已批改
+            // 不會有這個情況, 上傳功能是被禁止的
+
+        } else if ($status == 4){ //教師開放補繳
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
                 ->update(['title' => $title, 'status' => 5, 'updated_at' => Carbon::now()]);
-        } else if ($status == 6){
+
+        } else if ($status == 5){ //已經補繳
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['title' => $title, 'updated_at' => Carbon::now()]);
+
+        } else if ($status == 6){ //教師開放重繳
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
                 ->update(['title' => $title, 'status' => 7, 'updated_at' => Carbon::now()]);
+        } else if ($status == 7){
+            DB::table('student_assignment')
+                ->where('id', $student_assignment_id)
+                ->update(['title' => $title, 'updated_at' => Carbon::now()]);
+        }
+
+        if ($files){
+            foreach ($files as $file){
+                $filename = $file->getClientOriginalName();
+                $filepath = $student_id.'/'.$assignment_id;
+
+                $filename = str_replace(' ', '_', $filename);
+                //this line is really important!!!!!!!!!!!!!!
+                setlocale(LC_ALL,'en_US.UTF-8');
+
+                Storage::disk('public')->putFileAs(
+                    $filepath, $file, $filename
+                );
+            }
+
         }
 
 
