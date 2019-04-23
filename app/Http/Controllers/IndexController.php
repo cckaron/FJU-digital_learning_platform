@@ -29,8 +29,8 @@ class IndexController extends Controller
         $student = Student::where('users_id', $student_id)->first();
 
         $course = null;
-        $announcements = null;
-        $sys_announcements = null;
+        $announcements = collect();
+        $sys_announcements = collect();
 
         $course = $student->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
