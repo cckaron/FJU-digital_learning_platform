@@ -227,10 +227,16 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
             'as' => 'assignment.showAssignments_Teacher'
         ]);
 
-        //開放繳交作業 (get)
-        Route::get('/openHandInAssignment/{student_assignment_id}/{status}', [
+        //開放重繳作業(更改狀態) (get)
+        Route::get('/openHandIn/{student_assignment_id}/{status}', [
             'uses' => 'AssignmentController@getChangeAssignmentStatus',
             'as' => 'assignment.getChangeAssignmentStatus'
+        ]);
+
+        //開放補繳作業 (post ajax)
+        Route::post('/openMakeUp', [
+            'uses' => 'AssignmentController@postOpenMakeUpAssignment',
+            'as' => 'assignment.openMakeUp'
         ]);
 
     });
@@ -617,11 +623,6 @@ Route::group(['prefix' => 'ajax'], function(){
    Route::post('/signClass', [
        'uses' => 'CourseController@signClass_ajax',
        'as' => 'ajax.signClass'
-   ]);
-
-   Route::post('/openHandInAssignment', [
-       'uses' => 'AssignmentController@openHandInAssignment',
-       'as' => 'ajax.openHandInAssignment'
    ]);
 });
 

@@ -1305,26 +1305,36 @@ class AssignmentController extends Controller
         ]);
     }
 
-    public function openHandInAssignment(Request $request){
+    //重繳
+    public function postOpenMakeUpAssignment(Request $request){
         $validation = Validator::make($request->all(), [
             'student_assignment_id' => 'required',
-            'status' => 'required',
+            'makeUpDate' => 'required',
         ]);
 
         $error_array = array();
         $success_output = '';
-        $student_assignment_id = '';
+        $student_assignment_id = $request->get('student_assignment_id');
+        $makeUpDate = $request->get('makeUpDate');
         if ($validation->fails()){
             foreach($validation->messages()->getMessages() as $field_name => $messages)
             {
                 $error_array[] = $messages;
             }
         } else {
+
+            $date = $makeUpDate[0];
+            $time = date("H:i", strtotime($makeUpDate[1]));
+            $dateTime = $date.' '.$time;
+            Log::info($dateTime);
+            $timestamp = Carbon::createFromFormat('Y/m/d H:i', $dateTime);
+            Log::info($timestamp);
+
             $student_assignment_id = $request->get('student_assignment_id');
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
-                ->update(['status' => $request->get('status')]);
-            $success_output = '成功';
+                ->update(['status' => 4, 'makeUpDate' => $timestamp]);
+            $success_output = '<div class="alert alert-success"> 成功開放補繳！ </div>';
         }
         $output = array(
             'error' => $error_array,
@@ -1333,6 +1343,7 @@ class AssignmentController extends Controller
         );
         return $output;
     }
+
 
     public function getChangeAssignmentStatus($student_assignment_id, $status){
         DB::table('student_assignment')
