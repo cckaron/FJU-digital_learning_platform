@@ -225,4 +225,11 @@ class AnnouncementController extends Controller
 
         return response()->download(storage_path().'/app/'.$filepath);
     }
+
+    public function downloadAttachment_Announcement($id, $fileName){
+
+        $filepath = $id.'/'.$fileName;
+
+        return response()->download(storage_path().'/app/public/sys_announcement/'.$filepath);
+    }
 }

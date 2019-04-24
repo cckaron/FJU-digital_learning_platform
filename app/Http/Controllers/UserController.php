@@ -262,10 +262,12 @@ class UserController extends Controller
             ->get();
 
         foreach($courses as $course){
-            $students = $course->student()->get();
+            $students = $course->student()
+                ->get();
 
             foreach($students as $student){
-                $student->user = $student->user()->first();
+                $student->user = $student->user()
+                    ->first();
             }
 
             $course->students = $students;

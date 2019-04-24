@@ -93,6 +93,14 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
     ]);
 });
 
+//共用公告
+Route::group(['prefix' => 'announcement', 'middleware' => 'auth'], function(){
+   Route::get('attachment/download/{id}/{fileName}', [
+       'uses' => 'AnnouncementController@downloadAttachment_Announcement',
+       'as' => 'announcement.attachment.download'
+   ]);
+});
+
 // 學生 (type = 4)
 Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
 

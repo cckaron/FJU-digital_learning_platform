@@ -56,7 +56,7 @@
                                     @foreach($sys_announcements as $key=>$sys_announcement)
                                         <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
                                             @if($sys_announcement->status == 1)  {{--active --}}
-                                            <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                            <i class="fas fa-bullhorn w-30px m-t-5"></i>
                                             @else  {{--not active--}}
                                             <i class="fa fa-hourglass-end w-30px m-t-5"></i>
                                             @endif
@@ -89,6 +89,20 @@
                                                             <h6>
                                                                 {!! $sys_announcement->content !!}
                                                             </h6>
+                                                            <p class="border border-primary">
+                                                                <span class="p-r-5 p-t-5">
+                                                                    <i class="fas fa-link m-r-10 m-t-5"></i>附件下載:
+                                                                </span>
+                                                                @if(count($sys_announcement->fileNames) > 0)
+                                                                    @foreach($sys_announcement->fileNames as $key => $fileName)
+                                                                        <a href="{{ route('announcement.attachment.download', ['id' => $sys_announcement->id, 'fileName' => $fileName]) }}" style="color: blue">
+                                                                            <span>{{ $key+1 }}.</span>{{ $fileName }}
+                                                                        </a>
+                                                                    @endforeach
+                                                                @else
+                                                                    無
+                                                                @endif
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -128,7 +142,7 @@
                                     @foreach($announcements as $key=>$announcement)
                                         <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
                                             @if($announcement->status == 1)  {{--active --}}
-                                            <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                            <i class="fas fa-bullhorn w-30px m-t-5"></i>
                                             @else  {{--not active--}}
                                             <i class="fa fa-hourglass-end w-30px m-t-5"></i>
                                             @endif

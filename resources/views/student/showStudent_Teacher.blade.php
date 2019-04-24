@@ -261,6 +261,7 @@
             ],
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
+            order : [[ 1, "desc" ]],
             columnDefs: [
                 { "width": "10%", "targets": 0 },
                 { "width": "10%", "targets": 1 },
