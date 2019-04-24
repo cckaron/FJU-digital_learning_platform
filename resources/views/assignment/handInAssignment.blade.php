@@ -263,13 +263,13 @@
                                     @endif
                                     </h4>
                                     <!-- Create the editor container -->
-                                    <div class="form-group row m-t-20">
-                                        <label class="col-md-2 m-t-5">學習主題</label>
+                                    <div class="form-group row m-t-30">
+                                        <label class="col-md-2 ">學習主題</label>
                                         @if($assignment->status == 1)
                                             @switch($student_assignment_status)
                                                 @case(3) <!-- 教師已批改 -->
                                                     <div class="col-md-5">
-                                                        <h4>{{ $title }}</h4>
+                                                        <h4>{!! $title !!}</h4>
                                                     </div>
                                                 @break
                                                 @default
@@ -348,15 +348,29 @@
                                     <input hidden name="assignment_id" value="{{ $assignment_id }}"/>
 
                                     @if($assignment->status == 1)
-                                        <div class="border-top">
-                                            <!-- Return Success Message -->
-                                            <div class="card-body">
-                                                <input type="submit" class="btn btn-primary" id="btn-sendForm">
-                                                <span class="alert alert-success successMessage m-l-10" style="font-size: 20px" hidden role="alert">
-                                                    上傳成功！
-                                                </span>
+                                        @if($student_assignment_status != 3)
+                                            <div class="border-top">
+                                                <!-- Return Success Message -->
+                                                <div class="card-body">
+                                                    <input type="submit" class="btn btn-primary" id="btn-sendForm">
+                                                    <span class="alert alert-success successMessage m-l-10" style="font-size: 20px" hidden role="alert">
+                                                        上傳成功！
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
+                                    @else
+                                        @if($student_assignment_status == 4 or $student_assignment_status == 5)
+                                            <div class="border-top">
+                                                <!-- Return Success Message -->
+                                                <div class="card-body">
+                                                    <input type="submit" class="btn btn-primary" id="btn-sendForm">
+                                                    <span class="alert alert-success successMessage m-l-10" style="font-size: 20px" hidden role="alert">
+                                                        上傳成功！
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
 
