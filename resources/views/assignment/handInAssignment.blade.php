@@ -45,11 +45,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @if($student_assignment_status != 3 )
-            @include('layouts.partials.pageBreadCrumb', ['title' => '繳交作業'])
-        @else
-            @include('layouts.partials.pageBreadCrumb', ['title' => '作業詳情'])
-        @endif
+        @include('layouts.partials.pageBreadCrumb', ['title' => '作業詳情'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -92,7 +88,6 @@
                 </div>
 
 
-                @if($student_assignment_status != 3)
                 <!--route的 get 和 post 的網址要一樣，所以post也需要 course_id 和 assignment_id，但沒那麼重要所以就隨機生成 str_random()，不必特別取得正確的 id -->
                 <form action="{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}" id="handInAssignment" method="post" class="form-horizontal" enctype="multipart/form-data">
 
@@ -102,12 +97,85 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">作業詳情</h4>
+                                    <h4 class="card-title">作業內容</h4>
                                     <!-- Create the editor container -->
                                     <div class="form-group row m-t-20">
                                         <label class="col-md-2">名稱</label>
                                         <div class="col-md-3">
                                             <span>{{ $assignment->name }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2">作業狀態</label>
+                                        <div class="col-md-3">
+                                            <span>
+                                                @switch($assignment->status)
+                                                    @case(1) <!-- 進行中 -->
+                                                        進行中
+                                                    @break
+                                                    @case(0) <!-- 已截止 -->
+                                                        已截止
+                                                    @break
+                                                @endswitch
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2">繳交狀態</label>
+                                        <div class="col-md-3">
+                                            <span>
+                                                @if($assignment->status == 1)
+                                                    @switch($student_assignment_status)
+                                                        @case(1) <!-- 未繳交 -->
+                                                            未繳交
+                                                        @break
+                                                        @case(2) <!-- 已繳交 -->
+                                                            已繳交
+                                                        @break
+                                                        @case(3) <!-- 教師已批改 -->
+                                                            教師已批改
+                                                        @break
+                                                        @case(4) <!-- 未補繳 -->
+                                                            補繳成功
+                                                        @break
+                                                        @case(5) <!-- 已補繳 -->
+                                                            已補繳作業
+                                                        @break
+                                                        @case(6) <!-- 未重繳 -->
+                                                            尚未重繳
+                                                        @break
+                                                        @case(7) <!-- 已重繳 -->
+                                                            重繳成功
+                                                        @break
+                                                    @endswitch
+                                                @else
+                                                    @switch($student_assignment_status)
+                                                        @case(1) <!-- 未繳交 -->
+                                                            未繳交
+                                                        @break
+                                                        @case(2) <!-- 已繳交 -->
+                                                            已繳交
+                                                        @break
+                                                        @case(3) <!-- 教師已批改 -->
+                                                            教師已批改
+                                                        @break
+                                                        @case(4) <!-- 未補繳 -->
+                                                            未補繳
+                                                        @break
+                                                        @case(5) <!-- 已補繳 -->
+                                                            已補繳(尚未批改)
+                                                        @break
+                                                        @case(6) <!-- 未重繳 -->
+                                                            未重繳
+                                                        @break
+                                                        @case(7) <!-- 未重繳 -->
+                                                            已重繳(尚未批改)
+                                                        @break
+                                                    @endswitch
+                                                @endif
+                                            </span>
                                         </div>
                                     </div>
 
@@ -143,24 +211,136 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
+                                    <h4 class="card-title">
                                     @if($assignment->status == 1)
-                                        <h4 class="card-title">上傳作業</h4>
+                                            @switch($student_assignment_status)
+                                                @case(1) <!-- 未繳交 -->
+                                                    繳交作業
+                                                @break
+                                                @case(2) <!-- 已繳交 -->
+                                                    繳交作業
+                                                @break
+                                                @case(3) <!-- 教師已批改 -->
+                                                    我的作業
+                                                @break
+                                                @case(4) <!-- 未補繳 -->
+                                                    補繳作業
+                                                @break
+                                                @case(5) <!-- 已補繳 -->
+                                                    補繳作業
+                                                @break
+                                                @case(6) <!-- 未重繳 -->
+                                                    重繳作業
+                                                @break
+                                                @case(7) <!-- 未重繳 -->
+                                                    重繳作業
+                                                @break
+                                            @endswitch
                                     @else
-                                        <h4 class="card-title">我的作業</h4>
+                                        @switch($student_assignment_status)
+                                            @case(1) <!-- 未繳交 -->
+                                                作業詳情
+                                            @break
+                                            @case(2) <!-- 已繳交 -->
+                                                作業詳情
+                                            @break
+                                            @case(3) <!-- 教師已批改 -->
+                                                作業詳情
+                                            @break
+                                            @case(4) <!-- 未補繳 -->
+                                                補繳作業
+                                            @break
+                                            @case(5) <!-- 已補繳 -->
+                                                補繳作業
+                                            @break
+                                            @case(6) <!-- 未重繳 -->
+                                                作業詳情
+                                            @break
+                                            @case(7) <!-- 未重繳 -->
+                                                作業詳情
+                                            @break
+                                        @endswitch
                                     @endif
+                                    </h4>
                                     <!-- Create the editor container -->
                                     <div class="form-group row m-t-20">
                                         <label class="col-md-2 m-t-5">學習主題</label>
-                                        <div class="col-md-5">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="title" name="title" @if($assignment->status == 1)placeholder="請輸入學習主題"@endif value="{{ $title }}" required>
-                                            </div>
-                                        </div>
+                                        @if($assignment->status == 1)
+                                            @switch($student_assignment_status)
+                                                @case(3) <!-- 教師已批改 -->
+                                                    <div class="col-md-5">
+                                                        <h4>{{ $title }}</h4>
+                                                    </div>
+                                                @break
+                                                @default
+                                                    <div class="col-md-5">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{{ $title }}" required>
+                                                        </div>
+                                                    </div>
+                                                @break
+                                            @endswitch
+                                        @else
+                                            @switch($student_assignment_status)
+                                                @case(4) <!-- 教師要求補繳 -->
+                                                    <div class="col-md-5">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{{ $title }}" required>
+                                                        </div>
+                                                    </div>
+                                                @break
+                                                @case(5) <!-- 教師要求補繳 -->
+                                                <div class="col-md-5">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{{ $title }}" required>
+                                                    </div>
+                                                </div>
+                                                @break
+                                                @default
+                                                    <div class="col-md-5">
+                                                        <h4>{{ $title }}</h4>
+                                                    </div>
+                                                @break
+                                            @endswitch
+                                        @endif
+
                                     </div>
 
                                     <div class="form-group row m-t-30">
                                         <label class="col-md-2" for="announcementContent">附加檔案</label>
                                         <div class="dropzone dropzone-previews col-md-8" id="my_awesome_dropzone">
+                                        </div>
+                                    </div>
+
+                                    <!-- 分數 -->
+                                    <div class="form-group row m-t-40">
+                                        <label class="col-md-2">分數</label>
+                                        @if($assignment->announce_score == 1)
+                                            <div class="col-md-5">
+                                                @if($score == null)
+                                                    <span>未評分</span>
+                                                @elseif ($score >= 60)
+                                                    <span style="color:blue">
+                                                    {{ $score }}
+                                                </span> 分
+                                                @elseif($score < 60)
+                                                    <span style="color:red">
+                                                        {{ gettype($score) }}
+                                                    </span> 分
+                                                @endif
+                                            </div>
+                                        @else
+                                            <div class="col-md-5">
+                                                <span>未公開</span>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <!-- 評語 -->
+                                    <div class="form-group row m-t-40">
+                                        <label class="col-md-2 m-t-5">教師評語</label>
+                                        <div class="col-md-5">
+                                            <h4>{!! $comment !!}</h4>
                                         </div>
                                     </div>
 
@@ -187,45 +367,6 @@
                     </div>
                     {{ csrf_field() }}
                 </form>
-
-                @else
-                    <!-- score -->
-                        <div class="row">
-
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">
-                                            作業得分：
-                                            @if ($score >= 60)
-                                            <span style="color:blue">
-                                                {{ $score }}
-                                            </span> 分
-                                            @elseif($score < 60)
-                                                <span style="color:red">
-                                                {{ $score }}
-                                            </span> 分
-                                            @endif
-                                        </h4>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    <!-- comment -->
-                        <div class="row">
-
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">教師評語：</h4>
-                                        <p>{!! $comment !!} </p>
-                                </div>
-                            </div>
-
-                        </div>
-                        </div>
-                @endif
 
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
