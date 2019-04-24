@@ -112,10 +112,14 @@
                                             <span>
                                                 @switch($assignment->status)
                                                     @case(1) <!-- 進行中 -->
-                                                        進行中
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
+                                                            進行中
+                                                        </span>
                                                     @break
                                                     @case(0) <!-- 已截止 -->
-                                                        已截止
+                                                        <span class="badge badge-pill badge-danger" style="font-size: 100%; margin-top: 5px">
+                                                            已截止
+                                                        </span>
                                                     @break
                                                 @endswitch
                                             </span>
@@ -125,57 +129,83 @@
                                     <div class="form-group row m-t-20">
                                         <label class="col-md-2">繳交狀態</label>
                                         <div class="col-md-3">
-                                            <span>
-                                                @if($assignment->status == 1)
-                                                    @switch($student_assignment_status)
-                                                        @case(1) <!-- 未繳交 -->
+                                            @if($assignment->status == 1)
+                                                @switch($student_assignment_status)
+                                                    @case(1) <!-- 未繳交 -->
+                                                        <span class="badge badge-pill badge-danger" style="font-size: 100%; margin-top: 5px">
                                                             未繳交
-                                                        @break
-                                                        @case(2) <!-- 已繳交 -->
+                                                        </span>
+                                                    @break
+                                                    @case(2) <!-- 已繳交 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
                                                             已繳交
-                                                        @break
-                                                        @case(3) <!-- 教師已批改 -->
+                                                        </span>
+                                                    @break
+                                                    @case(3) <!-- 教師已批改 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
                                                             教師已批改
-                                                        @break
-                                                        @case(4) <!-- 未補繳 -->
-                                                            補繳成功
-                                                        @break
-                                                        @case(5) <!-- 已補繳 -->
+                                                        </span>
+                                                    @break
+                                                    @case(4) <!-- 未補繳 -->
+                                                        <span class="badge badge-pill badge-danger" style="font-size: 100%; margin-top: 5px">
+                                                            補繳中
+                                                        </span>
+                                                    @break
+                                                    @case(5) <!-- 已補繳 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
                                                             已補繳作業
-                                                        @break
-                                                        @case(6) <!-- 未重繳 -->
+                                                        </span>
+                                                    @break
+                                                    @case(6) <!-- 未重繳 -->
+                                                        <span class="badge badge-pill badge-danger" style="font-size: 100%; margin-top: 5px">
                                                             尚未重繳
-                                                        @break
-                                                        @case(7) <!-- 已重繳 -->
-                                                            重繳成功
-                                                        @break
-                                                    @endswitch
-                                                @else
-                                                    @switch($student_assignment_status)
-                                                        @case(1) <!-- 未繳交 -->
+                                                        </span>
+                                                    @break
+                                                    @case(7) <!-- 已重繳 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
+                                                            已重繳作業
+                                                        </span>
+                                                    @break
+                                                @endswitch
+                                            @else
+                                                @switch($student_assignment_status)
+                                                    @case(1) <!-- 未繳交 -->
+                                                        <span class="badge badge-pill badge-danger" style="font-size: 100%; margin-top: 5px">
                                                             未繳交
-                                                        @break
-                                                        @case(2) <!-- 已繳交 -->
+                                                        </span>
+                                                    @break
+                                                    @case(2) <!-- 已繳交 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
                                                             已繳交
-                                                        @break
-                                                        @case(3) <!-- 教師已批改 -->
+                                                        </span>
+                                                    @break
+                                                    @case(3) <!-- 教師已批改 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
                                                             教師已批改
-                                                        @break
-                                                        @case(4) <!-- 未補繳 -->
+                                                        </span>
+                                                    @break
+                                                    @case(4) <!-- 未補繳 -->
+                                                        <span class="badge badge-pill badge-danger" style="font-size: 100%; margin-top: 5px">
                                                             未補繳
-                                                        @break
-                                                        @case(5) <!-- 已補繳 -->
-                                                            已補繳(尚未批改)
-                                                        @break
-                                                        @case(6) <!-- 未重繳 -->
+                                                        </span>
+                                                    @break
+                                                    @case(5) <!-- 已補繳 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
+                                                            已補繳 (尚未批改)
+                                                        </span>
+                                                    @break
+                                                    @case(6) <!-- 未重繳 -->
+                                                        <span class="badge badge-pill badge-danger" style="font-size: 100%; margin-top: 5px">
                                                             未重繳
-                                                        @break
-                                                        @case(7) <!-- 未重繳 -->
-                                                            已重繳(尚未批改)
-                                                        @break
-                                                    @endswitch
-                                                @endif
-                                            </span>
+                                                        </span>
+                                                    @break
+                                                    @case(7) <!-- 未重繳 -->
+                                                        <span class="badge badge-pill badge-primary" style="font-size: 100%; margin-top: 5px">
+                                                            已重繳 (尚未批改)
+                                                        </span>
+                                                    @break
+                                                @endswitch
+                                            @endif
                                         </div>
                                     </div>
 
@@ -197,6 +227,38 @@
                                         <label class="col-md-2">作業內容</label>
                                         <div class="col-md-3">
                                             <span>{!! $assignment->content !!}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 分數 -->
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2">分數</label>
+                                        @if($assignment->announce_score == 1)
+                                            <div class="col-md-5">
+                                                @if($score == null)
+                                                    <span style="font-size: 20px;">未評分</span>
+                                                @elseif ($score >= 60)
+                                                    <span style="color:blue; font-size: 20px;" >
+                                                    {{ $score }}
+                                                </span> 分
+                                                @elseif($score < 60)
+                                                    <span style="color:red; font-size: 20px;">
+                                                        {{ $score }} 分
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <div class="col-md-5">
+                                                <span>未公開</span>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <!-- 評語 -->
+                                    <div class="form-group row m-t-20">
+                                        <label class="col-md-2 m-t-5">教師評語</label>
+                                        <div class="col-md-5">
+                                            <h4>{!! $comment !!}</h4>
                                         </div>
                                     </div>
 
@@ -309,38 +371,6 @@
                                     <div class="form-group row m-t-30">
                                         <label class="col-md-2" for="announcementContent">附加檔案</label>
                                         <div class="dropzone dropzone-previews col-md-8" id="my_awesome_dropzone">
-                                        </div>
-                                    </div>
-
-                                    <!-- 分數 -->
-                                    <div class="form-group row m-t-40">
-                                        <label class="col-md-2">分數</label>
-                                        @if($assignment->announce_score == 1)
-                                            <div class="col-md-5">
-                                                @if($score == null)
-                                                    <span>未評分</span>
-                                                @elseif ($score >= 60)
-                                                    <span style="color:blue">
-                                                    {{ $score }}
-                                                </span> 分
-                                                @elseif($score < 60)
-                                                    <span style="color:red">
-                                                        {{ gettype($score) }}
-                                                    </span> 分
-                                                @endif
-                                            </div>
-                                        @else
-                                            <div class="col-md-5">
-                                                <span>未公開</span>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <!-- 評語 -->
-                                    <div class="form-group row m-t-40">
-                                        <label class="col-md-2 m-t-5">教師評語</label>
-                                        <div class="col-md-5">
-                                            <h4>{!! $comment !!}</h4>
                                         </div>
                                     </div>
 

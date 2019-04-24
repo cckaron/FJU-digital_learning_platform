@@ -37,7 +37,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '所有共同課程'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有學生'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->

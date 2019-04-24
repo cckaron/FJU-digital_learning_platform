@@ -90,20 +90,44 @@
                                                         <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">重繳作業</a>
                                                     @endif
 
-                                                <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-                                                    @if($assignment->assignment_status == 1)
+                                                <!-- 狀態 -->
+                                                @switch($assignment->student_assignment_status)
+                                                    @case(1) <!-- 未繳交 -->
                                                         <span class="badge badge-pill badge-danger float-right" style="font-size: 100%; margin-top: 5px">
-                                                            狀態：未繳交
+                                                            未繳交
                                                         </span>
-                                                    @elseif($assignment->assignment_status == 2)
+                                                    @break
+                                                    @case(2) <!-- 已繳交 -->
                                                         <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
-                                                            狀態：已繳交
+                                                            已繳交
                                                         </span>
-                                                    @elseif($assignment->assignment_status == 3)
+                                                    @break
+                                                    @case(3) <!-- 教師已批改 -->
                                                         <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
-                                                            狀態：已評分
+                                                            教師已批改
                                                         </span>
-                                                @endif
+                                                    @break
+                                                    @case(4) <!-- 未補繳 -->
+                                                        <span class="badge badge-pill badge-danger float-right" style="font-size: 100%; margin-top: 5px">
+                                                            補繳中
+                                                        </span>
+                                                    @break
+                                                    @case(5) <!-- 已補繳 -->
+                                                        <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
+                                                            已補繳作業
+                                                        </span>
+                                                    @break
+                                                    @case(6) <!-- 未重繳 -->
+                                                        <span class="badge badge-pill badge-danger float-right" style="font-size: 100%; margin-top: 5px">
+                                                            尚未重繳
+                                                        </span>
+                                                    @break
+                                                    @case(7) <!-- 已重繳 -->
+                                                        <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
+                                                            已重繳作業
+                                                        </span>
+                                                    @break
+                                                @endswitch
 
                                                 <!-- 成績 -->
                                                     <span class="badge badge-pill badge-secondary float-right" style="font-size: 100%; margin-right: 10px; margin-top: 5px">
@@ -149,30 +173,68 @@
                                                 <h4><span class="m-b-15 d-block" style="margin-top: 10px;">{{ $assignment->assignment_name }}</span></h4>
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-                                                    @if($assignment->assignment_status == 1 or $assignment->assignment_status == 2)
-                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">繳交作業</a>
-                                                    @elseif($assignment->assignment_status == 3 or $assignment->assignment_status == 5 or $assignment->assignment_status == 7)
-                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
-                                                    @elseif($assignment->assignment_status == 4)
-                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">補繳作業</a>
-                                                    @elseif($assignment->assignment_status == 6)
-                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">重繳作業</a>
-                                                    @endif
+                                                    @switch($assignment->student_assignment_status)
+                                                        @case(1)
+                                                            <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">繳交作業</a>
+                                                        @break
+                                                        @case(2)
+                                                            <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">繳交作業</a>
+                                                        @break
+                                                        @case(3)
+                                                            <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
+                                                        @break
+                                                        @case(4)
+                                                            <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">補繳作業</a>
+                                                        @break
+                                                        @case(5)
+                                                            <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
+                                                        @break
+                                                        @case(6)
+                                                            <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">重繳作業</a>
+                                                        @break
+                                                        @case(7)
+                                                            <a href="{{ route('assignment.handInAssignment', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id]) }}" class="btn btn-default btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
+                                                        @break
+                                                    @endswitch
 
-                                                <!-- 狀態 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
-                                                    @if($assignment->assignment_status == 1)
+                                                <!-- 狀態 -->
+                                                @switch($assignment->student_assignment_status)
+                                                    @case(1) <!-- 未繳交 -->
                                                         <span class="badge badge-pill badge-danger float-right" style="font-size: 100%; margin-top: 5px">
-                                                            狀態：未繳交
-                                                        </span>
-                                                    @elseif($assignment->assignment_status == 2)
+                                                        未繳交
+                                                    </span>
+                                                    @break
+                                                    @case(2) <!-- 已繳交 -->
                                                         <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
-                                                            狀態：已繳交
-                                                        </span>
-                                                    @elseif($assignment->assignment_status == 3)
+                                                        已繳交
+                                                    </span>
+                                                    @break
+                                                    @case(3) <!-- 教師已批改 -->
                                                         <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
-                                                            狀態：已評分
+                                                        教師已批改
+                                                    </span>
+                                                    @break
+                                                    @case(4) <!-- 未補繳 -->
+                                                        <span class="badge badge-pill badge-danger float-right" style="font-size: 100%; margin-top: 5px">
+                                                        未補繳
+                                                    </span>
+                                                    @break
+                                                    @case(5) <!-- 已補繳 -->
+                                                        <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
+                                                        已補繳 (尚未批改)
+                                                    </span>
+                                                    @break
+                                                    @case(6) <!-- 未重繳 -->
+                                                        <span class="badge badge-pill badge-danger float-right" style="font-size: 100%; margin-top: 5px">
+                                                        未重繳
+                                                    </span>
+                                                    @break
+                                                    @case(7) <!-- 未重繳 -->
+                                                        <span class="badge badge-pill badge-primary float-right" style="font-size: 100%; margin-top: 5px">
+                                                            已重繳 (尚未批改)
                                                         </span>
-                                                @endif
+                                                    @break
+                                                @endswitch
 
                                                 <!-- 成績 -->
                                                     <span class="badge badge-pill badge-secondary float-right" style="font-size: 100%; margin-right: 10px; margin-top: 5px">

@@ -714,7 +714,7 @@ class AssignmentController extends Controller
             ->select('common_courses.year as year', 'common_courses.semester as semester',
                 'common_courses.name as common_course_name', 'courses.name as course_name',
                 'courses.id as course_id', 'assignments.id as assignment_id', 'assignments.name as assignment_name',
-                'assignments.status as assignment_status', 'student_assignment.score as score',
+                'assignments.status as assignment_status', 'student_assignment.score as score', 'student_assignment.status as student_assignment_status',
                 'assignments.end_date as end_date', 'assignments.end_time as end_time')
             ->where('assignments.status', 1)
             ->where('courses.id', $courses_id)
@@ -727,7 +727,7 @@ class AssignmentController extends Controller
             ->select('common_courses.year as year', 'common_courses.semester as semester',
                 'common_courses.name as common_course_name', 'courses.name as course_name',
                 'courses.id as course_id', 'assignments.id as assignment_id', 'assignments.name as assignment_name',
-                'assignments.status as assignment_status', 'student_assignment.score as score',
+                'assignments.status as assignment_status', 'student_assignment.score as score', 'student_assignment.status as student_assignment_status',
                 'assignments.end_date as end_date', 'assignments.end_time as end_time')
             ->where('assignments.status', 0)
             ->where('courses.id', $courses_id)
@@ -999,6 +999,8 @@ class AssignmentController extends Controller
             if (!File::exists($folder_path) ){
                 File::makeDirectory($folder_path, $mode = 0777, true, true);
             }
+
+            setlocale(LC_ALL,'en_US.UTF-8');
 
             Log::info($folder_path);
             $filesInFolder = File::files($folder_path);

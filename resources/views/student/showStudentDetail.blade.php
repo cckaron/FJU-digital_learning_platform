@@ -60,9 +60,17 @@
                                 <p class="card-text"><strong>姓名 </strong> <span class="p-l-30">{{ $student->users_name }}</span></p>
                                 <p class="card-text"><strong>系所 </strong> <span class="p-l-30">{{ $student->department }}</span></p>
                                 <p class="card-text"><strong>年級 </strong> <span class="p-l-30">{{ $student->grade }}年{{ $student->class }}班 </span></p>
-                                <p class="card-text"><strong>信箱 </strong> <span class="p-l-30"> example@gmail.com</span></p>
-                                <p class="card-text"><strong>電話 </strong> <span class="p-l-30"> 0912345678</span></p>
-                                <p class="card-text"><strong>授權 </strong> <span class="p-l-30" style="color:red"> 不同意</span></p>
+                                <p class="card-text"><strong>信箱 </strong> <span class="p-l-30"> {{ $student->user->email }} </span></p>
+                                <p class="card-text"><strong>電話 </strong> <span class="p-l-30"> {{ $student->user->phone }} </span></p>
+                                <p class="card-text"><strong>授權 </strong>
+                                    <span class="p-l-30" @if($student->agreement == 0)style="color:red" @endif>
+                                        @if($student->agreement == 1)
+                                            同意
+                                        @else
+                                            不同意
+                                        @endif
+                                    </span>
+                                </p>
                                 <p class="card-text"><strong>狀態 </strong> <span
                                         @if($student->status == 1)
                                         class="p-l-30" >在學中
@@ -140,26 +148,28 @@
                                                 </span>
                                         </span>
 
-                                                <span class="text-active" >
-                                                    @php($total = null)
-                                                    @foreach($student_assignments[$key] as $innerKey=>$temp)
-                                                        @foreach($temp as $student_assignment)
-                                                            @php($total += ($student_assignment->pivot->score)*($assignments[$key][$innerKey]->percentage)/100)
+                                                @if($course->status == 1)  <!-- 如果課程狀態是進行中，則顯示成績 -->
+                                                    <span class="text-active" >
+                                                        @php($total = null)
+                                                        @foreach($student_assignments[$key] as $innerKey=>$temp)
+                                                            @foreach($temp as $student_assignment)
+                                                                @php($total += ($student_assignment->pivot->score)*($assignments[$key][$innerKey]->percentage)/100)
+                                                            @endforeach
                                                         @endforeach
-                                                    @endforeach
-                                                    <span class="badge badge-pill badge-success">
-                                                    @if($course->status == 1)
-                                                            累加總分：
-                                                        @else
-                                                            總成績：
-                                                        @endif
+                                                        <span class="badge badge-pill badge-success">
+                                                        @if($course->status == 1)
+                                                                累加總分：
+                                                            @else
+                                                                總成績：
+                                                            @endif
 
-                                                        @if($total != null)
-                                                            {{ $total }} 分
-                                                        @else
-                                                            尚無
-                                                        @endif
-                                                </span>
+                                                            @if($total != null)
+                                                                {{ $total }} 分
+                                                            @else
+                                                                尚無
+                                                            @endif
+                                                    </span>
+                                                @endif
                                         </span>
 
                                                 {{--<a class="link" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">--}}
@@ -180,20 +190,30 @@
                                                                 <h6>
                                                                     <i class="fas fa-book m-t-5"></i>
                                                                     {{ $assignments[$key][$innerKey]->name }}
-                                                                    <span class="m-l-5" style="color: blue">
-                                                                            @if($student_assignment->pivot->score == null)
-                                                                            <span style="color: red"> 未登記 </span>
-                                                                        @elseif($student_assignment->pivot->score < 60)
-                                                                            <span style="color: red"> {{ $student_assignment->pivot->score }}分 </span>
-                                                                        @else
-                                                                            {{ $student_assignment->pivot->score }}
-                                                                        @endif
-                                                                        </span>
 
-                                                                    <span class="m-l-5">
+                                                                    @if($course->status == 1) <!-- 如果課程狀態是進行中，則顯示成績 -->
+                                                                        <span class="m-l-5" style="color: blue">
+                                                                            @if($student_assignment->pivot->score == null)
+                                                                                <span style="color: red"> 未登記 </span>
+                                                                            @elseif($student_assignment->pivot->score < 60)
+                                                                                <span style="color: red"> {{ $student_assignment->pivot->score }}分 </span>
+                                                                            @else
+                                                                                {{ $student_assignment->pivot->score }}
+                                                                            @endif
+                                                                        </span>
+                                                                    @endif
+
+                                                                    @if($student->agreement == 1)
+                                                                        <span class="m-l-5">
+                                                                            <i class=" fas fa-download m-l-5"></i>
+                                                                            <a style="display: inline;" class="link" href="{{ route('download.zip', ['student_id' => $student->users_id, 'assignment_id' => $assignments[$key][$innerKey]->id]) }}">檔案下載</a>
+                                                                        </span>
+                                                                    @else
+                                                                        <span class="m-l-5">
                                                                         <i class=" fas fa-download m-l-5"></i>
-                                                                        <a style="display: inline;" class="link" href="{{ route('download.zip', ['student_id' => $student->users_id, 'assignment_id' => $assignments[$key][$innerKey]->id]) }}">檔案下載</a>
+                                                                        <a style="display: inline;" class="link" href="#">不提供下載</a>
                                                                     </span>
+                                                                    @endif
                                                                 </h6>
 
                                                             @endforeach

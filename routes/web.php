@@ -258,6 +258,12 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
 
 
     });
+
+    //列出學生通訊錄 (get)
+    Route::get('students', [
+        'uses' => 'UserController@getStudents_Teacher',
+        'as' => 'teacher.getStudents'
+    ]);
 });
 
 // 工讀生 (type = 2)

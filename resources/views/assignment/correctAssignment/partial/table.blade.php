@@ -28,7 +28,7 @@
                     </button>
                     @elseif($student_assignment_status[$i] == 2) {{-- 學生作業狀態為 已繳交--}}
                     <a id="rehandIn" class="btn-href" onclick="return confirm('確定開放重繳作業?')" href="{{ route('assignment.getChangeAssignmentStatus', ['student_assignment_id' => $student_assignments_id[$i], 'status' => 6]) }}">
-                        <b id="bold_rehandIn">開放重繳</b>
+                        <b id="bold_rehandIn">要求重繳</b>
                     </a>
                     <button name="add" data-toggle="modal" data-target="#correctModal" type="submit" class="btn-href" style="color:blue" data-student-assignment-id="{{ $student_assignments_id[$i] }}">
                         <i class="fas fa-pencil-alt"></i><b id="bold_recorrect"> 批改 </b>
@@ -67,7 +67,7 @@
                         </button>
                         @elseif($student_assignment_status[$i] == 2) {{-- 學生作業狀態為 已繳交--}}
                         <button id="rehandIn" class="btn-href" data-student-assignment-id="{{ $student_assignments_id[$i] }}" data-target="#openMakeUpModal" data-toggle="modal" >
-                            <b id="bold_rehandIn">要求再度補繳</b>
+                            <b id="bold_rehandIn">要求補繳</b>
                         </button>
                         <button name="add" data-toggle="modal" data-target="#correctModal" type="submit" class="btn-href" style="color:blue" data-student-assignment-id="{{ $student_assignments_id[$i] }}">
                             <i class="fas fa-pencil-alt"></i><b id="bold_recorrect">批改</b>
