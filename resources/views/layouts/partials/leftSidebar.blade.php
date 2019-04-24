@@ -9,7 +9,7 @@
             <ul id="sidebarnav" class="p-t-30">
 
                 <!-- 公告 -->
-                @if(Auth::user()->type == 0 and Auth::user()->type == 1 and Auth::user()->type == 2)
+                @if(Auth::user()->type == 0 or Auth::user()->type == 1 or Auth::user()->type == 2)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 公告 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         @if(Auth::user()->type == 0)

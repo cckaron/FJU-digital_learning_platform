@@ -43,7 +43,7 @@
 
                         @include('layouts.partials.returnMessage')
 
-                        <div class="col-4">
+                        <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
 

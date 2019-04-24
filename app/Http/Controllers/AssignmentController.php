@@ -1000,12 +1000,16 @@ class AssignmentController extends Controller
                 File::makeDirectory($folder_path, $mode = 0777, true, true);
             }
 
+            Log::info($folder_path);
             $filesInFolder = File::files($folder_path);
+            Log::info($filesInFolder);
             foreach($filesInFolder as $path) {
                 $file = pathinfo($path);
 
-                array_push($names, $file['filename'].'.'.$file['extension']) ;
-                array_push($urls, ['public', $student_ids[$i], $student_assignment_assignments_id[$i], $file['filename'].'.'.$file['extension']]);
+                if($file['filename'] != 'blob'){ //空的檔案
+                    array_push($names, $file['filename'].'.'.$file['extension']) ;
+                    array_push($urls, ['public', $student_ids[$i], $student_assignment_assignments_id[$i], $file['filename'].'.'.$file['extension']]);
+                }
             }
 
             array_push($file_names, $names);
