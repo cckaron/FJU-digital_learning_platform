@@ -15,6 +15,7 @@ class ChangeAnnouncementStructure extends Migration
     {
         //drop the old table
         Schema::dropIfExists('course_announcement');
+        Schema::dropIfExists('announcements');
 
         Schema::create('announcements', function (Blueprint $table) {
 
