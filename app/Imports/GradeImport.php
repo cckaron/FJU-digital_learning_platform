@@ -26,17 +26,18 @@ class GradeImport implements ToCollection
             if ($key == 0){
                 $splitTitle = explode('_', $row[0], 4);
             } else if ($key == 1){ //找出所有作業名稱，加到 assignments array 裡面
-                $index = 4; //index 從 4 開始找 (第五格欄位)
-                while ($row[$index] != null) {
+                Log::info('Now is row'.$key);
+                Log::info('row length is '.count($row));
+
+                for ($i=4; $i< count($row); $i++){
                     // 判斷Excel中 第一行的作業名稱
-                    if ($row[$index] == '最終成績'){ // 加入"最終成績"
-                        array_push($assignments, $row[$index]);
+                    if ($row[$i] == null){ // 不用做事
+                    } else if ($row[$i] == '最終成績'){ // 加入"最終成績"
+                        array_push($assignments, $row[$i]);
                     } else { // 加入括弧前的字 例如 A4海報(10%) 就只會擷取 A4海報 四個字
-                        $splitName = explode('(', $row[$index], 2);
+                        $splitName = explode('(', $row[$i], 2);
                         array_push($assignments, $splitName[0]);
                     }
-
-                    $index += 1;
                 }
                 Log::info($assignments);
             } else if ($key > 1) {
