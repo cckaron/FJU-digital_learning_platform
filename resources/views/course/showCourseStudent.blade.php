@@ -141,7 +141,9 @@
                             <div class="card-body">
                                 <div class="btn-group">
                                     <h5 class="card-title m-t-10" style="padding-right: 20px">學生清單</h5>
-                                    <button type="button" class="btn btn-default" id="signClassBtn">加選</button>
+                                    @if(Auth::user()->type == 0)
+                                        <button type="button" class="btn btn-default" id="signClassBtn">加選</button>
+                                    @endif
                                 </div>
                             </div>
                             <table id="zero_config" class="table">
@@ -167,9 +169,11 @@
                                                 <a href="{{ route('user.studentDetail', ['student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="查看學生資訊">
                                                     <i class="mdi mdi-account-box"></i>
                                                 </a>
-                                                <a href="{{ route('course.dropCourse', ['courses_id' => $courses_id, 'student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="將此學生退選" onclick="return confirm('該學生於此課程的資料將會一併刪除，確定刪除?')">
-                                                    <i class="mdi mdi-close"></i>
-                                                </a>
+                                                @if(Auth::user()->type == 0)
+                                                    <a href="{{ route('course.dropCourse', ['courses_id' => $courses_id, 'student_id' => $student->users_id]) }}" data-toggle="tooltip" data-placement="top" title="將此學生退選" onclick="return confirm('該學生於此課程的資料將會一併刪除，確定刪除?')">
+                                                        <i class="mdi mdi-close"></i>
+                                                    </a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
