@@ -4,7 +4,6 @@
     <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
     <!-- DropZone JS-->
     <link href="{{ URL::to('css/dropzone.css') }}" rel="stylesheet" />
@@ -16,6 +15,24 @@
             box-sizing: border-box;
             -webkit-box-sizing:border-box;
             -moz-box-sizing: border-box;
+        }
+
+        .btn-href {
+            border: none;
+            outline: none;
+            background: none;
+            cursor: pointer;
+            color: blue;
+            padding: 0;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: inherit;
+            height: auto;
+            width: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
         }
 
     </style>
@@ -121,16 +138,18 @@
 
                                                 @foreach($student_assignments[$key] as $student_assignment)
                                                     <td>
-                                                        @if($student_assignment->pivot->score < 60)
-                                                            <span style="color:red; font-size: 18px;">{{ number_format($student_assignment->pivot->score, 2) }}</span>
+                                                        @if($student_assignment->pivot->score == null)
                                                         @elseif($student_assignment->pivot->score >= 60)
                                                             <span style="color:blue; font-size: 18px;"> {{ number_format($student_assignment->pivot->score, 2) }}</span>
+                                                        @elseif($student_assignment->pivot->score < 60)
+                                                            <span style="color:red; font-size: 18px;">{{ number_format($student_assignment->pivot->score, 2) }}</span>
                                                         @endif
                                                     </td>
 
                                                     @if($loop->last)
                                                         <td>
-                                                            @if($student_assignment->accumulated_score < 60)
+                                                            @if($student_assignment->accumulated_score == null)
+                                                            @elseif($student_assignment->accumulated_score < 60)
                                                                 <span style="color:red; font-size: 20px;">{{ number_format($student_assignment->accumulated_score, 2) }}</span>
                                                             @elseif($student_assignment->accumulated_score >= 60)
                                                                 <span style="color:blue; font-size: 20px;"> {{ number_format($student_assignment->accumulated_score, 2) }}</span>
@@ -138,13 +157,24 @@
                                                         </td>
 
                                                         <td>
-                                                            @if($student_course_final_score[$key] < 60)
-                                                                <span style="color:red; font-size: 20px;">{{ number_format($student_course_final_score[$key], 2) }}</span>
-                                                            @elseif($student_course_final_score[$key] >= 60)
-                                                                <span style="color:blue; font-size: 20px;"> {{ number_format($student_course_final_score[$key], 2) }}</span>
+                                                            @if($student_courses[$key]->final_score  == null)
+                                                            @elseif($student_courses[$key]->final_score < 60)
+                                                                <span style="color:red; font-size: 20px;">{{ number_format($student_courses[$key]->final_score, 2) }}</span>
+                                                            @elseif($student_courses[$key]->final_score >= 60)
+                                                                <span style="color:blue; font-size: 20px;"> {{ number_format($student_courses[$key]->final_score, 2) }}</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $student_assignment->comment }}</td>
+                                                        <td id="remark">
+                                                            @if($course->status == 1)
+                                                                <button name="add" class="btn btn-href" data-toggle="modal" data-target="#changeModal" type="submit" data-student-id="{{ $student_courses[$key]->students_id }}" data-course-id="{{ $student_courses[$key]->courses_id }}">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                            @endif
+                                                            <span id="remark_text">
+                                                                {{ $student_courses[$key]->remark }}
+                                                            </span>
+
+                                                        </td>
                                                     @endif
                                                 @endforeach
 
@@ -193,49 +223,79 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- end ajax correct assignment window -->
 
                         <!-- start ajax correct assignment window-->
-                        <div id="updatePercentageModal" class="modal fade" role="dialog">
+                        <div id="changeModal" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form method="post" id="UpdatePercentageForm">
+                                    <form method="post" id="change_form">
                                         <div class="modal-header">
-                                            <h4 class="modal-title">成績比率設定</h4>
+                                            <h4 class="modal-title">編輯</h4>
                                             <button type="button" class="close" data-dismiss="modal">
                                                 &times;
                                             </button>
                                         </div>
-
                                         <div class="modal-body">
                                             {{ csrf_field() }}
                                             <span id="form_output"></span>
-                                            <p>總成績比率 100% (目前可分配的比率為 {{ $availPercentage }}%)</p>
-                                            @foreach($assignments as $assignment)
-                                                <div class="form-group row" >
-                                                    <label class="col-md-3 m-t-9" for="userAccount">{{ $assignment->name }}</label>
-                                                    <div class="col-md-5">
-                                                        <div class="input-group mb-3">
-                                                            <input type="number" step="0.01" class="form-control" value="{{ $assignment->percentage }}" name="assignmentPercentage[]">
-                                                            <input type="hidden" name="assignmentID[]" value="{{ $assignment->id }}" required>
-
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text">%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
+                                            <div class="form-group">
+                                                <label>備註</label>
+                                                <input type="text" id="modal_remark" name="remark" class="form-control"/>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <input type="hidden" name="student_assignment_id" id="student_assignment_id" value="" />
-                                            {{--<button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">關閉</button>--}}
+                                            <input type="hidden" id="modal_student_id" name="student_id" value="" />
+                                            <input type="hidden" id="modal_course_id" name="course_id" value="" />
                                             <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+                        <!-- end ajax correct assignment window -->
+                        <!-- end ajax correct assignment window -->
+
+                        <!-- start ajax correct assignment window-->
+                        {{--<div id="updatePercentageModal" class="modal fade" role="dialog">--}}
+                            {{--<div class="modal-dialog">--}}
+                                {{--<div class="modal-content">--}}
+                                    {{--<form method="post" id="UpdatePercentageForm">--}}
+                                        {{--<div class="modal-header">--}}
+                                            {{--<h4 class="modal-title">成績比率設定</h4>--}}
+                                            {{--<button type="button" class="close" data-dismiss="modal">--}}
+                                                {{--&times;--}}
+                                            {{--</button>--}}
+                                        {{--</div>--}}
+
+                                        {{--<div class="modal-body">--}}
+                                            {{--{{ csrf_field() }}--}}
+                                            {{--<span id="form_output"></span>--}}
+                                            {{--<p>總成績比率 100% (目前可分配的比率為 {{ $availPercentage }}%)</p>--}}
+                                            {{--@foreach($assignments as $assignment)--}}
+                                                {{--<div class="form-group row" >--}}
+                                                    {{--<label class="col-md-3 m-t-9" for="userAccount">{{ $assignment->name }}</label>--}}
+                                                    {{--<div class="col-md-5">--}}
+                                                        {{--<div class="input-group mb-3">--}}
+                                                            {{--<input type="number" step="0.01" class="form-control" value="{{ $assignment->percentage }}" name="assignmentPercentage[]">--}}
+                                                            {{--<input type="hidden" name="assignmentID[]" value="{{ $assignment->id }}" required>--}}
+
+                                                            {{--<div class="input-group-append">--}}
+                                                                {{--<span class="input-group-text">%</span>--}}
+                                                            {{--</div>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--@endforeach--}}
+                                        {{--</div>--}}
+                                        {{--<div class="modal-footer">--}}
+                                            {{--<input type="hidden" name="student_assignment_id" id="student_assignment_id" value="" />--}}
+                                            {{--<button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">關閉</button>--}}
+                                            {{--<input type="submit" name="submit" id="action" value="確認" class="btn btn-info">--}}
+                                        {{--</div>--}}
+                                    {{--</form>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <!-- end ajax correct assignment window -->
                     </div>
                 </div>
@@ -284,7 +344,6 @@
     <script src="{{ URL::to('libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
     <!-- DropZone JS-->
     <script src="{{ URL::to('js/dropzone.js') }}"></script>
 
@@ -330,10 +389,6 @@
             autoclose: true,
             todayHighlight: true
         });
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
-
     </script>
 
     <script>
@@ -537,6 +592,56 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+    </script>
+
+    <script>
+        var form = '#change_form';
+
+        $("#changeModal").on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget);
+            var course_id = button.data('course-id');
+            var student_id = button.data('student-id');
+            var modal = button.parent().parent();
+
+            console.log(modal);
+            console.log(modal.children('#remark').children('#remark_text'));
+
+            var remark = modal.children('#remark').children('#remark_text').text();
+
+            $('#modal_remark').val(remark.trim());
+            $('#modal_course_id').val(course_id);
+            $('#modal_student_id').val(student_id);
+
+            $(form).off().on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url:'{{ route('grade.ajax.editRemark') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#form_output').html(error_html);
+                        }
+                        else
+                        {
+                            $('#form_output').html(data.success);
+                            modal.children('#remark').children('#remark_text').html(data.remark);
+                        }
+                    }
+                })
+            });
+        });
+
+
     </script>
 
 @endsection

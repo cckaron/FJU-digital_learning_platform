@@ -64,7 +64,7 @@ class GradeController extends Controller
 
         $student_assignments = collect();
         $assignments = collect();
-        $student_course_final_score = collect();
+        $student_courses = collect();
 
         foreach($students as $key=> $student){
             if ($status == 'active') {
@@ -132,13 +132,12 @@ class GradeController extends Controller
             $student_assignments->push($student_assignment);
 
             //取得final score
-            $final_score = DB::table('student_course')
+            $student_course = DB::table('student_course')
                 ->where('students_id', $student->users_id)
                 ->where('courses_id', $student_assignment[0]->course_id)
-                ->value('final_score');
+                ->first();
 
-            $student_course_final_score->push($final_score);
-
+            $student_courses->push($student_course);
         }
 
         return view('grade.gradelist', [
@@ -147,7 +146,7 @@ class GradeController extends Controller
             'assignments' => $assignments,
             'students' => $students,
             'student_assignments' => $student_assignments,
-            'student_course_final_score' => $student_course_final_score,
+            'student_courses' => $student_courses,
         ]);
     }
 
@@ -282,6 +281,39 @@ class GradeController extends Controller
             'error' => $error_array,
             'success' => $success_output,
             'myid' => $assignments_percentage
+        );
+        echo json_encode($output);
+    }
+
+    public function postEditRemark(Request $request){
+        $validation = Validator::make($request->all(), [
+            'student_id' => 'required',
+            'course_id' => 'required'
+        ]);
+
+        $student_id = $request->get('student_id');
+        $course_id = $request->get('course_id');
+        $remark = $request->get('remark');
+
+        $error_array = array();
+        $success_output = '';
+
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            DB::table('student_course')
+                ->where('students_id', $student_id)
+                ->where('courses_id', $course_id)
+                ->update(['remark' => $remark]);
+            $success_output = '<div class="alert alert-success"> 設定成功！ </div>';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+            'remark' => $remark
         );
         echo json_encode($output);
     }

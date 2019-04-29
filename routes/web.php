@@ -293,9 +293,15 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
         ]);
 
         Route::group(['prefix' => 'ajax'], function(){
+            //banned, only admin can do
             Route::post('/updatePercentage', [
                 'uses' => 'GradeController@postUpdatePercentage',
                 'as' => 'grade.ajax.updatePercentage'
+            ]);
+
+            Route::post('/editRemark', [
+                'uses' => 'GradeController@postEditRemark',
+                'as' => 'grade.ajax.editRemark'
             ]);
         });
 
