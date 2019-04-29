@@ -121,22 +121,28 @@
                                                 @foreach($student_assignments[$key] as $student_assignment)
                                                     <td>
                                                         @if($student_assignment->pivot->score < 60)
-                                                            <span style="color:red; font-size: 20px;">{{ $student_assignment->pivot->score }}</span>
+                                                            <span style="color:red; font-size: 18px;">{{ number_format($student_assignment->pivot->score, 2) }}</span>
                                                         @elseif($student_assignment->pivot->score >= 60)
-                                                            <span style="color:blue; font-size: 20px;"> {{ $student_assignment->pivot->score }}</span>
+                                                            <span style="color:blue; font-size: 18px;"> {{ number_format($student_assignment->pivot->score, 2) }}</span>
                                                         @endif
                                                     </td>
 
                                                     @if($loop->last)
                                                         <td>
                                                             @if($student_assignment->accumulated_score < 60)
-                                                                <span style="color:red; font-size: 20px;">{{ $student_assignment->accumulated_score }}</span>
+                                                                <span style="color:red; font-size: 20px;">{{ number_format($student_assignment->accumulated_score, 2) }}</span>
                                                             @elseif($student_assignment->accumulated_score >= 60)
-                                                                <span style="color:blue; font-size: 20px;"> {{ $student_assignment->accumulated_score }}</span>
+                                                                <span style="color:blue; font-size: 20px;"> {{ number_format($student_assignment->accumulated_score, 2) }}</span>
                                                             @endif
                                                         </td>
 
-                                                        <td>{{ $student_course_final_score[$key] }}</td>
+                                                        <td>
+                                                            @if($student_course_final_score[$key] < 60)
+                                                                <span style="color:red; font-size: 20px;">{{ number_format($student_course_final_score[$key], 2) }}</span>
+                                                            @elseif($student_course_final_score[$key] >= 60)
+                                                                <span style="color:blue; font-size: 20px;"> {{ number_format($student_course_final_score[$key], 2) }}</span>
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $student_assignment->comment }}</td>
                                                     @endif
                                                 @endforeach

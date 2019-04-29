@@ -52,7 +52,7 @@ class ChangeAnnouncementStructure extends Migration
 
         //change percentage default
         Schema::table('assignments', function (Blueprint $table) {
-            $table->double('percentage')->default(0)->change();
+            $table->float('percentage')->default(0)->change();
         });
     }
 

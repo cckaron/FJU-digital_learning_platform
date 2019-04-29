@@ -4,9 +4,12 @@
     <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ URL::to('css/style.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('css/jquery.timepicker.min.css') }}" rel="stylesheet" />
 
+    <link href="{{ URL::to('libs/quill/dist/katex.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/quill/dist/monokai-sublime.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::to('libs/quill/dist/quill.snow.css') }}" rel="stylesheet" />
     <style>
         input {
             width: 100%;
@@ -50,6 +53,9 @@
                 <!-- editor -->
                 <div class="row">
 
+                    @include('layouts.partials.returnMessage')
+
+
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
@@ -77,7 +83,11 @@
                                                 <tr align="center">
                                                     <td>
                                                         @if($assignment->assignment_name != "A4海報" and $assignment->assignment_name != "書面報告Word" and $assignment->assignment_name != "口頭報告與PPT" and $assignment->assignment_name != "課堂參與"  and $assignment->assignment_name != "上課出席")
-                                                            <a href="{{ route('assignments.deleteAssignment', ['id' => $assignment->assignment_id ]) }}"  name="add" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px; margin-left: 3px;" onclick="return confirm('當學期課程中，同名的作業將一併刪除，確認刪除?')">刪除作業</a>
+                                                            <!-- TODO 編輯作業功能-->
+                                                            {{--<button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-id="{{ $assignment->assignment_id }}">--}}
+                                                                {{--編輯--}}
+                                                            {{--</button>--}}
+                                                            <a href="{{ route('assignments.deleteAssignment', ['id' => $assignment->assignment_id ]) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px; margin-left: 3px;" onclick="return confirm('當學期課程中，同名的作業將一併刪除，確認刪除?')">刪除作業</a>
                                                         @else
                                                             不開放修改
                                                         @endif
@@ -158,42 +168,20 @@
                                             <label>作業名稱</label>
                                             <input type="text" id="modal_name" name="name" class="form-control" required/>
                                         </div>
+
                                         <div class="form-group">
-                                            <label>內容</label>
-                                            <input type="text" id="modal_change_id" name="change_id" class="form-control" required/>
+                                            <label>截止日期</label>
+                                            <input type="text" id="modal_end_date" name="end_date" placeholder="日期" required>
+                                            <input type="text" id="modal_end_time" name="end_date" placeholder="時間" required>
                                         </div>
+
                                         <div class="form-group">
-                                            <label>共同課程</label>
-                                            <input type="text" id="modal_department" name="department" class="form-control" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label></label>
-                                            <input type="text" id="modal_grade" name="grade" class="form-control" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>班級</label>
-                                            <input type="text" id="modal_class" name="class" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>聯絡電話</label>
-                                            <input type="text" id="modal_phone" name="phone">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="text" id="modal_email" name="email" class="form-control" />
-                                        </div>
-                                        <div class="form-group row">
-                                            <label>狀態</label>
-                                            <select id="modal_status" name="status" class="form-control m-t-15" style="height: 36px;width: 100%;" required>
-                                                <option value=0> 休學</option>
-                                                <option value=1> 在學 </option>
-                                                <option value=2> 退學 </option>
-                                                <option value=3> 已畢業 </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>備註</label>
-                                            <input type="text" id="modal_remark" name="remark" class="form-control"/>
+                                            <label class="col-md-2 m-t-10" for="assignmentContent">作業內容</label>
+                                            <div class="col-md-6">
+                                                <div id="editor" style="height: 300px;">
+                                                </div>
+                                                <textarea id="assignmentContent" name="assignmentContent" hidden>  </textarea>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -253,8 +241,13 @@
     <script src="{{ URL::to('libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
+    <script src="{{ URL::to('js/jquery.timepicker.min.js') }}"></script>
 
+    <!-- quill editor -->
+    <script src="{{ URL::to('libs/quill/dist/katex.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/highlight.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/image-resize.min.js') }}"></script>
     <script>
         //***********************************//
         // For select 2
@@ -287,16 +280,24 @@
             });
 
         });
-        /*datwpicker*/
-        jQuery('.mydatepicker').datepicker();
-        jQuery('#datepicker-start').datepicker({
+
+        /*datepicker*/
+        $('#modal_end_date').datepicker({
             autoclose: true,
-            todayHighlight: true
+            todayHighlight: true,
+            format: "yyyy/mm/dd",
+
         });
-        jQuery('#datepicker-end').datepicker({
-            autoclose: true,
-            todayHighlight: true
-        });
+
+        $('#modal_end_time').timepicker(
+            { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
+
+        $("#change_form").on("submit",function(){
+            var myEditor = document.querySelector('#editor');
+            var html = myEditor.children[0].innerHTML;
+
+            $("#assignmentContent").val(html);
+        })
     </script>
 
     <script>

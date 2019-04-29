@@ -352,6 +352,7 @@ class AssignmentController extends Controller
                     'common_courses.year',
                     'common_courses.semester',
                     'common_courses.status as common_course_status',
+                    'assignments.id as assignment_id',
                     'assignments.name as assignment_name',
                     'assignments.status as assignment_status',
                     'assignments.percentage as assignment_percentage',
@@ -360,6 +361,11 @@ class AssignmentController extends Controller
                     'assignments.updated_at')
                 ->get();
 
+            //hashids
+            foreach ($assignments as $assignment){
+                $hashids = new Hashids('assignment_id', 10);
+                $assignment->assignment_id = $hashids->encode($assignment->assignment_id);
+            }
             $course->assignments = $assignments;
         }
 
