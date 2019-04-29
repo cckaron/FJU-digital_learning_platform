@@ -109,24 +109,34 @@
                                         </div>
                                     </div>
 
+                                    {{--<div class="form-group row">--}}
+                                        {{--<label class="col-md-3 m-t-9" for="userAccount">佔分比率</label>--}}
+                                        {{--<div class="col-md-3">--}}
+                                            {{--<div class="input-group mb-3">--}}
+                                                {{--<input type="number" step="0.01" id="userAccount" class="form-control" placeholder="ex. 輸入 25 代表 25%" name="assignmentPercentage" required>--}}
+                                                {{--<div class="input-group-append">--}}
+                                                    {{--<span class="input-group-text">%</span>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+
                                     <div class="form-group row">
-                                        <label class="col-md-3 m-t-9" for="userAccount">佔分比率</label>
-                                        <div class="col-md-3">
-                                            <div class="input-group mb-3">
-                                                <input type="number" step="0.01" id="userAccount" class="form-control" placeholder="ex. 輸入 25 代表 25%" name="assignmentPercentage" required>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">%</span>
-                                                </div>
+                                        <label class="col-md-3">此項作業是否公開？</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="hide" name="hide">
+                                                <label class="custom-control-label" for="hide">不公開</label>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3">是否公佈成績？</label>
+                                        <label class="col-md-3">是否向學生公開成績？</label>
                                         <div class="col-md-9">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input" id="notAnnounceScore" name="notAnnounceScore">
-                                                <label class="custom-control-label" for="notAnnounceScore">不公布</label>
+                                                <label class="custom-control-label" for="notAnnounceScore">不公開</label>
                                             </div>
                                         </div>
                                     </div>

@@ -13,7 +13,7 @@
             <th>分數</th>
             <th>評語</th>
             <th>附檔</th>
-            <th>上傳時間</th>
+            <th>學生上傳時間</th>
         </tr>
         </thead>
         <tbody>

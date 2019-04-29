@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
@@ -40,41 +41,76 @@ class AssignmentController extends Controller
 
     public function postCreateAssignment(Request $request){
         $request->validate([
-            'assignmentName' => 'required',
+            'assignmentName' => [
+                'required',
+//TODO  作業名稱驗證              function($attribute, $value, $fail) {
+//                    $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+//                    //取得其中一個進行中的課程
+//                    $course = $teacher->course()
+//                        ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+//                        ->select('common_courses.semester as semester', 'common_courses.year as year')
+//                        ->where('status', 1)
+//                        ->first();
+//                    $detail = collect();
+//                    //找出同名的作業
+//                    $assignments = Assignment::where('name', $value)->get();
+//                    foreach($assignments as $assignment){
+//                        $assignment_detail = $assignment->course()
+//                            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+//                            ->select('common_courses.semester as semester', 'common_courses.year as year')
+//                            ->first();
+//                        $detail->push($assignment_detail);
+//                        if(($assignment_detail->year == $course->year) and ($assignment_detail->year == $course->semester)){
+//                            return $fail('錯誤：當前學期已存在此作業');
+//                        };
+//                    }
+//                    dd($detail);
+//                },
+            ],
             'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
             'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
             'assignmentStartTime' => 'required',
             'assignmentEndTime' => 'required',
-            'assignmentPercentage' => [
-                'required',
-                'between:0,99.99',
-                function($attribute, $value, $fail) {
-                    $teacher = Teacher::where('users_id', Auth::user()->id)->first();
-                    $percentages = $teacher->course()->first()->assignment->pluck('percentage');
-
-                    $total_percentage = 0;
-                    foreach($percentages as $percentage){
-                        $total_percentage += $percentage;
-                    }
-
-                    $total_percentage += $value;
-
-                    if ($total_percentage > 100) {
-                        $overPercentage = floor(($total_percentage*100)-10000)/100;
-                        return $fail('錯誤：總比率為 '.$total_percentage.'% ,超過 '.$overPercentage.' %');
-                    }
-                },
-            ]
+//            'assignmentPercentage' => [
+//                'required',
+//                'between:0,99.99',
+//                function($attribute, $value, $fail) {
+//                    $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+//                    $percentages = $teacher->course()->first()->assignment->pluck('percentage');
+//
+//                    $total_percentage = 0;
+//                    foreach($percentages as $percentage){
+//                        $total_percentage += $percentage;
+//                    }
+//
+//                    $total_percentage += $value;
+//
+//                    if ($total_percentage > 100) {
+//                        $overPercentage = floor(($total_percentage*100)-10000)/100;
+//                        return $fail('錯誤：總比率為 '.$total_percentage.'% ,超過 '.$overPercentage.' %');
+//                    }
+//                },
+//            ]
         ]);
 
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
 
-        //取得該課程ID
-        $courses_id = $teacher->course()->pluck('id');
-
+        //取得進行中的課程
+        $courses = $teacher->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.id as course_id', 'common_courses.name as common_course_name', 'common_courses.status as status')
+            ->where('status', 1)
+            ->get();
 
         $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
         $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
+
+        $hide = $request->input('hide');
+        if ($hide){
+            $hide = true;
+        } else {
+            $hide = false;
+        }
 
         $announceScore = $request->input('notAnnounceScore');
         if ($announceScore){
@@ -85,7 +121,7 @@ class AssignmentController extends Controller
 
         //新增作業
         $assignments_id = array();
-        foreach($courses_id as $course_id){
+        foreach($courses as $course){
             $assignment_id = DB::table('assignments')
                 ->insertGetId( [
                     'name' => $request->input('assignmentName'),
@@ -94,8 +130,9 @@ class AssignmentController extends Controller
                     'start_time' => $start_time,
                     'end_date' => $request->input('assignmentEnd'),
                     'end_time' => $end_time,
-                    'courses_id' => $course_id,
-                    'percentage' => $request->input('assignmentPercentage'),
+                    'courses_id' => $course->course_id,
+//                    'percentage' => $request->input('assignmentPercentage'),
+                    'hide' => $hide,
                     'announce_score' => $announceScore,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
@@ -107,8 +144,6 @@ class AssignmentController extends Controller
 
         //create assignment for students
         //so need to create student_assignment
-        $courses = $teacher->course()->get();
-
         foreach($courses as $course){
             //get this course's students
             $students_id = $course->student()->pluck('users_id');
@@ -205,7 +240,7 @@ class AssignmentController extends Controller
 
     public function postBatchCreateAssignments(Request $request){
         $request->validate([
-//            'assignmentName' => 'required|unique:assignments,name',
+            'assignmentName' => 'required|unique:assignments,name',
             'assignmentName' => 'required',
             'assignmentPercentage' => 'required|numeric',
             'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
@@ -228,6 +263,14 @@ class AssignmentController extends Controller
             $start_time = date("H:i", strtotime($request->input('assignmentStartTime')));
             $end_time = date("H:i", strtotime($request->input('assignmentEndTime')));
 
+            $hide = $request->input('hide');
+
+            if ($hide){
+                $hide = true;
+            } else {
+                $hide = false;
+            }
+
             $announceScore = $request->input('notAnnounceScore');
             if ($announceScore){
                 $announceScore = false;
@@ -247,6 +290,7 @@ class AssignmentController extends Controller
                     'end_time' => $end_time,
                     'courses_id' => $course_id,
                     'percentage' => $request->input('assignmentPercentage'),
+                    'hide' => $hide,
                     'announce_score' => $announceScore,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
@@ -286,6 +330,43 @@ class AssignmentController extends Controller
         return redirect()->back()->with('message', '新增作業成功！');
     }
 
+
+    //管理
+    public function getManageAssignments_Teacher(){
+        $user_id = Auth::user()->id;
+        $teacher = Teacher::where('users_id', $user_id)->first();
+
+        //取得進行中的課程
+        $courses = $teacher->course()
+            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+            ->where('status', 1)
+            ->get();
+
+        foreach ($courses as $course){
+            $assignments = $course->assignment()
+                ->join('courses', 'courses.id', 'assignments.courses_id')
+                ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
+                ->select('courses.name as course_name',
+                    'common_courses.name as common_course_name',
+                    'common_courses.year',
+                    'common_courses.semester',
+                    'common_courses.status as common_course_status',
+                    'assignments.name as assignment_name',
+                    'assignments.status as assignment_status',
+                    'assignments.percentage as assignment_percentage',
+                    'assignments.start_date',
+                    'assignments.end_date',
+                    'assignments.updated_at')
+                ->get();
+
+            $course->assignments = $assignments;
+        }
+
+        return view('assignment.manageAssignments_Teacher', [
+            'courses' => $courses,
+        ]);
+    }
 
     //列出
     public function getAllAssignments(){
@@ -1380,7 +1461,7 @@ class AssignmentController extends Controller
 
     public function correctAssignment(Request $request){
         $validation = Validator::make($request->all(), [
-            'score' => 'Integer|between:0, 100',
+            'score' => 'numeric|between:0, 100',
         ]);
 
         $score = $request->get('score');

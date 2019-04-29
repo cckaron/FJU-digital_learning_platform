@@ -300,7 +300,7 @@
          ****************************************/
 
         var table = $('#zero_config').DataTable({
-            order: [[ 2, "asc" ]],
+            order: [[ 2, "desc" ],[ 11, "asc" ]],
             autoWidth: false,
             buttons: [
                 {

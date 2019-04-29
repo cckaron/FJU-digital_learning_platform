@@ -157,55 +157,12 @@
         //***********************************//
         $(".select2").select2();
 
-        /*colorpicker*/
-        $('.demo').each(function() {
-            //
-            // Dear reader, it's actually very easy to initialize MiniColors. For example:
-            //
-            //  $(selector).minicolors();
-            //
-            // The way I've done it below is just for the demo, so don't get confused
-            // by it. Also, data- attributes aren't supported at this time...they're
-            // only used for this demo.
-            //
-            $(this).minicolors({
-                control: $(this).attr('data-control') || 'hue',
-                position: $(this).attr('data-position') || 'bottom left',
-
-                change: function(value, opacity) {
-                    if (!value) return;
-                    if (opacity) value += ', ' + opacity;
-                    if (typeof console === 'object') {
-                        console.log(value);
-                    }
-                },
-                theme: 'bootstrap'
-            });
-
-        });
-
-
-        /*datepicker*/
-        $('#datepicker-start').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: "yyyy/mm/dd",
-
-        });
-        $('#datepicker-end').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: "yyyy/mm/dd",
-        });
 
         $('#timepicker-start').timepicker(
             { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
         $('#timepicker-end').timepicker(
             { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
 
-        var quill = new Quill('#editor', {
-            theme: 'snow',
-        });
 
         $("#createAnnouncement").on("submit",function(){
             var myEditor = document.querySelector('#editor');
@@ -215,23 +172,36 @@
         })
     </script>
 
-    {{--<script>--}}
-
-        {{--var courseName = $('#courseName');--}}
-
-        {{--var commonCourseName = {!! $common_courses_name !!};--}}
-
-        {{--courseName.change(function () {--}}
-            {{--var index = courseName[0].selectedIndex;--}}
-            {{--document.getElementById("common_course_name").innerHTML= commonCourseName[index];--}}
-
-        {{--})--}}
-    {{--</script>--}}
-
-    <!-- close autocomplete of datetime picker -->
     <script>
-        $('#datepicker-start').attr('autocomplete','off');
-        $('#datepicker-end').attr('autocomplete','off');
-    </script>
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            ['blockquote', 'code-block'],
 
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+            [{ 'direction': 'rtl' }],                         // text direction
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            // ['image'],
+            ['clean']                                         // remove formatting button
+        ];
+        var quill = new Quill('#editor', {
+            modules: {
+                formula: true,
+                syntax: true,
+                toolbar: toolbarOptions,
+                imageResize: {}
+            },
+            placeholder: '請輸入作業內容..',
+            theme: 'snow',
+        });
+
+    </script>
 @endsection

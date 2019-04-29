@@ -15,27 +15,21 @@ class StudentsImport implements ToCollection
      */
     public function collection(Collection $collection)
     {
-        foreach ($collection as $row) {
-//            return new Student([
-//                'users_id' => $row[0],
-//                'users_name' => $row[1],
-//                'department' => $row[2],
-//                'grade' => $row[3],
-//                'class' => $row[4],
-//            ]);
+        foreach ($collection as $key => $row) {
+            if ($key > 0){
+                Student::firstOrCreate([
+                    'users_id' => $row[0],
+                    'users_name' => $row[1],
+                    'department' => $row[2],
+                    'grade' => $row[3],
+                    'class' => $row[4],
+                ]);
 
-            Student::firstOrCreate([
-                'users_id' => $row[0],
-                'users_name' => $row[1],
-                'department' => $row[2],
-                'grade' => $row[3],
-                'class' => $row[4],
-            ]);
-
-            Storage::makeDirectory('public/'.$row[0]);
-            Storage::disk('public')->put(
-                $row[0].'/init.txt', 'init'
-            );
+                Storage::makeDirectory('public/'.$row[0]);
+                Storage::disk('public')->put(
+                    $row[0].'/init.txt', 'init'
+                );
+            }
         }
     }
 }

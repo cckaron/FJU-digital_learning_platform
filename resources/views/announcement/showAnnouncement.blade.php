@@ -63,39 +63,45 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">所有系統公告 </h4>
+                                    <h4 class="card-title">所有公告 </h4>
                                 </div>
                                 <div class="comment-widgets scrollable">
 
                                     <!-- Announcement Loop Start -->
-                                @if($sys_announcements->count() > 0)
-                                    @foreach($sys_announcements as $key=>$sys_announcement)
+                                @if($announcements->count()>0)
+                                    @foreach($announcements as $key=>$announcement)
 
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
                                             <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
                                             <div class="comment-text w-100">
-                                                <span class="font-medium">{{ $sys_announcement->title }}</span>
+                                                <span class="font-medium">{{ $announcement->title }}</span>
                                                 <span class="text-active p-l-5" >
-                                                    @if($sys_announcement->priority == 0)
+                                                    @if($announcement->priority == 0)
                                                         <span class="badge badge-pill badge-danger">置頂公告</span>
-                                                    @elseif($sys_announcement->priority == 1)
+                                                    @elseif($announcement->priority == 1)
                                                         <span class="badge badge-pill badge-primary">一般</span>
                                                     @endif
+
+                                                    @foreach($announcement->common_courses_name as $common_course_name)
+                                                        <span class="badge badge-pill badge-secondary float-right m-r-5">
+                                                        {{ $common_course_name }}
+                                                        </span>
+                                                    @endforeach
                                                 </span>
                                                 <span class="m-b-15 d-block"></span>
                                                 <div class="comment-footer">
-                                                    <span class="text-muted float-right">發布時間 : {{ $sys_announcement->updated_at }}</span>
-                                                    <a class="btn btn-cyan btn-sm" href="{{ route('admin.announcement.edit', ['id' => $sys_announcement->id]) }}">編輯</a>
-                                                    {{--<button type="button" class="btn btn-success btn-sm">Publish</button>--}}
-                                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.announcement.delete', ['id' => $sys_announcement->id]) }}" onclick="return confirm('該公告檔案將會一併刪除，確定刪除?')">刪除</a>
+                                                    <span class="text-muted float-right">{{ $announcement->updated_at }}</span>
+                                                    <a class="btn btn-cyan btn-sm" href="{{ route('teacher.announcement.edit', ['id' => $announcement->id]) }}">編輯</a>
+                                                    <a class="btn btn-danger btn-sm" href="{{ route('teacher.announcement.delete', ['id' => $announcement->id]) }}" onclick="return confirm('該公告檔案將會一併刪除，確定刪除?')">刪除</a>
                                                 </div>
                                             </div>
                                         </div>
+
                                     @endforeach
-                                @endif
-                                    <div>{{ $sys_announcements->links() }}</div>
+                                    @endif
+                                        {{ $announcements->links() }}
                                 </div>
                             </div>
 

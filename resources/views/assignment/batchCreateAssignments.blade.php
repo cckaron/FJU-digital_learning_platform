@@ -219,6 +219,16 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-md-3">此項作業是否公開？</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="hide" name="hide">
+                                                <label class="custom-control-label" for="hide">不公開</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-md-2">是否公佈成績？</label>
                                         <div class="col-md-9">
                                             <div class="custom-control custom-checkbox mr-sm-2">
@@ -286,6 +296,7 @@
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ URL::to('js/jquery.timepicker.min.js') }}"></script>
 
+    <!-- quill editor -->
     <script src="{{ URL::to('libs/quill/dist/katex.min.js') }}"></script>
     <script src="{{ URL::to('libs/quill/dist/highlight.min.js') }}"></script>
     <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>

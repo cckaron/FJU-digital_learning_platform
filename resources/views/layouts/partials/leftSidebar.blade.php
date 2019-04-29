@@ -9,12 +9,16 @@
             <ul id="sidebarnav" class="p-t-30">
 
                 <!-- 公告 -->
-                @if(Auth::user()->type == 0 or Auth::user()->type == 1 or Auth::user()->type == 2)
+                @if(Auth::user()->type != 4)
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu"> 公告 </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         @if(Auth::user()->type == 0)
                             <li class="sidebar-item"><a href="{{ route('admin.announcement.show') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有系統公告 </span></a></li>
                             <li class="sidebar-item"><a href="{{ route('admin.announcement.create') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增系統公告 </span></a></li>
+                        @endif
+                        @if(Auth::user()->type == 3)
+                            <li class="sidebar-item"><a href="{{ route('teacher.announcement.show') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有公告 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('announcement.create') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增公告 </span></a></li>
                         @endif
                     </ul>
                 </li>
@@ -69,15 +73,13 @@
                             <li class="sidebar-item"><a href="{{ route('assignment.showAllAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 所有作業 </span></a></li>
                             <li class="sidebar-item"><a href="{{ route('assignment.batchCreateAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 批量新增作業 </span></a></li>
                         @endif
-                        @if(Auth::user()->type == 3)
-                            {{--<li class="sidebar-item"><a href="{{ route('assignment.showAssignments_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 我的作業 </span></a></li>--}}
-                        @endif
                         @if(Auth::user()->type == 4)
                             <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 查看作業 </span></a></li>
                         @endif
 
                         @if(Auth::user()->type == 3)
                             <li class="sidebar-item"><a href="{{ route('Assignment.createAssignment') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 新增作業 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('assignment.manageAssignments_Teacher') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 當學期作業管理 </span></a></li>
                         @endif
                     </ul>
                 </li>

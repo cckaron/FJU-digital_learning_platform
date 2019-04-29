@@ -81,9 +81,9 @@
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 --> <!-- 1:未繳交; 2:已繳交; 3:審核完成; -->
                                                     <a href="{{ route('courses.showStudentAssignmentsList', ['course_id' => $assignment->course_id ,'assignment_id' => $assignment->assignment_id ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看詳情</a>
-                                                    @if($assignment->assignment_name != "A4海報" and $assignment->assignment_name != "書面報告Word" and $assignment->assignment_name != "口頭報告與PPT" and $assignment->assignment_name != "課堂參與"  and $assignment->assignment_name != "上課出席")
-                                                        <a href="{{ route('assignments.deleteAssignment', ['id' => $assignment->assignment_id ]) }}"  name="add" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px; margin-left: 3px;" onclick="return confirm('該作業相關資料將會一併刪除，確定刪除?')">刪除作業</a>
-                                                    @endif
+                                                    {{--@if($assignment->assignment_name != "A4海報" and $assignment->assignment_name != "書面報告Word" and $assignment->assignment_name != "口頭報告與PPT" and $assignment->assignment_name != "課堂參與"  and $assignment->assignment_name != "上課出席")--}}
+                                                        {{--<a href="{{ route('assignments.deleteAssignment', ['id' => $assignment->assignment_id ]) }}"  name="add" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px; margin-left: 3px;" onclick="return confirm('該作業相關資料將會一併刪除，確定刪除?')">刪除作業</a>--}}
+                                                    {{--@endif--}}
                                                     <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-top: 5px;">
                                                         {{ $assignment->course_name }}
                                                     </span>

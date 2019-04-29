@@ -17,6 +17,38 @@ class IndexController extends Controller
     public function getTeacherIndex(){
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
 
+        //系統公告
+        $sys_announcements = DB::table('system_announcement')
+            ->orderBy('priority')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(5);
+        //use ->paginate(), so don't need ->get()
+
+        //put file info in collect()
+        foreach($sys_announcements as $sys_announcement) {
+
+            $fileNames = array();
+
+            $folder_path = storage_path() . '/app/public/sys_announcement/' . $sys_announcement->id;
+
+            if (!File::exists($folder_path)) {
+                File::makeDirectory($folder_path, $mode = 0777, true, true);
+            }
+
+            setlocale(LC_ALL, 'en_US.UTF-8');
+
+            $filesInFolder = File::files($folder_path);
+            foreach ($filesInFolder as $path) {
+                $file = pathinfo($path);
+
+                if ($file['filename'] != 'blob') { //空的檔案
+                    array_push($fileNames, $file['filename'] . '.' . $file['extension']);
+                }
+            }
+
+            $sys_announcement->fileNames = $fileNames;
+        }
+
         $hasInProgressCourse = $teacher->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
             ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
@@ -24,6 +56,8 @@ class IndexController extends Controller
             ->exists();
         return view('dashboard.teacherIndex', [
             'hasInProgressCourse' => $hasInProgressCourse,
+            'sys_announcements' => $sys_announcements,
+
         ]);
     }
 

@@ -52,7 +52,7 @@
                                     <h5 class="card-title">提示</h5>
 
                                     <div class="alert alert-success" role="alert">
-                                        修改公告成功！
+                                        編輯公告成功！
                                     </div>
 
                                 </div>
@@ -95,7 +95,7 @@
                                         <label class="col-md-3">置頂公告</label>
                                         <div class="col-md-9">
                                             <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input" id="topPost" name="topPost">
+                                                <input type="checkbox" class="custom-control-input" id="topPost" name="topPost" @if($system_announcement->priority == 0) checked @endif>
                                                 <label class="custom-control-label" for="topPost">置頂</label>
                                             </div>
                                         </div>
@@ -159,10 +159,15 @@
     <script src="{{ URL::to('libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js') }}"></script>
     <script src="{{ URL::to('libs/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
     <script src="{{ URL::to('libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
     <script src="{{ URL::to('js/jquery.timepicker.min.js') }}"></script>
     <!-- DropZone JS-->
     <script src="{{ URL::to('js/dropzone.js') }}"></script>
+
+    <!-- quill editor -->
+    <script src="{{ URL::to('libs/quill/dist/katex.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/highlight.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/quill.min.js') }}"></script>
+    <script src="{{ URL::to('libs/quill/dist/image-resize.min.js') }}"></script>
 
     <script>
         Dropzone.autoDiscover = false;
@@ -363,11 +368,38 @@
             { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
         $('#timepicker-end').timepicker(
             { 'scrollDefault': 'now',am: '上午', pm: '下午', AM: '上午', PM: '下午', decimal: '.', mins: 'mins', hr: 'hr', hrs: 'hrs' });
+    </script>
 
+    <script>
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+            [{ 'direction': 'rtl' }],                         // text direction
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            // ['image'],
+            ['clean']                                         // remove formatting button
+        ];
         var quill = new Quill('#editor', {
+            modules: {
+                formula: true,
+                syntax: true,
+                toolbar: toolbarOptions,
+                imageResize: {}
+            },
+            placeholder: '請輸入作業內容..',
             theme: 'snow',
         });
-
 
     </script>
 

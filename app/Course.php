@@ -28,7 +28,7 @@ class Course extends Model
     }
 
     public function announcement(){
-        return $this->hasMany('App\course_announcement', 'courses_id', 'id');
+        return $this->belongsToMany('App\Announcement', 'course_announcement', 'courses_id', 'announcements_id', 'id', 'id');
     }
 
 

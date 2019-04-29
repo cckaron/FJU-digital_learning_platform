@@ -174,15 +174,44 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
         'as' => 'teacher.correctAssignment'
     ]);
 
-    Route::get('announcement', [
-        'uses' => 'AnnouncementController@getCreateAnnouncement',
-        'as' => 'announcement.create'
-    ]);
+    //公告
+    Route::group(['prefix' => 'announcement', 'middleware' => 'auth'], function(){
+        //新增
+        Route::get('/', [
+            'uses' => 'AnnouncementController@getCreateAnnouncement',
+            'as' => 'announcement.create'
+        ]);
 
-    Route::post('announcement', [
-        'uses' => 'AnnouncementController@postCreateAnnouncement',
-        'as' => 'announcement.create'
-    ]);
+        Route::post('/', [
+            'uses' => 'AnnouncementController@postCreateAnnouncement',
+            'as' => 'announcement.create'
+        ]);
+
+        //編輯
+        Route::get('/edit/{id}', [
+            'uses' => 'AnnouncementController@getEditAnnouncement',
+            'as' => 'teacher.announcement.edit'
+        ]);
+
+        Route::post('/edit/{id}', [
+            'uses' => 'AnnouncementController@postEditAnnouncement',
+            'as' => 'teacher.announcement.edit'
+        ]);
+
+        //刪除
+        Route::get('/delete/{id}', [
+            'uses' => 'AnnouncementController@getDeleteAnnouncement',
+            'as' => 'teacher.announcement.delete'
+        ]);
+
+        //列出
+        Route::get('/all', [
+            'uses' => 'AnnouncementController@getShowAnnouncement',
+            'as' => 'teacher.announcement.show'
+        ]);
+    });
+
+
 
     //共同課程
     Route::group(['prefix' => 'commonCourses', 'middleware' => 'auth'], function(){
@@ -233,6 +262,12 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
         Route::get('/', [
             'uses' => 'AssignmentController@getAssignments_Teacher',
             'as' => 'assignment.showAssignments_Teacher'
+        ]);
+
+        //管理 (get)
+        Route::get('/manage', [
+            'uses' => 'AssignmentController@getManageAssignments_Teacher' ,
+            'as' => 'assignment.manageAssignments_Teacher'
         ]);
 
         //開放重繳作業(更改狀態) (get)
