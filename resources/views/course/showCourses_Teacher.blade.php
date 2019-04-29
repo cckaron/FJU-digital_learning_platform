@@ -86,7 +86,7 @@
                                                     <!-- 按鈕 -->
                                                     <a href="{{ route('course.showCourseStudents', $teacher_course->id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>
 
-                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $teacher_course->common_course_id,'courses_id' => $teacher_course->id, ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $teacher_course->common_course_id,'courses_id' => $teacher_course->id, ]) }}" class="btn btn-primary btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
                                                     {{--<span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">--}}
                                                     {{--</span>--}}
                                                 </div>
@@ -127,8 +127,9 @@
                                                 <div class="comment-footer">
                                                     <!-- 按鈕 -->
                                                     <a href="{{ route('course.showCourseStudents', $teacher_course->id) }}" class="btn btn-danger btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">課程資訊</a>
+                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $teacher_course->common_course_id,'courses_id' => $teacher_course->id, ]) }}" class="btn btn-primary btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
+                                                    <a href="{{ route('grade.showlist', ['status' => 'past','year' => $teacher_course->year, 'semester' => $teacher_course->semester]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">評分表</a>
 
-                                                    <a href="{{ route('courses.showSingleAssignments_Teacher', ['common_courses_id' => $teacher_course->common_course_id,'courses_id' => $teacher_course->id, ]) }}" class="btn btn-cyan btn-md" role="button" aria-pressed="true" style="margin-top: 3px;">查看作業</a>
                                                     {{--<span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">--}}
                                                     {{--</span>--}}
                                                 </div>

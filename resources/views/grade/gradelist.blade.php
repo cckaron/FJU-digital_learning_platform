@@ -84,6 +84,7 @@
 
                         <div class="card">
                             <div class="card-body">
+                                <h4>{{ $course->year }} 年 第 {{ $course->semester }} 學期</h4>
                                 {{--@php(dd($student_ids))--}}
                                 {{--@php(dd($student_assignments_id))--}}
                                 {{--{{ $student_assignments[0] }}--}}
@@ -393,6 +394,8 @@
                         columns: ':visible'
                     },
                 },
+
+                @if($course->status == 1)
                 {
                     text: '匯入成績',
                     action: function ( e, dt, node, config ) {
@@ -400,6 +403,8 @@
                         $(modal).modal('show');
                     }
                 },
+                @endif
+
                 // {
                 //     text: '成績比率設定',
                 //     action: function ( e, dt, node, config ) {

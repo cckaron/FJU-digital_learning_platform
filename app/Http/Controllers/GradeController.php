@@ -13,20 +13,39 @@ use Illuminate\Support\Facades\Validator;
 
 class GradeController extends Controller
 {
-    public function getGradeList(){
+    public function getGradeList($status, $year, $semester){
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
-        $courses = $teacher->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-            ->where('status', 1)
-            ->get();
 
-        //created for course to use assignment() relationship
-        $courses_first = $teacher->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status', 'common_courses.year as year', 'common_courses.semester as semester')
-            ->where('status', 1)
-            ->first();
+        if ($status == 'active'){
+            $courses = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->get();
+
+            //created for course to use assignment() relationship
+            $courses_first = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status', 'common_courses.year as year', 'common_courses.semester as semester')
+                ->where('status', 1)
+                ->first();
+        } else {
+            $courses = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('semester', $semester)
+                ->where('year', $year)
+                ->get();
+
+            //created for course to use assignment() relationship
+            $courses_first = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status', 'common_courses.year as year', 'common_courses.semester as semester')
+                ->where('semester', $semester)
+                ->where('year', $year)
+                ->first();
+        }
+
 
         $students = collect();
         foreach($courses as $course){

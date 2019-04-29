@@ -106,7 +106,7 @@
                     {{--</div>--}}
                     <!-- Column -->
                     <div class="col-md-6 col-lg-2 col-xlg-3">
-                        <a href="{{ route('grade.showlist') }}">
+                        <a href="{{ route('grade.showlist', ['status' => 'active', 'year' => 'this', 'semester' => 'this']) }}">
                         <div class="card card-hover">
                             <div class="box bg-danger text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-border-outside"></i></h1>

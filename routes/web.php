@@ -287,7 +287,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
     //成績
     Route::group(['prefix' => 'grade'], function(){
         //列出 (get)
-        Route::get('/list', [
+        Route::get('/list/{status}/{year}/{semester}', [
             'uses' => 'GradeController@getGradeList',
             'as' => 'grade.showlist'
         ]);
