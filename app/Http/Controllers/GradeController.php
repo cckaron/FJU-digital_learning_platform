@@ -46,7 +46,6 @@ class GradeController extends Controller
                 ->first();
         }
 
-
         $students = collect();
         foreach($courses as $course){
             $course_students = $course->student()->get();
@@ -68,19 +67,37 @@ class GradeController extends Controller
         $student_course_final_score = collect();
 
         foreach($students as $key=> $student){
-            $student_assignment = $student->assignment()
-                ->withPivot(['score', 'comment'])
-                ->join('courses', 'courses.id', '=', 'assignments.courses_id')
-                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-                ->select('assignments.id as assignment_id',
-                    'assignments.name as name',
-                    'assignments.percentage as percentage',
-                    'courses.id as course_id',
-                    'student_assignment.score as score',
-                    'student_assignment.comment as comment')
-                ->where('common_courses.status', 1)
-                ->orderBy('name')
-                ->get();
+            if ($status == 'active') {
+                $student_assignment = $student->assignment()
+                    ->withPivot(['score', 'comment'])
+                    ->join('courses', 'courses.id', '=', 'assignments.courses_id')
+                    ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                    ->select('assignments.id as assignment_id',
+                        'assignments.name as name',
+                        'assignments.percentage as percentage',
+                        'courses.id as course_id',
+                        'student_assignment.score as score',
+                        'student_assignment.comment as comment')
+                    ->where('common_courses.status', 1)
+                    ->orderBy('name')
+                    ->get();
+            } else {
+                $student_assignment = $student->assignment()
+                    ->withPivot(['score', 'comment'])
+                    ->join('courses', 'courses.id', '=', 'assignments.courses_id')
+                    ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                    ->select('assignments.id as assignment_id',
+                        'assignments.name as name',
+                        'assignments.percentage as percentage',
+                        'courses.id as course_id',
+                        'student_assignment.score as score',
+                        'student_assignment.comment as comment')
+                    ->where('common_courses.semester', $semester)
+                    ->where('common_courses.year', $year)
+                    ->orderBy('name')
+                    ->get();
+            }
+
 
             $accumulated_score = 0;
 
