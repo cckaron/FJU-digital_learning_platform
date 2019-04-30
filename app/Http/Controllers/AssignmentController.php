@@ -802,7 +802,8 @@ class AssignmentController extends Controller
                 'common_courses.name as common_course_name', 'courses.name as course_name',
                 'courses.id as course_id', 'assignments.id as assignment_id', 'assignments.name as assignment_name',
                 'assignments.status as assignment_status', 'student_assignment.score as score', 'student_assignment.status as student_assignment_status',
-                'assignments.end_date as end_date', 'assignments.end_time as end_time')
+                'assignments.end_date as end_date', 'assignments.end_time as end_time', 'assignments.announce_score as announce_score',
+                'assignments.hide as hide')
             ->where('assignments.status', 1)
             ->where('courses.id', $courses_id)
             ->get();
@@ -815,7 +816,8 @@ class AssignmentController extends Controller
                 'common_courses.name as common_course_name', 'courses.name as course_name',
                 'courses.id as course_id', 'assignments.id as assignment_id', 'assignments.name as assignment_name',
                 'assignments.status as assignment_status', 'student_assignment.score as score', 'student_assignment.status as student_assignment_status',
-                'assignments.end_date as end_date', 'assignments.end_time as end_time')
+                'assignments.end_date as end_date', 'assignments.end_time as end_time', 'assignments.announce_score as announce_score',
+                'assignments.hide as hide')
             ->where('assignments.status', 0)
             ->where('courses.id', $courses_id)
             ->get();

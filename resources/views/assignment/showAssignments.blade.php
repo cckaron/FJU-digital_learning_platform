@@ -68,12 +68,12 @@
                                             <!-- Comment Row -->
                                             <div class="d-flex flex-row comment-row m-t-0">
 
-                                                <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
+                                                <div class="p-2"><img src="{{ URL::to('images/homework.png') }}" alt="user" width="50" class="rounded-circle"></div>
                                                 <div class="comment-text w-100">
 
                                                     <h4 class="font-medium">
                                                         {{ $course->year }} 年 第 {{ $course->semester }} 學期
-                                                        <span class="text-muted float-right">截止日期：{{ $assignment->end_date }} {{ $assignment->end_time }}</span>
+                                                        <span class="text-muted float-right">截止:{{ $assignment->end_date }} {{ $assignment->end_time }}</span>
                                                     </h4>
                                                     <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
                                                         {{ $course->common_course_name }}
@@ -158,12 +158,12 @@
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
+                                            <div class="p-2"><img src="{{ URL::to('images/homework.png') }}" alt="user" width="50" class="rounded-circle"></div>
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
                                                     {{ $course->year }} 年 第 {{ $course->semester }} 學期
-                                                    <span class="text-muted float-right">截止日期：{{ $assignment->end_date }} {{ $assignment->end_time }}</span>
+                                                    <span class="text-muted float-right">截止:{{ $assignment->end_date }} {{ $assignment->end_time }}</span>
                                                 </h4>
                                                 <span class="badge badge-pill badge-success float-right"  style="font-size: 100%; margin-right: 10px; margin-top: 5px">
                                                         {{ $course->common_course_name }}

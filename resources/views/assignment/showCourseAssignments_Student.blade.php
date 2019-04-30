@@ -63,11 +63,11 @@
 
                                     <!-- Assignment Loop Start -->
                                 @foreach($assignments_processing as $assignment)
-
+                                    @if($assignment->hide == 0)
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
+                                            <div class="p-2"><img src="{{ URL::to('images/homework.png') }}" alt="user" width="50" class="rounded-circle"></div>
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
@@ -131,16 +131,20 @@
 
                                                 <!-- 成績 -->
                                                     <span class="badge badge-pill badge-secondary float-right" style="font-size: 100%; margin-right: 10px; margin-top: 5px">
-                                                        @if($assignment->score == null)
-                                                            成績：無
+                                                       @if($assignment->announce_score == 1)
+                                                            @if($assignment->score == null)
+                                                                成績：未評分
+                                                            @else
+                                                                成績：{{ $assignment->score }}
+                                                            @endif
                                                         @else
-                                                            成績：{{ $assignment->score }}
+                                                            成績：不公布
                                                         @endif
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
-
+                                    @endif
                                     @endforeach
 
                                 </div>
@@ -156,11 +160,11 @@
 
                                     <!-- Assignment Loop Start -->
                                 @foreach($assignments_finished as $assignment)
-
+                                    @if($assignment->hide == 0)
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
+                                            <div class="p-2"><img src="{{ URL::to('images/homework.png') }}" alt="user" width="50" class="rounded-circle"></div>
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">
@@ -238,16 +242,20 @@
 
                                                 <!-- 成績 -->
                                                     <span class="badge badge-pill badge-secondary float-right" style="font-size: 100%; margin-right: 10px; margin-top: 5px">
-                                                        @if($assignment->score == null)
-                                                            成績：無
+                                                        @if($assignment->announce_score == 1)
+                                                            @if($assignment->score == null)
+                                                                成績：未評分
+                                                            @else
+                                                                成績：{{ $assignment->score }}
+                                                            @endif
                                                         @else
-                                                            成績：{{ $assignment->score }}
+                                                            成績：不公布
                                                         @endif
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
-
+                                    @endif
                                     @endforeach
 
                                 </div>

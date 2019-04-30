@@ -67,7 +67,7 @@
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
-                                            <div class="p-2"><img src="{{ URL::to('images/users/1.jpg') }}" alt="user" width="50" class="rounded-circle"></div>
+                                            <div class="p-2"><img src="{{ URL::to('images/course.png') }}" alt="user" width="50" class="rounded-circle"></div>
                                             <div class="comment-text w-100">
 
                                                 <h4 class="font-medium">

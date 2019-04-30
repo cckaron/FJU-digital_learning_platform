@@ -209,7 +209,7 @@
             $('#form_output').html("");
             var button = $(e.relatedTarget);
             var student_assignment_id = button.data('student-assignment-id');
-            var student_assignment = button.parent().parent().parent();
+            var student_assignment = button.parent().parent();
 
             var score = student_assignment.children('#score').text().trim();
             var comment = student_assignment.children('#comment').text().trim();
@@ -247,8 +247,10 @@
                         {
                             $('#form_output').html(data.success);
                             button.children("#bold_recorrect").html('<span style="color:green">批改成功!</span>');
-                            button.closest('td').siblings('#score').html('<span style="color:gray; font-size: 20px;">'+data.score+'</span>')
-                            button.closest('td').siblings('#comment').html('<span style="color:gray; font-size: 20px;">'+data.comment+'</span>')
+                            button.closest('td').siblings('#score').html('<span style="color:gray; font-size: 20px;">'+data.score+'</span>');
+                            if (data.comment != null){
+                                button.closest('td').siblings('#comment').html('<span style="color:gray; font-size: 20px;">'+data.comment+'</span>');
+                            }
                         }
                     }
                 })

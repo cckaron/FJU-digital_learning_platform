@@ -15,9 +15,16 @@ class ProfileController extends Controller
 {
     public function getUpdateProfile(){
         $user = Auth::user();
+        $occupation = '';
+
+        //學生
+        if($user->type == 4){
+            $occupation = $user->student()->first()->occupation;
+        }
 
         return view('profile.updateProfile', [
-            'user' => $user
+            'user' => $user,
+            'occupation' => $occupation
         ]);
     }
 
@@ -48,6 +55,7 @@ class ProfileController extends Controller
         $password = $password[0];
         $email = $request->get('email');
         $phone = $request->get('phone');
+        $occupation = $request->get('occupation');
 
         //update database data
         if ($user_type == 3){ //teacher
@@ -84,6 +92,7 @@ class ProfileController extends Controller
             DB::table('students')
                 ->where('users_id', $user_id)
                 ->update([
+                    'occupation' => $occupation,
                     'profileUpdated' => true,
                     'agreement' => $agreement
                 ]);

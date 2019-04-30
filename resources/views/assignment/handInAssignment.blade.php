@@ -235,7 +235,9 @@
                                         <label class="col-md-2">分數</label>
                                         @if($assignment->announce_score == 1)
                                             <div class="col-md-5">
-                                                @if($score == null)
+                                                @if($score === 0)
+                                                    <span style="color:red;font-size: 20px;">0 分</span>
+                                                @elseif($score === null)
                                                     <span style="font-size: 20px;">未評分</span>
                                                 @elseif ($score >= 60)
                                                     <span style="color:blue; font-size: 20px;" >
@@ -258,7 +260,9 @@
                                     <div class="form-group row m-t-20">
                                         <label class="col-md-2 m-t-5">教師評語</label>
                                         <div class="col-md-5">
-                                            <h4>{!! $comment !!}</h4>
+                                            @if($comment != null)
+                                                <h4>{!! $comment !!}</h4>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -331,13 +335,13 @@
                                             @switch($student_assignment_status)
                                                 @case(3) <!-- 教師已批改 -->
                                                     <div class="col-md-5">
-                                                        <h4>{!! $title !!}</h4>
+                                                        <h4>{{ $title }}</h4>
                                                     </div>
                                                 @break
                                                 @default
                                                     <div class="col-md-5">
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{{ $title }}" required>
+                                                            <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{!! $title !!}" required>
                                                         </div>
                                                     </div>
                                                 @break
@@ -347,20 +351,20 @@
                                                 @case(4) <!-- 教師要求補繳 -->
                                                     <div class="col-md-5">
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{{ $title }}" required>
+                                                            <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{!! $title !!}" required>
                                                         </div>
                                                     </div>
                                                 @break
                                                 @case(5) <!-- 教師要求補繳 -->
                                                 <div class="col-md-5">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{{ $title }}" required>
+                                                        <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{!! $title !!}" required>
                                                     </div>
                                                 </div>
                                                 @break
                                                 @default
                                                     <div class="col-md-5">
-                                                        <h4>{{ $title }}</h4>
+                                                        <h4>{!! $title !!}</h4>
                                                     </div>
                                                 @break
                                             @endswitch

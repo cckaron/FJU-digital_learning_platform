@@ -61,8 +61,16 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-warning text-white" id="basic-addon1"><i class="fas fa-phone-volume"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="手機" aria-label="手機" aria-describedby="basic-addon3" name="phone" required="" value="{{ $user->phone }}">
+                                    <input type="text" class="form-control form-control-lg" placeholder="聯絡電話" aria-label="聯絡電話" aria-describedby="basic-addon3" name="phone" required="" value="{{ $user->phone }}">
                                 </div>
+                                @if($user->type == 4) <!-- 學生 -->
+                                <div class="input-group mb-4 mt-4">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-primary text-white" id="basic-addon1"><i class="fas fa-id-card"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-lg" placeholder="您的職業" aria-label="您的職業" aria-describedby="basic-addon3" name="occupation" required="" value="{{ $occupation }}">
+                                </div>
+                                @endif
                                 <div class="input-group mb-4 mt-4">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-info text-white" id="basic-addon1"><i class="fas fa-envelope"></i></span>

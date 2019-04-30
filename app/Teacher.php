@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends Model
 {
-    protected $fillable = ['users_id', 'remark', 'users_name', 'status', 'created_at', 'updated_at'];
+    protected $fillable = ['users_id', 'remark', 'users_name', 'status', 'created_at', 'updated_at', 'profileUpdated'];
 
     public function user(){
         return $this->belongsTo('App\User', 'users_id', 'id');

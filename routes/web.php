@@ -16,6 +16,19 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+//測試
+Route::group(['prefix' => 'test', 'middleware' => 'auth'], function(){
+    Route::get('/changeAssignmentStatus/{common_course_status}/{assignment_status}', [
+        'uses' => 'testingController@changeAssignmentStatus',
+        'as' => 'test.changeAssignmentStatus'
+    ]);
+
+    Route::get('/changeProfileStatus/{status}', [
+        'uses' => 'testingController@changeProfileStatus',
+        'as' => 'test.changeProfileStatus'
+    ]);
+});
+
 Route::get('/welcome', function () {
     return view('welcome');
 });
