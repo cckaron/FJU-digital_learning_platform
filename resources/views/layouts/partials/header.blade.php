@@ -81,23 +81,23 @@
                 <!-- ============================================================== -->
                 <!-- Messages -->
                 <!-- ============================================================== -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown" aria-labelledby="2">
-                        <ul class="list-style-none">
-                            <li>
-                                <div class="">
-                                    <!-- Message -->
-                                    <a href="javascript:void(0)" class="link border-top">
-                                        <div class="d-flex no-block align-items-center p-10">
-                                            <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
-                                            <div class="m-l-10">
-                                                <h5 class="m-b-0">提醒事項</h5>
-                                                <span class="mail-desc">開發中</span>
-                                            </div>
-                                        </div>
-                                    </a>
+                {{--<li class="nav-item dropdown">--}}
+                    {{--<a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>--}}
+                    {{--</a>--}}
+                    {{--<div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown" aria-labelledby="2">--}}
+                        {{--<ul class="list-style-none">--}}
+                            {{--<li>--}}
+                                {{--<div class="">--}}
+                                    {{--<!-- Message -->--}}
+                                    {{--<a href="javascript:void(0)" class="link border-top">--}}
+                                        {{--<div class="d-flex no-block align-items-center p-10">--}}
+                                            {{--<span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>--}}
+                                            {{--<div class="m-l-10">--}}
+                                                {{--<h5 class="m-b-0">提醒事項</h5>--}}
+                                                {{--<span class="mail-desc">開發中</span>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</a>--}}
                                     {{--<!-- Message -->--}}
                                     {{--<a href="javascript:void(0)" class="link border-top">--}}
                                         {{--<div class="d-flex no-block align-items-center p-10">--}}
@@ -128,11 +128,11 @@
                                             {{--</div>--}}
                                         {{--</div>--}}
                                     {{--</a>--}}
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                                {{--</div>--}}
+                            {{--</li>--}}
+                        {{--</ul>--}}
+                    {{--</div>--}}
+                {{--</li>--}}
                 <!-- ============================================================== -->
                 <!-- End Messages -->
                 <!-- ============================================================== -->

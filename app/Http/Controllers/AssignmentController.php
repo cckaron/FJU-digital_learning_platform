@@ -1274,6 +1274,7 @@ class AssignmentController extends Controller
         return view('assignment.handInAssignment', [
             'course_id' => $course_id,
             'assignment_id' => $assignment_id,
+            'student_assignment' => $student_assignment,
             'student_assignment_id' => $student_assignment_id,
             'title' => $title,
             'comment' => $comment,

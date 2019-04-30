@@ -74,7 +74,7 @@
                             <li class="sidebar-item"><a href="{{ route('assignment.batchCreateAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 批量新增作業 </span></a></li>
                         @endif
                         @if(Auth::user()->type == 4)
-                            <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 查看作業 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('assignment.showAssignments') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 當學期作業 </span></a></li>
                         @endif
 
                         @if(Auth::user()->type == 3)

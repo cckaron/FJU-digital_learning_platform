@@ -2,6 +2,25 @@
 
 @section('title', '儀表板')
 
+@section('css')
+    <style>
+        .googleCalendar{
+            position: relative;
+            height: 0;
+            width: 100%;
+            padding-bottom: 80%;
+        }
+
+        .googleCalendar iframe{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+@endsection
+
 @section('content')
 
     @include('layouts.partials.preloader')
@@ -109,10 +128,7 @@
                                             </div>
                                             <div class="ml-auto">
                                                 <div class="text-right">
-                                                    <div class="p-t-5">
                                                         <h5 class="text-muted m-b-0" style="text-align: center;">{{ \Carbon\Carbon::parse($sys_announcement->created_at)->diffForHumans() }} 發佈</h5>
-
-                                                    </div>
                                                 </div>
                                             </div>
                                         </li>
@@ -124,11 +140,7 @@
                                     @endif
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-6"></div>
-
-                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
                                 <div class="btn-group">
@@ -137,67 +149,133 @@
 
                                 @if($announcements->count() > 0)
 
-                                <ul class="list-style-none">
+                                    <ul class="list-style-none">
 
-                                    @foreach($announcements as $key=>$announcement)
-                                        <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
-                                            @if($announcement->status == 1)  {{--active --}}
-                                            <i class="fas fa-bullhorn w-30px m-t-5"></i>
-                                            @else  {{--not active--}}
-                                            <i class="fa fa-hourglass-end w-30px m-t-5"></i>
-                                            @endif
+                                        @foreach($announcements as $key=>$announcement)
+                                            <li class="d-flex no-block card-body @if($key != 0) border-top @endif">
+                                                @if($announcement->status == 1)  {{--active --}}
+                                                <i class="fas fa-bullhorn w-30px m-t-5"></i>
+                                                @else  {{--not active--}}
+                                                <i class="fa fa-hourglass-end w-30px m-t-5"></i>
+                                                @endif
 
-                                            <div>
-                                                <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
-                                                    {{ $announcement->title }}
+                                                <div>
+                                                    <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
+                                                        {{ $announcement->title }}
 
-                                                    {{--<span class="text-active p-l-5" >--}}
-                                                    {{--@if($announcement->status == 1)--}}
-                                                    {{--<span class="badge badge-pill badge-primary">已發布</span>--}}
-                                                    {{--@else--}}
-                                                    {{--<span class="badge badge-pill badge-dark">未發佈</span>--}}
-                                                    {{--@endif--}}
-                                                    {{--</span>--}}
+                                                        {{--<span class="text-active p-l-5" >--}}
+                                                        {{--@if($announcement->status == 1)--}}
+                                                        {{--<span class="badge badge-pill badge-primary">已發布</span>--}}
+                                                        {{--@else--}}
+                                                        {{--<span class="badge badge-pill badge-dark">未發佈</span>--}}
+                                                        {{--@endif--}}
+                                                        {{--</span>--}}
 
-                                                    <span class="text-active p-l-5" >
+                                                        <span class="text-active p-l-5" >
                                                             @if($announcement->priority == 0)
-                                                            <span class="badge badge-pill badge-danger">置頂公告</span>
-                                                        @elseif($announcement->priority == 1)
-                                                            <span class="badge badge-pill badge-primary">一般</span>
-                                                        @endif
+                                                                <span class="badge badge-pill badge-danger">置頂公告</span>
+                                                            @elseif($announcement->priority == 1)
+                                                                <span class="badge badge-pill badge-primary">一般</span>
+                                                            @endif
                                                         </span>
-                                                </a>
+                                                    </a>
 
-                                                <div class="p-t-5">
+                                                    <div class="p-t-5">
 
-                                                    <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
-                                                        <div class="widget-content">
-                                                            <h6>
-                                                                {!! $announcement->content !!}
-                                                            </h6>
+                                                        <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
+                                                            <div class="widget-content">
+                                                                <h6>
+                                                                    {!! $announcement->content !!}
+                                                                </h6>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="ml-auto">
-                                                <div class="text-right">
-                                                    <div class="p-t-5">
+                                                <div class="ml-auto">
+                                                    <div class="text-right">
                                                         {{--<strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>--}}
                                                         <h5 class="text-muted m-b-0" style="text-align: center;">{{ \Carbon\Carbon::parse($announcement->created_at)->diffForHumans() }} 發佈</h5>
-
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </li>
+
+                                        @endforeach
+                                    </ul>
+                                    {{ $announcements->links() }}
+
+                                @else
+                                    <ul class="list-style-none">
+                                        <li class="d-flex no-block card-body">
+                                            暫無公告
                                         </li>
-
-                                    @endforeach
-                                </ul>
-                                {{ $announcements->links() }}
-
+                                    </ul>
                                 @endif
                             </div>
                         </div>
                     </div>
+
+                        <div class="col-md-6">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title m-b-0">待繳交的作業</h5>
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">作業名稱</th>
+                                        <th scope="col">狀態</th>
+                                        <th scope="col">動作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($courses as $course)
+                                        @foreach($course->assignment as $assignment)
+                                            @if($assignment->hide == 0 and $assignment->status == 1)
+                                                <tr>
+                                                    <td>{{ $assignment->name }}</td>
+                                                    <td class="text-success">
+                                                    @switch($assignment->student->status)
+                                                        @case(1) <!-- 未繳交 -->
+                                                            <span class="badge badge-pill badge-danger">
+                                                            未繳交
+                                                        </span>
+                                                        @break
+                                                        @case(4) <!-- 未補繳 -->
+                                                            <span class="badge badge-pill badge-danger">
+                                                            補繳中
+                                                        </span>
+                                                        @break
+                                                        @case(6) <!-- 未重繳 -->
+                                                            <span class="badge badge-pill badge-danger">
+                                                            尚未重繳
+                                                        </span>
+                                                        @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('assignment.handInAssignment', ['course_id' => $course->course_id ,'assignment_id' => $assignment->assignment_id]) }}" data-toggle="tooltip" data-placement="top" title="前往作業">
+                                                            <i class="mdi mdi-lead-pencil"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                        @endif
+                                        @endforeach
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="btn-group">
+                                        <h4 class="card-title m-t-10" style="padding-right: 20px">行事曆</h4>
+                                    </div>
+                                    <div class="googleCalendar">
+                                        <iframe src="https://calendar.google.com/calendar/embed?src=secret%40gapp.fju.edu.tw&ctz=Asia%2FTaipei" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
             <!-- ============================================================== -->
