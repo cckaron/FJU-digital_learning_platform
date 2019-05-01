@@ -213,7 +213,7 @@
                                         <label class="col-md-2">最後繳交時間</label>
                                         <div class="col-md-3">
                                             @if($student_assignment_status != 1)
-                                                <span>{{ $student_assignment->updated_at }}</span>
+                                                <span style="color:blue">{{ $student_assignment->updated_at }}</span>
                                             @else
                                                 <span style="color:blue">尚未繳交</span>
                                             @endif
