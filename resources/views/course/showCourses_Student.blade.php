@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', '我的課程')
 
 @section('css')
     <link href="{{ URL::to('libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />

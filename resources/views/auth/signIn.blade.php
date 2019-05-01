@@ -1,4 +1,5 @@
 @extends('layouts.Auth')
+@section('title', '商管學習歷程系統')
 
 @section('content')
     <div class="main-wrapper">
