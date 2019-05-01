@@ -62,8 +62,10 @@
                                 <div class="comment-widgets scrollable">
 
                                     <!-- Assignment Loop Start -->
+                                    @php($assignmentCounter = 0)
                                 @foreach($assignments_processing as $assignment)
                                     @if($assignment->hide == 0)
+                                        @php($assignmentCounter += 1)
                                     <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
@@ -135,7 +137,7 @@
                                                             @if($assignment->score == null)
                                                                 成績：未評分
                                                             @else
-                                                                成績：{{ $assignment->score }}
+                                                                成績：{{ round($assignment->score, 2) }}
                                                             @endif
                                                         @else
                                                             成績：不公布
@@ -147,6 +149,11 @@
                                     @endif
                                     @endforeach
 
+                                    @if($assignmentCounter == 0)
+                                        <div class="m-l-30 m-b-10">
+                                            無進行中的作業
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -159,9 +166,11 @@
                                 <div class="comment-widgets scrollable">
 
                                     <!-- Assignment Loop Start -->
+                                @php($assignmentCounter = 0)
                                 @foreach($assignments_finished as $assignment)
                                     @if($assignment->hide == 0)
-                                    <!-- Comment Row -->
+                                        @php($assignmentCounter += 1)
+                                        <!-- Comment Row -->
                                         <div class="d-flex flex-row comment-row m-t-0">
 
                                             <div class="p-2"><img src="{{ URL::to('images/homework.png') }}" alt="user" width="50" class="rounded-circle"></div>
@@ -246,7 +255,7 @@
                                                             @if($assignment->score == null)
                                                                 成績：未評分
                                                             @else
-                                                                成績：{{ $assignment->score }}
+                                                                成績：{{ round($assignment->score, 2) }}
                                                             @endif
                                                         @else
                                                             成績：不公布
@@ -258,6 +267,11 @@
                                     @endif
                                     @endforeach
 
+                                    @if($assignmentCounter == 0)
+                                        <div class="m-l-30 m-b-10">
+                                            無已結束的作業
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 

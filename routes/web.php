@@ -27,6 +27,11 @@ Route::group(['prefix' => 'test', 'middleware' => 'auth'], function(){
         'uses' => 'testingController@changeProfileStatus',
         'as' => 'test.changeProfileStatus'
     ]);
+
+    Route::get('changeAssignmentEndDate', [
+        'uses' => 'testingController@changeAssignmentEndDate',
+        'as' => 'test.changeAssignmentEndDate'
+    ]);
 });
 
 Route::get('/welcome', function () {

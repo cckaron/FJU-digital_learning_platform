@@ -229,9 +229,11 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @php($assignmentCounter = 0)
                                     @foreach($courses as $course)
                                         @foreach($course->assignment as $assignment)
                                             @if($assignment->hide == 0 and $assignment->status == 1)
+                                                @php($assignmentCounter += 1)
                                                 <tr>
                                                     <td>{{ $assignment->name }}</td>
                                                     <td class="text-success">
@@ -262,6 +264,14 @@
                                         @endif
                                         @endforeach
                                     @endforeach
+
+                                    @if($assignmentCounter == 0)
+                                        <tr>
+                                            <td>無待繳交作業</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>

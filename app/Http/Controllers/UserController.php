@@ -141,7 +141,6 @@ class UserController extends Controller
                 },
             ],
             "password.*"  => [
-                "min:6",
                 function ($attribute, $value, $fail) use ($user) {
                     if (Hash::check($value, $user->password)) {
                         return $fail('新密碼 不能和 舊密碼 相同');
