@@ -103,7 +103,7 @@
                             <li class="sidebar-item"><a href="{{ route('user.importUsers') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 匯入功能 </span></a></li>
                         @endif
                         {{--<li class="sidebar-item"><a href="authentication-login.html" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 個人檔案 </span></a></li>--}}
-                            <li class="sidebar-item"><a href="{{ route('user.changePassword') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 更改密碼 </span></a></li>
+                            <li class="sidebar-item"><a href="{{ route('user.changePassword') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 更改個人檔案 </span></a></li>
                         <li class="sidebar-item"><a href="{{ route('auth.signOut') }}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> 登出 </span></a></li>
                     </ul>
                 </li>
