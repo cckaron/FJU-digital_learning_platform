@@ -232,7 +232,7 @@
                                     @php($assignmentCounter = 0)
                                     @foreach($courses as $course)
                                         @foreach($course->assignment as $assignment)
-                                            @if($assignment->hide == 0 and $assignment->status == 1)
+                                            @if($assignment->hide == 0 and $assignment->student->status == 1)
                                                 @php($assignmentCounter += 1)
                                                 <tr>
                                                     <td>{{ $assignment->name }}</td>
@@ -261,7 +261,7 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                        @endif
+                                            @endif
                                         @endforeach
                                     @endforeach
 
