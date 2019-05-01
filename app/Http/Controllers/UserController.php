@@ -115,9 +115,15 @@ class UserController extends Controller
 
         $user = Auth::user();
 
+        $student = null;
+        if ($user->type == 4){
+            $student = $user->student()->first();
+        }
+
         return view('user.changePassword', [
             'user_id' => $user_id,
             'user' => $user,
+            'student' => $student,
         ]);
     }
 
@@ -153,6 +159,7 @@ class UserController extends Controller
         $password = $password[0];
         $email = $request->get('email');
         $phone = $request->get('phone');
+        $occupation = $request->get('occupation');
 
         if ($user->type == '3'){ //teacher
             DB::table('users')
@@ -187,7 +194,8 @@ class UserController extends Controller
                 ->where('users_id', $user_id)
                 ->update([
                     'profileUpdated' => true,
-                    'agreement' => $agreement
+                    'agreement' => $agreement,
+                    'occupation' => $occupation
                 ]);
         } else {
             DB::table('users')

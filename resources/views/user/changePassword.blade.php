@@ -65,6 +65,17 @@
                                         </div>
                                     </div>
 
+                                    @if($user->type == 4)
+                                    <div class="form-group row">
+                                        <label class="col-md-3 m-t-5" for="password">職業</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group mb-3">
+                                                <input type="text" id="phone" class="form-control" placeholder="職業" name="occupation" value="{{ $student->occupation }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+
                                     <div class="form-group row">
                                         <label class="col-md-3 m-t-5" for="password">新密碼</label>
                                         <div class="col-md-9">

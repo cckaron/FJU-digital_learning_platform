@@ -210,6 +210,17 @@
                                     </div>
 
                                     <div class="form-group row m-t-20">
+                                        <label class="col-md-2">最後繳交時間</label>
+                                        <div class="col-md-3">
+                                            @if($student_assignment_status != 1)
+                                                <span>{{ $student_assignment->updated_at }}</span>
+                                            @else
+                                                <span style="color:blue">尚未繳交</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row m-t-20">
                                         <label class="col-md-2">開放繳交日期</label>
                                         <div class="col-md-3">
                                             <span>{{ $assignment->start_date }} {{ $assignment->start_time }}</span>
