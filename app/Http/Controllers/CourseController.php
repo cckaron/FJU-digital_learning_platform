@@ -135,6 +135,16 @@ class CourseController extends Controller
             ->where('courses_id', $course_id)
             ->delete();
 
+        $course = Course::where('id', $course_id)->first();
+        $assignments = $course->assignment()->get();
+
+        foreach($assignments as $assignment){
+            DB::table('student_assignment')
+                ->where('students_id', $student_id)
+                ->where('assignments_id', $assignment->id)
+                ->delete();
+        }
+
         return redirect()->back()->with('message', $student_name.' 退選成功!');
     }
 
@@ -470,6 +480,21 @@ class CourseController extends Controller
                             'created_at' => Carbon::now(),
                             'updated_at' => Carbon::now(),
                         ]);
+
+                    $course = Course::where('id', $courses_id)->first();
+                    $assignments = $course->assignment()->get();
+
+                    foreach($assignments as $assignment){
+                        DB::table('student_assignment')
+                            ->insert([
+                                'students_id' => $student_number,
+                                'assignments_id' => $assignment->id,
+                                'status' => 1,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
+                            ]);
+                    }
+
                     $success_output = '<div class="alert alert-success"> 加選成功！ </div>';
                 } else {
                     $success_output = '<div class="alert alert-success"> 加選錯誤！該學生已於課程內。 </div>';
