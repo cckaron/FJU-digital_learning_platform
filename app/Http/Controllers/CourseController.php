@@ -142,7 +142,6 @@ class CourseController extends Controller
             DB::table('student_assignment')
                 ->where('students_id', $student_id)
                 ->where('assignments_id', $assignment->id)
-                ->where('courses_id', $course_id)
                 ->delete();
         }
 

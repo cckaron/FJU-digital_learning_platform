@@ -58,6 +58,7 @@
                                         <tr>
                                             <th>姓名</th>
                                             <th>學號</th>
+                                            <th>更新資料</th>
                                             <th>系所</th>
                                             <th>年級</th>
                                             <th>班級</th>
@@ -74,6 +75,13 @@
                                             <tr align="center">
                                                 <td id="name">{{ $student->users_name }}</td>
                                                 <td id="userID">{{ $student->users_id }}</td>
+                                                <td id="profileUpdated">
+                                                    @if($student->profileUpdated)
+                                                        已更新
+                                                    @else
+                                                        <p style="color: red">尚未更新</p>
+                                                    @endif
+                                                </td>
                                                 <td id="department">{{ $student->department }}</td>
                                                 <td id="grade">{{ $student->grade }}</td>
                                                 <td id="myclass">{{ $student->class }}</td>
@@ -108,6 +116,7 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -292,6 +301,7 @@
     <script>
 
         var table = $('#zero_config').DataTable({
+            aaSorting: [[1, 'asc'],[2, 'asc']],
             autoWidth: false,
             buttons: [
                 {
@@ -347,17 +357,18 @@
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
             columnDefs: [
-                { "width": "10%", "targets": 0 },
-                { "width": "10%", "targets": 1 },
-                { "width": "5%", "targets": 2 },
+                { "width": "5%", "targets": 0 },
+                { "width": "5%", "targets": 1 },
+                { "width": "10%", "targets": 2 },
                 { "width": "5%", "targets": 3 },
                 { "width": "5%", "targets": 4 },
-                { "width": "10%", "targets": 5 },
+                { "width": "5%", "targets": 5 },
                 { "width": "10%", "targets": 6 },
-                { "width": "5%", "targets": 7 },
-                { "width": "10%", "targets": 8 },
+                { "width": "10%", "targets": 7 },
+                { "width": "5%", "targets": 8 },
                 { "width": "10%", "targets": 9 },
-                { "width": "20%", "targets": 10 },
+                { "width": "10%", "targets": 10 },
+                { "width": "20%", "targets": 11 },
             ],
             language: {
                 "processing":   "處理中...",

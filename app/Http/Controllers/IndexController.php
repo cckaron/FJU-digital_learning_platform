@@ -55,6 +55,7 @@ class IndexController extends Controller
             ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
             ->where('status', 1)
             ->exists();
+
         return view('dashboard.teacherIndex', [
             'hasInProgressCourse' => $hasInProgressCourse,
             'sys_announcements' => $sys_announcements,
