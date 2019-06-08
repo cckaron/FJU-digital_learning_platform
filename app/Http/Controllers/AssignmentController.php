@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Hashids\Hashids;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -940,7 +941,15 @@ class AssignmentController extends Controller
 
     //批改
     public function getCorrectAssignment(){
-        $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+        $user = Auth::user();
+        $teachers = Teacher::all();
+
+        if ($user->type == 0){
+            $teacherID = Input::get('teacherID');
+            $teacher = Teacher::where('users_id', $teacherID)->first();
+        } else {
+            $teacher = Teacher::where('users_id', $user->id)->first();
+        }
 
         //取得進行中的課程
         $courses = $teacher->course()
@@ -1139,6 +1148,7 @@ class AssignmentController extends Controller
             ->count();
 
         return view('assignment.correctAssignment', [
+            'user' => $user,
             'student_assignments' => $student_assignments,
             'student_assignments_id' => $student_assignments_id,
             'student_ids' => $student_ids,
@@ -1153,6 +1163,7 @@ class AssignmentController extends Controller
             'finished' => $finished,
             'notFinished' => $notFinished,
             'all' => $all,
+            'teachers' => $teachers,
             'teacher' => $teacher,
             'courses' => $courses,
             'comments' => $comments,

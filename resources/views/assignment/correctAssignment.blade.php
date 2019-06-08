@@ -74,6 +74,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
+                                @include('assignment.correctAssignment.partial.selector')
 
                                 @include('assignment.correctAssignment.partial.table')
 
@@ -426,11 +427,20 @@
     </script>
 
     <script>
+        $( "#teacherSelect" ).change(function() {
+            var route = '{{ route('teacher.correctAssignment', ":id") }}';
+            var url = route.replace(':id', "teacherID="+this.value);
+            window.location.href = url;
+        });
+    </script>
+
+    <script>
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
     </script>
+
 
 @endsection
