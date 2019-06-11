@@ -30,10 +30,8 @@ class Kernel extends ConsoleKernel
         //if schedule not run, php artisan cache:clear will do the trick
         $schedule
             ->command('backup:run')
-            ->everyTenMinutes()
-            ->withoutOverlapping(5) //set to five minute
+            ->daily()
             ->appendOutputTo(storage_path('logs/backup.log'));
-
     }
 
     /**
