@@ -85,6 +85,9 @@
 <script src="{{ URL::to('extra-libs/DataTables/export/buttons.print.min.js') }}"></script>
 <script src="{{ URL::to('extra-libs/DataTables/export/buttons.colVis.min.js') }}"></script>
 
+<!-- Sortable -->
+<script src="{{ URL::to('js/Sortable.min.js') }}"></script>
+
 
 @yield('scripts')
 </body>

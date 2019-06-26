@@ -76,11 +76,11 @@ class testingController extends Controller
     }
 
     public function changeProfileStatus($status){
-        DB::table('users')
-            ->update(['phone' => null]);
-        Student::query()->update(['profileUpdated' => $status, 'occupation' => null]);
-
-        Teacher::query()->update(['profileUpdated' => $status]);
+//        DB::table('users')
+//            ->update(['phone' => null]);
+//        Student::query()->update(['profileUpdated' => $status, 'occupation' => null]);
+//
+//        Teacher::query()->update(['profileUpdated' => $status]);
 
         //把所有學生的密碼設為和帳號相同
 //        $students = Student::all();
@@ -89,6 +89,10 @@ class testingController extends Controller
 //                ->where('id', $student->users_id)
 //                ->update(['password' => bcrypt($student->users_id)]);
 //        }
+
+        DB::table('users')
+            ->where('type', 3)
+            ->update(['password' => bcrypt('051266')]);
     }
 
 

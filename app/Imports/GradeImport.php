@@ -62,6 +62,7 @@ class GradeImport implements ToCollection
                             ->where('students_id', $student_course->students_id)
                             ->where('courses_id', $student_course->courses_id)
                             ->update(['final_score' => $row[$i+4]]);
+                    } else if ($assignments[$i] == '原始成績' or $assignments[$i] == '備註'){
                     } else {
                         $student_assignment = $student->assignment()
                             ->withPivot('id')
