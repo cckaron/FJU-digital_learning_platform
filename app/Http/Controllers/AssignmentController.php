@@ -6,6 +6,7 @@ use App\Assignment;
 use App\common_course;
 use App\Course;
 use App\Student;
+use App\ta_course;
 use App\Teacher;
 use App\teacher_course;
 use App\User;
@@ -947,6 +948,23 @@ class AssignmentController extends Controller
         if ($user->type == 0){
             $teacherID = Input::get('teacherID');
             $teacher = Teacher::where('users_id', $teacherID)->first();
+        } else if ($user->type == 2){ //TA
+            $ta = $user->ta()->first();
+            $ta->course_id = $ta->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->pluck('id');
+
+            //讓助教可以選自己的老師來改
+            $teachers = collect();
+            foreach($ta->course_id as $course_id){
+                $teachers->push(Course::where('id', $course_id)->first()->teacher()->first());
+                $teachers = $teachers->unique('users_name');
+            }
+
+            $teacherID = Input::get('teacherID');
+            $teacher = Teacher::where('users_id', $teacherID)->first();
         } else {
             $teacher = Teacher::where('users_id', $user->id)->first();
         }
@@ -1229,6 +1247,7 @@ class AssignmentController extends Controller
 
     public function getHandInAssignment($course_id, $assignment_id){
         $student_id = Auth::user()->id;
+        $notExpire = 1;
 
         $encode_course_id = new Hashids('course_id', 6);
         $encode_assignment_id = new Hashids('assignment_id', 10);
@@ -1248,12 +1267,22 @@ class AssignmentController extends Controller
 
         $student_assignment_status = $student_assignment->status;
 
+        $student_assignment_makeUpDate = $student_assignment->makeUpDate;
+
         $title = $student_assignment->title;
 
         $comment = $student_assignment->comment;
 
         $score = $student_assignment->score;
 
+        if ($student_assignment_status == 4 || $student_assignment_status == 5){ //確認補繳日期過了沒
+            $notExpire = Carbon::now()->lt($student_assignment_makeUpDate) ? true : false;
+            if ($notExpire){
+                $notExpire = 1;
+            } else {
+                $notExpire = 0;
+            }
+        }
 
         //get assignment file detail
         $assignment_id = DB::table('student_assignment')
@@ -1291,8 +1320,10 @@ class AssignmentController extends Controller
             'comment' => $comment,
             'score' => $score,
             'student_assignment_status' => $student_assignment_status,
+            'student_assignment_makeUpDate' => $student_assignment_makeUpDate,
             'files' => $files,
-            'assignment' => $assignment
+            'assignment' => $assignment,
+            'notExpire' => $notExpire
             ]);
     }
 

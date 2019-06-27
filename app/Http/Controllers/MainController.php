@@ -17,8 +17,9 @@ class MainController extends Controller
 
         $user = User::where('id', $user->id)->first();
 
-
-        if ($user->type == 3){
+        if ($user->type == 2){
+            return $indexController->getTAIndex();
+        } else if ($user->type == 3){
             $teacher = $user->teacher()->first();
 
             if ($teacher->profileUpdated){

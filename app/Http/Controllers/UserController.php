@@ -743,9 +743,8 @@ class UserController extends Controller
                         ->where('tas_id', $ta_id)->where('courses_id', $inProgress_course_id)->exists())
                     {
                         DB::table('ta_course')
-                            ->insert(['tas_id' => $ta_id, 'courses_id' => $inProgress_course_id]);
+                            ->insert(['tas_id' => $ta_id, 'courses_id' => $inProgress_course_id, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
                     }
-
                 }
                 //沒在裡面，刪除
                 else {

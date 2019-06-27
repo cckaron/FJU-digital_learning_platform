@@ -208,7 +208,7 @@
                                     </div>
 
                                     <div class="modal-body">
-                                        <span id="form_output"></span>
+                                        <span id="form_output_course"></span>
 
                                             {{ csrf_field() }}
                                             @foreach($teachers as $key=>$teacher)
@@ -605,7 +605,7 @@
         var form = '#courseForm';
 
         $("#courseModal").on('show.bs.modal', function (e) {
-            $('#form_output').html("");
+            $('#form_output_course').html("");
             const button = $(e.relatedTarget);
             const btn_ta_id = button.data('id');
             const btn_ta_course_id = button.data('ta-course-id');
@@ -658,11 +658,11 @@
                             {
                                 error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
                             }
-                            $('#form_output').html(error_html);
+                            $('#form_output_course').html(error_html);
                         }
                         else
                         {
-                            $('#form_output').html(data.success);
+                            $('#form_output_course').html(data.success);
                         }
                     }
                 })

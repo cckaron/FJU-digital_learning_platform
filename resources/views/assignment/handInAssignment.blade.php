@@ -375,18 +375,30 @@
                                         @else
                                             @switch($student_assignment_status)
                                                 @case(4) <!-- 教師要求補繳 -->
-                                                    <div class="col-md-5">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{!! $title !!}" required>
+                                                    @if($notExpire)
+                                                        <div class="col-md-5">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{!! $title !!}" required>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    @else
+                                                        <div class="col-md-5">
+                                                            <h4>{!! $title !!}</h4>
+                                                        </div>
+                                                    @endif
                                                 @break
                                                 @case(5) <!-- 教師要求補繳 -->
-                                                <div class="col-md-5">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{!! $title !!}" required>
-                                                    </div>
-                                                </div>
+                                                    @if($notExpire)
+                                                        <div class="col-md-5">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" id="title" name="title" placeholder="請輸入學習主題" value="{!! $title !!}" required>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <div class="col-md-5">
+                                                            <h4>{!! $title !!}</h4>
+                                                        </div>
+                                                    @endif
                                                 @break
                                                 @default
                                                     <div class="col-md-5">
@@ -420,7 +432,7 @@
                                             </div>
                                         @endif
                                     @else
-                                        @if($student_assignment_status == 4 or $student_assignment_status == 5)
+                                        @if($student_assignment_status == 4 or $student_assignment_status == 5 and $notExpire)
                                             <div class="border-top">
                                                 <!-- Return Success Message -->
                                                 <div class="card-body">
@@ -773,7 +785,7 @@
                 });
             }
         } else { //作業已截止
-            if({{ $student_assignment_status }} === 4 || {{ $student_assignment_status }} === 5){ //教師開放補繳 或是 已補繳, 提供上傳修改作業功能
+            if({!! $student_assignment_status !!} === 4 || {!! $student_assignment_status !!} === 5 && {!! $notExpire !!} === 1){ //教師開放補繳 或是 已補繳, 提供上傳修改作業功能
                 var mydropZone = new Dropzone("#my_awesome_dropzone", {
                     // The configuration we've talked about above
                     url: '{{ route('assignment.handInAssignment', ['course_id'=>str_random(6), 'assignment_id'=>str_random(10)]) }}',
