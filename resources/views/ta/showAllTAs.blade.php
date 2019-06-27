@@ -37,7 +37,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
 
-        @include('layouts.partials.pageBreadCrumb', ['title' => '所有共同課程'])
+        @include('layouts.partials.pageBreadCrumb', ['title' => '所有TA'])
 
         <!-- ============================================================== -->
             <!-- Container fluid  -->
@@ -93,6 +93,9 @@
                                                 <td id="remark">{{ $ta->remark }}</td>
                                                 <td>{{ $ta->updated_at->diffForHumans() }}</td>
                                                 <td>
+                                                    <button name="add" class="btn btn-default" data-toggle="modal" data-target="#courseModal" type="submit" data-id="{{ $ta->users_id }}" data-ta-course-id="{{ $ta->course_id }}">
+                                                        課程
+                                                    </button>
                                                     <button name="add" class="btn btn-primary" data-toggle="modal" data-target="#changeModal" type="submit" data-id="{{ $ta->users_id }}">
                                                         編輯
                                                     </button>
@@ -191,6 +194,44 @@
                         </div>
                     </div>
                     <!-- end ajax correct assignment window -->
+
+                    <!-- start ajax edit course window-->
+                    <div id="courseModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="courseForm" method="post">
+                                    <div class="modal-header">
+                                        <h4 style="margin-bottom: 20px"> 選取教師 </h4>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            &times;
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <span id="form_output"></span>
+
+                                            {{ csrf_field() }}
+                                            @foreach($teachers as $key=>$teacher)
+                                                @if(count($teacher->courses_id) > 0)
+                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input courseCheckbox" id="customControlAutosizing{{ $key }}" name="courses_id[]" value="{{ $teacher->courses_id }}">
+                                                        <label class="custom-control-label" for="customControlAutosizing{{ $key }}">{{ $teacher->users_name }}</label>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="ta_id" id="ta_id" value="" />
+                                                <input type="hidden" name="ta_course_id" id="ta_course_id" value="" />
+                                                <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
+                                            </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end ajax edit course window -->
                 </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -408,6 +449,60 @@
             } );
         } );
 
+
+        var courseTable = $('#courseTable').DataTable({
+            "lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "全部"]],
+            language: {
+                "processing":   "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu":   "顯示 _MENU_ 項結果",
+                "zeroRecords":  "沒有符合的結果",
+                "info":         "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
+                "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+                "infoPostFix":  "",
+                "search":       "搜尋:",
+                "paginate": {
+                    "first":    "第一頁",
+                    "previous": "上一頁",
+                    "next":     "下一頁",
+                    "last":     "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            },
+        });
+
+        // Setup - add a text input to each footer cell
+        $('#courseTable tfoot th').each( function () {
+            var title = $(this).text();
+            // $(this).html( '<input type="text" placeholder="搜尋 '+title+' 欄位" />' );
+            $(this).html( '<input type="text" placeholder="搜尋" />' );
+
+        } );
+
+        var r2 = $('#courseTable tfoot tr');
+        r2.find('th').each(function(){
+            $(this).css('padding', 8);
+        });
+        // $('#zero_config thead').append(r);
+        r2.appendTo($('#courseTable thead'));
+
+        // Apply the search
+        courseTable.columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
+
     </script>
 
     <script>
@@ -504,5 +599,74 @@
         });
 
 
+    </script>
+
+    <script>
+        var form = '#courseForm';
+
+        $("#courseModal").on('show.bs.modal', function (e) {
+            $('#form_output').html("");
+            const button = $(e.relatedTarget);
+            const btn_ta_id = button.data('id');
+            const btn_ta_course_id = button.data('ta-course-id');
+
+            $('#ta_id').val(btn_ta_id);
+            $('#ta_course_id').val(btn_ta_course_id);
+
+            //取得該TA的所有課程
+            const ta_course_id = $('#ta_course_id').val().split(",");
+
+            //檢查該TA是否有加入各老師的課程
+            $( ".courseCheckbox" ).each(function( index ) {
+                const checkbox = $( this );
+                const courses_id = checkbox.val().substring(1, $( this ).val().length - 1).split(",");
+
+                ta_course_id.forEach(function (item){
+                    //有
+                    if (jQuery.inArray(item, courses_id) !== -1){
+                        console.log(item + 'in array');
+                        checkbox.prop('checked', true);
+                    }
+                    //沒有
+                    else {
+                        console.log(item + 'not in array');
+                    }
+                });
+
+
+            });
+
+
+            if (document.getElementById(button)){
+                document.getElementById(button).innerText = "請重新整理頁面"
+            }
+
+            $(form).off().on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url:'{{ route('ta.course.edit') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#form_output').html(error_html);
+                        }
+                        else
+                        {
+                            $('#form_output').html(data.success);
+                        }
+                    }
+                })
+            });
+        });
     </script>
 @endsection

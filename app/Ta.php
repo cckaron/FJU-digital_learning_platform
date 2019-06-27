@@ -14,6 +14,6 @@ class Ta extends Model
 
     public function course(){
         return $this
-            ->belongsToMany('App\Course', 'ta_course', 'students_id', 'courses_id', 'users_id', 'id');
+            ->belongsToMany('App\Course', 'ta_course', 'tas_id', 'courses_id', 'users_id', 'id');
     }
 }

@@ -83,12 +83,12 @@ class testingController extends Controller
 //        Teacher::query()->update(['profileUpdated' => $status]);
 
         //把所有學生的密碼設為和帳號相同
-//        $students = Student::all();
-//        foreach($students as $student){
-//            DB::table('users')
-//                ->where('id', $student->users_id)
-//                ->update(['password' => bcrypt($student->users_id)]);
-//        }
+        $students = Student::all();
+        foreach($students as $student){
+            DB::table('users')
+                ->where('id', $student->users_id)
+                ->update(['password' => bcrypt($student->users_id)]);
+        }
 
         DB::table('users')
             ->where('type', 3)

@@ -578,14 +578,32 @@ class UserController extends Controller
     public function getAllTAs(){
         $tas = Ta::all();
 
-        //because users_id has "0" at first, like "051266"
-        //so using with(relationship) will get null, we need to use all()
+        //取得 ta 已經加選的進行中課程
         foreach($tas as $ta){
             $ta->user = $ta->user()->get();
+            $ta->course_id = $ta->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->pluck('id');
         }
+
+        //get courses
+        $teachers = Teacher::all();
+
+        foreach($teachers as $teacher){
+            //取得老師進行中的課程
+            $teacher->courses_id = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->pluck('id');
+        }
+
 
         return view('ta.showAllTAs', [
             'tas' => $tas,
+            'teachers' => $teachers
         ]);
     }
 
@@ -664,6 +682,89 @@ class UserController extends Controller
             ->delete();
 
         return redirect()->back()->with('message', '刪除成功');
+    }
+
+    public function postTAEditCourse(Request $request){
+        $validation = Validator::make($request->all(), [
+            'courses_id' => 'array',
+        ]);
+
+        $courses_id = $request->get('courses_id');
+        $ta_id = $request->get('ta_id');
+
+        $error_array = array();
+        $success_output = '';
+
+        //取得當學期所有進行中課程
+        $inProgress_courses_id = array();
+
+        $teachers = Teacher::all();
+        foreach($teachers as $teacher){
+            //取得老師進行中的課程
+            $_courses_id = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->pluck('id');
+
+            foreach($_courses_id as $course_id){
+                array_push($inProgress_courses_id, $course_id);
+            }
+        }
+
+        //取得勾選的課程
+        $input_courses_id = array();
+        if (count($courses_id) > 0) {
+            foreach ($courses_id as $course_id) {
+                $course_id = substr($course_id, 1, strlen($course_id) - 2);
+                $course_id = explode(",", $course_id);
+//                Log::info($course_id);
+
+                foreach($course_id as $id){
+                    array_push($input_courses_id, $id);
+                }
+            }
+        }
+
+//        Log::info($input_courses_id);
+
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            //確認勾選的課程是否在所有進行中的課程內
+            foreach($inProgress_courses_id as $inProgress_course_id){
+
+                //有在裡面，留著或新增
+                if (in_array($inProgress_course_id, $input_courses_id) ){
+                    if (!DB::table('ta_course')
+                        ->where('tas_id', $ta_id)->where('courses_id', $inProgress_course_id)->exists())
+                    {
+                        DB::table('ta_course')
+                            ->insert(['tas_id' => $ta_id, 'courses_id' => $inProgress_course_id]);
+                    }
+
+                }
+                //沒在裡面，刪除
+                else {
+                    DB::table('ta_course')
+                        ->where('tas_id', $ta_id)
+                        ->where('courses_id', $inProgress_course_id)
+                        ->delete();
+                }
+
+            }
+
+            $success_output = '<div class="alert alert-success"> 成功！ </div>';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+        );
+
+        echo json_encode($output);
     }
 
     //deprecated()

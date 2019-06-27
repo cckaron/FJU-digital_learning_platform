@@ -333,8 +333,15 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
     ]);
 });
 
-// 工讀生 (type = 2)
-Route::group(['prefix' => 'employee', 'middleware' => 'auth'], function() {
+// TA (type = 2)
+Route::group(['prefix' => 'ta', 'middleware' => 'auth'], function() {
+    Route::group(['prefix' => 'course'], function(){
+        //編輯
+        Route::post('/edit', [
+            'uses' => 'UserController@postTAEditCourse',
+            'as' => 'ta.course.edit'
+        ]);
+    });
 
 });
 
