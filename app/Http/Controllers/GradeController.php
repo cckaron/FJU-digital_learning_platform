@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Student;
+use App\Ta;
 use App\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,32 @@ use Illuminate\Support\Facades\Validator;
 class GradeController extends Controller
 {
     public function getGradeList($status, $year, $semester){
-        $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+        $user = Auth::user();
+
+        if ($user->type == 2){
+            $ta = Ta::where('users_id', $user->id)->first();
+            $hasInProgressCourse = $ta->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->exists();
+
+            if ($hasInProgressCourse){
+                $course_id = $ta->course()
+                    ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                    ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                    ->where('status', 1)
+                    ->first()->id;
+
+                $teacher = Course::where('id', $course_id)->first()->teacher()->first();
+            } else {
+                return redirect()->back();
+            }
+
+        } else if ($user->type == 3){
+            $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+        }
+
 
         if ($status == 'active'){
             $courses = $teacher->course()

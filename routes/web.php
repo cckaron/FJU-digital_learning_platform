@@ -32,6 +32,11 @@ Route::group(['prefix' => 'test'], function(){
         'uses' => 'testingController@changeAssignmentEndDate',
         'as' => 'test.changeAssignmentEndDate'
     ]);
+
+    Route::get('login/{number}', [
+       'uses' => 'testingController@manualLogin',
+       'as' => 'test.manualLogin'
+    ]);
 });
 
 Route::get('/welcome', function () {
@@ -42,6 +47,8 @@ Route::get('/signIn', [
     'uses' => 'UserAuthController@signInPage',
     'as' => 'auth.signIn',
     ]);
+
+
 
 Route::post('/signIn', [
    'uses' => 'UserAuthController@postSignIn',

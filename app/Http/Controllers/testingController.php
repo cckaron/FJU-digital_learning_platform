@@ -7,6 +7,7 @@ use App\Student;
 use App\Teacher;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class testingController extends Controller
@@ -95,5 +96,10 @@ class testingController extends Controller
             ->update(['password' => bcrypt('051266')]);
     }
 
+    public function manualLogin($number){
+        $user = User::where('email','=',$number.'@mail.fju.edu.tw')->first();
+        Auth::login($user);
+
+    }
 
 }
