@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Announcement;
 use App\Course;
+use App\Services\AnnouncementService;
 use App\Teacher;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Storage;
 
 class AnnouncementController extends Controller
 {
+    private $announcementService;
+
+    public function __construct(AnnouncementService $announcementService)
+    {
+        $this->announcementService = $announcementService;
+    }
     //系統公告
     //新增
     public function getCreateSystemAnnouncement()
@@ -253,46 +260,53 @@ class AnnouncementController extends Controller
 
     //顯示
     public function getShowAnnouncement(){
-        $teacher_id = Auth::user()->id;
-        $teacher = Teacher::where('users_id', $teacher_id)->first();
-
-        //取得所有課程
-        $courses = $teacher->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.id', 'courses.name', 'courses.common_courses_id', 'common_courses.status as status', 'common_courses.name as com_name')
-            ->where('status', 1)
-            ->get(); //in progress
-
-        //取得所有課程中的公告id, 篩選出不重複的id
-        $announcements_id = array();
-        foreach($courses as $course){
-            $announcement_id = $course->announcement()->pluck('announcements.id')->toArray();
-            foreach ($announcement_id as $id){
-                array_push($announcements_id, $id);
-            }
-        }
-        $announcements_id = array_unique($announcements_id);
-
-        //反向查詢
-        $announcements = Announcement::whereIn('id', $announcements_id)->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
-
-        foreach($announcements as $announcement){
-            $courses_id = $announcement->course()->pluck('courses.id');
-
-            $courses = Course::whereIn('id', $courses_id)->get();
-
-            //查詢共同課程的名稱
-            $common_courses_name = collect();
-            foreach($courses as $course){
-                $common_course_name = $course->common_course()->value('name');
-                $common_courses_name->push($common_course_name);
-            }
-            $announcement->common_courses_name = $common_courses_name;
-        }
+        $user = Auth::user();
+        $announcements = $this->announcementService->getByUserRole($user);
 
         return view('announcement.showAnnouncement', [
             'announcements' => $announcements,
         ]);
+
+//        $teacher_id = Auth::user()->id;
+//        $teacher = Teacher::where('users_id', $teacher_id)->first();
+//
+//        //取得所有課程
+//        $courses = $teacher->course()
+//            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+//            ->select('courses.id', 'courses.name', 'courses.common_courses_id', 'common_courses.status as status', 'common_courses.name as com_name')
+//            ->where('status', 1)
+//            ->get(); //in progress
+//
+//        //取得所有課程中的公告id, 篩選出不重複的id
+//        $announcements_id = array();
+//        foreach($courses as $course){
+//            $announcement_id = $course->announcement()->pluck('announcements.id')->toArray();
+//            foreach ($announcement_id as $id){
+//                array_push($announcements_id, $id);
+//            }
+//        }
+//        $announcements_id = array_unique($announcements_id);
+//
+//        //反向查詢
+//        $announcements = Announcement::whereIn('id', $announcements_id)->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
+//
+//        foreach($announcements as $announcement){
+//            $courses_id = $announcement->course()->pluck('courses.id');
+//
+//            $courses = Course::whereIn('id', $courses_id)->get();
+//
+//            //查詢共同課程的名稱
+//            $common_courses_name = collect();
+//            foreach($courses as $course){
+//                $common_course_name = $course->common_course()->value('name');
+//                $common_courses_name->push($common_course_name);
+//            }
+//            $announcement->common_courses_name = $common_courses_name;
+//        }
+//
+//        return view('announcement.showAnnouncement', [
+//            'announcements' => $announcements,
+//        ]);
     }
 
 
