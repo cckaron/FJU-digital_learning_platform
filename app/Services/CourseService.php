@@ -2,30 +2,32 @@
 
 namespace App\Services;
 
-use App\Repositories\UserRepository;
+use App\Repositories\CourseRepository;
 use Illuminate\Support\Facades\Redirect;
 use Exception;
 
-class UserService
+class CourseService
 {
-    private $userRepository;
+    private $courseRepository;
 
     /**
      * UserService constructor.
-     * @param UserRepository $userRepository
+     * @param CourseRepository $courseRepository
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(CourseRepository $courseRepository)
     {
-        $this->userRepository = $userRepository;
+        $this->courseRepository = $courseRepository;
     }
 
-    public function findUser($user_id){
+    public function findCourse($course_id){
         try {
             //取得用戶資訊
-            $user = $this->userRepository->find($user_id);
+            $user = $this->courseRepository->find($course_id);
             return $user;
         } catch (Exception $exception){
             return Redirect::back()->withErrors(['message', $exception->getMessage()]);
         }
     }
+
+
 }

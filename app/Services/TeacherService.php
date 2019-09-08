@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\TeacherRepository;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Exception;
 
 class TeacherService
 {
