@@ -8,16 +8,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
-class GradeImport implements ToCollection
+class GradeImport implements ToCollection, WithCalculatedFormulas
 {
+    private $teacher_id;
+
     /**
-     * @param Collection $collection
-     * @throws \Exception
+     * @param $teacher_id
      */
+
+    public function __construct($teacher_id)
+    {
+        $this->teacher_id = $teacher_id;
+    }
+
     public function collection(Collection $collection)
     {
-        $teacher_id = Auth::user()->id;
+        $user = Auth::user();
+
         $assignments = array();
         $splitTitle = null;
         $splitName = null;
@@ -53,7 +62,7 @@ class GradeImport implements ToCollection
                             ->where('common_courses.status', 1) //課程進行中
                             ->where('common_courses.year', $splitTitle[0]) //年度為excel中標訂的年度
                             ->where('common_courses.semester', $splitTitle[1]) // 學期為 excel中標訂的學期
-                            ->where('teacher_course.teachers_id', $teacher_id) //課程老師是匯入excel的老師
+                            ->where('teacher_course.teachers_id', $this->teacher_id) //課程老師是匯入excel的老師
                             ->where('courses.name', $splitTitle[2]) //課程名稱是excel中標訂的名稱
                             ->select('student_course.students_id', 'student_course.courses_id')
                             ->first();
@@ -62,7 +71,9 @@ class GradeImport implements ToCollection
                             ->where('students_id', $student_course->students_id)
                             ->where('courses_id', $student_course->courses_id)
                             ->update(['final_score' => $row[$i+4]]);
-                    } else if ($assignments[$i] == '原始成績' or $assignments[$i] == '備註'){
+                    } else if ($assignments[$i] == '原始成績'){
+                    } else if ($assignments[$i] == '備註'){
+                        break;
                     } else {
                         $student_assignment = $student->assignment()
                             ->withPivot('id')
@@ -72,7 +83,7 @@ class GradeImport implements ToCollection
                             ->where('common_courses.status', 1) //課程進行中
                             ->where('common_courses.year', $splitTitle[0]) //年度為excel中標訂的年度
                             ->where('common_courses.semester', $splitTitle[1]) // 學期為 excel中標訂的學期
-                            ->where('teacher_course.teachers_id', $teacher_id) //課程老師是匯入excel的老師
+                            ->where('teacher_course.teachers_id', $this->teacher_id) //課程老師是匯入excel的老師
                             ->where('assignments.name', $assignments[$i])
                             ->first();
 

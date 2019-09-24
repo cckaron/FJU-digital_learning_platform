@@ -105,6 +105,8 @@
                                 {{--@php(dd($student_ids))--}}
                                 {{--@php(dd($student_assignments_id))--}}
                                 {{--{{ $student_assignments[0] }}--}}
+
+                                @include('grade.selector')
                                 <br>
                                 {{--{{ $test }}--}}
                                 {{--{{ $assignments }}--}}
@@ -542,6 +544,12 @@
             maxFilesize: 100,
             maxFiles: 10,
             acceptedFiles: ".xls, .xlsx",
+            init: function () {
+                this.on("sending", function(file, xhr, formData) {
+                    formData.append("teacher_id", "{!! $teacher->users_id !!}");
+                    console.log(formData)
+                });
+            }
         };
 
         $('#uploadModal').on('hidden.bs.modal', function () {
@@ -642,6 +650,13 @@
         });
 
 
+    </script>
+
+    <script>
+        $( "#teacherSelect" ).change(function() {
+            var route = '{{ route('grade.showlist', ["status" => "active", "year" => "this", "semester" => "this"]) }}';
+            window.location.href = route + "?teacherID=" + this.value;
+        });
     </script>
 
 @endsection

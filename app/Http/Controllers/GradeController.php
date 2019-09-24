@@ -9,6 +9,7 @@ use App\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,23 +17,35 @@ class GradeController extends Controller
 {
     public function getGradeList($status, $year, $semester){
         $user = Auth::user();
+        $teachers = collect();
 
         if ($user->type == 2){
             $ta = Ta::where('users_id', $user->id)->first();
-            $hasInProgressCourse = $ta->course()
+            $ta->courses_id = $ta->course()
                 ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
                 ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
                 ->where('status', 1)
-                ->exists();
+                ->pluck('id');
 
-            if ($hasInProgressCourse){
-                $course_id = $ta->course()
+            if (count($ta->courses_id) > 0){
+                $courses_id = $ta->course()
                     ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
                     ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
                     ->where('status', 1)
-                    ->first()->id;
+                    ->pluck("id");
 
-                $teacher = Course::where('id', $course_id)->first()->teacher()->first();
+                //讓助教可以選自己的老師來改
+                foreach($courses_id as $course_id){
+                    $teachers->push(Course::where('id', $course_id)->first()->teacher()->first());
+                    $teachers = $teachers->unique('users_name');
+                }
+
+                $teacherID = Input::get('teacherID');
+                if ($teacherID != null){
+                    $teacher = Teacher::where('users_id', $teacherID)->first();
+                } else {
+                    $teacher = Teacher::where('users_id', $teachers[0]->users_id)->first();
+                }
             } else {
                 return redirect()->back();
             }
@@ -167,7 +180,9 @@ class GradeController extends Controller
         }
 
         return view('grade.gradelist', [
+            'user' => $user,
             'teacher' => $teacher,
+            'teachers' => $teachers,
             'course' => $courses_first,
             'assignments' => $assignments,
             'students' => $students,
@@ -306,7 +321,7 @@ class GradeController extends Controller
         $output = array(
             'error' => $error_array,
             'success' => $success_output,
-            'myid' => $assignments_percentage
+            'myid' => $assignments_percentage,
         );
         echo json_encode($output);
     }

@@ -80,7 +80,9 @@ class UserController extends Controller
             DB::table('teachers')
                 ->insert([
                     'users_id' => $request->input('id'),
-                    'users_name' => $request->input('userName')
+                    'users_name' => $request->input('userName'),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
                 ]);
         } else if ($request->input('userType') == 4) {
             DB::table('students')
