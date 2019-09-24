@@ -19,7 +19,7 @@ class StudentsImport implements ToCollection
         foreach ($collection as $key => $row) {
             if ($key > 0){
                 if(DB::table('students')->where('users_id', $row[0])->exists()){
-                    DB::table('students')
+                    DB::tabl098e('students')
                         ->where('users_id', $row[0])
                         ->update([
                             'users_id' => $row[0],
