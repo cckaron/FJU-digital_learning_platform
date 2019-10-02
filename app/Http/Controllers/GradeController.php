@@ -120,6 +120,10 @@ class GradeController extends Controller
                     ->where('common_courses.status', 1)
                     ->orderBy('name')
                     ->get();
+
+                //TODO 如果一位同學在同一學期修了兩堂課，會造成欄位錯誤，因此要改掉，先暫時用 unique()解決?
+//                $student_assignment = $student_assignment->unique();
+//                dd($student_assignment);
             } else {
                 $student_assignment = $student->assignment()
                     ->withPivot(['score', 'comment'])
