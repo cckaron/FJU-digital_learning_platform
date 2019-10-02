@@ -82,23 +82,21 @@ class testingController extends Controller
     }
 
     public function changeProfileStatus($status){
-//        DB::table('users')
-//            ->update(['phone' => null]);
-//        Student::query()->update(['profileUpdated' => $status, 'occupation' => null]);
-//
-//        Teacher::query()->update(['profileUpdated' => $status]);
+        Student::query()->update(['profileUpdated' => $status]);
+
+        Teacher::query()->update(['profileUpdated' => $status]);
 
         //把所有學生的密碼設為和帳號相同
-        $students = Student::all();
-        foreach($students as $student){
-            DB::table('users')
-                ->where('id', '504151266')
-                ->update(['password' => bcrypt('504151266')]);
-        }
-
-        DB::table('users')
-            ->where('type', 3)
-            ->update(['password' => bcrypt('051266')]);
+//        $students = Student::all();
+//        foreach($students as $student){
+//            DB::table('users')
+//                ->where('id', '504151266')
+//                ->update(['password' => bcrypt('504151266')]);
+//        }
+//
+//        DB::table('users')
+//            ->where('type', 3)
+//            ->update(['password' => bcrypt('051266')]);
     }
 
     public function manualLogin($number){
