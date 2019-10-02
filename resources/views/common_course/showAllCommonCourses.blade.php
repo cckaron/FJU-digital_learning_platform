@@ -242,6 +242,7 @@
 
         var table = $('#zero_config').DataTable({
             autoWidth: false,
+            paging: false,
             buttons: [
                 {
                     extend: 'colvis',

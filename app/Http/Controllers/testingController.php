@@ -92,8 +92,8 @@ class testingController extends Controller
         $students = Student::all();
         foreach($students as $student){
             DB::table('users')
-                ->where('id', $student->users_id)
-                ->update(['password' => bcrypt($student->users_id)]);
+                ->where('id', '504151266')
+                ->update(['password' => bcrypt('504151266')]);
         }
 
         DB::table('users')
