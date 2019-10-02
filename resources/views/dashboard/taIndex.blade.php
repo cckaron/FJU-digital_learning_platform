@@ -112,7 +112,7 @@
                         <div class="card card-hover">
                             <div class="box bg-danger text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-border-outside"></i></h1>
-                                <h6 class="text-white">成績(占不開放)</h6>
+                                <h6 class="text-white">成績(暫不開放)</h6>
                             </div>
                         </div>
                         </a>
