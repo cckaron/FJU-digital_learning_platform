@@ -1117,21 +1117,18 @@ class AssignmentController extends Controller
 
             $folder_path = storage_path().'/app/public/'.$student_ids[$i].'/'.$student_assignment_assignments_id[$i];
 
-            if (!File::exists($folder_path) ){
-                File::makeDirectory($folder_path, $mode = 0777, true, true);
-            }
+            if (!File::exists($folder_path) ){ //folder is empty
+            } else {
+                setlocale(LC_ALL,'en_US.UTF-8');
 
-            setlocale(LC_ALL,'en_US.UTF-8');
+                $filesInFolder = File::files($folder_path);
+                foreach($filesInFolder as $path) {
+                    $file = pathinfo($path);
 
-            Log::info($folder_path);
-            $filesInFolder = File::files($folder_path);
-            Log::info($filesInFolder);
-            foreach($filesInFolder as $path) {
-                $file = pathinfo($path);
-
-                if($file['filename'] != 'blob'){ //空的檔案
-                    array_push($names, $file['filename'].'.'.$file['extension']) ;
-                    array_push($urls, ['public', $student_ids[$i], $student_assignment_assignments_id[$i], $file['filename'].'.'.$file['extension']]);
+                    if($file['filename'] != 'blob'){ //空的檔案
+                        array_push($names, $file['filename'].'.'.$file['extension']) ;
+                        array_push($urls, ['public', $student_ids[$i], $student_assignment_assignments_id[$i], $file['filename'].'.'.$file['extension']]);
+                    }
                 }
             }
 
