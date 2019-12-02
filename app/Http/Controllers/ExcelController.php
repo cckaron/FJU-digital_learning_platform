@@ -32,6 +32,7 @@ class ExcelController extends Controller
     public function importGrade(Request $request){
         $id = Auth::user()->id;
 
+        $teacher_id = $request->input('teacher_id');
         $file = $request->file('file'); //default file name from request is "file"
         $filename = $file->getClientOriginalName();
         $filePath = $id.'/import';
@@ -41,6 +42,6 @@ class ExcelController extends Controller
         );
 
         $FullFilePath = 'public/'.$filePath.'/'.$filename;
-        Excel::import(new GradeImport(), $FullFilePath);
+        Excel::import(new GradeImport($teacher_id), $FullFilePath);
     }
 }

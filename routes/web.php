@@ -34,8 +34,13 @@ Route::group(['prefix' => 'test'], function(){
     ]);
 
     Route::get('login/{number}', [
-       'uses' => 'testingController@manualLogin',
-       'as' => 'test.manualLogin'
+        'uses' => 'testingController@manualLogin',
+        'as' => 'test.manualLogin'
+    ]);
+
+    Route::get('exportStudentData', [
+        'uses' => 'testingController@exportStudentData',
+        'as' => 'test.export'
     ]);
 });
 

@@ -411,6 +411,11 @@ class AssignmentController extends Controller
             ->where('common_courses.status', 1)
             ->first();
 
+        //if assignment is empty, redirect back
+        if ($assignments_first == null){
+            return redirect()->back()->with(['message' => '當學期沒有進行中的作業']);
+        }
+
         $year = $assignments_first->year;
         $semester = $assignments_first->semester;
 
