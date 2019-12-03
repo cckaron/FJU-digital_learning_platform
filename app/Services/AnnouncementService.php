@@ -22,6 +22,7 @@ class AnnouncementService
      * @param AnnouncementsRepository $announcementRepository
      * @param TeacherRepository $teacherRepository
      * @param CourseRepository $courseRepository
+     * @param TaRepository $taRepository
      */
     public function __construct(AnnouncementsRepository $announcementRepository, TeacherRepository $teacherRepository, CourseRepository $courseRepository, TaRepository $taRepository)
     {
@@ -38,6 +39,7 @@ class AnnouncementService
             case 2: //TA
                 //取得 TA 該學期負責的 Course
                 $courses = $this->taRepository->getProcessingCourse($user->id);
+                //TODO 還沒寫完?
                 break;
 
             case 3: //teacher

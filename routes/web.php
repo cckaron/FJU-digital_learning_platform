@@ -93,9 +93,9 @@ Route::group(['prefix' => 'commonCourse', 'middleware' => 'auth'], function(){
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function(){
     //User
-    Route::get('/index', [
-        'uses' => 'MainController@getIndex',
-        'as' => 'dashboard.index'
+    Route::get('/dashboard', [
+        'uses' => 'DashboardController@get',
+        'as' => 'dashboard.get'
     ]);
 
 

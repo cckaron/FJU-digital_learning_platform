@@ -154,14 +154,6 @@
                                                         <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-sys-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
                                                             {{ $sys_announcement->title }}
 
-                                                            {{--<span class="text-active p-l-5" >--}}
-                                                            {{--@if($announcement->status == 1)--}}
-                                                            {{--<span class="badge badge-pill badge-primary">已發布</span>--}}
-                                                            {{--@else--}}
-                                                            {{--<span class="badge badge-pill badge-dark">未發佈</span>--}}
-                                                            {{--@endif--}}
-                                                            {{--</span>--}}
-
                                                             <span class="text-active p-l-5" >
                                                             @if($sys_announcement->priority == 0)
                                                                     <span class="badge badge-pill badge-danger">置頂公告</span>
@@ -182,7 +174,7 @@
                                                                 <span class="p-r-5 p-t-5">
                                                                     <i class="fas fa-link m-r-10 m-t-5"></i>附件下載:
                                                                 </span>
-                                                                        @if(count($sys_announcement->fileNames) > 0)
+                                                                        @if(is_array($sys_announcement->fileNames))
                                                                             @foreach($sys_announcement->fileNames as $key => $fileName)
                                                                                 <a href="{{ route('announcement.attachment.download', ['id' => $sys_announcement->id, 'fileName' => $fileName]) }}" style="color: blue">
                                                                                     <span>{{ $key+1 }}.</span>{{ $fileName }}

@@ -23,7 +23,7 @@
                 <h1 class="error-title text-danger">500</h1>
                 <h3 class="text-uppercase error-subtitle">Sorry, some problem happens in the sever.</h3>
                 <p class="text-muted m-t-30 m-b-30">點擊下方返回首頁</p>
-                <a href="{{ route('dashboard.index') }}" class="btn btn-danger btn-rounded waves-effect waves-light m-b-40">回首頁</a> </div>
+                <a href="{{ route('dashboard.get') }}" class="btn btn-danger btn-rounded waves-effect waves-light m-b-40">回首頁</a> </div>
         </div>
         <!-- ============================================================== -->
         <!-- Login box.scss -->

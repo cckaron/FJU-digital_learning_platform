@@ -15,8 +15,8 @@ class UserAuthController extends Controller
             'password' => $request->input('password')
         );
 
-        if (Auth::attempt($user_data)){
-            return redirect()->route('dashboard.index');
+        if (Auth::attempt($user_data)){ //登入成功, 跳轉到主頁面
+            return redirect()->route('dashboard.get');
         } else {
             return back()->with('message', '帳號或密碼錯誤');
         }
