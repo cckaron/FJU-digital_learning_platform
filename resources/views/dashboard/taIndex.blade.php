@@ -107,8 +107,8 @@
                     <!-- Column -->
                     <div class="col-md-6 col-lg-2 col-xlg-3">
                         <!-- 成績暫時不開放！ 有重複的成績要解決-->
-                        {{--<a href="{{ route('grade.showlist', ['status' => 'active', 'year' => 'this', 'semester' => 'this']) }}">--}}
-                        <a href="#">
+                        <a href="{{ route('grade.showlist', ['status' => 'active', 'year' => 'this', 'semester' => 'this']) }}">
+                        {{--<a href="#">--}}
                         <div class="card card-hover">
                             <div class="box bg-danger text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-border-outside"></i></h1>

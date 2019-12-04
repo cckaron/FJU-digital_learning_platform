@@ -968,14 +968,24 @@ class AssignmentController extends Controller
                 $teachers = $teachers->unique('users_name');
             }
 
+            if ($teachers == null){
+                return redirect()->with('Teacher cannot be null');
+            }
+
             $teacherID = Input::get('teacherID');
-            $teacher = Teacher::where('users_id', $teacherID)->first();
+
+            if ($teacherID == null){ //從 dashboard 進入頁面
+                $teacher = $teachers[0];
+            } else {
+                $teacher = Teacher::where('users_id', $teacherID)->first();
+            }
+
         } else {
             $teacher = Teacher::where('users_id', $user->id)->first();
         }
 
         //取得進行中的課程
-        $courses = $teacher->course()
+        $courses = $teachers[0]->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
             ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
             ->where('status', 1)

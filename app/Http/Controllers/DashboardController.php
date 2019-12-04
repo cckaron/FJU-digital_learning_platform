@@ -36,12 +36,12 @@ class DashboardController extends Controller
 
     public function get(){
         $user = Auth::user();
-
         $profileController = new ProfileController();
 
         $user = User::where('id', $user->id)->first();
 
         if ($user->type == 2){
+
             return $this->TA();
 
         } else if ($user->type == 3){
