@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\common_course;
 use App\Course;
+use App\Services\CourseService;
 use App\Student;
 use App\ta_course;
 use App\Teacher;
@@ -25,6 +26,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
 {
+    /**
+     * @var CourseService
+     */
+    private $courseService;
+
+    public function __construct(CourseService $courseService)
+    {
+        $this->courseService = $courseService;
+    }
 
     //新增刪除
     public function getCreateAssignment(){
@@ -954,13 +964,13 @@ class AssignmentController extends Controller
         if ($user->type == 0){
             $teacherID = Input::get('teacherID');
             $teacher = Teacher::where('users_id', $teacherID)->first();
+
+            //取得進行中的課程
+            $courses = $this->courseService->findByRole($teacher);
+
         } else if ($user->type == 2){ //TA
             $ta = $user->ta()->first();
-            $ta->course_id = $ta->course()
-                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-                ->where('status', 1)
-                ->pluck('id');
+            $ta->course_id = $this->courseService->findByRole($ta)->pluck('id');
 
             //讓助教可以選自己的老師來改
             $teachers = collect();
@@ -974,23 +984,25 @@ class AssignmentController extends Controller
             }
 
             $teacherID = Input::get('teacherID');
+            $teacher = Teacher::where('users_id', $teacherID)->first();
 
-            if ($teacherID == null){ //從 dashboard 進入頁面
-                $teacher = $teachers[0];
-            } else {
-                $teacher = Teacher::where('users_id', $teacherID)->first();
-            }
+            //取得進行中的課程
+            $courses = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->get();
 
         } else {
             $teacher = Teacher::where('users_id', $user->id)->first();
-        }
 
-        //取得進行中的課程
-        $courses = $teachers[0]->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-            ->where('status', 1)
-            ->get();
+            //取得進行中的課程
+            $courses = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->get();
+        }
 
         //get all assignments of teacher
         $assignments = collect();

@@ -49,8 +49,6 @@ class ProfileController extends Controller
             "password.*"  => "required|string|min:6",
         ])->validate();
 
-
-//        $indexController = new DashboardController();
         $password = $request->get('password');
         $password = $password[0];
         $email = $request->get('email');
@@ -72,7 +70,6 @@ class ProfileController extends Controller
                 ->update([
                     'profileUpdated' => true,
                 ]);
-//            return $indexController->getTeacherIndex();
             return redirect()->route('dashboard.get');
 
         } else { //student
@@ -98,7 +95,7 @@ class ProfileController extends Controller
                     'agreement' => $agreement
                 ]);
 
-            return redirect()->route('index.student')->with('message', '個人檔案設定完成!');
+            return redirect()->route('dashboard.get')->with('message', '個人檔案設定完成!');
         }
     }
 }

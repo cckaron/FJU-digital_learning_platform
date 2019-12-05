@@ -67,7 +67,7 @@
                     <!-- Column -->
                         <div class="col-md-6 col-lg-2 col-xlg-3">
                             <!-- if has any in progress courses, give hyperlink-->
-                            <a href="@if($hasInProgressCourse) {{ route('teacher.correctAssignment', ['teacherID' => $teacher_id]) }} @else # @endif">
+                            <a href="@if($hasInProgressCourse) {{ route('teacher.correctAssignment', ['teacherID' => $teachers[0]->users_id]) }} @else # @endif">
                                 <!-- end if -->
                                 <div class="card card-hover">
                                     <div class="box bg-cyan text-center">

@@ -36,10 +36,10 @@ class CourseRepository
         return $course->common_course()->value($field);
     }
 
-    public function findTeacherByCourse($courses_id){
+    public function findTeachersByCourse($courses_id){
         $teachers = collect();
         foreach($courses_id as $course_id){
-            $teacher = $this->course->where('id', $course_id)->first()->teacher()->get();
+            $teacher = $this->course->where('id', $course_id)->first()->teacher()->first();
             $teachers->push($teacher);
         }
         return $teachers;

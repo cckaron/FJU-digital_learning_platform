@@ -29,25 +29,24 @@ class CourseService
         }
     }
 
-    public function hasInProgressCourse($role){
-
+    public function exist($role, $status=1){
         return $role->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
             ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-            ->where('status', 1)
+            ->where('status', $status)
             ->exists();
     }
 
-    public function findTACourse(Ta $ta){
-        return $ta->course()
+    public function findByRole($role, $status=1){
+        return $role->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
             ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-            ->where('status', 1)
+            ->where('status', $status)
             ->get();
     }
 
-    public function findTeacher($courses){
-        return $this->courseRepository->findTeacherByCourse($courses->pluck('id'));
+    public function findTeachers($courses){
+        return $this->courseRepository->findTeachersByCourse($courses->pluck('id'));
     }
 
 
