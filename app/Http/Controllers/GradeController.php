@@ -118,12 +118,10 @@ class GradeController extends Controller
                         'student_assignment.score as score',
                         'student_assignment.comment as comment')
                     ->where('common_courses.status', 1)
+                    ->whereIn('courses.id', $courses->pluck('id')) //這行很重要！！！！！！！不然會有重複的作業(假如同一學期修兩堂課的話)
                     ->orderBy('name')
                     ->get();
 
-                //TODO 如果一位同學在同一學期修了兩堂課，會造成欄位錯誤，因此要改掉，先暫時用 unique()解決?
-//                $student_assignment = $student_assignment->unique();
-//                dd($student_assignment);
             } else {
                 $student_assignment = $student->assignment()
                     ->withPivot(['score', 'comment'])

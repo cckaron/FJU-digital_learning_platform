@@ -3,74 +3,105 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Services\AnnouncementService;
+use App\Services\CourseService;
+use App\Services\SystemAnnouncementService;
 use App\Student;
+use App\system_announcement;
 use App\Ta;
 use App\Teacher;
+use App\User;
 use Hashids\Hashids;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
-class IndexController extends Controller
+class DashboardController extends Controller
 {
-    public function getTAIndex(){
-        $ta = Ta::where('users_id', Auth::user()->id)->first();
-        $hasInProgressCourse = $ta->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-            ->where('status', 1)
-            ->exists();
+    /**
+     * @var AnnouncementService
+     * @var CourseService
+     */
+    private $announcementService;
+    private $courseService;
+    private $sysAnnouncementService;
 
-        //系統公告
-        $sys_announcements = DB::table('system_announcement')
-            ->orderBy('priority')
-            ->orderBy('updated_at', 'desc')
-            ->paginate(5);
-        //use ->paginate(), so don't need ->get()
+    public function __construct(AnnouncementService $announcementService, CourseService $courseService, SystemAnnouncementService $systemAnnouncementService)
+    {
+        $this->announcementService = $announcementService;
+        $this->courseService = $courseService;
+        $this->sysAnnouncementService = $systemAnnouncementService;
+    }
 
-        //put file info in collect()
-        foreach($sys_announcements as $sys_announcement) {
+    public function get(){
+        $user = Auth::user();
+        $profileController = new ProfileController();
 
-            $fileNames = array();
+        $user = User::where('id', $user->id)->first();
 
-            $folder_path = storage_path() . '/app/public/sys_announcement/' . $sys_announcement->id;
+        if ($user->type == 2){
 
-            if (!File::exists($folder_path)) {
-                File::makeDirectory($folder_path, $mode = 0777, true, true);
+            return $this->TA();
+
+        } else if ($user->type == 3){
+            $teacher = $user->teacher()->first();
+
+            if ($teacher->profileUpdated){
+                return $this->Teacher();
             }
+            return $profileController->getUpdateProfile();
 
-            setlocale(LC_ALL, 'en_US.UTF-8');
+        } else if ($user->type == 4){
 
-            $filesInFolder = File::files($folder_path);
-            foreach ($filesInFolder as $path) {
-                $file = pathinfo($path);
+            $student = $user->student()->first();
 
-                if ($file['filename'] != 'blob') { //空的檔案
-                    array_push($fileNames, $file['filename'] . '.' . $file['extension']);
+            if ($student->profileUpdated){
+                return $this->Student();
+            }
+            return $profileController->getUpdateProfile();
+
+        } else if ($user->type == 0) {
+            $teachers = Teacher::all();
+            $hasInProgressCourse = false;
+
+            foreach($teachers as $teacher){
+                if($teacher->course()
+                    ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                    ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                    ->where('status', 1)
+                    ->exists())
+                {
+                    return view('dashboard.index', [
+                        'hasInProgressCourse' => true,
+                        'teacher' => $teacher,
+                    ]);
                 }
             }
-
-            $sys_announcement->fileNames = $fileNames;
+            return view('dashboard.index', [
+                'hasInProgressCourse' => $hasInProgressCourse,
+            ]);
         }
+        return view('dashboard.index');
+    }
 
+    public function TA(){
+        $ta = Ta::where('users_id', Auth::user()->id)->first();
+        $hasInProgressCourse = $this->courseService->hasInProgressCourse($ta);
+
+        //取得系統公告
+        $sys_announcements = $this->sysAnnouncementService->getPaginateWithFileDetail();
+
+        //判斷該TA是否當學期有課程, 有則回傳該TA指導老師的資訊
         if($hasInProgressCourse)
         {
-            $course_id = $ta->course()
-                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-                ->where('status', 1)
-                ->first()->id;
-
-            $teacher_id = Course::where('id', $course_id)->first()->teacher()->first()->users_id;
+            $courses = $this->courseService->findTACourse($ta);
+            $teachers = $this->courseService->findTeacher($courses);
 
             return view('dashboard.taIndex', [
                 'hasInProgressCourse' => true,
-                'teacher_id' => $teacher_id,
+                'teacher_id' => $teachers,
                 'sys_announcements' => $sys_announcements,
-
             ]);
         } else {
             return view('dashboard.taIndex', [
@@ -80,55 +111,20 @@ class IndexController extends Controller
         }
     }
 
-    public function getTeacherIndex(){
+    public function Teacher(){
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+        $hasInProgressCourse = $this->courseService->hasInProgressCourse($teacher);
 
-        //系統公告
-        $sys_announcements = DB::table('system_announcement')
-            ->orderBy('priority')
-            ->orderBy('updated_at', 'desc')
-            ->paginate(5);
-        //use ->paginate(), so don't need ->get()
-
-        //put file info in collect()
-        foreach($sys_announcements as $sys_announcement) {
-
-            $fileNames = array();
-
-            $folder_path = storage_path() . '/app/public/sys_announcement/' . $sys_announcement->id;
-
-            if (!File::exists($folder_path)) {
-                File::makeDirectory($folder_path, $mode = 0777, true, true);
-            }
-
-            setlocale(LC_ALL, 'en_US.UTF-8');
-
-            $filesInFolder = File::files($folder_path);
-            foreach ($filesInFolder as $path) {
-                $file = pathinfo($path);
-
-                if ($file['filename'] != 'blob') { //空的檔案
-                    array_push($fileNames, $file['filename'] . '.' . $file['extension']);
-                }
-            }
-
-            $sys_announcement->fileNames = $fileNames;
-        }
-
-        $hasInProgressCourse = $teacher->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-            ->where('status', 1)
-            ->exists();
+        //取得系統公告
+        $sys_announcements = $this->sysAnnouncementService->getPaginateWithFileDetail();
 
         return view('dashboard.teacherIndex', [
             'hasInProgressCourse' => $hasInProgressCourse,
             'sys_announcements' => $sys_announcements,
-
         ]);
     }
 
-    public function getStudentIndex(){
+    public function Student(){
         $student_id = Auth::user()->id;
         $student = Student::where('users_id', $student_id)->first();
 

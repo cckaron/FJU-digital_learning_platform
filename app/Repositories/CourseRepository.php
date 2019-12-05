@@ -18,19 +18,30 @@ class CourseRepository
         $this->course = $course;
     }
 
+    public function find($course_id){
+        return $this->course->find($course_id);
+    }
+
     public function whereIn($courses_id){
         return Course::whereIn('id', $courses_id)->get();
     }
 
     public function getAnnouncementField($course_id, $field){
         $course = $this->course->where('id', $course_id)->first();
-        $announcementField = $course->announcement()->pluck('announcements.'.$field)->toArray();
-        return $announcementField;
+        return $course->announcement()->pluck('announcements.'.$field)->toArray();
     }
 
     public function getCommonCourseField($course_id, $field){
         $course = $this->course->where('id', $course_id)->first();
-        $commoncourseField = $course->common_course()->value($field);
-        return $commoncourseField;
+        return $course->common_course()->value($field);
+    }
+
+    public function findTeacherByCourse($courses_id){
+        $teachers = collect();
+        foreach($courses_id as $course_id){
+            $teacher = $this->course->where('id', $course_id)->first()->teacher()->get();
+            $teachers->push($teacher);
+        }
+        return $teachers;
     }
 }

@@ -152,7 +152,7 @@ class AnnouncementController extends Controller
         return redirect()->back()->with('message', '刪除成功!');
     }
 
-    //顯示
+    //取得
     public function getShowSystemAnnouncement(){
         //系統公告
         $sys_announcements = DB::table('system_announcement')
