@@ -50,7 +50,7 @@ class ProfileController extends Controller
         ])->validate();
 
 
-        $indexController = new IndexController();
+//        $indexController = new DashboardController();
         $password = $request->get('password');
         $password = $password[0];
         $email = $request->get('email');
@@ -72,7 +72,8 @@ class ProfileController extends Controller
                 ->update([
                     'profileUpdated' => true,
                 ]);
-            return $indexController->getTeacherIndex();
+//            return $indexController->getTeacherIndex();
+            return redirect()->route('dashboard.get');
 
         } else { //student
             if ($request->get('agreement') != null){
