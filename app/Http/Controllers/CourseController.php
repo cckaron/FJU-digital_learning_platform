@@ -13,6 +13,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
@@ -458,6 +459,8 @@ class CourseController extends Controller
         $courses_id = $request->input('courses_id');
         $encode_courses_id = new Hashids('courses_id', 7);
         $courses_id = $encode_courses_id->decode($courses_id)[0]; //decode 之後會變成 array
+
+        //get this course's students
         $student_number = $request->input('student_number');
 
         if ($validation->fails()){

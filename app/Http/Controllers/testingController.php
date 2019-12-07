@@ -103,6 +103,8 @@ class testingController extends Controller
         $user = User::where('email','=',$number.'@mail.fju.edu.tw')->first();
         Auth::login($user);
 
+        return redirect()->route('dashboard.get');
+
     }
 
 

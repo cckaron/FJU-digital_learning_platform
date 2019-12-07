@@ -368,8 +368,7 @@ class UserController extends Controller
     }
 
     public function getStudentDetail($student_id){
-        $student = Student::with('user')->where('users_id', $student_id)
-            ->first();
+        $student = Student::where('users_id', $student_id)->first();
 
         $courses = $student
             ->course()

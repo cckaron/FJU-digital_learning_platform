@@ -11,7 +11,7 @@ class UserAuthController extends Controller
 
     public function postSignIn(Request $request){
         $user_data = array(
-            'id' => $request->input('id'),
+            'account' => $request->input('account'),
             'password' => $request->input('password')
         );
 
