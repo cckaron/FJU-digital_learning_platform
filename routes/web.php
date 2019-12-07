@@ -188,6 +188,14 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
            'as' => 'user.studentDetail'
        ]);
     });
+
+    //履歷表
+    Route::group(['prefix' => 'resume'], function(){
+        Route::get('preview', [
+            'uses' => 'resumeController@preview',
+            'as' => 'resume.preview'
+        ]);
+    });
 });
 
 
@@ -723,4 +731,12 @@ Route::group(['prefix' => 'download'], function (){
        'uses' => 'ZipController@downloadZIP',
        'as' => 'download.zip'
    ]);
+});
+
+//demo 履歷表
+Route::group(['prefix' => 'resume'], function(){
+    Route::get('demo', [
+        'uses' => 'resumeController@preview',
+        'as' => 'resume.demo'
+    ]);
 });
