@@ -253,7 +253,7 @@ class UserController extends Controller
 
     //學生
     public function getAllStudents(){
-        $students = Student::with('user')->get();
+        $students = Student::all();
 
         return view('student.showAllStudent', [
             'students' => $students,
@@ -369,8 +369,6 @@ class UserController extends Controller
 
     public function getStudentDetail($student_id){
         $student = Student::where('users_id', $student_id)->first();
-        $detail = $student->user()->first();
-        $student->detail = $detail;
 
         $courses = $student
             ->course()

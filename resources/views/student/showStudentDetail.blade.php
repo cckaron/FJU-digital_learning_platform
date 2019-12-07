@@ -60,8 +60,8 @@
                                 <p class="card-text"><strong>姓名 </strong> <span class="p-l-30">{{ $student->users_name }}</span></p>
                                 <p class="card-text"><strong>系所 </strong> <span class="p-l-30">{{ $student->department }}</span></p>
                                 <p class="card-text"><strong>年級 </strong> <span class="p-l-30">{{ $student->grade }}年{{ $student->class }}班 </span></p>
-                                <p class="card-text"><strong>信箱 </strong> <span class="p-l-30"> {{ $student->detail->email }} </span></p>
-                                <p class="card-text"><strong>電話 </strong> <span class="p-l-30"> {{ $student->detail->phone }} </span></p>
+                                <p class="card-text"><strong>信箱 </strong> <span class="p-l-30"> {{ $student->user->email }} </span></p>
+                                <p class="card-text"><strong>電話 </strong> <span class="p-l-30"> {{ $student->user->phone }} </span></p>
                                 <p class="card-text"><strong>授權 </strong>
                                     <span class="p-l-30" @if($student->agreement == 0)style="color:red" @endif>
                                         @if($student->agreement == 1)
