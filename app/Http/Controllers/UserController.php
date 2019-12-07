@@ -369,6 +369,8 @@ class UserController extends Controller
 
     public function getStudentDetail($student_id){
         $student = Student::where('users_id', $student_id)->first();
+        $user = $student->user()->first();
+        $student->user = $user;
 
         $courses = $student
             ->course()
