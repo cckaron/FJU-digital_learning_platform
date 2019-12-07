@@ -30,12 +30,12 @@ class ProfileController extends Controller
 
     public function postUpdateProfile(Request $request){
         $user = Auth::user();
-        $user_id = (string)$user->id;
+        $user_account = (string)$user->account;
         $user_type = $user->type;
 
         Validator::make($request->all(), [
-            "email" => ['required', Rule::unique('users')->ignore($user_id)],
-            "phone" => ['required', Rule::unique('users')->ignore($user_id)],
+            "email" => ['required', Rule::unique('users')->ignore($user_account)],
+            "phone" => ['required', Rule::unique('users')->ignore($user_account)],
             "password"    => [
                 'required',
                 'array',
@@ -58,7 +58,7 @@ class ProfileController extends Controller
         //update database data
         if ($user_type == 3){ //teacher
             DB::table('users')
-                ->where('id', sprintf("%06d", $user_id))
+                ->where('id', sprintf("%06d", $user_account))
                 ->update([
                     'password' => bcrypt($password),
                     'email' => $email,
@@ -66,7 +66,7 @@ class ProfileController extends Controller
                 ]);
 
             DB::table('teachers')
-                ->where('users_id', sprintf("%06d", $user_id)) //自動補0
+                ->where('users_id', sprintf("%06d", $user_account)) //自動補0
                 ->update([
                     'profileUpdated' => true,
                 ]);
@@ -80,7 +80,7 @@ class ProfileController extends Controller
             }
 
             DB::table('users')
-                ->where('id', $user_id)
+                ->where('account', $user_account)
                 ->update([
                     'password' => bcrypt($password),
                     'email' => $email,
@@ -88,7 +88,7 @@ class ProfileController extends Controller
                 ]);
 
             DB::table('students')
-                ->where('users_id', $user_id)
+                ->where('users_id', $user_account)
                 ->update([
                     'occupation' => $occupation,
                     'profileUpdated' => true,
