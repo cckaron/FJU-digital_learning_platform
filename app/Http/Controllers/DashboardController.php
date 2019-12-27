@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Services\AnnouncementService;
+use App\Services\CommonCourseService;
 use App\Services\CourseService;
 use App\Services\SystemAnnouncementService;
 use App\Student;
@@ -19,19 +20,17 @@ use Illuminate\Support\Facades\File;
 
 class DashboardController extends Controller
 {
-    /**
-     * @var AnnouncementService
-     * @var CourseService
-     */
     private $announcementService;
     private $courseService;
+    private $commonCourseService;
     private $sysAnnouncementService;
 
-    public function __construct(AnnouncementService $announcementService, CourseService $courseService, SystemAnnouncementService $systemAnnouncementService)
+    public function __construct(AnnouncementService $announcementService, CourseService $courseService, SystemAnnouncementService $systemAnnouncementService, CommonCourseService $commonCourseService)
     {
         $this->announcementService = $announcementService;
         $this->courseService = $courseService;
         $this->sysAnnouncementService = $systemAnnouncementService;
+        $this->commonCourseService = $commonCourseService;
     }
 
     public function get(){
@@ -128,14 +127,19 @@ class DashboardController extends Controller
         $course = null;
         $announcements = collect();
 
-        $course = $student->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.id', 'courses.name', 'courses.common_courses_id', 'common_courses.status as status', 'common_courses.name as com_name')
-            ->where('status', 1); //in progress
+        $course = $this->courseService->findByRole($student);
 
-        //課程公告
-        if ($course->exists()){
-            $course = $course->first();
+        //檢查課程是否過期
+        foreach($course as $c){
+            $isExpire = $this->courseService->check($c->id);
+            if ($isExpire){
+
+            }
+        }
+
+        //課程公告 TODO 如果一個學生同時修了兩堂課, 只會顯示第一堂課的公告
+        if ($course[0]->exists()){
+            $course = $course->first(); //獲得 array 第一個值! 等同 $course[0]
             $announcements = $course->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
         }
 

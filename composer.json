@@ -20,7 +20,8 @@
         "tightenco/ziggy": "^0.6.9",
         "vinkla/hashids": "^5.1",
         "yajra/laravel-datatables": "^1.0",
-        "yajra/laravel-datatables-oracle": "^8.0"
+        "yajra/laravel-datatables-oracle": "^8.0",
+        "symfony/translation": "4.3.8"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -26,6 +26,12 @@ class CourseRepository
         return Course::whereIn('id', $courses_id)->get();
     }
 
+    public function getCommonCourse($course_id){
+        $course = $this->course->where('id', $course_id)->first();
+        return $course->common_course()->first();
+    }
+
+    //field
     public function getAnnouncementField($course_id, $field){
         $course = $this->course->where('id', $course_id)->first();
         return $course->announcement()->pluck('announcements.'.$field)->toArray();
