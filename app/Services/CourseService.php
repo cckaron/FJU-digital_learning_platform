@@ -30,11 +30,15 @@ class CourseService implements eventService
         }
     }
 
-    public function check($course_id)
+    public function update($id, $arr){
+        $this->courseRepository->update($id, $arr);
+    }
+
+    public function dueOrNot($course_id)
     {
         $course = $this->findCommonCourse($course_id);
         $date = Carbon::parse($course->end_date);
-        return Carbon::today()->lt($date) ? true : false;
+        return Carbon::today()->gt($date) ? true : false; //if now time is greater than due date, then it is due.
     }
 
     public function exist($role, $status=1){

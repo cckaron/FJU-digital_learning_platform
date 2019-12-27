@@ -18,34 +18,38 @@ class CourseRepository
         $this->course = $course;
     }
 
-    public function find($course_id){
-        return $this->course->find($course_id);
+    public function find($id){
+        return $this->course->find($id);
     }
 
-    public function whereIn($courses_id){
-        return Course::whereIn('id', $courses_id)->get();
+    public function update($id, $arr){
+        $this->course->where('id', $id)->update($arr);
     }
 
-    public function getCommonCourse($course_id){
-        $course = $this->course->where('id', $course_id)->first();
+    public function whereIn($id){
+        return Course::whereIn('id', $id)->get();
+    }
+
+    public function getCommonCourse($id){
+        $course = $this->course->where('id', $id)->first();
         return $course->common_course()->first();
     }
 
     //field
-    public function getAnnouncementField($course_id, $field){
-        $course = $this->course->where('id', $course_id)->first();
+    public function getAnnouncementField($id, $field){
+        $course = $this->course->where('id', $id)->first();
         return $course->announcement()->pluck('announcements.'.$field)->toArray();
     }
 
-    public function getCommonCourseField($course_id, $field){
-        $course = $this->course->where('id', $course_id)->first();
+    public function getCommonCourseField($id, $field){
+        $course = $this->course->where('id', $id)->first();
         return $course->common_course()->value($field);
     }
 
-    public function findTeachersByCourse($courses_id){
+    public function findTeachersByCourse($ids){
         $teachers = collect();
-        foreach($courses_id as $course_id){
-            $teacher = $this->course->where('id', $course_id)->first()->teacher()->first();
+        foreach($ids as $id){
+            $teacher = $this->course->where('id', $id)->first()->teacher()->first();
             $teachers->push($teacher);
         }
         return $teachers;

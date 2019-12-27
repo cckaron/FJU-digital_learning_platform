@@ -44,6 +44,17 @@ class DashboardController extends Controller
             $teachers = Teacher::all();
             $hasInProgressCourse = false;
 
+            //檢查課程是否過期(直接用common_course下去檢查, 省去 query 時間)
+            $com_courses = $this->commonCourseService->get($status=1); //取得目前進行中的共同課程
+
+            foreach($com_courses as $com_course){
+                $isDue = $this->commonCourseService->dueOrNot($com_course->id);
+
+                if ($isDue){
+                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                }
+            }
+
             foreach($teachers as $teacher){
                 if($this->courseService->exist($teacher, $status=1))
                 {
@@ -53,6 +64,7 @@ class DashboardController extends Controller
                     ]);
                 }
             }
+
             return view('dashboard.index', [
                 'hasInProgressCourse' => $hasInProgressCourse,
             ]);
@@ -94,6 +106,16 @@ class DashboardController extends Controller
 
             $teachers = $this->courseService->findTeachers($courses);
 
+            //檢查課程是否過期
+            foreach($courses as $c){
+                $isDue = $this->courseService->dueOrNot($c->id);
+
+                if ($isDue){
+                    $com_course = $this->courseService->findCommonCourse($c->id);
+                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                }
+            }
+
             return view('dashboard.taIndex', [
                 'hasInProgressCourse' => true,
                 'teachers' => $teachers,
@@ -109,10 +131,28 @@ class DashboardController extends Controller
 
     public function Teacher(){
         $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+
+        //獲取系統公告
+        $sys_announcements = $this->sysAnnouncementService->getPaginateWithFileDetail();
+
         $hasInProgressCourse = $this->courseService->exist($teacher, $status=1);
 
-        //取得系統公告
-        $sys_announcements = $this->sysAnnouncementService->getPaginateWithFileDetail();
+        //如果有進行中的課程
+        if ($hasInProgressCourse){
+            //獲取課程資料
+            $course = $this->courseService->findByRole($teacher);
+
+            //檢查課程是否過期
+            foreach($course as $c){
+                $isDue = $this->courseService->dueOrNot($c->id);
+
+                if ($isDue){
+                    $com_course = $this->courseService->findCommonCourse($c->id);
+                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                }
+            }
+        }
+
 
         return view('dashboard.teacherIndex', [
             'hasInProgressCourse' => $hasInProgressCourse,
@@ -129,22 +169,25 @@ class DashboardController extends Controller
 
         $course = $this->courseService->findByRole($student);
 
-        //檢查課程是否過期
-        foreach($course as $c){
-            $isExpire = $this->courseService->check($c->id);
-            if ($isExpire){
+        //獲取系統公告
+        $sys_announcements = $this->sysAnnouncementService->getPaginateWithFileDetail();
 
+        //如果有進行中的課程
+        if ($course->count() > 0){
+            //檢查課程是否過期
+            foreach($course as $c){
+                $isDue = $this->courseService->dueOrNot($c->id);
+
+                if ($isDue){
+                    $com_course = $this->courseService->findCommonCourse($c->id);
+                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                }
             }
-        }
 
-        //課程公告 TODO 如果一個學生同時修了兩堂課, 只會顯示第一堂課的公告
-        if ($course[0]->exists()){
+            //獲取課程公告 TODO 如果一個學生同時修了兩堂課, 只會顯示第一堂課的公告
             $course = $course->first(); //獲得 array 第一個值! 等同 $course[0]
             $announcements = $course->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
         }
-
-        //系統公告
-        $sys_announcements = $this->sysAnnouncementService->getPaginateWithFileDetail();
 
         //作業
         $student = Student::where('users_id', $student_id)->first();
