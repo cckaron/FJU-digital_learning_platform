@@ -46,12 +46,20 @@ class CourseRepository
         return $course->common_course()->value($field);
     }
 
-    public function findTeachersByCourse($ids){
+    public function findTeachers($ids){
         $teachers = collect();
         foreach($ids as $id){
             $teacher = $this->course->where('id', $id)->first()->teacher()->first();
             $teachers->push($teacher);
         }
         return $teachers;
+    }
+
+    public function findAssignment($id){
+        $course = $this->find($id);
+        return $course->assignment()
+            ->select('assignments.*', 'assignments.id as assignment_id', 'assignments.name',
+                'assignments.end_date', 'assignments.end_time')
+            ->get();
     }
 }

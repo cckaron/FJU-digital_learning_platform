@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Services\AnnouncementService;
+use App\Services\AssignmentService;
 use App\Services\CommonCourseService;
 use App\Services\CourseService;
 use App\Services\SystemAnnouncementService;
@@ -24,13 +25,15 @@ class DashboardController extends Controller
     private $courseService;
     private $commonCourseService;
     private $sysAnnouncementService;
+    private $assignmentService;
 
-    public function __construct(AnnouncementService $announcementService, CourseService $courseService, SystemAnnouncementService $systemAnnouncementService, CommonCourseService $commonCourseService)
+    public function __construct(AnnouncementService $announcementService, CourseService $courseService, SystemAnnouncementService $systemAnnouncementService, CommonCourseService $commonCourseService, AssignmentService $assignmentService)
     {
         $this->announcementService = $announcementService;
         $this->courseService = $courseService;
         $this->sysAnnouncementService = $systemAnnouncementService;
         $this->commonCourseService = $commonCourseService;
+        $this->assignmentService = $assignmentService;
     }
 
     public function get(){
@@ -49,7 +52,6 @@ class DashboardController extends Controller
 
             foreach($com_courses as $com_course){
                 $isDue = $this->commonCourseService->dueOrNot($com_course->id);
-
                 if ($isDue){
                     $this->commonCourseService->update($com_course->id, ['status' => 0]);
                 }
@@ -107,14 +109,7 @@ class DashboardController extends Controller
             $teachers = $this->courseService->findTeachers($courses);
 
             //檢查課程是否過期
-            foreach($courses as $c){
-                $isDue = $this->courseService->dueOrNot($c->id);
-
-                if ($isDue){
-                    $com_course = $this->courseService->findCommonCourse($c->id);
-                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
-                }
-            }
+            $this->dueChecker($courses);
 
             return view('dashboard.taIndex', [
                 'hasInProgressCourse' => true,
@@ -143,14 +138,7 @@ class DashboardController extends Controller
             $course = $this->courseService->findByRole($teacher);
 
             //檢查課程是否過期
-            foreach($course as $c){
-                $isDue = $this->courseService->dueOrNot($c->id);
-
-                if ($isDue){
-                    $com_course = $this->courseService->findCommonCourse($c->id);
-                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
-                }
-            }
+            $this->dueChecker($course);
         }
 
 
@@ -185,32 +173,26 @@ class DashboardController extends Controller
             }
 
             //獲取課程公告 TODO 如果一個學生同時修了兩堂課, 只會顯示第一堂課的公告
-            $course = $course->first(); //獲得 array 第一個值! 等同 $course[0]
-            $announcements = $course->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
+            $course_first = $course->first(); //獲得 array 第一個值! 等同 $course[0]
+            $announcements = $course_first->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
         }
 
         //作業
-        $student = Student::where('users_id', $student_id)->first();
-        $courses = $student->course()
-            ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
-            ->select('common_courses.id as common_course_id', 'common_courses.name as common_course_name',
-                'common_courses.year as year', 'common_courses.semester as semester',
-                'courses.*', 'courses.id as course_id', 'courses.name as course_name')
-            ->where('common_courses.status', 1)
-            ->get();
-
-        foreach ($courses as $course){
-            $assignments = $course->assignment()
-                ->select('assignments.*', 'assignments.id as assignment_id', 'assignments.name',
-                    'assignments.end_date', 'assignments.end_time')
-                ->get();
+        foreach ($course as $c){
+            $assignments = $this->courseService->findAssignment($c->id);
 
             $hashids_course = new Hashids('course_id', 6);
-            $course->course_id = $hashids_course->encode($course->course_id);
+            $c->course_id = $hashids_course->encode($c->course_id);
 
-            $course->assignment = $assignments;
+            $c->assignment = $assignments;
 
-            foreach($course->assignment as $assignment){
+            foreach($c->assignment as $assignment){
+                //檢查作業是否截止
+                $isDue = $this->assignmentService->dueOrNot($assignment->id);
+                if ($isDue){
+                    $this->assignmentService->update($assignment->id, ['status' => 0]);
+                }
+
                 $hashids_assignment = new Hashids('assignment_id', 10);
                 $assignment->assignment_id = $hashids_assignment->encode($assignment->assignment_id);
                 $assignment->student = $assignment->student()
@@ -225,8 +207,27 @@ class DashboardController extends Controller
         return view('dashboard.studentIndex', [
             'sys_announcements' => $sys_announcements,
             'announcements' => $announcements,
-            'course' => $course, //這個是公告用的
-            'courses' => $courses, //這個是作業用的
+            'courses' => $course,
         ]);
+    }
+
+    public function dueChecker($courses){
+        foreach($courses as $c){
+            $isDue = $this->courseService->dueOrNot($c->id);
+
+            if ($isDue){
+                $com_course = $this->courseService->findCommonCourse($c->id);
+                $this->commonCourseService->update($com_course->id, ['status' => 0]);
+            }
+
+            //檢查作業是否截止
+            $assignments = $this->courseService->findAssignment($c->id);
+            foreach($c->assignment as $assignment){
+                $isDue = $this->assignmentService->dueOrNot($assignment->id);
+                if ($isDue){
+                    $this->assignmentService->update($assignment->id, ['status' => 0]);
+                }
+            }
+        }
     }
 }

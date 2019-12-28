@@ -132,11 +132,9 @@
                                                 </div>
                                             </div>
                                         </li>
-
                                     @endforeach
                                 </ul>
                                 {{ $sys_announcements->links() }}
-
                                     @endif
                             </div>
                         </div>
@@ -162,15 +160,6 @@
                                                 <div>
                                                     <a class="link m-b-0 font-medium p-0" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-{{ $key }}" aria-expanded="false" aria-controls="Toggle-{{ $key }}">
                                                         {{ $announcement->title }}
-
-                                                        {{--<span class="text-active p-l-5" >--}}
-                                                        {{--@if($announcement->status == 1)--}}
-                                                        {{--<span class="badge badge-pill badge-primary">已發布</span>--}}
-                                                        {{--@else--}}
-                                                        {{--<span class="badge badge-pill badge-dark">未發佈</span>--}}
-                                                        {{--@endif--}}
-                                                        {{--</span>--}}
-
                                                         <span class="text-active p-l-5" >
                                                             @if($announcement->priority == 0)
                                                                 <span class="badge badge-pill badge-danger">置頂公告</span>
@@ -179,9 +168,7 @@
                                                             @endif
                                                         </span>
                                                     </a>
-
                                                     <div class="p-t-5">
-
                                                         <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">
                                                             <div class="widget-content">
                                                                 <h6>
@@ -193,12 +180,10 @@
                                                 </div>
                                                 <div class="ml-auto">
                                                     <div class="text-right">
-                                                        {{--<strong><span class="text-muted font-16">@if($course->semester == 1)上@else下@endif學期</span></strong>--}}
                                                         <h5 class="text-muted m-b-0" style="text-align: center;">{{ \Carbon\Carbon::parse($announcement->created_at)->diffForHumans() }} 發佈</h5>
                                                     </div>
                                                 </div>
                                             </li>
-
                                         @endforeach
                                     </ul>
                                     {{ $announcements->links() }}

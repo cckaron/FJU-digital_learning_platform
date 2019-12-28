@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\common_course;
 use App\Course;
+use App\Services\AssignmentService;
 use App\Services\CourseService;
 use App\Student;
 use App\ta_course;
@@ -30,10 +31,12 @@ class AssignmentController extends Controller
      * @var CourseService
      */
     private $courseService;
+    private $assignmentService;
 
-    public function __construct(CourseService $courseService)
+    public function __construct(CourseService $courseService, AssignmentService $assignmentService)
     {
         $this->courseService = $courseService;
+        $this->assignmentService = $assignmentService;
     }
 
     //新增刪除
@@ -388,7 +391,6 @@ class AssignmentController extends Controller
 
     //列出
     public function getAllAssignments(){
-
         $assignments = Course::with('assignment')
             ->join('assignments', 'courses.id', 'assignments.courses_id')
             ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
@@ -405,13 +407,22 @@ class AssignmentController extends Controller
                 'assignments.updated_at')
             ->get();
 
-        //for grade adjustment
+        //for grade adjustment 進行中的課程
         $assignments_adjust = Course::with('assignment')
             ->join('assignments', 'courses.id', 'assignments.courses_id')
             ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
             ->select('assignments.*', 'common_courses.year as year', 'common_courses.semester as semester')
             ->where('common_courses.status', 1)
             ->get();
+
+        //檢查作業是否截止
+        foreach($assignments_adjust as $assignment){
+            $isDue = $this->assignmentService->dueOrNot($assignment->id);
+            if ($isDue){
+                $this->assignmentService->update($assignment->id, ['status' => 0]);
+            }
+        }
+
 
         //for getting the detail of course
         $assignments_first = Course::with('assignment')
