@@ -147,6 +147,12 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
             'uses' => 'CourseController@getShowCourses_Student',
             'as' => 'student.showCourses'
         ]);
+
+        //確認最終成績
+        Route::get('/confirmFinalScore/', [
+            'uses' => 'CourseController@confirmFinalScore',
+            'as' => 'student.confirmFinalScore'
+        ]);
     });
 
     //作業

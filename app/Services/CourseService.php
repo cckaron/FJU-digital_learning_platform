@@ -71,5 +71,9 @@ class CourseService implements eventService
         return $this->courseRepository->findAssignment($id);
     }
 
+    public function getStudentFinalScore($id, $student_id){
+        return $this->courseRepository->getStudentPivot($id, $student_id)->pivot->final_score;
+    }
+
 
 }

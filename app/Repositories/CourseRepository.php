@@ -62,4 +62,8 @@ class CourseRepository
                 'assignments.end_date', 'assignments.end_time')
             ->get();
     }
+
+    public function getStudentPivot($id, $student_id){
+        return $this->find($id)->student()->where('users_id', $student_id)->withPivot(['final_score', 'remark'])->first();
+    }
 }

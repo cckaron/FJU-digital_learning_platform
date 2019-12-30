@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\common_course;
 use App\Course;
+use App\Services\CourseService;
+use App\Services\StudentService;
 use App\Student;
 use App\Teacher;
 use App\User;
@@ -19,6 +21,18 @@ use Yajra\DataTables\DataTables;
 
 class CourseController extends Controller
 {
+    /**
+     * @var StudentService
+     * @var CourseService
+     */
+    private $studentService;
+    private $courseService;
+
+    public function __construct(StudentService $studentService, CourseService $courseService)
+    {
+        $this->studentService = $studentService;
+        $this->courseService = $courseService;
+    }
 
     //新增課程 (get)
     public function getAddCourse(){
@@ -416,6 +430,37 @@ class CourseController extends Controller
             'courses_teachers' => $courses_teachers,
             'courses_name' => $courses_name,
         ]);
+    }
+
+    //確認最終成績
+    public function confirmFinalScore(){
+        $students = Student::all();
+
+        foreach($students as $student){
+            //選擇進行中的課程
+            $st_course = $this->courseService->findByRole($student, 1);
+
+            foreach($st_course as $course){
+                $finalScore = $this->studentService->getCourseFinalScore($student->users_id, $course->id);
+
+                //如果尚未確認最終成績, 再進入計算
+                if($finalScore != null){
+                    $assignment = $this->courseService->findAssignment($course->id);
+
+                    $totalScore = 0;
+                    foreach($assignment as $a){
+                        $asmtScore = $this->studentService->getAssignmentScore($student->users_id, $a->id);
+                        $totalScore += $asmtScore;
+                    }
+
+                    $avgScore = $totalScore/count($assignment);
+                    $this->studentService->updateCourseFinalScore($student->users_id, $course->id, ['final_score' => $avgScore]);
+                }
+            }
+        }
+
+        //todo finished testing, but still need to check because the data doesn't be changed
+
     }
 
     //Datatables
