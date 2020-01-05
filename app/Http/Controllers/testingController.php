@@ -118,7 +118,7 @@ class testingController extends Controller
     }
 
     public function manualLogin($number){
-        $user = User::where('email','=',$number.'@mail.fju.edu.tw')->first();
+        $user = User::where('account','=',$number)->first();
         Auth::login($user);
 
         return redirect()->route('dashboard.get');
