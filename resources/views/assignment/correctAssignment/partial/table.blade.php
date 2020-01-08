@@ -210,9 +210,21 @@
                     {!! $titles[$i] !!}
                 </td>
 
-                <td id="score" style="color:@if($scores[$i] < 60) red @else blue @endif; font-size: 18px;">
-                    {{ $scores[$i] }}
-                </td>
+                @if($scores[$i] == 0 and is_null($scores[$i]))
+                    <td></td>
+                @elseif($scores[$i] == 0)
+                    <td id="score" style="color:red; font-size: 18px;">
+                        {{ $scores[$i] }}
+                    </td>
+                @elseif($scores[$i] < 60)
+                    <td id="score" style="color:red; font-size: 18px;">
+                        {{ $scores[$i] }}
+                    </td>
+                @elseif($scores[$i] >= 60)
+                    <td id="score" style="color:blue; font-size: 18px;">
+                        {{ $scores[$i] }}
+                    </td>
+                @endif
 
                 <td id="comment" style="color:black; font-size: 18px;">
                     {!! $comments[$i] !!}

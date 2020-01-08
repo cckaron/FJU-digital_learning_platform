@@ -140,7 +140,9 @@
 
                                                 @foreach($student_assignments[$key] as $student_assignment)
                                                     <td>
-                                                        @if($student_assignment->pivot->score == null)
+                                                        @if($student_assignment->pivot->score == 0 and is_null($student_assignment->pivot->score))
+                                                        @elseif($student_assignment->pivot->score == 0)
+                                                            <span style="color:red; font-size: 18px;">0</span>
                                                         @elseif($student_assignment->pivot->score >= 60)
                                                             <span style="color:blue; font-size: 18px;"> {{ number_format($student_assignment->pivot->score, 2) }}</span>
                                                         @elseif($student_assignment->pivot->score < 60)
@@ -150,7 +152,9 @@
 
                                                     @if($loop->last)
                                                         <td>
-                                                            @if($student_assignment->accumulated_score == null)
+                                                            @if($student_assignment->accumulated_score == 0 and is_null($student_assignment->accumulated_score))
+                                                            @elseif($student_assignment->accumulated_score == 0)
+                                                                <span style="color:red; font-size: 18px;">0</span>
                                                             @elseif($student_assignment->accumulated_score < 60)
                                                                 <span style="color:red; font-size: 20px;">{{ number_format($student_assignment->accumulated_score, 2) }}</span>
                                                             @elseif($student_assignment->accumulated_score >= 60)
@@ -159,7 +163,9 @@
                                                         </td>
 
                                                         <td>
-                                                            @if($student_courses[$key]->final_score  == null)
+                                                            @if($student_courses[$key]->final_score  == 0 and is_null($student_courses[$key]->final_score))
+                                                            @elseif($student_courses[$key]->final_score  == 0)
+                                                                <span style="color:red; font-size: 18px;">0</span>
                                                             @elseif($student_courses[$key]->final_score < 60)
                                                                 <span style="color:red; font-size: 20px;">{{ number_format($student_courses[$key]->final_score, 2) }}</span>
                                                             @elseif($student_courses[$key]->final_score >= 60)

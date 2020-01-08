@@ -28,4 +28,13 @@ class TeacherService
             return Redirect::back()->withErrors(['message', $exception->getMessage()]);
         }
     }
+
+    public function findByName($name){
+        try {
+            $teacher = $this->teacherRepository->where('users_name', $name);
+            return $teacher;
+        } catch (Exception $exception){
+            return Redirect::back()->withErrors(['message', $exception->getMessage()]);
+        }
+    }
 }
