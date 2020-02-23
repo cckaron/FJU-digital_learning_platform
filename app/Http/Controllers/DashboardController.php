@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\File;
+use Spatie\Valuestore\Valuestore;
 
 class DashboardController extends Controller
 {
@@ -26,6 +27,8 @@ class DashboardController extends Controller
     private $commonCourseService;
     private $sysAnnouncementService;
     private $assignmentService;
+    private $settings;
+
 
     public function __construct(AnnouncementService $announcementService, CourseService $courseService, SystemAnnouncementService $systemAnnouncementService, CommonCourseService $commonCourseService, AssignmentService $assignmentService)
     {
@@ -34,6 +37,8 @@ class DashboardController extends Controller
         $this->sysAnnouncementService = $systemAnnouncementService;
         $this->commonCourseService = $commonCourseService;
         $this->assignmentService = $assignmentService;
+
+        $this->settings = Valuestore::make(storage_path('app/settings.json'));
     }
 
     public function get(){
@@ -48,24 +53,27 @@ class DashboardController extends Controller
             $hasInProgressCourse = false;
 
             //檢查課程是否過期(直接用common_course下去檢查, 省去 query 時間)
-            $com_courses = $this->commonCourseService->get($status=1); //取得目前進行中的共同課程
+            if ($this->settings->get("expire_checker") == true){
+                $com_courses = $this->commonCourseService->get($status=1); //取得目前進行中的共同課程
 
-            foreach($com_courses as $com_course){
-                $isDue = $this->commonCourseService->dueOrNot($com_course->id);
-                if ($isDue){
-                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                foreach($com_courses as $com_course){
+                    $isDue = $this->commonCourseService->dueOrNot($com_course->id);
+                    if ($isDue){
+                        $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                    }
+                }
+
+                foreach($teachers as $teacher){
+                    if($this->courseService->exist($teacher, $status=1))
+                    {
+                        return view('dashboard.index', [
+                            'hasInProgressCourse' => true,
+                            'teacher' => $teacher,
+                        ]);
+                    }
                 }
             }
 
-            foreach($teachers as $teacher){
-                if($this->courseService->exist($teacher, $status=1))
-                {
-                    return view('dashboard.index', [
-                        'hasInProgressCourse' => true,
-                        'teacher' => $teacher,
-                    ]);
-                }
-            }
 
             return view('dashboard.index', [
                 'hasInProgressCourse' => $hasInProgressCourse,
@@ -109,7 +117,9 @@ class DashboardController extends Controller
             $teachers = $this->courseService->findTeachers($courses);
 
             //檢查課程是否過期
-            $this->dueChecker($courses);
+            if ($this->settings->get("expire_checker") == true) {
+                $this->dueChecker($courses);
+            }
 
             return view('dashboard.taIndex', [
                 'hasInProgressCourse' => true,
@@ -138,7 +148,9 @@ class DashboardController extends Controller
             $course = $this->courseService->findByRole($teacher);
 
             //檢查課程是否過期
-            $this->dueChecker($course);
+            if ($this->settings->get("expire_checker") == true) {
+                $this->dueChecker($course);
+            }
         }
 
 
@@ -163,12 +175,14 @@ class DashboardController extends Controller
         //如果有進行中的課程
         if ($course->count() > 0){
             //檢查課程是否過期
-            foreach($course as $c){
-                $isDue = $this->courseService->dueOrNot($c->id);
+            if ($this->settings->get("expire_checker") == true) {
+                foreach($course as $c){
+                    $isDue = $this->courseService->dueOrNot($c->id);
 
-                if ($isDue){
-                    $com_course = $this->courseService->findCommonCourse($c->id);
-                    $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                    if ($isDue){
+                        $com_course = $this->courseService->findCommonCourse($c->id);
+                        $this->commonCourseService->update($com_course->id, ['status' => 0]);
+                    }
                 }
             }
 
@@ -186,11 +200,14 @@ class DashboardController extends Controller
 
             $c->assignment = $assignments;
 
+
             foreach($c->assignment as $assignment){
                 //檢查作業是否截止
-                $isDue = $this->assignmentService->dueOrNot($assignment->id);
-                if ($isDue){
-                    $this->assignmentService->update($assignment->id, ['status' => 0]);
+                if ($this->settings->get("expire_checker") == true) {
+                    $isDue = $this->assignmentService->dueOrNot($assignment->id);
+                    if ($isDue) {
+                        $this->assignmentService->update($assignment->id, ['status' => 0]);
+                    }
                 }
 
                 $hashids_assignment = new Hashids('assignment_id', 10);

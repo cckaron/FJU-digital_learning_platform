@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Excel;
+use Spatie\Valuestore\Valuestore;
 
 class testingController extends Controller
 {
@@ -105,6 +106,14 @@ class testingController extends Controller
 
         return redirect()->route('dashboard.get');
 
+    }
+
+    public function addValue($key, $value){
+        $settings = Valuestore::make(storage_path('app/settings.json'));
+
+        $settings->put($key, $value);
+
+        return "success";
     }
 
 
@@ -256,26 +265,6 @@ class testingController extends Controller
 
             $names = array("hi");
             $urls = array("hello");
-
-//            $folder_path = storage_path().'/app/public/'.$student_ids[$i].'/'.$student_assignment_assignments_id[$i];
-//
-//            if (!File::exists($folder_path) ){
-//                File::makeDirectory($folder_path, $mode = 0777, true, true);
-//            }
-//
-//            setlocale(LC_ALL,'en_US.UTF-8');
-//
-//            Log::info($folder_path);
-//            $filesInFolder = File::files($folder_path);
-//            Log::info($filesInFolder);
-//            foreach($filesInFolder as $path) {
-//                $file = pathinfo($path);
-//
-//                if($file['filename'] != 'blob'){ //空的檔案
-//                    array_push($names, $file['filename'].'.'.$file['extension']) ;
-//                    array_push($urls, ['public', $student_ids[$i], $student_assignment_assignments_id[$i], $file['filename'].'.'.$file['extension']]);
-//                }
-//            }
 
             array_push($file_names, $names);
             array_push($file_urls, $urls);

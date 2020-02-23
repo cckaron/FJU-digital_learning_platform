@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Spatie\Valuestore\Valuestore;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignmentController extends Controller
@@ -32,11 +33,13 @@ class AssignmentController extends Controller
      */
     private $courseService;
     private $assignmentService;
+    private $settings;
 
     public function __construct(CourseService $courseService, AssignmentService $assignmentService)
     {
         $this->courseService = $courseService;
         $this->assignmentService = $assignmentService;
+        $this->settings = Valuestore::make(storage_path('app/settings.json'));
     }
 
     //新增刪除
@@ -416,10 +419,12 @@ class AssignmentController extends Controller
             ->get();
 
         //檢查作業是否截止
-        foreach($assignments_adjust as $assignment){
-            $isDue = $this->assignmentService->dueOrNot($assignment->id);
-            if ($isDue){
-                $this->assignmentService->update($assignment->id, ['status' => 0]);
+        if ($this->settings->get("expire_checker") == true) {
+            foreach ($assignments_adjust as $assignment) {
+                $isDue = $this->assignmentService->dueOrNot($assignment->id);
+                if ($isDue) {
+                    $this->assignmentService->update($assignment->id, ['status' => 0]);
+                }
             }
         }
 
