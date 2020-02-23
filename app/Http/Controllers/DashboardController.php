@@ -196,7 +196,7 @@ class DashboardController extends Controller
             $assignments = $this->courseService->findAssignment($c->id);
 
             $hashids_course = new Hashids('course_id', 6);
-            $c->course_id = $hashids_course->encode($c->course_id);
+            $c->course_id = $hashids_course->encode($c->id);
 
             $c->assignment = $assignments;
 

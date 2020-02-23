@@ -5,13 +5,27 @@ namespace App\Http\Controllers;
 use App\Imports\CommoncourseImport;
 use App\Imports\CourseImport;
 use App\Imports\GradeImport;
+use App\Services\AssignmentService;
+use App\Services\CourseService;
+use App\Services\TeacherService;
+use App\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpParser\Node\Expr\Assign;
 
 class ExcelController extends Controller
 {
+    private $courseService;
+    private $teacherService;
+
+    public function __construct(CourseService $courseService, TeacherService $teacherService)
+    {
+     $this->courseService = $courseService;
+     $this->teacherService = $teacherService;
+    }
+
     public function importCourse(Request $request){
         $id = Auth::user()->id;
 

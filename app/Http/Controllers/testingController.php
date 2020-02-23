@@ -47,37 +47,55 @@ class testingController extends Controller
 
     public function changeAssignmentEndDate(){
         //改作業狀態
-//        $assignments = Course::with('assignment')
-//            ->join('assignments', 'courses.id', 'assignments.courses_id')
-//            ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
-//            ->select('courses.name as course_name',
-//                'common_courses.name as common_course_name',
-//                'common_courses.year',
-//                'common_courses.semester',
-//                'common_courses.status as common_course_status',
-//                'assignments.id as assignment_id',
-//                'assignments.name as assignment_name',
-//                'assignments.status as assignment_status',
-//                'assignments.percentage as assignment_percentage',
-//                'assignments.start_date',
-//                'assignments.end_date',
-//                'assignments.updated_at')
-//            ->where('common_courses.status', 1)
-//            ->where('common_courses.name', '產業創新(八)')
-////            ->whereIn('common_courses.name', ['產業創新(二)', '產業創新(四)', '產業創新(六)'])
-//            ->get();
+        $assignments = Course::with('assignment')
+            ->join('assignments', 'courses.id', 'assignments.courses_id')
+            ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
+            ->select('courses.name as course_name',
+                'common_courses.name as common_course_name',
+                'common_courses.year',
+                'common_courses.semester',
+                'common_courses.status as common_course_status',
+                'assignments.id as assignment_id',
+                'assignments.name as assignment_name',
+                'assignments.status as assignment_status',
+                'assignments.percentage as assignment_percentage',
+                'assignments.start_date',
+                'assignments.end_date',
+                'assignments.updated_at')
+            ->where('common_courses.status', 1)
+//            ->whereIn('common_courses.name', ['產業創新(二)', '產業創新(四)', '產業創新(六)'])
+            ->get();
 //
-//        foreach($assignments as $assignment){
-//            DB::table('assignments')
-//                ->where('id', $assignment->assignment_id)
-//                ->update(['end_date' => '2019/5/31', 'end_time' => '20:20']);
+        foreach($assignments as $assignment){
+            DB::table('assignments')
+                ->where('id', $assignment->assignment_id)
+                ->update(['end_date' => '2020/1/2', 'end_time' => '23:59']);
+        }
 
-//        }
-        DB::table('users')
-            ->where('id', '=','051266')
-            ->update([
-                'password' => bcrypt('051266')
-            ]);
+        $assignments = Course::with('assignment')
+            ->join('assignments', 'courses.id', 'assignments.courses_id')
+            ->join('common_courses', 'courses.common_courses_id', 'common_courses.id')
+            ->select('courses.name as course_name',
+                'common_courses.name as common_course_name',
+                'common_courses.year',
+                'common_courses.semester',
+                'common_courses.status as common_course_status',
+                'assignments.id as assignment_id',
+                'assignments.name as assignment_name',
+                'assignments.status as assignment_status',
+                'assignments.percentage as assignment_percentage',
+                'assignments.start_date',
+                'assignments.end_date',
+                'assignments.updated_at')
+            ->where('common_courses.status', 1)
+            ->where('courses.name', '洪郁雯老師')
+            ->get();
+
+        foreach($assignments as $assignment){
+            DB::table('assignments')
+                ->where('id', $assignment->assignment_id)
+                ->update(['end_date' => '2020/1/4', 'end_time' => '23:59']);
+        }
 
         return "success";
     }
@@ -101,7 +119,7 @@ class testingController extends Controller
     }
 
     public function manualLogin($number){
-        $user = User::where('email','=',$number.'@mail.fju.edu.tw')->first();
+        $user = User::where('account','=',$number)->first();
         Auth::login($user);
 
         return redirect()->route('dashboard.get');

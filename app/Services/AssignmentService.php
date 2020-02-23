@@ -37,6 +37,6 @@ class AssignmentService implements eventService
         $assignment = $this->assignmentRepository->find($id);
         $timestamp = strtotime("$assignment->end_date $assignment->end_time");
         $dueTime = Carbon::createFromTimestamp($timestamp);
-        return Carbon::today()->gt($dueTime) ? true : false; //if now time is greater than due date, then it is due.
+        return Carbon::now()->gt($dueTime) ? true : false; //if now time is greater than due date, then it is due.
     }
 }
