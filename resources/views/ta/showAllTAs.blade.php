@@ -605,6 +605,12 @@
         var form = '#courseForm';
 
         $("#courseModal").on('show.bs.modal', function (e) {
+            //顯示 Modal 前先清空 checkbox, 以免切換角色後顯示勾選錯誤
+            $( ".courseCheckbox" ).each(function( index ) {
+                const checkbox = $( this );
+                checkbox.prop('checked', false);
+            });
+
             $('#form_output_course').html("");
             const button = $(e.relatedTarget);
             const btn_ta_id = button.data('id');
