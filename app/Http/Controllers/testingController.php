@@ -63,6 +63,7 @@ class testingController extends Controller
                 'assignments.end_date',
                 'assignments.updated_at')
             ->where('common_courses.status', 1)
+            ->where('assignments')
 //            ->whereIn('common_courses.name', ['產業創新(二)', '產業創新(四)', '產業創新(六)'])
             ->get();
 //

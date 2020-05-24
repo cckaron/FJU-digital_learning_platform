@@ -454,7 +454,7 @@
                 </form>
 
                 <!-- ============================================================== -->
-                <!-- End PAge Content -->
+                <!-- End Page Content -->
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
                 <!-- Right sidebar -->
@@ -618,6 +618,7 @@
                         $("#btn-sendForm").click(function (e) {
                             //validate the data first (in the controller, we can't validate the data and return message
                             //because of using e.preventDefault() and e.stopPropagation();
+
                             if ($('#handInAssignment').valid()){
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -628,6 +629,8 @@
                                 The formData.append() method used in dropzone.uploadFile() requires you to pass an object which implements the Blob interface.
                                 That's the reason why you cannot pass in a normal object. dropzone version 5.2.0 requires the upload.chunked option
                                  */
+
+                                //如果原本有超過1個檔案存在, 又要再增減, 就需要新增 blob這個檔案
                                 if (mydropZone.getQueuedFiles().length > 0){
                                     mydropZone.processQueue();
                                 } else {
@@ -637,7 +640,13 @@
                                     mydropZone.uploadFile(blob);
                                 }
                             } else {
-                                console.log('fail')
+                                alert('請輸入學習主題！');
+                            }
+
+                            if (mydropZone.files.length < 1){
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert('請上傳附加檔案！');
                             }
                         });
 
@@ -813,6 +822,8 @@
                                 The formData.append() method used in dropzone.uploadFile() requires you to pass an object which implements the Blob interface.
                                 That's the reason why you cannot pass in a normal object. dropzone version 5.2.0 requires the upload.chunked option
                                  */
+
+                                //如果原本有超過1個檔案存在, 又要再增減, 就需要新增 blob這個檔案
                                 if (mydropZone.getQueuedFiles().length > 0){
                                     mydropZone.processQueue();
                                 } else {
@@ -822,7 +833,13 @@
                                     mydropZone.uploadFile(blob);
                                 }
                             } else {
-                                console.log('fail')
+                                alert('請輸入學習主題！');
+                            }
+
+                            if (mydropZone.files.length < 1){
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert('請上傳附加檔案！');
                             }
                         });
 
@@ -979,6 +996,7 @@
 
 
     <script>
+
         $('#handInAssignment').validate({
             rules: {
                 title: "required",

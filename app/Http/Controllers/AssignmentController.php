@@ -779,7 +779,7 @@ class AssignmentController extends Controller
 
         $course = Course::where('id', $courses_id)->first();
         $assignments_processing = $course->assignment()
-            ->join('courses', 'courses.id', 'assignments.courses_id')
+            ->join('courses', 'courses.id', 'assignments.courses_id' )
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
             ->select('common_courses.year as year', 'common_courses.semester as semester', 'common_courses.name as common_course_name',
                 'courses.name as course_name', 'courses.id as course_id',
@@ -793,7 +793,7 @@ class AssignmentController extends Controller
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
             ->select('common_courses.year as year', 'common_courses.semester as semester',
                 'common_courses.name as common_course_name', 'courses.id as course_id',
-                'courses.name as course_name', 'assignmentsgit.id as assignment_id',
+                'courses.name as course_name', 'assignments.id as assignment_id',
                 'assignments.name as assignment_name', 'assignments.end_date as assignment_end_date',
                 'assignments.end_time as assignment_end_time')
             ->where('assignments.status', 0)
@@ -1491,12 +1491,13 @@ class AssignmentController extends Controller
 
         $files = Storage::files('public/'.$student_id.'/'.$assignment_id);
 
-        //如果資料夾內沒有檔案，將作業狀態更改為 1 => 未繳交
-        if (empty($files)){
+        //如果資料夾內沒有檔案，或是只有 1 個檔案叫做 "blob" (由 handInAssignment.blade.php 前端 js 上傳檔案時生成)，將作業狀態更改為 1 => 未繳交
+        if (empty($files) || (count($files) == 1 && pathinfo($files[0])['filename'] == 'blob')){
             DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
                 ->update(['status' => 1]);
         }
+
 
 
         $output = array(
