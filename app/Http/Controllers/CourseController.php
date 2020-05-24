@@ -539,7 +539,6 @@ class CourseController extends Controller
                                 'assignments_id' => $assignment->id,
                                 'status' => 1,
                                 'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
                             ]);
                     }
 
