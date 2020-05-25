@@ -7,6 +7,7 @@ use App\Student;
 use App\Ta;
 use App\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -85,6 +86,7 @@ class GradeController extends Controller
                 ->first();
         }
 
+        //先取得該課程的學生清單
         $students = collect();
         foreach($courses as $course){
             $course_students = $course->student()->get();
@@ -105,6 +107,7 @@ class GradeController extends Controller
         $assignments = collect();
         $student_courses = collect();
 
+        //依學生查詢其作業
         foreach($students as $key=> $student){
             if ($status == 'active') {
                 $student_assignment = $student->assignment()
@@ -138,6 +141,8 @@ class GradeController extends Controller
                     ->orderBy('name')
                     ->get();
             }
+
+            $student_assignment = $this->resortStudentAssignment($student_assignment);
 
 
             $accumulated_score = 0;
@@ -392,5 +397,57 @@ class GradeController extends Controller
             'finalGrade' => $final_grade
         );
         echo json_encode($output);
+    }
+
+    public function resortStudentAssignment(Collection $student_assignment){
+        $temp = collect();
+
+        //第一個作業：口頭報告與PPT
+        $key = $student_assignment->search(function ($item, $key) {
+            return $item->name == "口頭報告與PPT";
+        });
+
+        $temp->push($student_assignment[$key]);
+        $student_assignment->forget($key);
+
+        //第二個作業：書面報告Word
+        $key = $student_assignment->search(function ($item, $key) {
+            return $item->name == "書面報告Word";
+        });
+
+        $temp->push($student_assignment[$key]);
+        $student_assignment->forget($key);
+
+        //第三個作業：A4海報
+        $key = $student_assignment->search(function ($item, $key) {
+            return $item->name == "A4海報";
+        });
+
+        $temp->push($student_assignment[$key]);
+        $student_assignment->forget($key);
+
+        //第四個作業：課堂參與
+        $key = $student_assignment->search(function ($item, $key) {
+            return $item->name == "課堂參與";
+        });
+
+        $temp->push($student_assignment[$key]);
+        $student_assignment->forget($key);
+
+        //第五個作業：上課出席
+        $key = $student_assignment->search(function ($item, $key) {
+            return $item->name == "上課出席";
+        });
+
+        $temp->push($student_assignment[$key]);
+        $student_assignment->forget($key);
+
+        //其他作業
+        while ($student_assignment->count() > 0){
+            $temp->push($student_assignment[0]);
+            $student_assignment->forget(0);
+        }
+
+        return $temp;
     }
 }
