@@ -347,6 +347,11 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function(){
                 'uses' => 'GradeController@postEditRemark',
                 'as' => 'grade.ajax.editRemark'
             ]);
+
+            Route::post('/editFinalGrade', [
+                'uses' => 'GradeController@postEditFinalGrade',
+                'as' => 'grade.ajax.editFinalGrade'
+            ]);
         });
 
 

@@ -13,7 +13,7 @@
                     <span id="form_output"></span>
                     <div class="form-group col-md-6">
                         <label>分數</label>
-                        <input type="number" step="0.01" id="modal_score" name="score" class="form-control"/>
+                        <input type="number" step="0.01" min="0" max="100" id="modal_score" name="score" class="form-control"/>
                     </div>
                     <div class="form-group">
                         <label>教師評語</label>

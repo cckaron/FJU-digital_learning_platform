@@ -266,8 +266,8 @@
                                                     <span style="font-size: 20px;">未評分</span>
                                                 @elseif ($score >= 60)
                                                     <span style="color:blue; font-size: 20px;" >
-                                                    {{ round($score, 2) }}
-                                                </span> 分
+                                                    {{ round($score, 2) }} 分
+                                                </span>
                                                 @elseif($score < 60)
                                                     <span style="color:red; font-size: 20px;">
                                                         {{ round($score, 2) }} 分

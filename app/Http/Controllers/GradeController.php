@@ -351,12 +351,45 @@ class GradeController extends Controller
                 ->where('students_id', $student_id)
                 ->where('courses_id', $course_id)
                 ->update(['remark' => $remark]);
-            $success_output = '<div class="alert alert-success"> 設定成功！ </div>';
+            $success_output = '<div class="alert alert-success"> 備註成功！ </div>';
         }
         $output = array(
             'error' => $error_array,
             'success' => $success_output,
             'remark' => $remark
+        );
+        echo json_encode($output);
+    }
+
+    public function postEditFinalGrade(Request $request){
+        $validation = Validator::make($request->all(), [
+            'student_id' => 'required',
+            'course_id' => 'required'
+        ]);
+
+        $student_id = $request->get('student_id');
+        $course_id = $request->get('course_id');
+        $final_grade = $request->get('finalGrade');
+
+        $error_array = array();
+        $success_output = '';
+
+        if ($validation->fails()){
+            foreach($validation->messages()->getMessages() as $field_name => $messages)
+            {
+                $error_array[] = $messages;
+            }
+        } else {
+            DB::table('student_course')
+                ->where('students_id', $student_id)
+                ->where('courses_id', $course_id)
+                ->update(['final_score' => $final_grade]);
+            $success_output = '<div class="alert alert-success"> 評分成功！ </div>';
+        }
+        $output = array(
+            'error' => $error_array,
+            'success' => $success_output,
+            'finalGrade' => $final_grade
         );
         echo json_encode($output);
     }

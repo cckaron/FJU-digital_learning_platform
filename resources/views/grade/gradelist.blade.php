@@ -162,19 +162,30 @@
                                                             @endif
                                                         </td>
 
-                                                        <td>
-                                                            @if($student_courses[$key]->final_score  == 0 and is_null($student_courses[$key]->final_score))
-                                                            @elseif($student_courses[$key]->final_score  == 0)
-                                                                <span style="color:red; font-size: 18px;">0</span>
+                                                        <td id="finalGrade">
+                                                            @if($course->status == 1)
+                                                                <button class="btn btn-href" data-toggle="modal" data-target="#editFinalGradeModal" type="submit" data-student-id="{{ $student_courses[$key]->students_id }}" data-course-id="{{ $student_courses[$key]->courses_id }}">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                            @endif
+
+                                                            @if($student_courses[$key]->final_score === 0)
+                                                                <span id="finalGrade_text" style="color:red;font-size: 20px;">0 分</span>
+                                                            @elseif($student_courses[$key]->final_score === null)
+                                                                <span id="finalGrade_text" style="font-size: 20px;"></span>
+                                                            @elseif ($student_courses[$key]->final_score >= 60)
+                                                                <span id="finalGrade_text" style="color:blue; font-size: 20px;" >
+                                                                    {{ round($student_courses[$key]->final_score, 2) }}
+                                                                </span>
                                                             @elseif($student_courses[$key]->final_score < 60)
-                                                                <span style="color:red; font-size: 20px;">{{ number_format($student_courses[$key]->final_score, 2) }}</span>
-                                                            @elseif($student_courses[$key]->final_score >= 60)
-                                                                <span style="color:blue; font-size: 20px;"> {{ number_format($student_courses[$key]->final_score, 2) }}</span>
+                                                                <span id="finalGrade_text" style="color:red; font-size: 20px;">
+                                                                    {{ round($student_courses[$key]->final_score, 2) }}
+                                                                </span>
                                                             @endif
                                                         </td>
                                                         <td id="remark">
                                                             @if($course->status == 1)
-                                                                <button name="add" class="btn btn-href" data-toggle="modal" data-target="#changeModal" type="submit" data-student-id="{{ $student_courses[$key]->students_id }}" data-course-id="{{ $student_courses[$key]->courses_id }}">
+                                                                <button class="btn btn-href" data-toggle="modal" data-target="#editRemarkModal" type="submit" data-student-id="{{ $student_courses[$key]->students_id }}" data-course-id="{{ $student_courses[$key]->courses_id }}">
                                                                     <i class="fas fa-edit"></i>
                                                                 </button>
                                                             @endif
@@ -232,11 +243,11 @@
                             </div>
                         </div>
 
-                        <!-- start ajax correct assignment window-->
-                        <div id="changeModal" class="modal fade" role="dialog">
+                        <!-- start ajax edit grade remark window-->
+                        <div id="editRemarkModal" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form method="post" id="change_form">
+                                    <form method="post" id="editRemark_form">
                                         <div class="modal-header">
                                             <h4 class="modal-title">編輯</h4>
                                             <button type="button" class="close" data-dismiss="modal">
@@ -245,66 +256,52 @@
                                         </div>
                                         <div class="modal-body">
                                             {{ csrf_field() }}
-                                            <span id="form_output"></span>
+                                            <span id="editRemarkForm_output"></span>
                                             <div class="form-group">
                                                 <label>備註</label>
-                                                <input type="text" id="modal_remark" name="remark" class="form-control"/>
+                                                <input type="text" id="modal_remark_value" name="remark" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <input type="hidden" id="modal_student_id" name="student_id" value="" />
-                                            <input type="hidden" id="modal_course_id" name="course_id" value="" />
-                                            <input type="submit" name="submit" id="action" value="確認" class="btn btn-info">
+                                            <input type="hidden" id="modal_student_id_remark" name="student_id" value="" />
+                                            <input type="hidden" id="modal_course_id_remark" name="course_id" value="" />
+                                            <input type="submit" name="submit" value="確認" class="btn btn-info">
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <!-- end ajax correct assignment window -->
-                        <!-- end ajax correct assignment window -->
+                        <!-- end ajax edit grade remark window -->
 
-                        <!-- start ajax correct assignment window-->
-                        {{--<div id="updatePercentageModal" class="modal fade" role="dialog">--}}
-                            {{--<div class="modal-dialog">--}}
-                                {{--<div class="modal-content">--}}
-                                    {{--<form method="post" id="UpdatePercentageForm">--}}
-                                        {{--<div class="modal-header">--}}
-                                            {{--<h4 class="modal-title">成績比率設定</h4>--}}
-                                            {{--<button type="button" class="close" data-dismiss="modal">--}}
-                                                {{--&times;--}}
-                                            {{--</button>--}}
-                                        {{--</div>--}}
-
-                                        {{--<div class="modal-body">--}}
-                                            {{--{{ csrf_field() }}--}}
-                                            {{--<span id="form_output"></span>--}}
-                                            {{--<p>總成績比率 100% (目前可分配的比率為 {{ $availPercentage }}%)</p>--}}
-                                            {{--@foreach($assignments as $assignment)--}}
-                                                {{--<div class="form-group row" >--}}
-                                                    {{--<label class="col-md-3 m-t-9" for="userAccount">{{ $assignment->name }}</label>--}}
-                                                    {{--<div class="col-md-5">--}}
-                                                        {{--<div class="input-group mb-3">--}}
-                                                            {{--<input type="number" step="0.01" class="form-control" value="{{ $assignment->percentage }}" name="assignmentPercentage[]">--}}
-                                                            {{--<input type="hidden" name="assignmentID[]" value="{{ $assignment->id }}" required>--}}
-
-                                                            {{--<div class="input-group-append">--}}
-                                                                {{--<span class="input-group-text">%</span>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                            {{--@endforeach--}}
-                                        {{--</div>--}}
-                                        {{--<div class="modal-footer">--}}
-                                            {{--<input type="hidden" name="student_assignment_id" id="student_assignment_id" value="" />--}}
-                                            {{--<button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">關閉</button>--}}
-                                            {{--<input type="submit" name="submit" id="action" value="確認" class="btn btn-info">--}}
-                                        {{--</div>--}}
-                                    {{--</form>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        <!-- end ajax correct assignment window -->
+                        <!-- start ajax edit grade remark window-->
+                        <div id="editFinalGradeModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="post" id="editFinalGrade_form">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">編輯</h4>
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                &times;
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ csrf_field() }}
+                                            <span id="editFinalGradeForm_output"></span>
+                                            <div class="form-group">
+                                                <label>最終成績</label>
+                                                <input type="number" step="0.01" min="0" max="100" id="modal_finalGrade_value" name="finalGrade" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" id="modal_student_id_grade" name="student_id" value="" />
+                                            <input type="hidden" id="modal_course_id_grade" name="course_id" value="" />
+                                            <input type="submit" name="submit" value="確認" class="btn btn-info">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end ajax edit grade remark window -->
                     </div>
                 </div>
 
@@ -467,15 +464,6 @@
                     }
                 },
                 @endif
-
-                // {
-                //     text: '成績比率設定',
-                //     action: function ( e, dt, node, config ) {
-                //         var modal = '#updatePercentageModal';
-                //         $(modal).modal('show');
-                //     }
-                // }
-
             ],
             dom: 'lBfrtip',
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],
@@ -562,42 +550,6 @@
             location.reload();
         });
 
-        $('#updatePercentageModal').on('hidden.bs.modal', function () {
-            location.reload();
-        });
-
-    </script>
-
-    <script>
-        var form = '#UpdatePercentageForm';
-        $(form).off().on('submit', function(event){
-            event.preventDefault();
-            var form_data = $(this).serialize();
-            $.ajax({
-                url:'{{ route('grade.ajax.updatePercentage') }}',
-                method:"POST",
-                data:form_data,
-                dataType:"json",
-                success:function(data)
-                {
-                    if (data.error.length > 0)
-                    {
-                        var error_html = '';
-                        for (var count = 0; count < data.error.length; count++)
-                        {
-                            error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
-                        }
-                        $('#form_output').html(error_html);
-
-                    }
-                    else
-                    {
-                        $('#form_output').html(data.success);
-                        console.log(data.myid);
-                    }
-                }
-            })
-        });
     </script>
 
     <script>
@@ -609,9 +561,13 @@
     </script>
 
     <script>
-        var form = '#change_form';
+        var editRemarkForm = '#editRemark_form';
+        var editFinalGradeForm = '#editFinalGrade_form';
 
-        $("#changeModal").on('show.bs.modal', function (e) {
+        $("#editRemarkModal").on('show.bs.modal', function (e) {
+            //clear output
+            $('#editRemarkForm_output').html("");
+
             var button = $(e.relatedTarget);
             var course_id = button.data('course-id');
             var student_id = button.data('student-id');
@@ -620,13 +576,14 @@
             console.log(modal);
             console.log(modal.children('#remark').children('#remark_text'));
 
+
             var remark = modal.children('#remark').children('#remark_text').text();
 
-            $('#modal_remark').val(remark.trim());
-            $('#modal_course_id').val(course_id);
-            $('#modal_student_id').val(student_id);
+            $('#modal_remark_value').val(remark.trim());
+            $('#modal_course_id_remark').val(course_id);
+            $('#modal_student_id_remark').val(student_id);
 
-            $(form).off().on('submit', function(event){
+            $(editRemarkForm).off().on('submit', function(event){
                 event.preventDefault();
                 var form_data = $(this).serialize();
                 $.ajax({
@@ -655,7 +612,49 @@
             });
         });
 
+        $("#editFinalGradeModal").on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget);
+            var course_id = button.data('course-id');
+            var student_id = button.data('student-id');
+            var modal = button.parent().parent();
 
+            console.log(modal);
+            console.log(modal.children('#finalGrade').children('#finalGrade_text'));
+
+            var finalGrade = modal.children('#finalGrade').children('#finalGrade_text').text();
+
+            $('#modal_finalGrade_value').val(finalGrade.trim());
+            $('#modal_course_id_grade').val(course_id);
+            $('#modal_student_id_grade').val(student_id);
+
+            $(editFinalGradeForm).off().on('submit', function(event){
+                event.preventDefault();
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url:'{{ route('grade.ajax.editFinalGrade') }}',
+                    method:"POST",
+                    data:form_data,
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        if (data.error.length > 0)
+                        {
+                            var error_html = '';
+                            for (var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<div class="alert alert-danger">'+data.error[count]+'</div>';
+                            }
+                            $('#editFinalGradeForm_output').html(error_html);
+                        }
+                        else
+                        {
+                            $('#editFinalGradeForm_output').html(data.success);
+                            modal.children('#finalGrade').children('#finalGrade_text').html(data.finalGrade);
+                        }
+                    }
+                })
+            });
+        });
     </script>
 
     <script>
