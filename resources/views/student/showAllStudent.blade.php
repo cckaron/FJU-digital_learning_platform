@@ -66,7 +66,7 @@
                                             <th>Email</th>
                                             <th>狀態</th>
                                             <th>備註</th>
-                                            <th>最近更改時間</th>
+                                            <th>最近登入時間</th>
                                             <th>動作</th>
                                         </tr>
                                         </thead>
@@ -99,7 +99,11 @@
                                                     @endif
                                                 </td>
                                                 <td id="remark">{{ $student->remark }}</td>
-                                                <td>{{ $student->updated_at->diffForHumans() }}</td>
+                                                <td>
+                                                    @if($student->user->last_login_at != null)
+                                                        {{ $student->user->last_login_at->diffForHumans() }}
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <a href="{{ route('user.studentDetail', ['id' => $student->users_id]) }}" class="btn btn-info btn-md">
                                                         學生詳情

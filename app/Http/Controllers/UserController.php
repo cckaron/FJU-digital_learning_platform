@@ -255,6 +255,17 @@ class UserController extends Controller
     public function getAllStudents(){
         $students = Student::all();
 
+        foreach($students as $student){
+            $student->user = $student->user()
+                ->first();
+
+            //Carbon::make() will transfer string timestamp to Carbon object, so it can be used on diffForHumans() in front-end.
+            //P.S. Carbon::parse(null) will return a Carbon object with current time, so we won't use it.
+            //reference (https://github.com/briannesbitt/Carbon/issues/1917)
+
+            $student->user->last_login_at = Carbon::make($student->user->last_login_at);
+        }
+
         return view('student.showAllStudent', [
             'students' => $students,
         ]);
@@ -277,6 +288,12 @@ class UserController extends Controller
             foreach($students as $student){
                 $student->user = $student->user()
                     ->first();
+
+                //Carbon::make() will transfer string timestamp to Carbon object, so it can be used on diffForHumans() in front-end.
+                //P.S. Carbon::parse(null) will return a Carbon object with current time, so we won't use it.
+                //reference (https://github.com/briannesbitt/Carbon/issues/1917)
+
+                $student->user->last_login_at = Carbon::make($student->user->last_login_at);
             }
 
             $course->students = $students;

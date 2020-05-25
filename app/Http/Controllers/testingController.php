@@ -123,6 +123,12 @@ class testingController extends Controller
         $user = User::where('account','=',$number)->first();
         Auth::login($user);
 
+        DB::table('users')
+            ->where('account', $number)
+            ->update([
+                'last_login_at' => Carbon::now()->toDateTimeString(),
+            ]);
+
         return redirect()->route('dashboard.get');
 
     }
