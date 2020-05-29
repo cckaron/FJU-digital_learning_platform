@@ -29,4 +29,6 @@ class StudentService
     public function getAssignmentScore($id, $assignment_id){
         return $this->studentRepository->getAssignmentPivot($id, $assignment_id)->pivot->score;
     }
+
+
 }

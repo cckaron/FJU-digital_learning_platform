@@ -201,6 +201,10 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
             'uses' => 'ResumeController@preview',
             'as' => 'resume.preview'
         ]);
+        Route::get('test', [
+            'uses' => 'ResumeController@test',
+            'as' => 'resume.test'
+        ]);
     });
 });
 
