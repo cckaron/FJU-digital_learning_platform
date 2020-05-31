@@ -438,7 +438,7 @@ class CourseController extends Controller
 
         foreach($students as $student){
             //選擇進行中的課程
-            $st_course = $this->courseService->findByRole($student, 1);
+            $st_course = $this->courseService->findByRole($student, 3);
 
             foreach($st_course as $course){
                 $finalScore = $this->studentService->getCourseFinalScore($student->users_id, $course->id);

@@ -48,11 +48,18 @@ class CourseService implements eventService
     }
 
     public function findByRole($role, $status=1){
-        return $role->course()
-            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
-            ->where('status', $status)
-            ->get();
+        if ($status == 3){ //get all courses (include ongoing and ended)
+            return $role->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->get();
+        } else {
+            return $role->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', $status)
+                ->get();
+        }
     }
 
     public function findTeachers($courses){

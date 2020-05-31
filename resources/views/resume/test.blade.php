@@ -3,13 +3,13 @@
 
 <head>
     <title>Desktop_HD</title>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ URL::to('/resume/css/bundle.css') }}">
 
     <style>
         .DesktopHd {
-            background-image: url("/resume/images/background.png");
+            background-image: url('{{ URL::to('/resume/images/background.png') }}');
             background-size: cover;
             position: relative;
             width: 564px;
@@ -315,11 +315,27 @@
             left: 0px;
         }
     </style>
+    <style>
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
 
 </head>
-
 <body>
-<div class='DesktopHd'>
+
+<div style="padding-bottom: 30px">
+    <button id="btnDownload" type="button" class="button">下載履歷</button>
+</div>
+
+<div class='DesktopHd' id="captureSection">
     <div class='Title'>
         <p class='Title-'>
             輔仁大學商業管理學士學位學程產業創新學習履歷
@@ -327,13 +343,13 @@
         <img class='Title-1' src='{{ URL::to('/resume/images/__.svg') }}'>
     </div>
     <p class='DesktopHd-'>
-        {{ $student->users_name }} 君109年度入學至今，完成八項
+        {{ $student->users_name }} 君109年度入學至今，完成{{ count($courses) }}項
     </p>
     <p class='DesktopHd-1'>
-        「產業創新」報告，共16學分，表現優異特此證明。<br>
+        「產業創新」報告，共{{ count($courses)*2 }}學分，表現優異特此證明。<br>
 
     </p>
-    <img class='DesktopHd-sign' src='{{ URL::to('/resume/images/sign.png') }}'>
+    <img class='DesktopHd-sign' src='{{ URL::to('/resume/images/sign.png')  }}'>
     @foreach($courses as $key => $course)
         @if($key==0)
             <div class='Row'>
@@ -376,5 +392,21 @@
     </div>
 </div>
 </body>
-
 </html>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+    var download = document.getElementById('btnDownload');
+
+    download.onclick = function(){
+        html2canvas(document.getElementById('captureSection')).then(function(canvas) {
+            var a = document.createElement('a');
+            // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+            a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+            a.download = '學習履歷.jpg';
+            a.click();
+        });
+    };
+
+
+</script>

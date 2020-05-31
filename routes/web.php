@@ -197,11 +197,7 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function() {
 
     //履歷表
     Route::group(['prefix' => 'resume'], function(){
-        Route::get('preview', [
-            'uses' => 'ResumeController@preview',
-            'as' => 'resume.preview'
-        ]);
-        Route::get('test', [
+        Route::get('test/{student_id}', [
             'uses' => 'ResumeController@test',
             'as' => 'resume.test'
         ]);
