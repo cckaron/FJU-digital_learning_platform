@@ -451,3 +451,675 @@
 #56 /home/vagrant/learning-record-system/laravel/public/index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #57 {main}
 "} 
+[2020-06-03 22:06:06] local.INFO: 505152023  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":716,"id":7528}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":636,"id":7076}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":676,"id":7302}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":656,"id":7189}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":696,"id":7415}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152023","courses_id":128,"pivot":{"students_id":"505152023","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152035  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":716,"id":7529}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":636,"id":7077}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":676,"id":7303}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":656,"id":7190}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":696,"id":7416}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152035","courses_id":128,"pivot":{"students_id":"505152035","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152059  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":716,"id":7530}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":636,"id":7078}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":676,"id":7304}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":656,"id":7191}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":696,"id":7417}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152059","courses_id":128,"pivot":{"students_id":"505152059","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152102  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":716,"id":7531}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":636,"id":7079}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":676,"id":7305}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":656,"id":7192}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":696,"id":7418}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152102","courses_id":128,"pivot":{"students_id":"505152102","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152176  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":716,"id":7532}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":636,"id":7080}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":676,"id":7306}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":656,"id":7193}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":696,"id":7419}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152176","courses_id":128,"pivot":{"students_id":"505152176","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152396  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":716,"id":7533}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":636,"id":7081}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":676,"id":7307}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":656,"id":7194}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":696,"id":7420}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152396","courses_id":128,"pivot":{"students_id":"505152396","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152413  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":716,"id":7534}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":636,"id":7082}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":676,"id":7308}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":656,"id":7195}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":696,"id":7421}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152413","courses_id":128,"pivot":{"students_id":"505152413","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152516  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":716,"id":7535}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":636,"id":7083}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":676,"id":7309}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":656,"id":7196}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":696,"id":7422}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152516","courses_id":128,"pivot":{"students_id":"505152516","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152528  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":716,"id":7536}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":636,"id":7084}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":676,"id":7310}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":656,"id":7197}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":696,"id":7423}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152528","courses_id":128,"pivot":{"students_id":"505152528","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152580  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":716,"id":7537}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":636,"id":7085}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":676,"id":7311}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":656,"id":7198}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":696,"id":7424}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152580","courses_id":128,"pivot":{"students_id":"505152580","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505152669  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":716,"id":7538}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":636,"id":7086}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":676,"id":7312}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":656,"id":7199}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":696,"id":7425}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505152669","courses_id":128,"pivot":{"students_id":"505152669","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 506152056  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":901,"id":9172}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":743,"id":7839}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":821,"id":8430}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":781,"id":8059}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":861,"id":8801}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506152056","courses_id":153,"pivot":{"students_id":"506152056","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506152082  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":901,"id":9173}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":743,"id":7840}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":821,"id":8431}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":781,"id":8060}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":861,"id":8802}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506152082","courses_id":153,"pivot":{"students_id":"506152082","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506152408  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":901,"id":9174}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":743,"id":7841}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":821,"id":8432}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":781,"id":8061}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":861,"id":8803}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506152408","courses_id":153,"pivot":{"students_id":"506152408","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506152460  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":901,"id":9175}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":743,"id":7842}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":821,"id":8433}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":781,"id":8062}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":861,"id":8804}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506152460","courses_id":153,"pivot":{"students_id":"506152460","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506152501  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":901,"id":9176}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":743,"id":7843}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":821,"id":8434}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":781,"id":8063}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":861,"id":8805}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506152501","courses_id":153,"pivot":{"students_id":"506152501","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506152525  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":901,"id":9177}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":743,"id":7844}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":821,"id":8435}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":781,"id":8064}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":861,"id":8806}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506152525","courses_id":153,"pivot":{"students_id":"506152525","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506152549  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":901,"id":9178}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":743,"id":7845}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":821,"id":8436}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":781,"id":8065}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":861,"id":8807}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506152549","courses_id":153,"pivot":{"students_id":"506152549","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 504152789  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":924,"id":9318}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":766,"id":7985}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":844,"id":8576}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":804,"id":8205}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":884,"id":8947}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"504152789","courses_id":176,"pivot":{"students_id":"504152789","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152053  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":924,"id":9321}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":766,"id":7988}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":844,"id":8579}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":804,"id":8208}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":884,"id":8950}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152053","courses_id":176,"pivot":{"students_id":"507152053","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152089  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":924,"id":9322}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":766,"id":7989}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":844,"id":8580}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":804,"id":8209}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":884,"id":8951}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152089","courses_id":176,"pivot":{"students_id":"507152089","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152091  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":924,"id":9323}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":766,"id":7990}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":844,"id":8581}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":804,"id":8210}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":884,"id":8952}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152091","courses_id":176,"pivot":{"students_id":"507152091","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152120  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":924,"id":9324}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":766,"id":7991}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":844,"id":8582}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":804,"id":8211}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":884,"id":8953}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152120","courses_id":176,"pivot":{"students_id":"507152120","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152273  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":924,"id":9325}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":766,"id":7992}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":844,"id":8583}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":804,"id":8212}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":884,"id":8954}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152273","courses_id":176,"pivot":{"students_id":"507152273","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152352  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":924,"id":9326}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":766,"id":7993}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":844,"id":8584}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":804,"id":8213}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":884,"id":8955}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152352","courses_id":176,"pivot":{"students_id":"507152352","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152405  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":924,"id":9327}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":766,"id":7994}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":844,"id":8585}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":804,"id":8214}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":884,"id":8956}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152405","courses_id":176,"pivot":{"students_id":"507152405","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152431  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":924,"id":9328}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":766,"id":7995}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":844,"id":8586}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":804,"id":8215}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":884,"id":8957}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152431","courses_id":176,"pivot":{"students_id":"507152431","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 507152560  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":924,"id":9329}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":766,"id":7996}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":844,"id":8587}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":804,"id":8216}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":884,"id":8958}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"507152560","courses_id":176,"pivot":{"students_id":"507152560","courses_id":176}}  
+[2020-06-03 22:06:06] local.INFO: 503151609  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":716,"id":7523}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":636,"id":7071}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":676,"id":7297}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":656,"id":7184}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":696,"id":7410}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"503151609","courses_id":128,"pivot":{"students_id":"503151609","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 504061540  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":716,"id":7524}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":636,"id":7072}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":676,"id":7298}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":656,"id":7185}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":696,"id":7411}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"504061540","courses_id":128,"pivot":{"students_id":"504061540","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505151160  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":716,"id":7525}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":636,"id":7073}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":676,"id":7299}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":656,"id":7186}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":696,"id":7412}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505151160","courses_id":128,"pivot":{"students_id":"505151160","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505151287  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":716,"id":7526}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":636,"id":7074}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":676,"id":7300}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":656,"id":7187}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":696,"id":7413}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505151287","courses_id":128,"pivot":{"students_id":"505151287","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 505151641  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":716,"id":7527}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":636,"id":7075}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":676,"id":7301}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":656,"id":7188}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":696,"id":7414}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"505151641","courses_id":128,"pivot":{"students_id":"505151641","courses_id":128}}  
+[2020-06-03 22:06:06] local.INFO: 506061520  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":901,"id":9165}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":743,"id":7832}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":821,"id":8423}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":781,"id":8052}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":861,"id":8794}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506061520","courses_id":153,"pivot":{"students_id":"506061520","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506151181  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":901,"id":9166}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":743,"id":7833}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":821,"id":8424}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":781,"id":8053}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":861,"id":8795}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506151181","courses_id":153,"pivot":{"students_id":"506151181","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506151313  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":901,"id":9167}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":743,"id":7834}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":821,"id":8425}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":781,"id":8054}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":861,"id":8796}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506151313","courses_id":153,"pivot":{"students_id":"506151313","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506151363  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":901,"id":9168}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":743,"id":7835}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":821,"id":8426}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":781,"id":8055}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":861,"id":8797}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506151363","courses_id":153,"pivot":{"students_id":"506151363","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506151375  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":901,"id":9169}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":743,"id":7836}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":821,"id":8427}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":781,"id":8056}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":861,"id":8798}}  
+[2020-06-03 22:06:06] local.INFO: Final Score  
+[2020-06-03 22:06:06] local.INFO: {"students_id":"506151375","courses_id":153,"pivot":{"students_id":"506151375","courses_id":153}}  
+[2020-06-03 22:06:06] local.INFO: 506151507  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":901,"id":9170}}  
+[2020-06-03 22:06:06] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":743,"id":7837}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":821,"id":8428}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":781,"id":8057}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":861,"id":8799}}  
+[2020-06-03 22:06:07] local.INFO: Final Score  
+[2020-06-03 22:06:07] local.INFO: {"students_id":"506151507","courses_id":153,"pivot":{"students_id":"506151507","courses_id":153}}  
+[2020-06-03 22:06:07] local.INFO: 506151571  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":901,"id":9171}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":743,"id":7838}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":821,"id":8429}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":781,"id":8058}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":861,"id":8800}}  
+[2020-06-03 22:06:07] local.INFO: Final Score  
+[2020-06-03 22:06:07] local.INFO: {"students_id":"506151571","courses_id":153,"pivot":{"students_id":"506151571","courses_id":153}}  
+[2020-06-03 22:06:07] local.INFO: 507151334  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":924,"id":9319}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":766,"id":7986}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":844,"id":8577}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":804,"id":8206}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":884,"id":8948}}  
+[2020-06-03 22:06:07] local.INFO: Final Score  
+[2020-06-03 22:06:07] local.INFO: {"students_id":"507151334","courses_id":176,"pivot":{"students_id":"507151334","courses_id":176}}  
+[2020-06-03 22:06:07] local.INFO: 507151499  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":924,"id":9320}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":766,"id":7987}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":844,"id":8578}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":804,"id":8207}}  
+[2020-06-03 22:06:07] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":884,"id":8949}}  
+[2020-06-03 22:06:07] local.INFO: Final Score  
+[2020-06-03 22:06:07] local.INFO: {"students_id":"507151499","courses_id":176,"pivot":{"students_id":"507151499","courses_id":176}}  
+[2020-06-03 22:06:31] local.INFO: 505152023  
+[2020-06-03 22:06:31] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":716,"id":7528}}  
+[2020-06-03 22:06:31] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":636,"id":7076}}  
+[2020-06-03 22:06:31] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":676,"id":7302}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":656,"id":7189}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152023","assignments_id":696,"id":7415}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152023","courses_id":128,"pivot":{"students_id":"505152023","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152035  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":716,"id":7529}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":636,"id":7077}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":676,"id":7303}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":656,"id":7190}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152035","assignments_id":696,"id":7416}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152035","courses_id":128,"pivot":{"students_id":"505152035","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152059  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":716,"id":7530}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":636,"id":7078}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":676,"id":7304}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":656,"id":7191}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152059","assignments_id":696,"id":7417}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152059","courses_id":128,"pivot":{"students_id":"505152059","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152102  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":716,"id":7531}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":636,"id":7079}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":676,"id":7305}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":656,"id":7192}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152102","assignments_id":696,"id":7418}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152102","courses_id":128,"pivot":{"students_id":"505152102","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152176  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":716,"id":7532}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":636,"id":7080}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":676,"id":7306}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":656,"id":7193}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152176","assignments_id":696,"id":7419}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152176","courses_id":128,"pivot":{"students_id":"505152176","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152396  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":716,"id":7533}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":636,"id":7081}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":676,"id":7307}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":656,"id":7194}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152396","assignments_id":696,"id":7420}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152396","courses_id":128,"pivot":{"students_id":"505152396","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152413  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":716,"id":7534}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":636,"id":7082}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":676,"id":7308}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":656,"id":7195}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152413","assignments_id":696,"id":7421}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152413","courses_id":128,"pivot":{"students_id":"505152413","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152516  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":716,"id":7535}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":636,"id":7083}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":676,"id":7309}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":656,"id":7196}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152516","assignments_id":696,"id":7422}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152516","courses_id":128,"pivot":{"students_id":"505152516","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152528  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":716,"id":7536}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":636,"id":7084}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":676,"id":7310}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":656,"id":7197}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152528","assignments_id":696,"id":7423}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152528","courses_id":128,"pivot":{"students_id":"505152528","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152580  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":716,"id":7537}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":636,"id":7085}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":676,"id":7311}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":656,"id":7198}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152580","assignments_id":696,"id":7424}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152580","courses_id":128,"pivot":{"students_id":"505152580","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505152669  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":716,"id":7538}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":636,"id":7086}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":676,"id":7312}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":656,"id":7199}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505152669","assignments_id":696,"id":7425}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505152669","courses_id":128,"pivot":{"students_id":"505152669","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 506152056  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":901,"id":9172}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":743,"id":7839}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":821,"id":8430}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":781,"id":8059}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152056","assignments_id":861,"id":8801}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506152056","courses_id":153,"pivot":{"students_id":"506152056","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506152082  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":901,"id":9173}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":743,"id":7840}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":821,"id":8431}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":781,"id":8060}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152082","assignments_id":861,"id":8802}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506152082","courses_id":153,"pivot":{"students_id":"506152082","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506152408  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":901,"id":9174}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":743,"id":7841}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":821,"id":8432}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":781,"id":8061}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152408","assignments_id":861,"id":8803}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506152408","courses_id":153,"pivot":{"students_id":"506152408","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506152460  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":901,"id":9175}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":743,"id":7842}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":821,"id":8433}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":781,"id":8062}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152460","assignments_id":861,"id":8804}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506152460","courses_id":153,"pivot":{"students_id":"506152460","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506152501  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":901,"id":9176}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":743,"id":7843}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":821,"id":8434}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":781,"id":8063}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152501","assignments_id":861,"id":8805}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506152501","courses_id":153,"pivot":{"students_id":"506152501","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506152525  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":901,"id":9177}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":743,"id":7844}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":821,"id":8435}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":781,"id":8064}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152525","assignments_id":861,"id":8806}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506152525","courses_id":153,"pivot":{"students_id":"506152525","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506152549  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":901,"id":9178}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":743,"id":7845}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":821,"id":8436}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":781,"id":8065}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506152549","assignments_id":861,"id":8807}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506152549","courses_id":153,"pivot":{"students_id":"506152549","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 504152789  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":924,"id":9318}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":766,"id":7985}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":844,"id":8576}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":804,"id":8205}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504152789","assignments_id":884,"id":8947}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"504152789","courses_id":176,"pivot":{"students_id":"504152789","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152053  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":924,"id":9321}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":766,"id":7988}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":844,"id":8579}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":804,"id":8208}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152053","assignments_id":884,"id":8950}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152053","courses_id":176,"pivot":{"students_id":"507152053","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152089  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":924,"id":9322}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":766,"id":7989}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":844,"id":8580}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":804,"id":8209}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152089","assignments_id":884,"id":8951}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152089","courses_id":176,"pivot":{"students_id":"507152089","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152091  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":924,"id":9323}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":766,"id":7990}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":844,"id":8581}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":804,"id":8210}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152091","assignments_id":884,"id":8952}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152091","courses_id":176,"pivot":{"students_id":"507152091","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152120  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":924,"id":9324}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":766,"id":7991}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":844,"id":8582}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":804,"id":8211}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152120","assignments_id":884,"id":8953}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152120","courses_id":176,"pivot":{"students_id":"507152120","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152273  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":924,"id":9325}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":766,"id":7992}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":844,"id":8583}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":804,"id":8212}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152273","assignments_id":884,"id":8954}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152273","courses_id":176,"pivot":{"students_id":"507152273","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152352  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":924,"id":9326}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":766,"id":7993}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":844,"id":8584}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":804,"id":8213}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152352","assignments_id":884,"id":8955}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152352","courses_id":176,"pivot":{"students_id":"507152352","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152405  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":924,"id":9327}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":766,"id":7994}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":844,"id":8585}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":804,"id":8214}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152405","assignments_id":884,"id":8956}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152405","courses_id":176,"pivot":{"students_id":"507152405","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152431  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":924,"id":9328}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":766,"id":7995}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":844,"id":8586}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":804,"id":8215}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152431","assignments_id":884,"id":8957}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152431","courses_id":176,"pivot":{"students_id":"507152431","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507152560  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":924,"id":9329}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":766,"id":7996}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":844,"id":8587}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":804,"id":8216}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507152560","assignments_id":884,"id":8958}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507152560","courses_id":176,"pivot":{"students_id":"507152560","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 503151609  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":716,"id":7523}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":636,"id":7071}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":676,"id":7297}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":656,"id":7184}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"503151609","assignments_id":696,"id":7410}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"503151609","courses_id":128,"pivot":{"students_id":"503151609","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 504061540  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":716,"id":7524}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":636,"id":7072}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":676,"id":7298}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":656,"id":7185}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"504061540","assignments_id":696,"id":7411}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"504061540","courses_id":128,"pivot":{"students_id":"504061540","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505151160  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":716,"id":7525}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":636,"id":7073}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":676,"id":7299}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":656,"id":7186}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151160","assignments_id":696,"id":7412}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505151160","courses_id":128,"pivot":{"students_id":"505151160","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505151287  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":716,"id":7526}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":636,"id":7074}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":676,"id":7300}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":656,"id":7187}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151287","assignments_id":696,"id":7413}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505151287","courses_id":128,"pivot":{"students_id":"505151287","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 505151641  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":716,"id":7527}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":636,"id":7075}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":676,"id":7301}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":656,"id":7188}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"505151641","assignments_id":696,"id":7414}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"505151641","courses_id":128,"pivot":{"students_id":"505151641","courses_id":128}}  
+[2020-06-03 22:06:32] local.INFO: 506061520  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":901,"id":9165}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":743,"id":7832}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":821,"id":8423}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":781,"id":8052}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506061520","assignments_id":861,"id":8794}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506061520","courses_id":153,"pivot":{"students_id":"506061520","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506151181  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":901,"id":9166}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":743,"id":7833}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":821,"id":8424}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":781,"id":8053}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151181","assignments_id":861,"id":8795}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506151181","courses_id":153,"pivot":{"students_id":"506151181","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506151313  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":901,"id":9167}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":743,"id":7834}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":821,"id":8425}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":781,"id":8054}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151313","assignments_id":861,"id":8796}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506151313","courses_id":153,"pivot":{"students_id":"506151313","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506151363  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":901,"id":9168}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":743,"id":7835}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":821,"id":8426}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":781,"id":8055}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151363","assignments_id":861,"id":8797}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506151363","courses_id":153,"pivot":{"students_id":"506151363","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506151375  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":901,"id":9169}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":743,"id":7836}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":821,"id":8427}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":781,"id":8056}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151375","assignments_id":861,"id":8798}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506151375","courses_id":153,"pivot":{"students_id":"506151375","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506151507  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":901,"id":9170}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":743,"id":7837}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":821,"id":8428}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":781,"id":8057}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151507","assignments_id":861,"id":8799}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506151507","courses_id":153,"pivot":{"students_id":"506151507","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 506151571  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":901,"id":9171}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":743,"id":7838}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":821,"id":8429}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":781,"id":8058}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"506151571","assignments_id":861,"id":8800}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"506151571","courses_id":153,"pivot":{"students_id":"506151571","courses_id":153}}  
+[2020-06-03 22:06:32] local.INFO: 507151334  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":924,"id":9319}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":766,"id":7986}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":844,"id":8577}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":804,"id":8206}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151334","assignments_id":884,"id":8948}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507151334","courses_id":176,"pivot":{"students_id":"507151334","courses_id":176}}  
+[2020-06-03 22:06:32] local.INFO: 507151499  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u53e3\u982d\u5831\u544a\u8207PPT","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":924,"id":9320}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u66f8\u9762\u5831\u544aWord","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":766,"id":7987}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"A4\u6d77\u5831","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":844,"id":8578}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u8ab2\u5802\u53c3\u8207","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":804,"id":8207}}  
+[2020-06-03 22:06:32] local.INFO: {"teachers_id":"135205","assignment_name":"\u4e0a\u8ab2\u51fa\u5e2d","course_name":"\u8b1d\u90a6\u4fca\u8001\u5e2b","status":1,"year":108,"semester":2,"pivot":{"students_id":"507151499","assignments_id":884,"id":8949}}  
+[2020-06-03 22:06:32] local.INFO: Final Score  
+[2020-06-03 22:06:32] local.INFO: {"students_id":"507151499","courses_id":176,"pivot":{"students_id":"507151499","courses_id":176}}  

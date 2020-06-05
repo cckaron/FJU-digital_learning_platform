@@ -1493,9 +1493,25 @@ class AssignmentController extends Controller
 
         //如果資料夾內沒有檔案，或是只有 1 個檔案叫做 "blob" (由 handInAssignment.blade.php 前端 js 上傳檔案時生成)，將作業狀態更改為 1 => 未繳交
         if (empty($files) || (count($files) == 1 && pathinfo($files[0])['filename'] == 'blob')){
-            DB::table('student_assignment')
+            $student_assignment = DB::table('student_assignment')
                 ->where('id', $student_assignment_id)
-                ->update(['status' => 1]);
+                ->first();
+
+            if ($student_assignment->status == 2){ //已重繳
+                DB::table('student_assignment')
+                    ->where('id', $student_assignment_id)
+                    ->update(['status' => 1]);
+            } else if ( $student_assignment->status == 5){
+                DB::table('student_assignment')
+                    ->where('id', $student_assignment_id)
+                    ->update(['status' => 4]);
+            } else if ($student_assignment->status == 7){
+                DB::table('student_assignment')
+                    ->where('id', $student_assignment_id)
+                    ->update(['status' => 6]);
+            }
+
+
         }
 
 
