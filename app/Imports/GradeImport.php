@@ -114,9 +114,13 @@ class GradeImport implements ToCollection, WithCalculatedFormulas
                         //update
                         try{
                             $id = $student_assignment->pivot->id;
-                            DB::table('student_assignment')
-                                ->where('id', $id)
-                                ->update(['score' => $row[$i+4], 'status' => 3, 'updated_at' => Carbon::now()]); //狀態:已批改
+
+                            if ($row[$i+4] !== null){
+                                DB::table('student_assignment')
+                                    ->where('id', $id)
+                                    ->update(['score' => $row[$i+4], 'status' => 3, 'updated_at' => Carbon::now()]); //狀態:已批改
+                            }
+
 
                         } catch(Exception $e) {
                             Log::info($e->getMessage());
