@@ -38,7 +38,7 @@ class resumeController extends Controller
             $assignments = $this->courseService->findAssignment($course->id);
 
             foreach($assignments as $assignment){
-                if ($assignment->name == "書面報告Word"){
+                if ($assignment->name == "A4海報"){
                     $student_assignment = DB::table('student_assignment')
                         ->where('students_id', $student->users_id)
                         ->where('assignments_id', $assignment->id)

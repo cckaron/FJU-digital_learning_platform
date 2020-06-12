@@ -245,8 +245,8 @@
 
         .Row6-1 {
             position: absolute;
-            top: 0px;
-            right: 164px;
+            top: 4px;
+            left: 161px;
         }
 
         .DesktopHd-logo {
@@ -343,7 +343,7 @@
         <img class='Title-1' src='{{ URL::to('/resume/images/__.svg') }}'>
     </div>
     <p class='DesktopHd-'>
-        {{ $student->users_name }} 君109年度入學至今，完成{{ count($courses) }}項
+        {{ $student->users_name }} 君 {{ $courses[0]->year - 1 }} 年度入學至今，完成{{ count($courses) }}項
     </p>
     <p class='DesktopHd-1'>
         「產業創新」報告，共{{ count($courses)*2 }}學分，表現優異特此證明。<br>
@@ -385,8 +385,9 @@
             </p>
         </div>
         <div class='Date'>
+            @php($year = \Carbon\Carbon::now()->year - 1911)
             <p class='Date-'>
-                中華民國 109 年 5 月 10 日
+                中華民國 {{ $year }} 年 {{ Carbon\Carbon::now()->month }} 月 {{ Carbon\Carbon::now()->day }} 日
             </p>
         </div>
     </div>

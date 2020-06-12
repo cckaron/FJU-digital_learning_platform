@@ -51,12 +51,12 @@ class CourseService implements eventService
         if ($status == 3){ //get all courses (include ongoing and ended)
             return $role->course()
                 ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status', 'common_courses.year as year', 'common_courses.semester as semester')
                 ->get();
         } else {
             return $role->course()
                 ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status', 'common_courses.year as year', 'common_courses.semester as semester')
                 ->where('status', $status)
                 ->get();
         }

@@ -38,7 +38,10 @@ class CourseController extends Controller
     public function getAddCourse(){
         $teachers = DB::table('teachers')->get();
 
-        $common_courses = DB::table('common_courses')->orderBy('name', 'asc')->get();
+        $common_courses = DB::table('common_courses')
+            ->where('status', 1)
+            ->orderBy('name', 'asc')
+            ->get();
 
         $common_courses_name = $common_courses->pluck('name');
 
@@ -65,7 +68,9 @@ class CourseController extends Controller
 
         $common_courses_name =  $request->input('common_courses_name');
 
+        //不允許有重複課程同時開啟, 否則將取到2個以上的id
         $common_courses_id = DB::table('common_courses')
+            ->where('status', 1)
             ->where('name', $common_courses_name)
             ->value('id');
 
