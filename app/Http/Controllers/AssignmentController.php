@@ -944,8 +944,7 @@ class AssignmentController extends Controller
                     array_push($names, $file['filename'].'.'.$file['extension']) ;
                     array_push($urls, ['public', $student_ids[$i], $assignment_id, $file['filename'].'.'.$file['extension']]);
                 } else {
-                    array_push($names, $file['filename']) ;
-                    array_push($urls, ['public', $student_ids[$i], $assignment_id, $file['filename']]);
+                    //file which doesn't have file extension like blob
                 }
             }
 
