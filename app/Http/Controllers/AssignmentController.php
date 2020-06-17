@@ -940,8 +940,13 @@ class AssignmentController extends Controller
             foreach($filesInFolder as $path) {
                 $file = pathinfo($path);
 
-                array_push($names, $file['filename'].'.'.$file['extension']) ;
-                array_push($urls, ['public', $student_ids[$i], $assignment_id, $file['filename'].'.'.$file['extension']]);
+                if (isset($file['extension'])){
+                    array_push($names, $file['filename'].'.'.$file['extension']) ;
+                    array_push($urls, ['public', $student_ids[$i], $assignment_id, $file['filename'].'.'.$file['extension']]);
+                } else {
+                    array_push($names, $file['filename']) ;
+                    array_push($urls, ['public', $student_ids[$i], $assignment_id, $file['filename']]);
+                }
             }
 
             array_push($file_names, $names);
