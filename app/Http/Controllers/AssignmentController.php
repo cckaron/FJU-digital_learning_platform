@@ -61,29 +61,23 @@ class AssignmentController extends Controller
         $request->validate([
             'assignmentName' => [
                 'required',
-//TODO  作業名稱驗證              function($attribute, $value, $fail) {
-//                    $teacher = Teacher::where('users_id', Auth::user()->id)->first();
-//                    //取得其中一個進行中的課程
-//                    $course = $teacher->course()
-//                        ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-//                        ->select('common_courses.semester as semester', 'common_courses.year as year')
-//                        ->where('status', 1)
-//                        ->first();
-//                    $detail = collect();
-//                    //找出同名的作業
-//                    $assignments = Assignment::where('name', $value)->get();
-//                    foreach($assignments as $assignment){
-//                        $assignment_detail = $assignment->course()
-//                            ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-//                            ->select('common_courses.semester as semester', 'common_courses.year as year')
-//                            ->first();
-//                        $detail->push($assignment_detail);
-//                        if(($assignment_detail->year == $course->year) and ($assignment_detail->year == $course->semester)){
-//                            return $fail('錯誤：當前學期已存在此作業');
-//                        };
-//                    }
-//                    dd($detail);
-//                },
+                function($attribute, $value, $fail) { //TODO  作業名稱驗證
+                    $teacher = Teacher::where('users_id', Auth::user()->id)->first();
+                    //取得其中一個進行中的課程
+                    $course = $teacher->course()
+                        ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                        ->select('courses_id as id', 'common_courses.semester as semester', 'common_courses.year as year')
+                        ->where('status', 1)
+                        ->first();
+                    $detail = collect();
+                    //找出同名的作業
+                    $assignments_name = $course->assignment()->pluck('name');
+                    foreach($assignments_name as $name){
+                        if($name == $value){
+                            return $fail('錯誤：當前學期已存在此項作業');
+                        };
+                    }
+                },
             ],
             'assignmentStart' => 'required|date|date-format:Y/m/d|before:assignmentEnd',
             'assignmentEnd' => 'required|date|date-format:Y/m/d|after:assignmentStart',
@@ -116,7 +110,7 @@ class AssignmentController extends Controller
         //取得進行中的課程
         $courses = $teacher->course()
             ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
-            ->select('courses.id as course_id', 'common_courses.name as common_course_name', 'common_courses.status as status')
+            ->select('courses.id as id', 'common_courses.name as common_course_name', 'common_courses.status as status')
             ->where('status', 1)
             ->get();
 
@@ -148,7 +142,7 @@ class AssignmentController extends Controller
                     'start_time' => $start_time,
                     'end_date' => $request->input('assignmentEnd'),
                     'end_time' => $end_time,
-                    'courses_id' => $course->course_id,
+                    'courses_id' => $course->id,
 //                    'percentage' => $request->input('assignmentPercentage'),
                     'hide' => $hide,
                     'announce_score' => $announceScore,
@@ -166,15 +160,16 @@ class AssignmentController extends Controller
             //get this course's students
             $students_id = $course->student()->pluck('users_id');
 
-            //get this course's assignments
-            $assignments_id = $course->assignment()->pluck('id');
-
             //add new student_assignment
             foreach($assignments_id as $assignment_id){
                 foreach($students_id as $student_id){
                     DB::table('student_assignment')
                         ->insert([
-                            ['students_id' => $student_id, 'assignments_id' => $assignment_id]
+                            [
+                                'students_id' => $student_id,
+                                'assignments_id' => $assignment_id,
+                                'created_at' => Carbon::now(),
+                            ]
                         ]);
                     Storage::makeDirectory('public/'.$student_id.'/'.$assignment_id);
                 }
@@ -338,7 +333,6 @@ class AssignmentController extends Controller
                         'students_id' => $students_id[$i],
                         'assignments_id' => $assignment_id,
                         'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
                     ]);
 
                 Storage::makeDirectory('public/'.$students_id[$i].'/'.$assignment_id);

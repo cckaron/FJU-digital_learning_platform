@@ -819,7 +819,8 @@
                         $("#btn-sendForm").click(function (e) {
                             //validate the data first (in the controller, we can't validate the data and return message
                             //because of using e.preventDefault() and e.stopPropagation();
-                            if ($('#handInAssignment').valid()){
+
+                            if (mydropZone.files.length > 0 && $('#handInAssignment').valid()){ //Perfect! 有上傳檔案, 也有輸入學習主題
                                 e.preventDefault();
                                 e.stopPropagation();
                                 /*
@@ -839,15 +840,22 @@
 
                                     mydropZone.uploadFile(blob);
                                 }
-                            } else {
-                                alert('請輸入學習主題！');
-                            }
 
-                            if (mydropZone.files.length < 1){
+                            } else if (mydropZone.files.length > 0 && ! $('#handInAssignment').valid()){ //Not Good. 有上傳檔案, 但沒輸入學習主題
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert('請輸入學習主題！');
+                            } else if (mydropZone.files.length <= 0 && $('#handInAssignment').valid()){ //Not Good. 沒有上傳檔案, 有輸入學習主題
                                 e.preventDefault();
                                 e.stopPropagation();
                                 alert('請上傳附加檔案！');
+                            } else { //Really Bad. 什麼都沒做!
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert('請輸入學習主題！');
+                                alert('請上傳附加檔案！');
                             }
+
                         });
 
 

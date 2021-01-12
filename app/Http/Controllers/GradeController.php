@@ -142,7 +142,7 @@ class GradeController extends Controller
                     ->get();
             }
 
-            $student_assignment = $this->resortStudentAssignment($student_assignment);
+//            $student_assignment = $this->resortStudentAssignment($student_assignment);
 
 
             $accumulated_score = 0;
