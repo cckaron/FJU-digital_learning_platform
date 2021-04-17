@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use App\Student;
+use App\Services\CommonCourseService;
+use App\Services\CourseService;
 use App\Ta;
 use App\Teacher;
 use Illuminate\Http\Request;
@@ -11,16 +12,44 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class GradeController extends Controller
 {
+    private $courseService;
+    private $commonCourseService;
+
+    public function __construct(CourseService $courseService, CommonCourseService $commonCourseService)
+    {
+        $this->courseService = $courseService;
+        $this->commonCourseService = $commonCourseService;
+
+    }
     public function getGradeList($status, $year, $semester){
         $user = Auth::user();
         $teachers = collect();
 
-        if ($user->type == 2){
+        if ($user->type == 1){ // 秘書
+            $courses = $this->courseService->getAllOpenCourse();
+
+            if ( $courses->isNotEmpty() ){
+                //讓秘書可以選取特定教師
+                foreach($courses as $course){
+                    $teachers->push(Course::where('id', $course->id)->first()->teacher()->first());
+                    $teachers = $teachers->unique('users_name');
+                }
+
+                $teacherID = Input::get('teacherID');
+                if ($teacherID != null){
+                    $teacher = Teacher::where('users_id', $teacherID)->first();
+                } else {
+                    $teacher = Teacher::where('users_id', $teachers[0]->users_id)->first();
+                }
+            } else {
+                return redirect()->back();
+            }
+
+        } else if ($user->type == 2){ // TA
             $ta = Ta::where('users_id', $user->id)->first();
             $ta->courses_id = $ta->course()
                 ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
@@ -50,7 +79,6 @@ class GradeController extends Controller
             } else {
                 return redirect()->back();
             }
-
         } else if ($user->type == 3){
             $teacher = Teacher::where('users_id', Auth::user()->id)->first();
         }

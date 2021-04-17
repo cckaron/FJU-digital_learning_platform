@@ -47,6 +47,10 @@ class CourseService implements eventService
             ->exists();
     }
 
+    public function getAllOpenCourse(){
+        return $this->courseRepository->getAllOpenCourse();
+    }
+
     public function findByRole($role, $status=1){
         if ($status == 3){ //get all courses (include ongoing and ended)
             return $role->course()

@@ -1,4 +1,4 @@
-@if($user->type == 0 or $user->type == 2)
+@if($user->type == 0 or $user->type == 1 or $user->type == 2)
     <div class="row p-b-10">
         <h5 class="p-r-10">當前批改身份：{{ $teacher->users_name }} 教師</h5>
         <select id="teacherSelect" class="select2 form-control custom-select" style="width:20%; height: 30px;">

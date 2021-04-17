@@ -135,7 +135,7 @@
                                         <h4 class="card-title m-t-10" style="padding-right: 20px">系統公告</h4>
                                     </div>
 
-                                    @if($sys_announcements->count() > 0)
+                                    @if($sys_announcements->isNotEmpty())
                                         <ul class="list-style-none">
                                             @foreach($sys_announcements as $key=>$sys_announcement)
                                                 <li class="d-flex no-block card-body @if($key != 0) border-top @endif">

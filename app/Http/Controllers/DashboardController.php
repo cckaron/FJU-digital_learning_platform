@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\File;
+use phpDocumentor\Reflection\Types\Collection;
 use Spatie\Valuestore\Valuestore;
 
 class DashboardController extends Controller
@@ -78,6 +79,8 @@ class DashboardController extends Controller
             return view('dashboard.index', [
                 'hasInProgressCourse' => $hasInProgressCourse,
             ]);
+        } else if ($user->type == 1){
+            return $this->secretary();
         } else if ($user->type == 2){
             return $this->TA();
 
@@ -99,6 +102,35 @@ class DashboardController extends Controller
             return $profileController->getUpdateProfile();
         }
         return view('dashboard.index');
+    }
+
+    public function secretary(){
+        $courses = $this->courseService->getAllOpenCourse();
+
+        //取得系統公告
+        $sys_announcements = $this->sysAnnouncementService->getPaginateWithFileDetail();
+
+        //判斷該TA是否當學期有課程, 有則回傳該TA指導老師的資訊
+        if($courses->isNotEmpty())
+        {
+            $teachers = $this->courseService->findTeachers($courses);
+
+            //檢查課程是否過期
+            if ($this->settings->get("expire_checker") == true) {
+                $this->dueChecker($courses);
+            }
+
+            return view('dashboard.taIndex', [
+                'hasInProgressCourse' => true,
+                'teachers' => $teachers,
+                'sys_announcements' => $sys_announcements,
+            ]);
+        } else {
+            return view('dashboard.taIndex', [
+                'hasInProgressCourse' => false,
+                'sys_announcements' => $sys_announcements,
+            ]);
+        }
     }
 
     public function TA(){

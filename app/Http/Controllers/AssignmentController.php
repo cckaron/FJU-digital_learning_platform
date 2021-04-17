@@ -982,6 +982,30 @@ class AssignmentController extends Controller
             //取得進行中的課程
             $courses = $this->courseService->findByRole($teacher);
 
+        } else if ($user->type == 1){ //秘書
+            $courses = $this->courseService->getAllOpenCourse();
+
+            //讓秘書可以選取特定教師
+            $teachers = collect();
+            foreach($courses as $course){
+                $teachers->push(Course::where('id', $course->id)->first()->teacher()->first());
+                $teachers = $teachers->unique('users_name');
+            }
+
+            if ($teachers == null){
+                return redirect()->with('Teacher cannot be null');
+            }
+
+            $teacherID = Input::get('teacherID');
+            $teacher = Teacher::where('users_id', $teacherID)->first();
+
+            //取得進行中的課程
+            $courses = $teacher->course()
+                ->join('common_courses', 'common_courses.id', '=', 'courses.common_courses_id')
+                ->select('courses.*', 'common_courses.name as common_course_name', 'common_courses.status as status')
+                ->where('status', 1)
+                ->get();
+
         } else if ($user->type == 2){ //TA
             $ta = $user->ta()->first();
             $ta->course_id = $this->courseService->findByRole($ta)->pluck('id');
