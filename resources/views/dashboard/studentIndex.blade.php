@@ -167,6 +167,9 @@
                                                                 <span class="badge badge-pill badge-primary">一般</span>
                                                             @endif
                                                         </span>
+                                                        <span class="text-active p-l-5" >
+                                                            <span class="badge badge-pill badge-info">{{ $announcement->course_name }}</span>
+                                                        </span>
                                                     </a>
                                                     <div class="p-t-5">
                                                         <div id="Toggle-{{ $key }}" class="multi-collapse collapse p-t-10" style="">

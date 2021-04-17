@@ -187,6 +187,7 @@ class DashboardController extends Controller
                     // 抓取公告
                     $course_announcements = $c->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->get();
                     foreach($course_announcements as $announcement){
+                        $announcement['course_name'] = $c->name;
                         $announcements->push($announcement);
                     }
                 }
