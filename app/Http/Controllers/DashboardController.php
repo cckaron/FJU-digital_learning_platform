@@ -183,12 +183,16 @@ class DashboardController extends Controller
                         $com_course = $this->courseService->findCommonCourse($c->id);
                         $this->commonCourseService->update($com_course->id, ['status' => 0]);
                     }
+
+                    // 抓取公告
+                    $course_announcements = $c->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->get();
+                    foreach($course_announcements as $announcement){
+                        $announcements->push($announcement);
+                    }
                 }
             }
 
-            //獲取課程公告 TODO 如果一個學生同時修了兩堂課, 只會顯示第一堂課的公告
-            $course_first = $course->first(); //獲得 array 第一個值! 等同 $course[0]
-            $announcements = $course_first->announcement()->orderBy('priority')->orderBy('updated_at', 'desc')->paginate(5);
+            $announcements = $announcements->paginate(5);
         }
 
         //作業
