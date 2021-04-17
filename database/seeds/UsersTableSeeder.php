@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
             'account' => 405402091,
             'id' => 405402091,
             'name' => 'Aaron',
-            'email' => 'cg.workst@gmail.com',
+            'email' => 'cckaron28@gmail.com',
             'password' => bcrypt('405402091'), // secret
             'type' => 0,
             'remember_token' => str_random(10),

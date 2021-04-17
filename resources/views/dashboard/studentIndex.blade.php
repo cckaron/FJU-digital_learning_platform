@@ -283,7 +283,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-                Designed and Developed by Chun-Kai-Kao. Bug Reports: cg.workst@gmail.com
+                Designed and Developed by Chun-Kai-Kao. Bug Reports: cckaron28@gmail.com
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

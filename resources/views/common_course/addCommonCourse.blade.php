@@ -135,7 +135,7 @@
                 <!-- footer -->
                 <!-- ============================================================== -->
                 <footer class="footer text-center">
-                    All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cg.workst@gmail.com
+                    All Rights Reserved by Chun-Kai Kao. Technical problem please contact: cckaron28@gmail.com
                 </footer>
                 <!-- ============================================================== -->
                 <!-- End footer -->
