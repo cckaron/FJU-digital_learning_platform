@@ -35,7 +35,12 @@ class Kernel extends ConsoleKernel
 
         $schedule
             ->command('backup:run --only-db')
-            ->everyThirtyMinutes()
+            ->hourly()
+            ->appendOutputTo(storage_path('logs/backup.log'));
+
+        $schedule
+            ->command('backup:run clean')
+            ->dailyAt('2:30')
             ->appendOutputTo(storage_path('logs/backup.log'));
     }
 
